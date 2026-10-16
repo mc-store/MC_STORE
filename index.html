@@ -5,8 +5,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#080d18">
-<meta name="description" content="MC STORE — Discover Minecraft capes and explore our collection.">
-<title>MC STORE | Premium Cape Shop</title>
+<meta name="description" content="MC STORE — Browse Minecraft capes, explore our collection, and order through Discord.">
+<title>MC STORE | Minecraft Cape Shop</title>
 
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
@@ -22,12 +22,14 @@
   --orange2: #ffb347;
   --blue: #31a9ff;
   --blue2: #176bff;
-  --discord: "https://discord.com/invite/F38vcYVHA";
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
-html { scroll-behavior: smooth; scroll-padding-top: 85px; }
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 85px;
+}
 
 body {
   background: var(--bg);
@@ -36,8 +38,58 @@ body {
   overflow-x: hidden;
 }
 
-a { color: inherit; text-decoration: none; -webkit-tap-highlight-color: transparent; }
+a {
+  color: inherit;
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+}
 
+::selection {
+  background: #31a9ff55;
+  color: white;
+}
+
+/* Announcement ticker */
+.sale-marquee {
+  overflow: hidden;
+  white-space: nowrap;
+  background: linear-gradient(90deg, #ff8a24, #176bff, #ff8a24);
+  background-size: 200% 100%;
+  color: white;
+  padding: 11px 0;
+  border-bottom: 1px solid #ffffff25;
+}
+
+.sale-track {
+  display: flex;
+  width: max-content;
+  animation: sale-scroll 32s linear infinite;
+}
+
+.sale-track span {
+  flex-shrink: 0;
+  padding: 0 25px;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 2px;
+}
+
+.sale-track span::after {
+  content: " ✦ ";
+  margin-left: 30px;
+  color: #fff;
+}
+
+.sale-marquee:hover .sale-track {
+  animation-play-state: paused;
+}
+
+@keyframes sale-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+/* Navigation */
 nav {
   min-height: 76px;
   display: flex;
@@ -67,16 +119,42 @@ nav {
   color: transparent;
 }
 
-.links { display: flex; align-items: center; gap: 26px; }
-
-.links a:not(.btn) {
-  color: var(--muted);
-  font-size: 13px;
-  transition: color .2s;
+.links {
+  display: flex;
+  align-items: center;
+  gap: 28px;
 }
 
-.links a:hover { color: white; }
+.links a:not(.btn) {
+  position: relative;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 600;
+  padding: 8px 0;
+  transition: color .25s ease;
+}
 
+.links a:not(.btn)::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 0;
+  height: 2px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--orange), var(--blue));
+  transition: width .25s ease;
+}
+
+.links a:not(.btn):hover {
+  color: white;
+}
+
+.links a:not(.btn):hover::after {
+  width: 100%;
+}
+
+/* Buttons */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -85,12 +163,13 @@ nav {
   padding: 13px 20px;
   border-radius: 9px;
   background: linear-gradient(110deg, var(--orange), var(--blue2));
+  background-size: 150% 100%;
   color: white;
   font-size: 13px;
   font-weight: 800;
   border: 1px solid #ffffff1c;
   cursor: pointer;
-  transition: transform .2s, filter .2s, box-shadow .2s;
+  transition: transform .25s ease, filter .25s ease, box-shadow .25s ease;
 }
 
 .btn:hover {
@@ -99,6 +178,16 @@ nav {
   box-shadow: 0 8px 28px #176bff35;
 }
 
+.btn:active {
+  transform: translateY(-1px) scale(.98);
+}
+
+.btn-secondary {
+  background: var(--panel);
+  border: 1px solid var(--border);
+}
+
+/* Hero */
 .hero {
   text-align: center;
   padding: 112px 20px 85px;
@@ -148,8 +237,6 @@ h1 {
   gap: 12px;
 }
 
-.btn-secondary { background: var(--panel); border: 1px solid var(--border); }
-
 .stats {
   display: flex;
   justify-content: center;
@@ -158,9 +245,19 @@ h1 {
   flex-wrap: wrap;
 }
 
-.stat strong { display: block; font-size: 19px; }
-.stat span { display: block; color: var(--muted); font-size: 11px; margin-top: 6px; }
+.stat strong {
+  display: block;
+  font-size: 19px;
+}
 
+.stat span {
+  display: block;
+  color: var(--muted);
+  font-size: 11px;
+  margin-top: 6px;
+}
+
+/* Collection */
 section { padding: 72px 8%; }
 
 .section-head {
@@ -181,9 +278,17 @@ section { padding: 72px 8%; }
   margin-bottom: 11px;
 }
 
-h2 { font-size: clamp(28px, 4vw, 39px); letter-spacing: -1.5px; }
+h2 {
+  font-size: clamp(28px, 4vw, 39px);
+  letter-spacing: -1.5px;
+}
 
-.sub { color: var(--muted); font-size: 13px; margin-top: 10px; line-height: 1.8; }
+.sub {
+  color: var(--muted);
+  font-size: 13px;
+  margin-top: 10px;
+  line-height: 1.8;
+}
 
 .products {
   display: grid;
@@ -196,13 +301,13 @@ h2 { font-size: clamp(28px, 4vw, 39px); letter-spacing: -1.5px; }
   background: linear-gradient(150deg, var(--panel2), var(--panel));
   border-radius: 16px;
   overflow: hidden;
-  transition: transform .25s, border-color .25s, box-shadow .25s;
+  transition: transform .3s ease, border-color .3s ease, box-shadow .3s ease;
 }
 
 .card:hover {
-  transform: translateY(-6px);
+  transform: translateY(-7px);
   border-color: var(--orange);
-  box-shadow: 0 15px 40px #0003;
+  box-shadow: 0 15px 40px #0005, 0 0 24px #ff8a2410;
 }
 
 .art {
@@ -218,15 +323,28 @@ h2 { font-size: clamp(28px, 4vw, 39px); letter-spacing: -1.5px; }
     #0b1321;
 }
 
-.art::before, .art::after {
+.art::before,
+.art::after {
   content: "";
   position: absolute;
   border: 1px solid #ffffff10;
   border-radius: 50%;
+  pointer-events: none;
+  transition: transform .4s ease, border-color .4s ease;
 }
 
 .art::before { width: 190px; height: 190px; }
 .art::after { width: 145px; height: 145px; border-color: #ffffff09; }
+
+.card:hover .art::before {
+  transform: scale(1.12);
+  border-color: #ff8a2440;
+}
+
+.card:hover .art::after {
+  transform: scale(1.15);
+  border-color: #31a9ff40;
+}
 
 .cape-img {
   display: block;
@@ -236,10 +354,13 @@ h2 { font-size: clamp(28px, 4vw, 39px); letter-spacing: -1.5px; }
   height: 190px;
   object-fit: contain;
   filter: drop-shadow(0 12px 22px #0009);
-  transition: transform .3s;
+  transition: transform .35s ease, filter .35s ease;
 }
 
-.card:hover .cape-img { transform: scale(1.07); }
+.card:hover .cape-img {
+  transform: scale(1.08);
+  filter: drop-shadow(0 14px 26px #000b);
+}
 
 .tag {
   position: absolute;
@@ -256,11 +377,24 @@ h2 { font-size: clamp(28px, 4vw, 39px); letter-spacing: -1.5px; }
   letter-spacing: .7px;
 }
 
-.tag.orange { color: var(--orange2); border-color: #ff8a2455; background: #ff8a2415; }
-.tag.blue { color: #76c9ff; border-color: #31a9ff55; background: #31a9ff15; }
+.tag.orange {
+  color: var(--orange2);
+  border-color: #ff8a2455;
+  background: #ff8a2415;
+}
+
+.tag.blue {
+  color: #76c9ff;
+  border-color: #31a9ff55;
+  background: #31a9ff15;
+}
 
 .details { padding: 22px; }
-.details h3 { font-size: 17px; font-weight: 800; }
+
+.details h3 {
+  font-size: 17px;
+  font-weight: 800;
+}
 
 .details p {
   color: var(--muted);
@@ -279,30 +413,25 @@ h2 { font-size: clamp(28px, 4vw, 39px); letter-spacing: -1.5px; }
   flex-wrap: wrap;
 }
 
-.price { font-size: 14px; font-weight: 800; }
-.price small { display: block; color: var(--muted); font-size: 10px; font-weight: 500; margin-top: 4px; }
-.order { font-size: 11px; padding: 11px 14px; }
-
-.info {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 18px;
-  margin-top: 30px;
+.price {
+  font-size: 14px;
+  font-weight: 800;
 }
 
-.info article {
-  background: var(--panel);
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  padding: 25px;
-  transition: border-color .2s;
+.price small {
+  display: block;
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: 500;
+  margin-top: 4px;
 }
 
-.info article:hover { border-color: var(--blue); }
-.symbol { font-size: 27px; color: var(--orange2); }
-.info h3 { font-size: 14px; margin: 15px 0 9px; }
-.info p { color: var(--muted); font-size: 12px; line-height: 1.9; }
+.order {
+  font-size: 11px;
+  padding: 11px 14px;
+}
 
+/* Discord section */
 .discord {
   margin: 20px 8% 75px;
   padding: 58px 25px;
@@ -313,6 +442,12 @@ h2 { font-size: clamp(28px, 4vw, 39px); letter-spacing: -1.5px; }
     radial-gradient(ellipse at 0% 100%, #ff8a241c, transparent 55%),
     radial-gradient(ellipse at 100% 0%, #31a9ff20, transparent 55%),
     var(--panel);
+  transition: border-color .3s ease, box-shadow .3s ease;
+}
+
+.discord:hover {
+  border-color: #31a9ff75;
+  box-shadow: 0 12px 40px #176bff12;
 }
 
 .discord p {
@@ -323,6 +458,7 @@ h2 { font-size: clamp(28px, 4vw, 39px); letter-spacing: -1.5px; }
   line-height: 1.9;
 }
 
+/* Footer */
 footer {
   border-top: 1px solid var(--border);
   padding: 27px 8%;
@@ -337,18 +473,16 @@ footer {
 
 @media(max-width: 850px) {
   nav { padding: 16px 5%; }
-  .links { gap: 14px; }
+  .links { gap: 16px; }
   section { padding: 55px 5%; }
   .products { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .info { grid-template-columns: 1fr; }
   .discord { margin: 15px 5% 50px; }
 }
 
 @media(max-width: 540px) {
   nav { min-height: 66px; gap: 10px; }
   .brand { font-size: 19px; }
-  .links { gap: 10px; }
-  .links .hide { display: none; }
+  .links { gap: 13px; }
   .links .btn { padding: 10px 12px; font-size: 11px; }
   .hero { padding: 76px 18px 58px; }
   h1 { letter-spacing: -2px; }
@@ -358,33 +492,53 @@ footer {
   .discord { padding: 42px 20px; }
   footer { flex-direction: column; align-items: flex-start; }
 }
+
+@media(prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+}
 </style>
 </head>
 
 <body>
+
+<div class="sale-marquee" aria-label="MC STORE announcements">
+  <div class="sale-track">
+    <span>MC STORE ✦ SPECIAL OFFERS</span>
+    <span>MINECRAFT CAPES ✦ EXPLORE THE COLLECTION</span>
+    <span>QUESTIONS? JOIN OUR DISCORD</span>
+    <span>MC STORE ✦ SPECIAL OFFERS</span>
+    <span>MINECRAFT CAPES ✦ EXPLORE THE COLLECTION</span>
+    <span>QUESTIONS? JOIN OUR DISCORD</span>
+  </div>
+</div>
+
 <nav>
   <a class="brand" href="#home">MC <span>STORE</span></a>
   <div class="links">
-    <a class="hide" href="#home">Home</a>
+    <a href="#home">Home</a>
     <a href="#shop">Capes</a>
-    <a class="hide" href="#why">Why Us</a>
     <a class="btn" href="#discord">Shop Now ↗</a>
   </div>
 </nav>
 
 <header class="hero" id="home">
-  <span class="eyebrow">THE CAPE COLLECTION</span>
-  <h1>Stand Out.<br><span class="gradient">Wear Your Legacy.</span></h1>
-  <p>Discover Minecraft capes and find the perfect style for your character. Explore our collection and order through our Discord community.</p>
+  <span class="eyebrow">THE MC STORE COLLECTION</span>
+  <h1>Discover Minecraft<br><span class="gradient">Capes.</span></h1>
+  <p>Explore our collection of Minecraft capes, check availability, and contact our team on Discord to place your order.</p>
 
   <div class="hero-actions">
     <a class="btn" href="#shop">Explore Collection ↗</a>
-    <a class="btn btn-secondary discord-link" href="https://discord.com/invite/F38vcYVHA" target="_blank" rel="noopener noreferrer">Join Discord ↗</a>
+    <a class="btn btn-secondary" href="https://discord.com/invite/F38vcYVHA" target="_blank" rel="noopener noreferrer">Join Discord ↗</a>
   </div>
 
   <div class="stats">
-    <div class="stat"><strong>Premium</strong><span>Selected capes</span></div>
     <div class="stat"><strong>MC STORE</strong><span>Your cape destination</span></div>
+    <div class="stat"><strong>Exclusive</strong><span>Minecraft capes</span></div>
     <div class="stat"><strong>Community</strong><span>Discord support</span></div>
   </div>
 </header>
@@ -394,23 +548,24 @@ footer {
     <div>
       <div class="kicker">OUR COLLECTION</div>
       <h2>Featured <span class="gradient">Capes</span></h2>
-      <p class="sub">Find your next favorite cape.</p>
+      <p class="sub">Browse our collection and contact us for availability and pricing.</p>
     </div>
-    <a class="btn discord-link" href="https://discord.com/invite/F38vcYVHA" target="_blank" rel="noopener noreferrer">Ask About Stock ↗</a>
+    <a class="btn" href="https://discord.com/invite/F38vcYVHA" target="_blank" rel="noopener noreferrer">Ask About Stock ↗</a>
   </div>
 
   <div class="products">
+
     <article class="card">
       <div class="art">
         <span class="tag orange">FEATURED</span>
-        <img class="cape-img" src="media/cloakFront%20(2).webp" alt="Corrupted Cape">
+        <img class="cape-img" src="media/cloakFront%20(2).webp" alt="Corrupted Cape" loading="lazy">
       </div>
       <div class="details">
         <h3>Corrupted Cape</h3>
-        <p>A unique cape for your Minecraft collection.</p>
+        <p>A distinctive cape for your Minecraft collection.</p>
         <div class="price-row">
           <div class="price">Contact us<small>For current price</small></div>
-          <a class="btn order discord-link" href="https://discord.com/invite/F38vcYVHA" target="_blank" rel="noopener noreferrer">Order ↗</a>
+          <a class="btn order" href="https://discord.com/invite/F38vcYVHA" target="_blank" rel="noopener noreferrer">Order ↗</a>
         </div>
       </div>
     </article>
@@ -418,14 +573,14 @@ footer {
     <article class="card">
       <div class="art">
         <span class="tag blue">POPULAR</span>
-        <img class="cape-img" src="media/aurora-front.png" alt="Aurora Cape">
+        <img class="cape-img" src="media/aurora-front.png" alt="Aurora Cape" loading="lazy">
       </div>
       <div class="details">
         <h3>Aurora Cape</h3>
         <p>A vibrant cape for players who want to stand out.</p>
         <div class="price-row">
           <div class="price">Contact us<small>For current price</small></div>
-          <a class="btn order discord-link" href="https://discord.com/invite/F38vcYVHA" target="_blank" rel="noopener noreferrer">Order ↗</a>
+          <a class="btn order" href="https://discord.com/invite/F38vcYVHA" target="_blank" rel="noopener noreferrer">Order ↗</a>
         </div>
       </div>
     </article>
@@ -433,40 +588,26 @@ footer {
     <article class="card">
       <div class="art">
         <span class="tag orange">COLLECTION</span>
-        <img class="cape-img" src="media/320%20(1).png" alt="Builder Cape">
+        <img class="cape-img" src="media/320%20(1).png" alt="Builder Cape" loading="lazy">
       </div>
       <div class="details">
         <h3>Builder Cape</h3>
-        <p>A distinctive cape for Minecraft collectors.</p>
+        <p>A classic addition for Minecraft cape collectors.</p>
         <div class="price-row">
           <div class="price">Contact us<small>For current price</small></div>
-          <a class="btn order discord-link" href="https://discord.com/invite/F38vcYVHA" target="_blank" rel="noopener noreferrer">Order ↗</a>
+          <a class="btn order" href="https://discord.com/invite/F38vcYVHA" target="_blank" rel="noopener noreferrer">Order ↗</a>
         </div>
       </div>
     </article>
-  </div>
-</section>
 
-<section id="why">
-  <div class="kicker">THE MC STORE EXPERIENCE</div>
-  <h2>Shopping made <span class="gradient">simple.</span></h2>
-  <p class="sub">A smooth experience from browsing to ordering.</p>
-
-  <div class="info">
-    <article><div class="symbol">✦</div><h3>Curated Collection</h3><p>Explore our cape collection and ask our team for product details.</p></article>
-    <article><div class="symbol">◈</div><h3>Availability & Pricing</h3><p>Contact our team on Discord to confirm current availability and prices.</p></article>
-    <article><div class="symbol">↗</div><h3>Community Support</h3><p>Visit our Discord community for questions and order assistance.</p></article>
   </div>
 </section>
 
 <section class="discord" id="discord">
   <div class="kicker">NEED ASSISTANCE?</div>
-  <h2>Let's find your <span class="gradient">next cape.</span></h2>
-  <p>
-    Visit our Discord to ask about prices, availability, and ordering.
-    Our team can help you with your questions.
-  </p>
-  <a class="btn discord-link" href="https://discord.com/invite/F38vcYVHA" target="_blank" rel="noopener noreferrer">Join Our Discord ↗</a>
+  <h2>Questions? <span class="gradient">We're here to help.</span></h2>
+  <p>Visit our Discord to ask about cape availability, pricing, and ordering. Our community team is ready to help.</p>
+  <a class="btn" href="https://discord.com/invite/F38vcYVHA" target="_blank" rel="noopener noreferrer">Join Our Discord ↗</a>
 </section>
 
 <footer>
