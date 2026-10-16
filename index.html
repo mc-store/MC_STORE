@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#080d18">
+<meta name="theme-color" content="#080b12">
 <meta name="description" content="MC STORE — Browse Minecraft capes, explore our collection, and order through Discord.">
 <title>MC STORE | Minecraft Cape Shop</title>
 
@@ -12,30 +12,40 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
 
 :root {
-  --bg: #080d18;
-  --panel: #101a2b;
-  --panel2: #142238;
-  --border: #263b56;
-  --text: #f4f8ff;
-  --muted: #9aabc2;
-  --orange: #ff8a24;
-  --orange2: #ffb347;
-  --blue: #31a9ff;
-  --blue2: #176bff;
+  --bg: #080b12;
+  --panel: #101722;
+  --panel2: #131f2c;
+  --border: #253745;
+  --text: #f4faff;
+  --muted: #9aabb8;
+  --cyan: #00e5ff;
+  --cyan2: #00b8d4;
+  --orange: #b95013;
+  --orange2: #e07828;
 }
 
-* { box-sizing: border-box; margin: 0; padding: 0; }
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 85px;
+  scroll-padding-top: 90px;
 }
 
 body {
-  background: var(--bg);
   color: var(--text);
   font-family: Inter, Arial, sans-serif;
   overflow-x: hidden;
+  background:
+    radial-gradient(ellipse at 0% 8%, rgba(0,229,255,.13), transparent 35%),
+    radial-gradient(ellipse at 100% 24%, rgba(185,80,19,.17), transparent 37%),
+    radial-gradient(ellipse at 15% 58%, rgba(0,184,212,.08), transparent 34%),
+    radial-gradient(ellipse at 90% 82%, rgba(224,120,40,.09), transparent 36%),
+    #080b12;
+  background-attachment: fixed;
 }
 
 a {
@@ -45,7 +55,7 @@ a {
 }
 
 ::selection {
-  background: #31a9ff55;
+  background: #00e5ff55;
   color: white;
 }
 
@@ -53,11 +63,12 @@ a {
 .sale-marquee {
   overflow: hidden;
   white-space: nowrap;
-  background: linear-gradient(90deg, #ff8a24, #176bff, #ff8a24);
-  background-size: 200% 100%;
+  background: linear-gradient(100deg, #873b12, #007d91, #a44813, #007d91);
+  background-size: 250% 100%;
+  animation: banner-glow 12s ease infinite;
   color: white;
   padding: 11px 0;
-  border-bottom: 1px solid #ffffff25;
+  border-bottom: 1px solid #00e5ff35;
 }
 
 .sale-track {
@@ -77,7 +88,7 @@ a {
 .sale-track span::after {
   content: " ✦ ";
   margin-left: 30px;
-  color: #fff;
+  color: var(--cyan);
 }
 
 .sale-marquee:hover .sale-track {
@@ -89,6 +100,11 @@ a {
   to { transform: translateX(-50%); }
 }
 
+@keyframes banner-glow {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
 /* Navigation */
 nav {
   min-height: 76px;
@@ -97,12 +113,13 @@ nav {
   justify-content: space-between;
   gap: 20px;
   padding: 16px 8%;
-  border-bottom: 1px solid var(--border);
-  background: #080d18ed;
+  border-bottom: 1px solid #00e5ff20;
+  background: rgba(8,11,18,.88);
   position: sticky;
   top: 0;
   z-index: 10;
-  backdrop-filter: blur(16px);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
 }
 
 .brand {
@@ -110,10 +127,16 @@ nav {
   font-weight: 900;
   letter-spacing: -1.2px;
   white-space: nowrap;
+  transition: filter .3s ease, transform .3s ease;
+}
+
+.brand:hover {
+  filter: drop-shadow(0 0 10px #00e5ff30);
+  transform: translateY(-1px);
 }
 
 .brand span {
-  background: linear-gradient(100deg, var(--orange), var(--blue));
+  background: linear-gradient(100deg, var(--cyan), var(--orange2));
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -130,8 +153,8 @@ nav {
   color: var(--muted);
   font-size: 13px;
   font-weight: 600;
-  padding: 8px 0;
-  transition: color .25s ease;
+  padding: 9px 0;
+  transition: color .3s ease, text-shadow .3s ease;
 }
 
 .links a:not(.btn)::after {
@@ -139,19 +162,22 @@ nav {
   position: absolute;
   left: 0;
   bottom: 0;
-  width: 0;
+  width: 100%;
   height: 2px;
-  border-radius: 2px;
-  background: linear-gradient(90deg, var(--orange), var(--blue));
-  transition: width .25s ease;
+  border-radius: 10px;
+  background: linear-gradient(90deg, var(--cyan), var(--orange2));
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform .3s ease;
 }
 
 .links a:not(.btn):hover {
-  color: white;
+  color: var(--cyan);
+  text-shadow: 0 0 12px #00e5ff35;
 }
 
 .links a:not(.btn):hover::after {
-  width: 100%;
+  transform: scaleX(1);
 }
 
 /* Buttons */
@@ -162,20 +188,21 @@ nav {
   gap: 8px;
   padding: 13px 20px;
   border-radius: 9px;
-  background: linear-gradient(110deg, var(--orange), var(--blue2));
-  background-size: 150% 100%;
+  background: linear-gradient(110deg, #a94b16, #007f96);
   color: white;
   font-size: 13px;
   font-weight: 800;
-  border: 1px solid #ffffff1c;
+  border: 1px solid #00e5ff35;
   cursor: pointer;
-  transition: transform .25s ease, filter .25s ease, box-shadow .25s ease;
+  transition: transform .25s ease, filter .25s ease,
+              box-shadow .25s ease, border-color .25s ease;
 }
 
 .btn:hover {
   transform: translateY(-3px);
-  filter: brightness(1.12);
-  box-shadow: 0 8px 28px #176bff35;
+  filter: brightness(1.15);
+  border-color: #00e5ff95;
+  box-shadow: 0 8px 28px #00cfe52b, 0 4px 20px #b9501320;
 }
 
 .btn:active {
@@ -183,8 +210,12 @@ nav {
 }
 
 .btn-secondary {
-  background: var(--panel);
-  border: 1px solid var(--border);
+  background: rgba(16,23,34,.8);
+  border: 1px solid #344650;
+}
+
+.btn-secondary:hover {
+  background: #10212b;
 }
 
 /* Hero */
@@ -192,15 +223,15 @@ nav {
   text-align: center;
   padding: 112px 20px 85px;
   background:
-    radial-gradient(ellipse at 20% 5%, #ff8a2420, transparent 40%),
-    radial-gradient(ellipse at 80% 5%, #31a9ff22, transparent 42%);
+    radial-gradient(ellipse at 15% 8%, #00e5ff13, transparent 42%),
+    radial-gradient(ellipse at 85% 10%, #b9501320, transparent 42%);
 }
 
 .eyebrow {
   display: inline-block;
-  border: 1px solid #ff9a3b55;
-  background: linear-gradient(100deg, #ff8a2415, #31a9ff15);
-  color: var(--orange2);
+  border: 1px solid #00e5ff50;
+  background: linear-gradient(100deg, #00e5ff12, #b950131c);
+  color: var(--cyan);
   padding: 9px 15px;
   border-radius: 30px;
   font-size: 10px;
@@ -216,7 +247,7 @@ h1 {
 }
 
 .gradient {
-  background: linear-gradient(100deg, var(--orange2), var(--blue));
+  background: linear-gradient(100deg, var(--cyan), #65f0ff 45%, var(--orange2));
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -258,7 +289,9 @@ h1 {
 }
 
 /* Collection */
-section { padding: 72px 8%; }
+section {
+  padding: 72px 8%;
+}
 
 .section-head {
   display: flex;
@@ -270,7 +303,7 @@ section { padding: 72px 8%; }
 }
 
 .kicker {
-  color: var(--orange2);
+  color: var(--cyan);
   text-transform: uppercase;
   font-size: 10px;
   font-weight: 900;
@@ -297,8 +330,8 @@ h2 {
 }
 
 .card {
-  border: 1px solid var(--border);
-  background: linear-gradient(150deg, var(--panel2), var(--panel));
+  border: 1px solid #263b49;
+  background: linear-gradient(150deg, rgba(19,31,44,.96), rgba(12,19,29,.96));
   border-radius: 16px;
   overflow: hidden;
   transition: transform .3s ease, border-color .3s ease, box-shadow .3s ease;
@@ -306,8 +339,8 @@ h2 {
 
 .card:hover {
   transform: translateY(-7px);
-  border-color: var(--orange);
-  box-shadow: 0 15px 40px #0005, 0 0 24px #ff8a2410;
+  border-color: var(--cyan);
+  box-shadow: 0 15px 40px #0006, 0 0 25px #00e5ff12;
 }
 
 .art {
@@ -318,32 +351,40 @@ h2 {
   position: relative;
   overflow: hidden;
   background:
-    radial-gradient(ellipse at 20% 50%, #ff8a241c, transparent 60%),
-    radial-gradient(ellipse at 80% 50%, #31a9ff24, transparent 60%),
-    #0b1321;
+    radial-gradient(ellipse at 18% 50%, #b9501323, transparent 60%),
+    radial-gradient(ellipse at 82% 50%, #00e5ff20, transparent 60%),
+    #0a111b;
 }
 
 .art::before,
 .art::after {
   content: "";
   position: absolute;
-  border: 1px solid #ffffff10;
+  border: 1px solid #00e5ff18;
   border-radius: 50%;
   pointer-events: none;
   transition: transform .4s ease, border-color .4s ease;
 }
 
-.art::before { width: 190px; height: 190px; }
-.art::after { width: 145px; height: 145px; border-color: #ffffff09; }
+.art::before {
+  width: 190px;
+  height: 190px;
+}
+
+.art::after {
+  width: 145px;
+  height: 145px;
+  border-color: #e078281a;
+}
 
 .card:hover .art::before {
   transform: scale(1.12);
-  border-color: #ff8a2440;
+  border-color: #00e5ff70;
 }
 
 .card:hover .art::after {
   transform: scale(1.15);
-  border-color: #31a9ff40;
+  border-color: #e0782870;
 }
 
 .cape-img {
@@ -367,9 +408,9 @@ h2 {
   top: 15px;
   left: 15px;
   z-index: 2;
-  background: #17243a;
-  border: 1px solid #344a68;
-  color: #dceaff;
+  background: #17232d;
+  border: 1px solid #344650;
+  color: #dceaf0;
   padding: 7px 10px;
   border-radius: 6px;
   font-size: 9px;
@@ -378,22 +419,29 @@ h2 {
 }
 
 .tag.orange {
-  color: var(--orange2);
-  border-color: #ff8a2455;
-  background: #ff8a2415;
+  color: #f4a267;
+  border-color: #e0782855;
+  background: #b950131b;
 }
 
 .tag.blue {
-  color: #76c9ff;
-  border-color: #31a9ff55;
-  background: #31a9ff15;
+  color: var(--cyan);
+  border-color: #00e5ff55;
+  background: #00e5ff12;
 }
 
-.details { padding: 22px; }
+.details {
+  padding: 22px;
+}
 
 .details h3 {
   font-size: 17px;
   font-weight: 800;
+  transition: color .25s ease;
+}
+
+.card:hover .details h3 {
+  color: var(--cyan);
 }
 
 .details p {
@@ -436,18 +484,19 @@ h2 {
   margin: 20px 8% 75px;
   padding: 58px 25px;
   text-align: center;
-  border: 1px solid #ff8a2450;
+  border: 1px solid #00e5ff45;
   border-radius: 20px;
   background:
-    radial-gradient(ellipse at 0% 100%, #ff8a241c, transparent 55%),
-    radial-gradient(ellipse at 100% 0%, #31a9ff20, transparent 55%),
-    var(--panel);
-  transition: border-color .3s ease, box-shadow .3s ease;
+    radial-gradient(ellipse at 0% 100%, #b9501328, transparent 55%),
+    radial-gradient(ellipse at 100% 0%, #00e5ff1d, transparent 55%),
+    rgba(16,23,34,.92);
+  transition: border-color .3s ease, box-shadow .3s ease, transform .3s ease;
 }
 
 .discord:hover {
-  border-color: #31a9ff75;
-  box-shadow: 0 12px 40px #176bff12;
+  border-color: #e07828a0;
+  box-shadow: 0 12px 40px #00e5ff12;
+  transform: translateY(-2px);
 }
 
 .discord p {
@@ -460,7 +509,7 @@ h2 {
 
 /* Footer */
 footer {
-  border-top: 1px solid var(--border);
+  border-top: 1px solid #00e5ff25;
   padding: 27px 8%;
   display: flex;
   justify-content: space-between;
@@ -483,6 +532,7 @@ footer {
   nav { min-height: 66px; gap: 10px; }
   .brand { font-size: 19px; }
   .links { gap: 13px; }
+  .links a:not(.btn) { font-size: 11px; }
   .links .btn { padding: 10px 12px; font-size: 11px; }
   .hero { padding: 76px 18px 58px; }
   h1 { letter-spacing: -2px; }
