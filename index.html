@@ -27,15 +27,32 @@ nav{position:sticky;top:0;z-index:5;display:flex;justify-content:space-between;a
 .links>a:not(.btn){color:var(--muted)}
 .btn{display:inline-flex;justify-content:center;align-items:center;padding:13px 19px;border-radius:9px;border:1px solid #ffe08b70;color:#fff;background:linear-gradient(110deg,#ff641c,#e5a32c);font-size:12px;font-weight:900;cursor:pointer;transition:.25s}
 .btn:hover{transform:translateY(-3px);box-shadow:0 8px 25px #ff641c55}
-.hero{text-align:center;padding:105px 20px 75px}
+.hero{text-align:center;padding:65px 20px 75px}
 .eyebrow{display:inline-block;padding:9px 15px;border-radius:30px;border:1px solid #ffd15c80;background:#ffb51a16;color:#ffdb74;font-size:10px;font-weight:900;letter-spacing:2px}
 h1{font-size:clamp(40px,7vw,76px);letter-spacing:-3px;line-height:1.1;margin:25px 0}
 .gradient{background:linear-gradient(100deg,#ffe77b,#ff9c26,#ff4b27);-webkit-background-clip:text;background-clip:text;color:transparent}
 .hero p{max-width:570px;margin:0 auto 26px;color:var(--muted);font-size:14px;line-height:1.9}
-.actions{display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
+.actions{display:flex;justify-content:flex-start;gap:12px;flex-wrap:wrap}
 .stats{display:flex;justify-content:center;gap:50px;flex-wrap:wrap;margin-top:45px}
 .stats strong{display:block;font-size:18px}
 .stats span{display:block;color:var(--muted);font-size:11px;margin-top:6px}
+
+/* ROTATING HERO CAPE AD */
+.hero-ad{max-width:1050px;margin:30px auto 0;display:grid;grid-template-columns:.9fr 1.1fr;align-items:center;gap:35px;text-align:left;padding:30px;border:1px solid #ffc75b45;border-radius:22px;background:linear-gradient(135deg,#34210ff2,#17110bf5);box-shadow:0 15px 45px #0003}
+.hero-ad-image{height:310px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;border-radius:15px;background:radial-gradient(ellipse,#ffad2935,transparent 65%),#24170d}
+.hero-ad-image:after{content:"";position:absolute;width:160px;height:160px;border-radius:50%;background:#ff9e1e30;filter:blur(40px)}
+.hero-ad-image img{position:relative;z-index:1;width:85%;height:275px;object-fit:contain;filter:drop-shadow(0 12px 18px #0009);animation:capeFloat 3s ease-in-out infinite}
+.hero-ad-content{min-width:0}
+.hero-ad-content h1{font-size:clamp(32px,4vw,49px);letter-spacing:-1.8px;margin:20px 0}
+.hero-ad-content p{max-width:500px;margin:0 0 18px;color:var(--muted);font-size:14px;line-height:1.9}
+.hero-cape-price{color:#ffda70;font-size:27px;font-weight:900;margin:17px 0}
+.hero-cape-stock{display:inline-block;font-size:10px;font-weight:900;padding:7px 10px;border-radius:6px;background:#173522;color:#91ffb0;border:1px solid #43d87866;margin-bottom:16px}
+.hero-cape-stock.sold{background:#3c2020;color:#ffaaaa;border-color:#ff777755}
+.hero-ad-content .actions{margin-top:8px}
+.hero-dots{display:flex;align-items:center;gap:8px;margin-top:24px}
+.hero-dot{width:9px;height:9px;padding:0;border:0;border-radius:50%;background:#80634a;cursor:pointer;transition:width .25s,background .25s}
+.hero-dot.active{width:25px;border-radius:10px;background:#ff641c}
+@keyframes capeFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
 section{padding:65px 7%}
 .head{display:flex;justify-content:space-between;align-items:end;gap:20px;flex-wrap:wrap;margin-bottom:30px}
 .kicker{font-size:10px;font-weight:900;letter-spacing:2px;color:#ffd15c;margin-bottom:10px}
@@ -95,8 +112,9 @@ footer{padding:25px 7%;border-top:1px solid #ffc75b30;display:flex;justify-conte
 
 @media(max-width:1000px){.recommendations .products{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:850px){.products{grid-template-columns:repeat(2,minmax(0,1fr))}section{padding:50px 5%}nav{padding:12px 5%}.detail-card{gap:20px;padding:20px}}
-@media(max-width:540px){.products{grid-template-columns:1fr}.hero{padding:75px 18px 55px}nav{padding:8px 4%}.logo{width:100px;height:42px}.links{gap:12px;font-size:11px}.links .btn{padding:10px}.stats{gap:24px}.discord{margin:15px 5% 45px}footer{flex-direction:column}.sale{gap:9px;font-size:11px;letter-spacing:1px}#details{padding:28px 5% 50px}.detail-card{grid-template-columns:1fr;padding:15px;gap:22px}.detail-art{min-height:270px}.detail-art img{height:260px}.detail-info h1{margin:12px 0}.recommendations{margin-top:40px;padding-top:25px}.recommendations .products{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.recommendations .art{height:135px}.recommendations .cape-img{width:90px;height:105px}.recommendations .info{padding:11px}.recommendations .info h3{font-size:12px}.recommendations .price-row{align-items:flex-start;flex-direction:column}.recommendations .order{width:100%}}
-@media(prefers-reduced-motion:reduce){.spooky,.sale-divider,.drop,.ghost,*,*:before,*:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+@media(max-width:650px){.hero-ad{grid-template-columns:1fr;gap:22px;padding:18px;text-align:center}.hero-ad-image{height:230px}.hero-ad-image img{height:210px}.hero-ad-content h1{font-size:36px}.hero-ad-content .actions{justify-content:center}.hero-dots{justify-content:center}.hero-ad-content p{margin-left:auto;margin-right:auto}}
+@media(max-width:540px){.products{grid-template-columns:1fr}.hero{padding:45px 14px 55px}nav{padding:8px 4%}.logo{width:100px;height:42px}.links{gap:12px;font-size:11px}.links .btn{padding:10px}.stats{gap:24px}.discord{margin:15px 5% 45px}footer{flex-direction:column}.sale{gap:9px;font-size:11px;letter-spacing:1px}#details{padding:28px 5% 50px}.detail-card{grid-template-columns:1fr;padding:15px;gap:22px}.detail-art{min-height:270px}.detail-art img{height:260px}.detail-info h1{margin:12px 0}.recommendations{margin-top:40px;padding-top:25px}.recommendations .products{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.recommendations .art{height:135px}.recommendations .cape-img{width:90px;height:105px}.recommendations .info{padding:11px}.recommendations .info h3{font-size:12px}.recommendations .price-row{align-items:flex-start;flex-direction:column}.recommendations .order{width:100%}}
+@media(prefers-reduced-motion:reduce){.spooky,.sale-divider,.drop,.ghost,*,*:before,*:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}.hero-ad-image img{animation:none!important}}
 </style>
 </head>
 <body>
@@ -121,13 +139,27 @@ footer{padding:25px 7%;border-top:1px solid #ffc75b30;display:flex;justify-conte
 
 <main id="homePage">
   <header class="hero" id="home">
-    <span class="eyebrow">THE MC STORE COLLECTION</span>
-    <h1>Discover Minecraft<br><span class="gradient">Capes.</span></h1>
-    <p>Explore our cape collection. Select any cape to see its price, details, and availability.</p>
-    <div class="actions">
-      <a class="btn" href="#shop" onclick="showHome('shop');return false;">Explore Collection ↗</a>
-      <a class="btn" href="https://discord.com/invite/F38vcYVHA" target="_blank" rel="noopener">Join Discord ↗</a>
+    <div class="hero-ad" id="heroAd">
+      <div class="hero-ad-image">
+        <img id="heroCapeImage" src="media/cloakFront%20(2).webp" alt="Corrupted Cape">
+      </div>
+
+      <div class="hero-ad-content">
+        <span class="eyebrow" id="heroCapeEyebrow">FEATURED CAPE</span>
+        <h1 id="heroCapeTitle">Discover Minecraft<br><span class="gradient">Corrupted Cape.</span></h1>
+        <p id="heroCapeDescription">A distinctive cape for your Minecraft collection.</p>
+        <span class="hero-cape-stock" id="heroCapeStock">✓ IN STOCK</span>
+        <div class="hero-cape-price" id="heroCapePrice">$10</div>
+
+        <div class="actions">
+          <a class="btn" href="#cape/corrupted" id="heroViewCape" onclick="openCape('corrupted');return false;">View Cape ↗</a>
+          <a class="btn" href="https://discord.com/invite/F38vcYVHA" target="_blank" rel="noopener">Join Discord ↗</a>
+        </div>
+
+        <div class="hero-dots" id="heroDots" aria-label="Choose featured cape"></div>
+      </div>
     </div>
+
     <div class="stats">
       <div><strong>MC STORE</strong><span>Your cape destination</span></div>
       <div><strong>9 Capes</strong><span>Explore the collection</span></div>
@@ -201,6 +233,75 @@ const capes=[
 
 document.getElementById("year").textContent=new Date().getFullYear();
 
+/* ROTATING CAPE AD */
+const heroCapeIds=[
+  "corrupted",
+  "aurora",
+  "builder",
+  "experience",
+  "crafter",
+  "menace",
+  "copper",
+  "moonlight",
+  "purple-heart"
+];
+
+let heroCapeIndex=0;
+let heroTimer=null;
+
+function showHeroCape(index){
+  const cape=capes.find(c=>c.id===heroCapeIds[index]);
+  if(!cape)return;
+
+  heroCapeIndex=index;
+
+  const image=document.getElementById("heroCapeImage");
+  const title=document.getElementById("heroCapeTitle");
+  const description=document.getElementById("heroCapeDescription");
+  const price=document.getElementById("heroCapePrice");
+  const stock=document.getElementById("heroCapeStock");
+  const view=document.getElementById("heroViewCape");
+  const eyebrow=document.getElementById("heroCapeEyebrow");
+
+  image.src=cape.image;
+  image.alt=cape.name;
+  title.innerHTML='<span class="gradient">'+cape.name+'</span>';
+  description.textContent=cape.description;
+  price.textContent=cape.price;
+  eyebrow.textContent=cape.stock?"AVAILABLE NOW":"COLLECTION SPOTLIGHT";
+
+  stock.textContent=cape.stock?"✓ IN STOCK":"✕ NOT IN STOCK";
+  stock.classList.toggle("sold",!cape.stock);
+
+  view.href="#cape/"+encodeURIComponent(cape.id);
+  view.onclick=function(){
+    openCape(cape.id);
+    return false;
+  };
+
+  document.getElementById("heroDots").innerHTML=heroCapeIds.map((id,i)=>
+    '<button type="button" class="hero-dot '+(i===index?'active':'')+'" aria-label="Show '+capes.find(c=>c.id===id).name+'" title="'+capes.find(c=>c.id===id).name+'" '+(i===index?'aria-current="true"':'')+' onclick="showHeroCape('+i+');startHeroSlider()"></button>'
+  ).join("");
+}
+
+function startHeroSlider(){
+  clearInterval(heroTimer);
+  heroTimer=setInterval(function(){
+    showHeroCape((heroCapeIndex+1)%heroCapeIds.length);
+  },4000);
+}
+
+showHeroCape(0);
+startHeroSlider();
+
+document.getElementById("heroAd").addEventListener("mouseenter",function(){
+  clearInterval(heroTimer);
+});
+
+document.getElementById("heroAd").addEventListener("mouseleave",function(){
+  startHeroSlider();
+});
+
 function capeCard(c,compact=false){
   return `
   <a class="card" href="#cape/${encodeURIComponent(c.id)}" onclick="openCape('${c.id}');return false;">
@@ -234,6 +335,7 @@ function showHome(sectionId="home"){
   document.getElementById("not-found").style.display="none";
   document.title="MC STORE | Cape Shop";
   history.replaceState(null,"",window.location.pathname+window.location.search);
+
   requestAnimationFrame(()=>{
     const target=document.getElementById(sectionId==="shop"?"shop":"home");
     if(target)target.scrollIntoView({behavior:"smooth",block:"start"});
@@ -276,6 +378,7 @@ function openCape(id){
 
 function handleRoute(){
   const match=window.location.hash.match(/^#cape\/(.+)$/);
+
   if(match){
     let id=match[1];
     try{id=decodeURIComponent(id)}catch(e){}
