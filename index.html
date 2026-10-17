@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -35,6 +34,7 @@ nav{position:sticky;top:0;z-index:10;display:flex;justify-content:space-between;
 .auth-btn{border:1px solid #ffe08b70;border-radius:9px;padding:11px 14px;background:linear-gradient(110deg,#ff641c,#e5a32c);color:white;font-size:12px;font-weight:900}
 .auth-user{color:#ffd65a;font-size:11px;max-width:140px;overflow-wrap:anywhere}
 
+/* Blue hover and focus effects for the navbar */
 .links>a:not(.btn){display:inline-flex;align-items:center;padding:10px 12px;border:1px solid transparent;border-radius:9px;color:var(--muted);transition:color .22s ease,background .22s ease,border-color .22s ease,transform .22s ease,box-shadow .22s ease}
 .links>a:not(.btn):hover,.links>a:not(.btn):focus-visible{color:#fff!important;background:#5865f21c;border-color:#7189ff;box-shadow:0 0 0 1px #5865f22e,0 0 18px #5865f255;transform:translateY(-2px) scale(1.035);outline:none}
 .links .btn{transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease,filter .22s ease}
@@ -42,6 +42,7 @@ nav{position:sticky;top:0;z-index:10;display:flex;justify-content:space-between;
 .auth-btn{transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease,filter .22s ease}
 .auth-btn:hover,.auth-btn:focus-visible{border-color:#8da0ff;box-shadow:0 0 0 1px #5865f255,0 0 22px #5865f277;transform:translateY(-2px) scale(1.07);filter:brightness(1.08);outline:none}
 .links>a:not(.btn):active,.links .btn:active,.auth-btn:active{transform:translateY(0) scale(.98)}
+@media(prefers-reduced-motion:reduce){.links>a:not(.btn),.links .btn,.auth-btn{transition:none}}
 
 .hero{text-align:center;padding:55px 20px 70px}
 .gradient{background:linear-gradient(100deg,#ffe77b,#ff9c26,#ff4b27);-webkit-background-clip:text;background-clip:text;color:transparent}
@@ -90,7 +91,6 @@ h2{font-size:clamp(27px,4vw,38px)}
 .price small{display:block;color:var(--muted);font-size:10px;font-weight:500;margin-top:4px}
 .sold-price{font-size:12px;color:#ffaaaa}
 .order{font-size:10px;padding:11px 13px}
-
 .discord{margin:20px 7% 70px;padding:50px 22px;text-align:center;border-radius:20px;border:1px solid #ffcf6555;background:radial-gradient(ellipse at 0 100%,#ff9b2033,transparent 55%),#24190f}
 .discord p{max-width:500px;margin:15px auto 24px;color:var(--muted);font-size:13px;line-height:1.9}
 footer{padding:25px 7%;border-top:1px solid #ffc75b30;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;color:var(--muted);font-size:11px}
@@ -128,33 +128,32 @@ footer{padding:25px 7%;border-top:1px solid #ffc75b30;display:flex;justify-conte
 .auth-message{font-size:12px!important;margin-top:14px!important;overflow-wrap:anywhere}
 .auth-message.error{color:#ffaaaa!important}
 .auth-message.success{color:#91ffb0!important}
-
 @media(max-width:1000px){.recommendations .products{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:850px){.products{grid-template-columns:repeat(2,minmax(0,1fr))}section{padding:50px 5%}nav{padding:12px 5%}.detail-card{gap:20px;padding:20px}}
 @media(max-width:650px){.hero-ad{grid-template-columns:1fr;gap:22px;padding:18px;text-align:center}.hero-ad-image{height:230px}.hero-ad-image img{height:210px}.hero-ad-content h1{font-size:36px}.hero-ad-content .actions{justify-content:center}.hero-dots{justify-content:center}.hero-ad-content p{margin-left:auto;margin-right:auto}}
 @media(max-width:540px){.products{grid-template-columns:1fr}.hero{padding:35px 14px 50px}nav{padding:8px 4%}.logo{width:85px;height:42px}.links{gap:8px;font-size:10px}.links .btn{padding:10px}.auth-btn{padding:9px;font-size:10px}.auth-user{max-width:70px}.stats{gap:24px}.discord{margin:15px 5% 45px}footer{flex-direction:column}.sale{gap:9px;font-size:11px;letter-spacing:1px}#details{padding:28px 5% 50px}.detail-card{grid-template-columns:1fr;padding:15px;gap:22px}.detail-art{min-height:270px}.detail-art img{height:260px}.recommendations{margin-top:40px;padding-top:25px}.recommendations .products{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.recommendations .art{height:135px}.recommendations .cape-img{width:90px;height:105px}.recommendations .info{padding:11px}.recommendations .info h3{font-size:12px}.auth-box{padding:24px}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 
-/* Discord server hover preview */
-.discord-float{position:fixed;right:0;top:50%;transform:translateY(-50%);z-index:100;display:flex;align-items:center;justify-content:center}
+/* Discord server popover */
+.discord-float{position:fixed;right:22px;top:50%;transform:translateY(-50%);z-index:100;display:flex;align-items:center;justify-content:center}
 .discord-float-link{position:relative;display:flex;align-items:center;justify-content:center;width:58px;height:58px;border-radius:18px;background:#5865f2;color:white;box-shadow:0 8px 26px #0007;border:1px solid #ffffff30;transition:transform .25s,box-shadow .25s,border-radius .25s;overflow:visible;cursor:pointer}
 .discord-float-link svg{width:31px;height:31px;flex-shrink:0}
 .discord-float-link:hover,.discord-float.open .discord-float-link{transform:scale(1.05);box-shadow:0 10px 32px #5865f277;border-radius:16px}
-.discord-popover{position:absolute;right:58px;top:50%;width:280px;padding:17px;border-radius:14px;background:#232428;border:1px solid #3f4147;box-shadow:0 14px 45px #0009;opacity:0;visibility:hidden;transform:translate(12px,-50%);transition:opacity .22s,transform .22s,visibility .22s;pointer-events:none}
+.discord-popover{position:absolute;right:58px;top:50%;width:270px;padding:17px;border-radius:16px;background:linear-gradient(145deg,#24243a,#17131f);border:1px solid #7c86ff;box-shadow:0 14px 45px #0009;display:block;opacity:0;visibility:hidden;transform:translate(12px,-50%);transition:opacity .22s,transform .22s,visibility .22s;pointer-events:none}
 .discord-popover::after{content:"";position:absolute;left:100%;top:0;width:10px;height:100%}
 .discord-float:hover .discord-popover,.discord-float:focus-within .discord-popover,.discord-float.open .discord-popover{opacity:1;visibility:visible;transform:translate(0,-50%);pointer-events:auto}
 .discord-server-top{display:flex;align-items:center;gap:12px;margin-bottom:13px}
-.discord-server-image{width:62px;height:62px;flex:0 0 62px;object-fit:cover;border-radius:15px;background:#21170f;border:1px solid #ffffff28}
+.discord-server-image{width:62px;height:62px;flex:0 0 62px;object-fit:cover;border-radius:15px;background:#21170f;border:1px solid #ffffff28;box-shadow:0 4px 16px #0006}
 .discord-server-name{font-size:15px;font-weight:900;color:#fff;margin-bottom:5px;line-height:1.35}
-.discord-server-caption{font-size:10px;color:#b5bac1;line-height:1.5}
-.discord-server-desc{color:#dbdee1;font-size:11px;line-height:1.7;margin:0 0 14px}
+.discord-server-caption{font-size:10px;color:#c8ccff;line-height:1.5}
+.discord-server-desc{color:#d0d2e4;font-size:11px;line-height:1.7;margin:0 0 14px}
 .discord-server-stats{display:flex;gap:9px;flex-wrap:wrap;margin:12px 0 13px}
-.discord-stat{display:inline-flex;align-items:center;gap:5px;padding:6px 8px;border:1px solid #ffffff13;border-radius:7px;background:#2b2d31;color:#dbdee1;font-size:10px}
-.discord-live-dot{width:7px;height:7px;border-radius:50%;background:#23a55a;display:inline-block;box-shadow:0 0 8px #23a55a55}
-.discord-connection{font-size:9px;color:#b5bac1;margin-top:5px}
+.discord-stat{display:inline-flex;align-items:center;gap:5px;padding:6px 8px;border:1px solid #ffffff16;border-radius:7px;background:#ffffff09;color:#e5e6ff;font-size:10px}
+.discord-live-dot{width:7px;height:7px;border-radius:50%;background:#43df8b;display:inline-block;box-shadow:0 0 8px #43df8b88}
+.discord-connection{font-size:9px;color:#a9adc7;margin-top:5px}
 .discord-join{display:flex;width:100%;align-items:center;justify-content:center;padding:11px 12px;background:#5865f2;border-radius:8px;color:#fff;font-size:11px;font-weight:900;white-space:nowrap;transition:background .2s,transform .2s}
 .discord-join:hover{background:#4752c4;transform:translateY(-1px)}
-@media(max-width:540px){.discord-float{right:0}.discord-float-link{width:52px;height:52px;border-radius:16px}.discord-popover{right:52px;width:min(300px,calc(100vw - 65px));padding:13px}.discord-server-image{width:54px;height:54px;flex-basis:54px}.discord-server-name{font-size:13px}.discord-join{padding:10px;font-size:10px}}
+@media(max-width:540px){.discord-float{right:14px}.discord-float-link{width:52px;height:52px;border-radius:16px}.discord-popover{right:52px;width:min(300px,calc(100vw - 80px));padding:13px}.discord-server-image{width:54px;height:54px;flex-basis:54px}.discord-server-name{font-size:13px}.discord-join{padding:10px;font-size:10px}}
 </style>
 </head>
 <body>
@@ -199,7 +198,11 @@ footer{padding:25px 7%;border-top:1px solid #ffc75b30;display:flex;justify-conte
 
 <section id="shop">
  <div class="head">
-  <div><div class="kicker">OUR COLLECTION</div><h2>Featured <span class="gradient">Capes</span></h2><p class="sub">Select a cape to open its product details.</p></div>
+  <div>
+   <div class="kicker">OUR COLLECTION</div>
+   <h2>Featured <span class="gradient">Capes</span></h2>
+   <p class="sub">Select a cape to open its product details.</p>
+  </div>
   <a class="btn" href="https://discord.com/invite/F38vcYVHA" target="_blank" rel="noopener">Ask About Stock ↗</a>
  </div>
  <div class="products" id="products"></div>
@@ -210,23 +213,30 @@ footer{padding:25px 7%;border-top:1px solid #ffc75b30;display:flex;justify-conte
  <div class="back-row"><button class="back-btn" type="button" onclick="showHome('shop')">← Back to Capes</button></div>
  <div id="detailContent"></div>
  <div class="recommendations">
-  <div class="head"><div><div class="kicker">DISCOVER MORE</div><h2>You Might Also <span class="gradient">Like</span></h2><p class="sub">Here are some other capes you might like.</p></div></div>
+  <div class="head">
+   <div>
+    <div class="kicker">DISCOVER MORE</div>
+    <h2>You Might Also <span class="gradient">Like</span></h2>
+    <p class="sub">Here are some other capes you might like.</p>
+   </div>
+  </div>
   <div class="products" id="recommendedProducts"></div>
  </div>
 </section>
 
 <div id="not-found"><h2>Cape not found</h2><p class="sub">We couldn't find that cape.</p><button class="back-btn" type="button" onclick="showHome('shop')">← Back to Capes</button></div>
 
+<!-- Floating Discord server preview -->
 <div class="discord-float" id="discordFloat">
  <button class="discord-float-link" id="discordFloatButton" type="button" aria-label="Show MC STORE Discord server" aria-expanded="false">
   <svg viewBox="0 0 127.14 96.36" role="img" aria-label="Discord"><path fill="currentColor" d="M107.7 8.07A105.15 105.15 0 0 0 81.47 0a72.06 72.06 0 0 0-3.36 6.83 97.68 97.68 0 0 0-29.08 0A72.37 72.37 0 0 0 45.67 0 105.89 105.89 0 0 0 19.42 8.09C2.79 32.75-1.72 56.8.54 80.51h.02a105.73 105.73 0 0 0 32.2 16.28 77.7 77.7 0 0 0 6.9-11.18 68.42 68.42 0 0 1-10.86-5.18c.91-.67 1.8-1.36 2.66-2.08 20.94 9.8 43.65 9.8 64.34 0 .87.72 1.76 1.41 2.66 2.08a68.68 68.68 0 0 1-10.88 5.19 77 77 0 0 0 6.9 11.17 105.25 105.25 0 0 0 32.22-16.27h.02c2.65-27.48-4.52-51.31-19.02-72.45ZM42.45 65.69c-6.27 0-11.44-5.72-11.44-12.75s5.05-12.75 11.44-12.75 11.55 5.77 11.44 12.75c0 7.03-5.05 12.75-11.44 12.75Zm42.24 0c-6.27 0-11.44-5.72-11.44-12.75s5.05-12.75 11.44-12.75 11.55 5.77 11.44 12.75c0 7.03-5.05 12.75-11.44 12.75Z"/></svg>
  </button>
  <div class="discord-popover" role="region" aria-label="MC STORE Discord server">
   <div class="discord-server-top">
-   <img class="discord-server-image" src="media/1792194826100.jpg" alt="MC STORE server icon">
+   <img class="discord-server-image" id="discordServerImage" src="media/1792194826100.jpg" alt="MC STORE server icon">
    <div class="discord-server-info">
     <div class="discord-server-name" id="discordServerName">MC STORE Community</div>
-    <div class="discord-server-caption">Minecraft Cape Shop · Discord Community</div>
+    <div class="discord-server-caption" id="discordServerCaption">Minecraft Cape Shop · Discord Community</div>
     <div class="discord-connection" id="discordConnection"><span class="discord-live-dot"></span> Connecting to Discord…</div>
    </div>
   </div>
@@ -238,6 +248,46 @@ footer{padding:25px 7%;border-top:1px solid #ffc75b30;display:flex;justify-conte
   <a class="discord-join" href="https://discord.com/invite/F38vcYVHA" target="_blank" rel="noopener noreferrer">Join Server ↗</a>
  </div>
 </div>
+
+<script>
+const discordFloat=document.getElementById('discordFloat');
+const discordFloatButton=document.getElementById('discordFloatButton');
+const DISCORD_INVITE_CODE='F38vcYVHA';
+const DISCORD_INVITE_URL=https://discord.com/invite/${DISCORD_INVITE_CODE};
+discordFloatButton.addEventListener('click',()=>{
+ const opened=discordFloat.classList.toggle('open');
+ discordFloatButton.setAttribute('aria-expanded',String(opened));
+});
+document.addEventListener('click',event=>{
+ if(!discordFloat.contains(event.target)){
+  discordFloat.classList.remove('open');
+  discordFloatButton.setAttribute('aria-expanded','false');
+ }
+});
+
+// Get the server name and approximate member/presence counts from Discord.
+async function refreshDiscordServerInfo(){
+ const connection=document.getElementById('discordConnection');
+ try{
+  const response=await fetch(https://discord.com/api/v10/invites/${DISCORD_INVITE_CODE}?with_counts=true,{cache:'no-store'});
+  if(!response.ok)throw new Error(Discord API returned ${response.status});
+  const data=await response.json();
+  if(!data.guild)throw new Error('Invite did not include server information');
+  const guild=data.guild;
+  document.getElementById('discordServerName').textContent=guild.name||'MC STORE Community';
+  document.getElementById('discordServerCaption').textContent='Minecraft Cape Shop · Discord Community';
+  document.getElementById('discordMemberCount').textContent=Number.isFinite(data.approximate_member_count)?data.approximate_member_count.toLocaleString():'—';
+  document.getElementById('discordOnlineCount').textContent=Number.isFinite(data.approximate_presence_count)?data.approximate_presence_count.toLocaleString():'—';
+  if(guild.description)document.getElementById('discordServerDescription').textContent=guild.description;
+  connection.innerHTML='<span class="discord-live-dot"></span> Live Discord server data';
+ }catch(error){
+  connection.textContent='Discord invite · Preview unavailable';
+  console.info('Could not load live Discord server details:',error);
+ }
+}
+refreshDiscordServerInfo();
+setInterval(refreshDiscordServerInfo,5*60*1000);
+</script>
 
 <footer>
  <span>© <span id="year"></span> MC STORE. All rights reserved.</span>
@@ -262,42 +312,7 @@ footer{padding:25px 7%;border-top:1px solid #ffc75b30;display:flex;justify-conte
 </div>
 
 <script>
-const DISCORD_INVITE_CODE="F38vcYVHA";
-const DISCORD_URL=`https://discord.com/invite/${DISCORD_INVITE_CODE}`;
-const discordFloat=document.getElementById("discordFloat");
-const discordFloatButton=document.getElementById("discordFloatButton");
-
-discordFloatButton.addEventListener("click",()=>{
- const opened=discordFloat.classList.toggle("open");
- discordFloatButton.setAttribute("aria-expanded",String(opened));
-});
-document.addEventListener("click",event=>{
- if(!discordFloat.contains(event.target)){
-  discordFloat.classList.remove("open");
-  discordFloatButton.setAttribute("aria-expanded","false");
- }
-});
-
-async function refreshDiscordServerInfo(){
- const connection=document.getElementById("discordConnection");
- try{
-  const response=await fetch(`https://discord.com/api/v10/invites/${DISCORD_INVITE_CODE}?with_counts=true`,{cache:"no-store"});
-  if(!response.ok)throw new Error("Discord invite API unavailable");
-  const data=await response.json();
-  if(!data.guild)throw new Error("Server details unavailable");
-  document.getElementById("discordServerName").textContent=data.guild.name||"MC STORE Community";
-  document.getElementById("discordMemberCount").textContent=Number.isFinite(data.approximate_member_count)?data.approximate_member_count.toLocaleString():"—";
-  document.getElementById("discordOnlineCount").textContent=Number.isFinite(data.approximate_presence_count)?data.approximate_presence_count.toLocaleString():"—";
-  if(data.guild.description)document.getElementById("discordServerDescription").textContent=data.guild.description;
-  connection.innerHTML='<span class="discord-live-dot"></span> Live Discord server data';
- }catch(error){
-  connection.textContent="Discord invite · Live counts unavailable";
-  console.info("Discord preview could not load live counts:",error);
- }
-}
-refreshDiscordServerInfo();
-setInterval(refreshDiscordServerInfo,300000);
-
+const DISCORD_URL="https://discord.com/invite/F38vcYVHA";
 const capes=[
 {id:"corrupted",name:"Corrupted Cape",price:"$10",stock:true,image:"media/cloakFront%20(2).webp",description:"A distinctive cape for your Minecraft collection."},
 {id:"aurora",name:"Aurora Cape",price:"$6",stock:true,image:"media/aurora-front.png",description:"A vibrant cape for players who want to stand out."},
@@ -333,7 +348,7 @@ function showHeroCape(index,animate=true){
  const view=document.getElementById("heroViewCape");
  view.href="#cape/"+encodeURIComponent(cape.id);
  view.onclick=()=>{openCape(cape.id);return false};
- document.getElementById("heroDots").innerHTML=capes.map((c,i)=>`<button type="button" class="hero-dot ${i===index?"active":""}" aria-label="Show ${c.name}" title="${c.name}" onclick="showHeroCape(${i});restartHeroSlider()"></button>`).join("");
+ document.getElementById("heroDots").innerHTML=capes.map((c,i)=><button type="button" class="hero-dot ${i===index?"active":""}" aria-label="Show ${c.name}" title="${c.name}" onclick="showHeroCape(${i});restartHeroSlider()"></button>).join("");
  if(animate){
   void heroAd.offsetWidth;
   heroAd.classList.add("ad-changing");
@@ -344,3 +359,197 @@ function restartHeroSlider(){
  clearInterval(heroTimer);
  heroTimer=setInterval(()=>{if(!heroPaused)showHeroCape((heroCapeIndex+1)%capes.length,true)},4000);
 }
+heroAd.addEventListener("mouseenter",()=>heroPaused=true);
+heroAd.addEventListener("mouseleave",()=>heroPaused=false);
+showHeroCape(0,false);
+restartHeroSlider();
+
+function capeCard(c){
+ return <a class="card" href="#cape/${encodeURIComponent(c.id)}" onclick="openCape('${c.id}');return false;"><div class="art"><span class="tag ${c.stock?"":"sold"}">${c.stock?"IN STOCK":"NOT IN STOCK"}</span><img class="cape-img" src="${c.image}" alt="${c.name}" loading="lazy"></div><div class="info"><h3>${c.name}</h3><p>${c.description}</p><div class="price-row"><div class="${c.stock?"price":"sold-price"}">${c.price}<small>${c.stock?"Available now":"Currently unavailable"}</small></div><span class="btn order">VIEW CAPE ↗</span></div></div></a>;
+}
+document.getElementById("products").innerHTML=capes.map(capeCard).join("");
+
+function renderRecommendations(currentCape){
+ const others=capes.filter(c=>c.id!==currentCape.id);
+ for(let i=others.length-1;i>0;i--){
+  const j=Math.floor(Math.random()*(i+1));
+  [others[i],others[j]]=[others[j],others[i]];
+ }
+ document.getElementById("recommendedProducts").innerHTML=others.slice(0,4).map(capeCard).join("");
+}
+
+function showHome(sectionId="home"){
+ document.getElementById("homePage").style.display="block";
+ document.getElementById("details").style.display="none";
+ document.getElementById("not-found").style.display="none";
+ document.title="MC STORE | Cape Shop";
+ history.replaceState(null,"",window.location.pathname+window.location.search);
+ requestAnimationFrame(()=>{
+  const target=document.getElementById(sectionId==="shop"?"shop":"home");
+  if(target)target.scrollIntoView({behavior:"smooth",block:"start"});
+ });
+}
+
+function openCape(id){
+ const cape=capes.find(c=>c.id===id);
+ document.getElementById("homePage").style.display="none";
+ document.getElementById("details").style.display="block";
+ document.getElementById("not-found").style.display="none";
+ if(!cape){
+  document.getElementById("details").style.display="none";
+  document.getElementById("not-found").style.display="block";
+  return;
+ }
+ document.title=cape.name+" | MC STORE";
+ document.getElementById("detailContent").innerHTML=<div class="detail-card"><div class="detail-art"><img src="${cape.image}" alt="${cape.name}"></div><div class="detail-info"><div class="kicker">MC STORE CAPE COLLECTION</div><h1>${cape.name}</h1><span class="stock-label ${cape.stock?"":"sold"}">${cape.stock?"✓ IN STOCK":"✕ NOT IN STOCK"}</span><p>${cape.description}</p><div class="detail-price">${cape.price}</div><p>${cape.stock?"This cape is currently listed as available. Contact us on Discord for ordering information.":"This cape is currently unavailable. Join our Discord to ask about future restocks."}</p><div class="detail-actions"><a class="btn" href="${DISCORD_URL}" target="_blank" rel="noopener">${cape.stock?"ORDER ON DISCORD ↗":"ASK ABOUT RESTOCK ↗"}</a></div></div></div>;
+ renderRecommendations(cape);
+ history.replaceState(null,"","#cape/"+encodeURIComponent(cape.id));
+ window.scrollTo({top:0,behavior:"smooth"});
+}
+
+function handleRoute(){
+ const match=window.location.hash.match(/^#cape\/(.+)$/);
+ if(match){
+  let id=match[1];
+  try{id=decodeURIComponent(id)}catch(e){}
+  openCape(id);
+ }else{
+  showHome(window.location.hash==="#shop"?"shop":"home");
+ }
+}
+window.addEventListener("hashchange",handleRoute);
+if(window.location.hash.startsWith("#cape/"))handleRoute();
+else if(window.location.hash==="#shop")showHome("shop");
+else showHome("home");
+</script>
+
+<script type="module">
+import {initializeApp} from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+import {getAuth,createUserWithEmailAndPassword,signInWithEmailAndPassword,sendEmailVerification,sendPasswordResetEmail,signOut,onAuthStateChanged,reload} from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
+
+const firebaseConfig={
+ apiKey:"AIzaSyA9ogKFh1DHU87Du5ly51Uk-nKLb6-_2RI",
+ authDomain:"mcstore-b9c85.firebaseapp.com",
+ projectId:"mcstore-b9c85",
+ storageBucket:"mcstore-b9c85.firebasestorage.app",
+ messagingSenderId:"25933524292",
+ appId:"1:25933524292:web:c3843197954eab92957b11"
+};
+const app=initializeApp(firebaseConfig);
+const auth=getAuth(app);
+const overlay=document.getElementById("authOverlay");
+const form=document.getElementById("authForm");
+const title=document.getElementById("authTitle");
+const subtitle=document.getElementById("authSubtitle");
+const submit=document.getElementById("authSubmitBtn");
+const message=document.getElementById("authMessage");
+const switchBtn=document.getElementById("authSwitchBtn");
+const forgotBtn=document.getElementById("authForgotBtn");
+const password=document.getElementById("authPassword");
+const email=document.getElementById("authEmail");
+const openBtn=document.getElementById("authOpenBtn");
+const signOutBtn=document.getElementById("authSignOutBtn");
+const userLabel=document.getElementById("authUserLabel");
+let creatingAccount=false;
+
+function showMessage(text,type="success"){
+ message.textContent=text;
+ message.className="auth-message "+type;
+}
+function setMode(create){
+ creatingAccount=create;
+ title.textContent=create?"Create Account":"Sign In";
+ subtitle.textContent=create?"Create your MC STORE account. Email verification is required.":"Sign in to your MC STORE account.";
+ submit.textContent=create?"Create Account":"Sign In";
+ password.autocomplete=create?"new-password":"current-password";
+ switchBtn.textContent=create?"Already have an account? Sign In":"Don't have an account? Create Account";
+ forgotBtn.hidden=create;
+ showMessage("");
+}
+openBtn.addEventListener("click",()=>{
+ setMode(false);
+ overlay.classList.add("open");
+});
+document.getElementById("authCloseBtn").addEventListener("click",()=>overlay.classList.remove("open"));
+overlay.addEventListener("click",event=>{if(event.target===overlay)overlay.classList.remove("open")});
+document.addEventListener("keydown",event=>{if(event.key==="Escape")overlay.classList.remove("open")});
+switchBtn.addEventListener("click",()=>setMode(!creatingAccount));
+
+form.addEventListener("submit",async event=>{
+ event.preventDefault();
+ submit.disabled=true;
+ submit.textContent="Please wait...";
+ showMessage("");
+ try{
+  if(creatingAccount){
+   const credential=await createUserWithEmailAndPassword(auth,email.value.trim(),password.value);
+   try{
+    await sendEmailVerification(credential.user);
+   }catch(sendError){
+    await signOut(auth);
+    throw sendError;
+   }
+   await signOut(auth);
+   showMessage("Verification email sent! Check your inbox and Spam/Junk folder.");
+  }else{
+   const credential=await signInWithEmailAndPassword(auth,email.value.trim(),password.value);
+   await reload(credential.user);
+   if(!credential.user.emailVerified){
+    await signOut(auth);
+    showMessage("Please verify your email first. Open the verification link in your inbox.","error");
+    return;
+   }
+   showMessage("Email verified! Signed in successfully.");
+   setTimeout(()=>overlay.classList.remove("open"),800);
+  }
+ }catch(error){
+  const errors={
+   "auth/email-already-in-use":"This email already has an account. Please sign in.",
+   "auth/invalid-email":"Please enter a valid email address.",
+   "auth/weak-password":"Choose a password with at least 6 characters.",
+   "auth/invalid-credential":"Email or password is incorrect.",
+   "auth/user-not-found":"No account was found for this email.",
+   "auth/too-many-requests":"Too many attempts. Try again later.",
+   "auth/network-request-failed":"Network error. Check your internet connection.",
+   "auth/operation-not-allowed":"Enable Email/Password in Firebase Authentication.",
+   "auth/unauthorized-domain":"Add mc-store.github.io to Firebase Authorized domains.",
+   "auth/quota-exceeded":"The email sending limit has been reached. Try again later."
+  };
+  showMessage(errors[error.code]||"Something went wrong. Please try again.","error");
+ }finally{
+  submit.disabled=false;
+  submit.textContent=creatingAccount?"Create Account":"Sign In";
+ }
+});
+
+forgotBtn.addEventListener("click",async()=>{
+ if(!email.value.trim()){
+  showMessage("Enter your email address first.","error");
+  email.focus();
+  return;
+ }
+ try{
+  await sendPasswordResetEmail(auth,email.value.trim());
+  showMessage("If an account exists, a password reset email will be sent.");
+ }catch(error){
+  showMessage(error.code==="auth/unauthorized-domain"?"Add mc-store.github.io to Firebase Authorized domains.":"Could not send the reset email. Please try again.","error");
+ }
+});
+
+signOutBtn.addEventListener("click",async()=>{
+ try{
+  await signOut(auth);
+ }catch(error){
+  showMessage("Could not sign out. Please try again.","error");
+ }
+});
+onAuthStateChanged(auth,user=>{
+ openBtn.hidden=!!user;
+ signOutBtn.hidden=!user;
+ userLabel.hidden=!user;
+ userLabel.textContent=user?user.email:"";
+ if(user)overlay.classList.remove("open");
+});
+</script>
+</body>
+</html>
