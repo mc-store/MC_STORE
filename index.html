@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -41,9 +42,17 @@ body {
   background-attachment: fixed;
 }
 
+body.modal-open {
+  overflow: hidden;
+}
+
 a {
   color: inherit;
   text-decoration: none;
+}
+
+button {
+  font: inherit;
 }
 
 .sale-marquee {
@@ -243,6 +252,7 @@ h2 {
   border-radius: 16px;
   overflow: hidden;
   transition: .3s;
+  cursor: pointer;
 }
 
 .card:hover {
@@ -347,6 +357,147 @@ h2 {
   padding: 11px 14px;
 }
 
+/* CAPE DETAILS MODAL */
+.modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(2, 6, 12, .82);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity .25s ease, visibility .25s ease;
+}
+
+.modal.open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.modal-box {
+  position: relative;
+  width: 100%;
+  max-width: 480px;
+  max-height: 90vh;
+  overflow-y: auto;
+  border: 1px solid #00e5ff55;
+  border-radius: 20px;
+  background:
+    radial-gradient(ellipse at 0% 0%, #00e5ff18, transparent 55%),
+    radial-gradient(ellipse at 100% 100%, #e078281b, transparent 55%),
+    #101722;
+  box-shadow: 0 25px 100px #000a;
+  transform: translateY(18px) scale(.97);
+  transition: transform .25s ease;
+}
+
+.modal.open .modal-box {
+  transform: translateY(0) scale(1);
+}
+
+.modal-close {
+  position: absolute;
+  top: 13px;
+  right: 13px;
+  z-index: 5;
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  border: 1px solid #ffffff25;
+  border-radius: 50%;
+  background: #080b12d9;
+  color: white;
+  font-size: 25px;
+  cursor: pointer;
+  transition: .2s;
+}
+
+.modal-close:hover {
+  background: #a94b16;
+  transform: rotate(90deg);
+}
+
+.modal-art {
+  min-height: 265px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  padding: 35px 20px 20px;
+  background:
+    radial-gradient(ellipse at 20% 50%, #b9501330, transparent 60%),
+    radial-gradient(ellipse at 80% 50%, #00e5ff25, transparent 60%),
+    #0a111b;
+}
+
+.modal-art img {
+  width: 190px;
+  height: 210px;
+  object-fit: contain;
+  filter: drop-shadow(0 15px 25px #000a);
+}
+
+.modal-content {
+  padding: 25px;
+}
+
+.modal-content h2 {
+  margin: 13px 0 10px;
+  font-size: 27px;
+  letter-spacing: -1px;
+}
+
+.modal-description {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.9;
+  margin-bottom: 20px;
+}
+
+.modal-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 11px;
+  border-radius: 7px;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 1px;
+}
+
+.modal-status.available {
+  color: #8af7b0;
+  background: #123522;
+  border: 1px solid #35d77966;
+}
+
+.modal-status.unavailable {
+  color: #ffaaaa;
+  background: #3a1c25;
+  border: 1px solid #ff777755;
+}
+
+.modal-buy {
+  width: 100%;
+  margin-top: 22px;
+}
+
+.modal-note {
+  color: var(--muted);
+  font-size: 10px;
+  line-height: 1.7;
+  text-align: center;
+  margin-top: 12px;
+}
+
 .discord {
   margin: 20px 8% 75px;
   padding: 58px 25px;
@@ -399,6 +550,11 @@ footer {
   .art { height: 260px; }
   .discord { padding: 42px 20px; }
   footer { flex-direction: column; align-items: flex-start; }
+  .modal { padding: 13px; }
+  .modal-art { min-height: 230px; }
+  .modal-art img { width: 165px; height: 175px; }
+  .modal-content { padding: 21px; }
+  .modal-content h2 { font-size: 24px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -475,7 +631,6 @@ footer {
 
   <div class="products">
 
-    <!-- 1. CORRUPTED CAPE -->
     <article class="card">
       <div class="art">
         <span class="tag stock">IN STOCK</span>
@@ -493,7 +648,6 @@ footer {
       </div>
     </article>
 
-    <!-- 2. AURORA CAPE -->
     <article class="card">
       <div class="art">
         <span class="tag stock">IN STOCK</span>
@@ -511,7 +665,6 @@ footer {
       </div>
     </article>
 
-    <!-- 3. BUILDER CAPE -->
     <article class="card">
       <div class="art">
         <span class="tag stock">IN STOCK</span>
@@ -529,7 +682,6 @@ footer {
       </div>
     </article>
 
-    <!-- 4. EXPERIENCE CAPE -->
     <article class="card">
       <div class="art">
         <span class="tag sold">NOT IN STOCK</span>
@@ -545,7 +697,6 @@ footer {
       </div>
     </article>
 
-    <!-- 5. CRAFTER CAPE -->
     <article class="card">
       <div class="art">
         <span class="tag sold">NOT IN STOCK</span>
@@ -561,7 +712,6 @@ footer {
       </div>
     </article>
 
-    <!-- 6. MENACE CAPE -->
     <article class="card">
       <div class="art">
         <span class="tag sold">NOT IN STOCK</span>
@@ -577,7 +727,6 @@ footer {
       </div>
     </article>
 
-    <!-- 7. COPPER CAPE -->
     <article class="card">
       <div class="art">
         <span class="tag sold">NOT IN STOCK</span>
@@ -593,7 +742,6 @@ footer {
       </div>
     </article>
 
-    <!-- 8. MOONLIGHT CAPE -->
     <article class="card">
       <div class="art">
         <span class="tag sold">NOT IN STOCK</span>
@@ -609,7 +757,6 @@ footer {
       </div>
     </article>
 
-    <!-- 9. PURPLE HEART CAPE -->
     <article class="card">
       <div class="art">
         <span class="tag sold">NOT IN STOCK</span>
@@ -644,10 +791,62 @@ footer {
   <span>Independent community shop. Not affiliated with Mojang or Microsoft.</span>
 </footer>
 
+<!-- CAPE DETAILS MODAL -->
+<div class="modal" id="capeModal" aria-hidden="true">
+  <div class="modal-box" role="dialog" aria-modal="true"
+       aria-labelledby="modalTitle" aria-describedby="modalDescription">
+    <button class="modal-close" id="modalClose"
+            type="button" aria-label="Close dialog">&times;</button>
+
+    <div class="modal-art">
+      <img id="modalImage" src="" alt="">
+    </div>
+
+    <div class="modal-content">
+      <span class="modal-status" id="modalStatus"></span>
+      <h2 id="modalTitle">Cape Name</h2>
+      <p class="modal-description" id="modalDescription"></p>
+
+      <a class="btn modal-buy" id="modalBuy"
+         href="https://discord.com/invite/F38vcYVHA"
+         target="_blank" rel="noopener noreferrer">
+        BUY NOW ON DISCORD ↗
+      </a>
+
+      <p class="modal-note" id="modalNote">
+        Contact us on Discord for availability and current pricing.
+      </p>
+    </div>
+  </div>
+</div>
+
 <script>
 document.getElementById('year').textContent = new Date().getFullYear();
-</script>
 
-</body>
-  </html>
-  
+const modal = document.getElementById('capeModal');
+const modalClose = document.getElementById('modalClose');
+const modalImage = document.getElementById('modalImage');
+const modalTitle = document.getElementById('modalTitle');
+const modalDescription = document.getElementById('modalDescription');
+const modalStatus = document.getElementById('modalStatus');
+const modalBuy = document.getElementById('modalBuy');
+const modalNote = document.getElementById('modalNote');
+
+const discordURL = 'https://discord.com/invite/F38vcYVHA';
+let lastFocusedElement = null;
+
+function openCapeModal(card) {
+  const image = card.querySelector('.cape-img');
+  const title = card.querySelector('.details h3');
+  const description = card.querySelector('.details p');
+  const stockTag = card.querySelector('.tag');
+  const inStock = stockTag && stockTag.classList.contains('stock');
+
+  if (!image || !title || !description || !stockTag) return;
+
+  lastFocusedElement = document.activeElement;
+
+  modalImage.src = image.getAttribute('src');
+  modalImage.alt = image.alt || title.textContent.trim();
+  modalTitle.textContent = title.textContent.trim();
+  modalDescription.textCo
