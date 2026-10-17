@@ -12,8 +12,6 @@ html{scroll-behavior:smooth}
 body{font-family:Inter,Arial,sans-serif;color:var(--text);background:radial-gradient(ellipse at 10% 5%,#ffb52e55,transparent 38%),radial-gradient(ellipse at 95% 30%,#ff401b35,transparent 40%),linear-gradient(135deg,#20100b,#3a170b 45%,#171009);background-attachment:fixed;min-height:100vh}
 a{color:inherit;text-decoration:none}
 button{font-family:inherit}
-
-/* SIMPLE CLASSIC SALE BANNER WITH SUBTLE EFFECTS */
 .sale{display:flex;justify-content:center;align-items:center;gap:12px;flex-wrap:wrap;padding:13px 10px;text-align:center;font-size:12px;font-weight:900;letter-spacing:1.5px;color:#fff;background:#17110d;border-bottom:1px solid #ff641c66;overflow:hidden}
 .spooky{color:#ff641c;animation:softGlow 2s ease-in-out infinite alternate}
 .sale-divider{display:inline-block;color:#ffd65a;animation:starSpin 5s linear infinite}
@@ -23,7 +21,6 @@ button{font-family:inherit}
 @keyframes dropGlow{from{text-shadow:0 0 2px #ffd65a22}to{text-shadow:0 0 9px #ffd65a99}}
 @keyframes starSpin{to{transform:rotate(360deg)}}
 @keyframes ghostFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
-
 nav{position:sticky;top:0;z-index:5;display:flex;justify-content:space-between;align-items:center;padding:12px 7%;gap:15px;background:#170f09ed;backdrop-filter:blur(14px);border-bottom:1px solid #ffc04b40}
 .logo{width:150px;height:52px;object-fit:contain}
 .links{display:flex;align-items:center;gap:22px;font-size:13px}
@@ -66,7 +63,7 @@ h2{font-size:clamp(27px,4vw,38px)}
 .discord p{max-width:500px;margin:15px auto 24px;color:var(--muted);font-size:13px;line-height:1.9}
 footer{padding:25px 7%;border-top:1px solid #ffc75b30;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;color:var(--muted);font-size:11px}
 
-/* PRODUCT DETAILS IN THE SAME PAGE */
+/* CAPE DETAILS */
 #details{display:none;min-height:65vh;padding:45px 7% 75px}
 .back-row{display:flex;justify-content:flex-start;margin-bottom:30px}
 .back-btn{background:#2a1a0e;border:1px solid #ffbf4c80;color:#ffda70;padding:12px 17px;border-radius:9px;font-size:13px;font-weight:900;cursor:pointer}
@@ -80,10 +77,25 @@ footer{padding:25px 7%;border-top:1px solid #ffc75b30;display:flex;justify-conte
 .stock-label{display:inline-block;padding:8px 12px;border-radius:7px;font-size:11px;font-weight:900;background:#173522;color:#91ffb0;border:1px solid #43d87866}
 .stock-label.sold{background:#3c2020;color:#ffaaaa;border-color:#ff777755}
 .detail-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:25px}
+
+/* YOU MIGHT ALSO LIKE */
+.recommendations{max-width:1200px;margin:55px auto 0;padding-top:35px;border-top:1px solid #ffc75b35}
+.recommendations .head{margin-bottom:25px}
+.recommendations .products{grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+.recommendations .card{border-radius:13px}
+.recommendations .art{height:175px}
+.recommendations .cape-img{width:120px;height:135px}
+.recommendations .info{padding:15px}
+.recommendations .info h3{font-size:14px}
+.recommendations .info p{font-size:11px;min-height:0}
+.recommendations .price-row{margin-top:14px}
+.recommendations .price{font-size:15px}
+.recommendations .order{font-size:9px;padding:10px}
 #not-found{display:none;text-align:center;padding:70px 20px}
 
+@media(max-width:1000px){.recommendations .products{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:850px){.products{grid-template-columns:repeat(2,minmax(0,1fr))}section{padding:50px 5%}nav{padding:12px 5%}.detail-card{gap:20px;padding:20px}}
-@media(max-width:540px){.products{grid-template-columns:1fr}.hero{padding:75px 18px 55px}nav{padding:8px 4%}.logo{width:100px;height:42px}.links{gap:12px;font-size:11px}.links .btn{padding:10px}.stats{gap:24px}.discord{margin:15px 5% 45px}footer{flex-direction:column}.sale{gap:9px;font-size:11px;letter-spacing:1px}#details{padding:28px 5% 50px}.detail-card{grid-template-columns:1fr;padding:15px;gap:22px}.detail-art{min-height:270px}.detail-art img{height:260px}.detail-info h1{margin:12px 0}}
+@media(max-width:540px){.products{grid-template-columns:1fr}.hero{padding:75px 18px 55px}nav{padding:8px 4%}.logo{width:100px;height:42px}.links{gap:12px;font-size:11px}.links .btn{padding:10px}.stats{gap:24px}.discord{margin:15px 5% 45px}footer{flex-direction:column}.sale{gap:9px;font-size:11px;letter-spacing:1px}#details{padding:28px 5% 50px}.detail-card{grid-template-columns:1fr;padding:15px;gap:22px}.detail-art{min-height:270px}.detail-art img{height:260px}.detail-info h1{margin:12px 0}.recommendations{margin-top:40px;padding-top:25px}.recommendations .products{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.recommendations .art{height:135px}.recommendations .cape-img{width:90px;height:105px}.recommendations .info{padding:11px}.recommendations .info h3{font-size:12px}.recommendations .price-row{align-items:flex-start;flex-direction:column}.recommendations .order{width:100%}}
 @media(prefers-reduced-motion:reduce){.spooky,.sale-divider,.drop,.ghost,*,*:before,*:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 </style>
 </head>
@@ -145,15 +157,26 @@ footer{padding:25px 7%;border-top:1px solid #ffc75b30;display:flex;justify-conte
 
 <section id="details">
   <div class="back-row">
-    <button class="back-btn" type="button" onclick="showHome('shop')">← Back to Home</button>
+    <button class="back-btn" type="button" onclick="showHome('shop')">← Back to Capes</button>
   </div>
   <div id="detailContent"></div>
+
+  <div class="recommendations" id="recommendations">
+    <div class="head">
+      <div>
+        <div class="kicker">DISCOVER MORE</div>
+        <h2>You Might Also <span class="gradient">Like</span></h2>
+        <p class="sub">Here are some other capes you might like.</p>
+      </div>
+    </div>
+    <div class="products" id="recommendedProducts"></div>
+  </div>
 </section>
 
 <div id="not-found">
   <h2>Cape not found</h2>
   <p class="sub">We couldn't find that cape.</p>
-  <button class="back-btn" type="button" onclick="showHome('shop')" style="margin-top:22px">← Back to Home</button>
+  <button class="back-btn" type="button" onclick="showHome('shop')" style="margin-top:22px">← Back to Capes</button>
 </div>
 
 <footer>
@@ -178,21 +201,32 @@ const capes=[
 
 document.getElementById("year").textContent=new Date().getFullYear();
 
-document.getElementById("products").innerHTML=capes.map(c=>`
-<a class="card" href="#cape/${encodeURIComponent(c.id)}" onclick="openCape('${c.id}');return false;">
-  <div class="art">
-    <span class="tag ${c.stock?"":"sold"}">${c.stock?"IN STOCK":"NOT IN STOCK"}</span>
-    <img class="cape-img" src="${c.image}" alt="${c.name}" loading="lazy">
-  </div>
-  <div class="info">
-    <h3>${c.name}</h3>
-    <p>${c.description}</p>
-    <div class="price-row">
-      <div class="${c.stock?"price":"sold-price"}">${c.price}<small>${c.stock?"Available now":"Currently unavailable"}</small></div>
-      <span class="btn order">VIEW DETAILS ↗</span>
+function capeCard(c,compact=false){
+  return `
+  <a class="card" href="#cape/${encodeURIComponent(c.id)}" onclick="openCape('${c.id}');return false;">
+    <div class="art">
+      <span class="tag ${c.stock?"":"sold"}">${c.stock?"IN STOCK":"NOT IN STOCK"}</span>
+      <img class="cape-img" src="${c.image}" alt="${c.name}" loading="lazy">
     </div>
-  </div>
-</a>`).join("");
+    <div class="info">
+      <h3>${c.name}</h3>
+      <p>${c.description}</p>
+      <div class="price-row">
+        <div class="${c.stock?"price":"sold-price"}">${c.price}<small>${c.stock?"Available now":"Currently unavailable"}</small></div>
+        <span class="btn order">VIEW CAPE ↗</span>
+      </div>
+    </div>
+  </a>`;
+}
+
+document.getElementById("products").innerHTML=capes.map(c=>capeCard(c)).join("");
+
+function renderRecommendations(currentCape){
+  const others=capes.filter(c=>c.id!==currentCape.id);
+  const shuffled=[...others].sort(()=>Math.random()-.5);
+  const selected=shuffled.slice(0,4);
+  document.getElementById("recommendedProducts").innerHTML=selected.map(c=>capeCard(c,true)).join("");
+}
 
 function showHome(sectionId="home"){
   document.getElementById("homePage").style.display="block";
@@ -234,6 +268,8 @@ function openCape(id){
         </div>
       </div>
     </div>`;
+
+  renderRecommendations(cape);
   history.replaceState(null,"","#cape/"+encodeURIComponent(cape.id));
   window.scrollTo({top:0,behavior:"smooth"});
 }
@@ -262,4 +298,3 @@ if(window.location.hash.startsWith("#cape/")){
 </script>
 </body>
 </html>
-```
