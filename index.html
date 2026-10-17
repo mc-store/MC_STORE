@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -22,54 +23,60 @@ body{
     radial-gradient(ellipse at 10% 5%,#ffb52e55,transparent 38%),
     radial-gradient(ellipse at 95% 30%,#ff401b35,transparent 40%),
     linear-gradient(135deg,#20100b,#3a170b 45%,#171009);
-  background-attachment:fixed;
-  min-height:100vh;
+  background-attachment:fixed;min-height:100vh
 }
 a{color:inherit;text-decoration:none}
-button{font-family:inherit;cursor:pointer}
+button,input{font-family:inherit}
+button{cursor:pointer}
+[hidden]{display:none!important}
 
 .sale{
-  display:flex;justify-content:center;align-items:center;gap:12px;
-  flex-wrap:wrap;padding:13px 10px;text-align:center;
-  font-size:12px;font-weight:900;letter-spacing:1.5px;
-  background:#17110d;border-bottom:1px solid #ff641c66;overflow:hidden
+ display:flex;justify-content:center;align-items:center;gap:12px;
+ flex-wrap:wrap;padding:13px 10px;text-align:center;
+ font-size:12px;font-weight:900;letter-spacing:1.5px;
+ background:#17110d;border-bottom:1px solid #ff641c66
 }
 .spooky{color:#ff641c;animation:softGlow 1.5s ease-in-out infinite alternate}
-.sale-divider{display:inline-block;color:#ffd65a;animation:starSpin 5s linear infinite}
+.sale-divider{color:#ffd65a;animation:starSpin 5s linear infinite}
 .drop{color:#ffd65a;animation:dropGlow 1.5s ease-in-out infinite alternate}
-.ghost{display:inline-block;animation:ghostFloat 2s ease-in-out infinite}
+.ghost{animation:ghostFloat 2s ease-in-out infinite}
 @keyframes softGlow{to{text-shadow:0 0 13px #ff641c}}
 @keyframes dropGlow{to{text-shadow:0 0 12px #ffd65a}}
 @keyframes starSpin{to{transform:rotate(360deg)}}
 @keyframes ghostFloat{50%{transform:translateY(-5px)}}
 
 nav{
-  position:sticky;top:0;z-index:5;display:flex;
-  justify-content:space-between;align-items:center;
-  padding:12px 7%;gap:15px;background:#170f09ed;
-  backdrop-filter:blur(14px);border-bottom:1px solid #ffc04b40
+ position:sticky;top:0;z-index:10;display:flex;justify-content:space-between;
+ align-items:center;padding:12px 7%;gap:15px;background:#170f09ed;
+ backdrop-filter:blur(14px);border-bottom:1px solid #ffc04b40
 }
 .logo{width:150px;height:52px;object-fit:contain}
-.links{display:flex;align-items:center;gap:22px;font-size:13px}
+.links{display:flex;align-items:center;gap:18px;font-size:13px;flex-wrap:wrap}
 .links>a:not(.btn){color:var(--muted)}
 .btn{
-  display:inline-flex;justify-content:center;align-items:center;
-  padding:13px 19px;border-radius:9px;border:1px solid #ffe08b70;
-  color:#fff;background:linear-gradient(110deg,#ff641c,#e5a32c);
-  font-size:12px;font-weight:900;cursor:pointer;
-  transition:transform .25s,box-shadow .25s
+ display:inline-flex;justify-content:center;align-items:center;
+ padding:13px 19px;border-radius:9px;border:1px solid #ffe08b70;
+ color:white;background:linear-gradient(110deg,#ff641c,#e5a32c);
+ font-size:12px;font-weight:900;cursor:pointer;
+ transition:transform .25s,box-shadow .25s
 }
 .btn:hover{transform:translateY(-3px);box-shadow:0 8px 25px #ff641c55}
-
-.hero{text-align:center;padding:65px 20px 75px}
-.eyebrow{
-  display:inline-block;padding:9px 15px;border-radius:30px;
-  border:1px solid #ffd15c80;background:#ffb51a16;
-  color:#ffdb74;font-size:10px;font-weight:900;letter-spacing:2px
+.auth-btn{
+ border:1px solid #ffe08b70;border-radius:9px;padding:11px 14px;
+ background:linear-gradient(110deg,#ff641c,#e5a32c);color:white;
+ font-size:12px;font-weight:900
 }
+.auth-user{color:#ffd65a;font-size:11px;max-width:140px;overflow-wrap:anywhere}
+
+.hero{text-align:center;padding:55px 20px 70px}
 .gradient{
-  background:linear-gradient(100deg,#ffe77b,#ff9c26,#ff4b27);
-  -webkit-background-clip:text;background-clip:text;color:transparent
+ background:linear-gradient(100deg,#ffe77b,#ff9c26,#ff4b27);
+ -webkit-background-clip:text;background-clip:text;color:transparent
+}
+.eyebrow{
+ display:inline-block;padding:9px 15px;border-radius:30px;
+ border:1px solid #ffd15c80;background:#ffb51a16;color:#ffdb74;
+ font-size:10px;font-weight:900;letter-spacing:2px
 }
 h1{font-size:clamp(40px,7vw,76px);letter-spacing:-3px;line-height:1.1;margin:25px 0}
 .hero p{max-width:570px;margin:0 auto 26px;color:var(--muted);font-size:14px;line-height:1.9}
@@ -78,126 +85,47 @@ h1{font-size:clamp(40px,7vw,76px);letter-spacing:-3px;line-height:1.1;margin:25p
 .stats strong{display:block;font-size:18px}
 .stats span{display:block;color:var(--muted);font-size:11px;margin-top:6px}
 
-/* FEATURED CAPE */
 .hero-ad{
-  max-width:1050px;margin:30px auto 0;
-  display:grid;grid-template-columns:.9fr 1.1fr;
-  align-items:center;gap:35px;text-align:left;padding:30px;
-  border:1px solid #ffc75b45;border-radius:22px;
-  background:linear-gradient(135deg,#34210ff2,#17110bf5);
-  box-shadow:0 15px 45px #0003;position:relative;overflow:hidden;
-  transition:border-color .35s,box-shadow .35s
+ max-width:1050px;margin:15px auto 0;display:grid;
+ grid-template-columns:.9fr 1.1fr;align-items:center;gap:35px;
+ text-align:left;padding:30px;border:1px solid #ffc75b45;border-radius:22px;
+ background:linear-gradient(135deg,#34210ff2,#17110bf5);
+ box-shadow:0 15px 45px #0003;position:relative;overflow:hidden;
+ transition:border-color .35s,box-shadow .35s
 }
-.hero-ad:before{
-  content:"";position:absolute;inset:-2px;
-  background:linear-gradient(110deg,transparent 15%,#ff641c20 45%,#ffd65a25 55%,transparent 85%);
-  transform:translateX(-110%);pointer-events:none
-}
-.hero-ad.ad-changing{
-  border-color:#ffb52e;
-  box-shadow:0 0 32px #ff641c35,0 15px 45px #0005
-}
-.hero-ad.ad-changing:before{animation:shineSweep .9s ease-out}
-@keyframes shineSweep{
-  0%{transform:translateX(-110%)}
-  100%{transform:translateX(110%)}
-}
-
+.hero-ad.ad-changing{border-color:#ffb52e;box-shadow:0 0 32px #ff641c35,0 15px 45px #0005}
 .hero-ad-image{
-  height:310px;display:flex;align-items:center;justify-content:center;
-  position:relative;overflow:hidden;border-radius:15px;
-  background:radial-gradient(ellipse,#ffad2935,transparent 65%),#24170d;
-  perspective:800px
-}
-.hero-ad-image:after{
-  content:"";position:absolute;width:160px;height:160px;border-radius:50%;
-  background:#ff9e1e40;filter:blur(40px);
-  transition:transform .65s,background .65s
-}
-.hero-ad.ad-changing .hero-ad-image:after{
-  transform:scale(1.65);
-  background:#ff9e1e85
+ height:310px;display:flex;align-items:center;justify-content:center;
+ position:relative;overflow:hidden;border-radius:15px;
+ background:radial-gradient(ellipse,#ffad2935,transparent 65%),#24170d
 }
 .hero-ad-image img{
-  position:relative;z-index:1;width:85%;height:275px;
-  object-fit:contain;transform-origin:center center;
-  filter:drop-shadow(0 12px 18px #0009);
-  animation:capeFloat 2.8s ease-in-out infinite;
-  will-change:transform,filter,opacity
-}
-
-/* ZOOM: fade in, zoom forward, bounce gently, settle */
-.hero-ad.ad-changing .hero-ad-image img{
-  animation:capeZoom 1s cubic-bezier(.16,1,.3,1) both
+ position:relative;z-index:1;width:85%;height:275px;object-fit:contain;
+ filter:drop-shadow(0 12px 18px #0009);animation:capeFloat 2.8s ease-in-out infinite
 }
 @keyframes capeFloat{
-  0%,100%{transform:translateY(0) rotate(0deg)}
-  50%{transform:translateY(-7px) rotate(.7deg)}
+ 0%,100%{transform:translateY(0)}
+ 50%{transform:translateY(-7px)}
 }
+.hero-ad.ad-changing .hero-ad-image img{animation:capeZoom 1s ease both}
 @keyframes capeZoom{
-  0%{
-    opacity:0;
-    transform:scale(.45) rotate(-5deg);
-    filter:blur(5px) drop-shadow(0 0 0 #ff641c00)
-  }
-  38%{
-    opacity:1;
-    transform:scale(1.2) rotate(2deg);
-    filter:blur(0) drop-shadow(0 0 28px #ff9c26)
-  }
-  58%{
-    opacity:1;
-    transform:scale(1.08) rotate(-1deg);
-    filter:drop-shadow(0 0 24px #ff9c26)
-  }
-  76%{
-    transform:scale(.97) rotate(.4deg);
-    filter:drop-shadow(0 0 16px #ff9c2680)
-  }
-  90%{
-    transform:scale(1.025) rotate(0deg);
-    filter:drop-shadow(0 0 12px #ff641c65)
-  }
-  100%{
-    opacity:1;
-    transform:scale(1) rotate(0deg);
-    filter:drop-shadow(0 12px 18px #0009)
-  }
+ 0%{opacity:0;transform:scale(.45) rotate(-5deg)}
+ 40%{opacity:1;transform:scale(1.2) rotate(2deg);filter:drop-shadow(0 0 28px #ff9c26)}
+ 75%{transform:scale(.97)}
+ 100%{opacity:1;transform:scale(1)}
 }
-.hero-ad-content{min-width:0;position:relative;z-index:1}
+.hero-ad-content{min-width:0}
 .hero-ad-content h1{font-size:clamp(32px,4vw,49px);letter-spacing:-1.8px;margin:20px 0}
 .hero-ad-content p{max-width:500px;margin:0 0 18px;color:var(--muted);font-size:14px;line-height:1.9}
 .hero-cape-price{color:#ffda70;font-size:27px;font-weight:900;margin:17px 0}
-.hero-cape-stock{
-  display:inline-block;font-size:10px;font-weight:900;
-  padding:7px 10px;border-radius:6px;background:#173522;color:#91ffb0;
-  border:1px solid #43d87866;margin-bottom:16px
+.hero-cape-stock,.stock-label,.tag{
+ display:inline-block;font-size:10px;font-weight:900;padding:7px 10px;
+ border-radius:6px;background:#173522;color:#91ffb0;border:1px solid #43d87866
 }
-.hero-cape-stock.sold{background:#3c2020;color:#ffaaaa;border-color:#ff777755}
-.hero-ad-content .actions{margin-top:8px}
+.sold{background:#3c2020!important;color:#ffaaaa!important;border-color:#ff777755!important}
 .hero-dots{display:flex;align-items:center;gap:8px;margin-top:24px}
-.hero-dot{
-  width:9px;height:9px;padding:0;border:0;border-radius:50%;
-  background:#80634a;transition:width .25s,background .25s,box-shadow .25s
-}
-.hero-dot.active{
-  width:26px;border-radius:10px;background:#ff641c;
-  box-shadow:0 0 12px #ff641c90
-}
-
-/* Text also enters smoothly when the featured cape changes */
-.hero-ad.ad-changing .ad-text{animation:textEnter .65s both}
-.hero-ad.ad-changing #heroCapeEyebrow{animation-delay:.02s}
-.hero-ad.ad-changing #heroCapeTitle{animation-delay:.08s}
-.hero-ad.ad-changing #heroCapeDescription{animation-delay:.13s}
-.hero-ad.ad-changing #heroCapeStock{animation-delay:.18s}
-.hero-ad.ad-changing #heroCapePrice{animation-delay:.23s}
-.hero-ad.ad-changing .actions{animation:textEnter .65s .26s both}
-.hero-ad.ad-changing .hero-dots{animation:textEnter .5s .3s both}
-@keyframes textEnter{
-  0%{opacity:0;transform:translateY(15px)}
-  100%{opacity:1;transform:translateY(0)}
-}
+.hero-dot{width:9px;height:9px;padding:0;border:0;border-radius:50%;background:#80634a}
+.hero-dot.active{width:26px;border-radius:10px;background:#ff641c}
 
 section{padding:65px 7%}
 .head{display:flex;justify-content:space-between;align-items:end;gap:20px;flex-wrap:wrap;margin-bottom:30px}
@@ -206,40 +134,20 @@ h2{font-size:clamp(27px,4vw,38px)}
 .sub{color:var(--muted);font-size:13px;line-height:1.8;margin-top:9px}
 .products{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}
 .card{
-  display:block;overflow:hidden;border:1px solid #ffc75b38;border-radius:17px;
-  background:linear-gradient(145deg,#34210ff2,#17110bf5);
-  transition:transform .3s,border-color .3s,box-shadow .3s
+ display:block;overflow:hidden;border:1px solid #ffc75b38;border-radius:17px;
+ background:linear-gradient(145deg,#34210ff2,#17110bf5);
+ transition:transform .3s,border-color .3s,box-shadow .3s
 }
-.card:hover{
-  transform:translateY(-8px);border-color:#ffce55;
-  box-shadow:0 15px 40px #0006,0 0 24px #ffac2330
-}
+.card:hover{transform:translateY(-7px);border-color:#ffce55;box-shadow:0 15px 40px #0006}
 .art{
-  height:245px;display:flex;align-items:center;justify-content:center;
-  position:relative;overflow:hidden;
-  background:radial-gradient(ellipse at 20% 70%,#ffad292e,transparent 55%),
-  radial-gradient(ellipse at 80% 25%,#ffe16c24,transparent 50%),#24170d
+ height:245px;display:flex;align-items:center;justify-content:center;
+ position:relative;overflow:hidden;
+ background:radial-gradient(ellipse at 20% 70%,#ffad292e,transparent 55%),
+ radial-gradient(ellipse at 80% 25%,#ffe16c24,transparent 50%),#24170d
 }
-.art:after{
-  content:"";position:absolute;width:150px;height:150px;border-radius:50%;
-  background:linear-gradient(130deg,#ff9e1e55,#fff07a30);
-  filter:blur(35px);transition:.35s
-}
-.card:hover .art:after{transform:scale(1.5)}
-.cape-img{
-  width:165px;height:190px;object-fit:contain;z-index:1;
-  filter:drop-shadow(0 12px 18px #0009);transition:.35s
-}
-.card:hover .cape-img{
-  transform:scale(1.1) rotate(-2deg);
-  filter:drop-shadow(0 0 13px #ffd34c55)
-}
-.tag{
-  position:absolute;top:14px;left:14px;z-index:2;font-size:9px;font-weight:900;
-  padding:7px 10px;border-radius:6px;background:#173522;color:#91ffb0;
-  border:1px solid #43d87866
-}
-.tag.sold{background:#3c2020;color:#ffaaaa;border-color:#ff777755}
+.cape-img{width:165px;height:190px;object-fit:contain;z-index:1;filter:drop-shadow(0 12px 18px #0009);transition:.35s}
+.card:hover .cape-img{transform:scale(1.1) rotate(-2deg)}
+.tag{position:absolute;top:14px;left:14px;z-index:2;font-size:9px}
 .info{padding:20px}
 .info h3{font-size:17px}
 .info p{font-size:12px;line-height:1.8;color:var(--muted);margin-top:9px;min-height:43px}
@@ -250,219 +158,236 @@ h2{font-size:clamp(27px,4vw,38px)}
 .order{font-size:10px;padding:11px 13px}
 
 .discord{
-  margin:20px 7% 70px;padding:50px 22px;text-align:center;border-radius:20px;
-  border:1px solid #ffcf6555;
-  background:radial-gradient(ellipse at 0 100%,#ff9b2033,transparent 55%),
-  radial-gradient(ellipse at 100% 0,#ff401b16,transparent 55%),#24190f
+ margin:20px 7% 70px;padding:50px 22px;text-align:center;border-radius:20px;
+ border:1px solid #ffcf6555;
+ background:radial-gradient(ellipse at 0 100%,#ff9b2033,transparent 55%),#24190f
 }
 .discord p{max-width:500px;margin:15px auto 24px;color:var(--muted);font-size:13px;line-height:1.9}
 footer{
-  padding:25px 7%;border-top:1px solid #ffc75b30;
-  display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;
-  color:var(--muted);font-size:11px
+ padding:25px 7%;border-top:1px solid #ffc75b30;display:flex;
+ justify-content:space-between;gap:12px;flex-wrap:wrap;color:var(--muted);font-size:11px
 }
 
-/* PRODUCT DETAILS */
 #details{display:none;min-height:65vh;padding:45px 7% 75px}
 .back-row{display:flex;justify-content:flex-start;margin-bottom:30px}
-.back-btn{
-  background:#2a1a0e;border:1px solid #ffbf4c80;color:#ffda70;
-  padding:12px 17px;border-radius:9px;font-size:13px;font-weight:900
-}
-.back-btn:hover{background:#42230f}
+.back-btn{background:#2a1a0e;border:1px solid #ffbf4c80;color:#ffda70;padding:12px 17px;border-radius:9px;font-size:13px;font-weight:900}
 .detail-card{
-  max-width:950px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;
-  gap:35px;align-items:center;background:linear-gradient(145deg,#34210ff2,#17110bf5);
-  border:1px solid #ffc75b50;border-radius:20px;padding:30px
+ max-width:950px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;
+ gap:35px;align-items:center;background:linear-gradient(145deg,#34210ff2,#17110bf5);
+ border:1px solid #ffc75b50;border-radius:20px;padding:30px
 }
-.detail-art{
-  min-height:350px;display:flex;align-items:center;justify-content:center;
-  background:radial-gradient(ellipse,#ffad2930,transparent 65%),#24170d;
-  border-radius:15px;overflow:hidden
-}
-.detail-art img{
-  width:100%;max-width:300px;height:330px;object-fit:contain;
-  filter:drop-shadow(0 12px 20px #0009)
-}
+.detail-art{min-height:350px;display:flex;align-items:center;justify-content:center;background:radial-gradient(ellipse,#ffad2930,transparent 65%),#24170d;border-radius:15px}
+.detail-art img{width:100%;max-width:300px;height:330px;object-fit:contain}
 .detail-info h1{font-size:clamp(30px,5vw,48px);letter-spacing:-1px;margin:15px 0}
 .detail-info p{color:var(--muted);font-size:14px;line-height:1.9;margin:15px 0}
 .detail-price{font-size:27px;font-weight:900;color:#ffda70;margin:20px 0}
-.stock-label{
-  display:inline-block;padding:8px 12px;border-radius:7px;font-size:11px;
-  font-weight:900;background:#173522;color:#91ffb0;border:1px solid #43d87866
-}
-.stock-label.sold{background:#3c2020;color:#ffaaaa;border-color:#ff777755}
 .detail-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:25px}
 .recommendations{max-width:1200px;margin:55px auto 0;padding-top:35px;border-top:1px solid #ffc75b35}
-.recommendations .head{margin-bottom:25px}
 .recommendations .products{grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
-.recommendations .card{border-radius:13px}
 .recommendations .art{height:175px}
 .recommendations .cape-img{width:120px;height:135px}
 .recommendations .info{padding:15px}
 .recommendations .info h3{font-size:14px}
 .recommendations .info p{font-size:11px;min-height:0}
-.recommendations .price-row{margin-top:14px}
-.recommendations .price{font-size:15px}
-.recommendations .order{font-size:9px;padding:10px}
 #not-found{display:none;text-align:center;padding:70px 20px}
 
-@media(max-width:1000px){
-  .recommendations .products{grid-template-columns:repeat(2,minmax(0,1fr))}
+/* FIREBASE SIGN-IN WINDOW */
+.auth-overlay{
+ position:fixed;inset:0;z-index:1000;display:none;
+ align-items:center;justify-content:center;padding:18px;
+ background:#080503df;backdrop-filter:blur(9px)
 }
+.auth-overlay.open{display:flex}
+.auth-box{
+ width:100%;max-width:420px;position:relative;padding:30px;
+ border:1px solid #ffc75b70;border-radius:20px;
+ background:linear-gradient(145deg,#34210f,#17110b);
+ box-shadow:0 20px 70px #0009
+}
+.auth-close{
+ position:absolute;top:12px;right:15px;border:0;background:none;
+ color:#fff9ee;font-size:28px
+}
+.auth-box h2{margin:12px 0;color:#fff9ee}
+.auth-box p{color:var(--muted);font-size:13px;line-height:1.7;margin-bottom:18px}
+.auth-box input{
+ display:block;width:100%;margin:12px 0;padding:14px;
+ color:#fff9ee;background:#160e09;border:1px solid #ffc75b55;
+ border-radius:9px;outline:none
+}
+.auth-box input:focus{border-color:#ff641c}
+.auth-box .btn{width:100%;margin-top:8px}
+.auth-box .btn:disabled{opacity:.6;cursor:wait}
+.auth-switch,.auth-forgot{
+ display:block;text-align:center;margin:17px auto 0;color:#ffd65a;
+ font-size:12px;cursor:pointer;background:none;border:0
+}
+.auth-message{font-size:12px!important;margin-top:14px!important;overflow-wrap:anywhere}
+.auth-message.error{color:#ffaaaa!important}
+.auth-message.success{color:#91ffb0!important}
+
+@media(max-width:1000px){.recommendations .products{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:850px){
-  .products{grid-template-columns:repeat(2,minmax(0,1fr))}
-  section{padding:50px 5%}
-  nav{padding:12px 5%}
-  .detail-card{gap:20px;padding:20px}
+ .products{grid-template-columns:repeat(2,minmax(0,1fr))}
+ section{padding:50px 5%}nav{padding:12px 5%}.detail-card{gap:20px;padding:20px}
 }
 @media(max-width:650px){
-  .hero-ad{grid-template-columns:1fr;gap:22px;padding:18px;text-align:center}
-  .hero-ad-image{height:230px}
-  .hero-ad-image img{height:210px}
-  .hero-ad-content h1{font-size:36px}
-  .hero-ad-content .actions{justify-content:center}
-  .hero-dots{justify-content:center}
-  .hero-ad-content p{margin-left:auto;margin-right:auto}
+ .hero-ad{grid-template-columns:1fr;gap:22px;padding:18px;text-align:center}
+ .hero-ad-image{height:230px}.hero-ad-image img{height:210px}
+ .hero-ad-content h1{font-size:36px}
+ .hero-ad-content .actions{justify-content:center}
+ .hero-dots{justify-content:center}
+ .hero-ad-content p{margin-left:auto;margin-right:auto}
 }
 @media(max-width:540px){
-  .products{grid-template-columns:1fr}
-  .hero{padding:45px 14px 55px}
-  nav{padding:8px 4%}
-  .logo{width:100px;height:42px}
-  .links{gap:12px;font-size:11px}
-  .links .btn{padding:10px}
-  .stats{gap:24px}
-  .discord{margin:15px 5% 45px}
-  footer{flex-direction:column}
-  .sale{gap:9px;font-size:11px;letter-spacing:1px}
-  #details{padding:28px 5% 50px}
-  .detail-card{grid-template-columns:1fr;padding:15px;gap:22px}
-  .detail-art{min-height:270px}
-  .detail-art img{height:260px}
-  .detail-info h1{margin:12px 0}
-  .recommendations{margin-top:40px;padding-top:25px}
-  .recommendations .products{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
-  .recommendations .art{height:135px}
-  .recommendations .cape-img{width:90px;height:105px}
-  .recommendations .info{padding:11px}
-  .recommendations .info h3{font-size:12px}
-  .recommendations .price-row{align-items:flex-start;flex-direction:column}
-  .recommendations .order{width:100%}
+ .products{grid-template-columns:1fr}.hero{padding:35px 14px 50px}
+ nav{padding:8px 4%}.logo{width:85px;height:42px}
+ .links{gap:8px;font-size:10px}.links .btn{padding:10px}
+ .auth-btn{padding:9px;font-size:10px}.auth-user{max-width:70px}
+ .stats{gap:24px}.discord{margin:15px 5% 45px}footer{flex-direction:column}
+ .sale{gap:9px;font-size:11px;letter-spacing:1px}
+ #details{padding:28px 5% 50px}
+ .detail-card{grid-template-columns:1fr;padding:15px;gap:22px}
+ .detail-art{min-height:270px}.detail-art img{height:260px}
+ .recommendations{margin-top:40px;padding-top:25px}
+ .recommendations .products{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+ .recommendations .art{height:135px}.recommendations .cape-img{width:90px;height:105px}
+ .recommendations .info{padding:11px}.recommendations .info h3{font-size:12px}
+ .auth-box{padding:24px}
 }
 @media(prefers-reduced-motion:reduce){
-  *,*:before,*:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+ *,*:before,*:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
 }
 </style>
 </head>
-
 <body>
+
 <div class="sale">
-  <span class="spooky">☠ SPOOKY SALE</span>
-  <span class="sale-divider">✦</span>
-  <span class="drop">PRICE DROP</span>
-  <span class="ghost">👻</span>
+ <span class="spooky">☠ SPOOKY SALE</span>
+ <span class="sale-divider">✦</span>
+ <span class="drop">PRICE DROP</span>
+ <span class="ghost">👻</span>
 </div>
 
 <nav>
-  <a href="#home" onclick="showHome('home');return false;">
-    <img class="logo" src="media/1792194385872.png" alt="MC STORE">
-  </a>
-  <div class="links">
-    <a href="#home" onclick="showHome('home');return false;">Home</a>
-    <a href="#shop" onclick="showHome('shop');return false;">Capes</a>
-    <a class="btn" href="#shop" onclick="showHome('shop');return false;">Shop Now ↗</a>
-  </div>
+ <a href="#home" onclick="showHome('home');return false;">
+  <img class="logo" src="media/1792194385872.png" alt="MC STORE">
+ </a>
+ <div class="links">
+  <a href="#home" onclick="showHome('home');return false;">Home</a>
+  <a href="#shop" onclick="showHome('shop');return false;">Capes</a>
+  <a class="btn" href="#shop" onclick="showHome('shop');return false;">Shop Now ↗</a>
+  <span class="auth-user" id="authUserLabel" hidden></span>
+  <button class="auth-btn" id="authOpenBtn" type="button">Sign In</button>
+  <button class="auth-btn" id="authSignOutBtn" type="button" hidden>Sign Out</button>
+ </div>
 </nav>
 
 <main id="homePage">
-  <header class="hero" id="home">
-    <div class="hero-ad" id="heroAd">
-      <div class="hero-ad-image">
-        <img id="heroCapeImage" src="media/cloakFront%20(2).webp" alt="Corrupted Cape">
-      </div>
-      <div class="hero-ad-content">
-        <span class="eyebrow ad-text" id="heroCapeEyebrow">FEATURED CAPE</span>
-        <h1 class="ad-text" id="heroCapeTitle">Corrupted<br><span class="gradient">Cape.</span></h1>
-        <p class="ad-text" id="heroCapeDescription">A distinctive cape for your Minecraft collection.</p>
-        <span class="hero-cape-stock ad-text" id="heroCapeStock">✓ IN STOCK</span>
-        <div class="hero-cape-price ad-text" id="heroCapePrice">$10</div>
-        <div class="actions">
-          <a class="btn" href="#cape/corrupted" id="heroViewCape" onclick="openCape('corrupted');return false;">VIEW CAPE ↗</a>
-          <a class="btn" href="https://discord.com/invite/F38vcYVHA" target="_blank" rel="noopener">JOIN DISCORD ↗</a>
-        </div>
-        <div class="hero-dots" id="heroDots" aria-label="Choose featured cape"></div>
-      </div>
+ <header class="hero" id="home">
+  <div class="hero-ad" id="heroAd">
+   <div class="hero-ad-image">
+    <img id="heroCapeImage" src="media/cloakFront%20(2).webp" alt="Corrupted Cape">
+   </div>
+   <div class="hero-ad-content">
+    <span class="eyebrow" id="heroCapeEyebrow">FEATURED CAPE</span>
+    <h1 id="heroCapeTitle">Corrupted<br><span class="gradient">Cape.</span></h1>
+    <p id="heroCapeDescription">A distinctive cape for your Minecraft collection.</p>
+    <span class="hero-cape-stock" id="heroCapeStock">✓ IN STOCK</span>
+    <div class="hero-cape-price" id="heroCapePrice">$10</div>
+    <div class="actions">
+     <a class="btn" href="#cape/corrupted" id="heroViewCape" onclick="openCape('corrupted');return false;">VIEW CAPE ↗</a>
+     <a class="btn" href="https://discord.com/invite/F38vcYVHA" target="_blank" rel="noopener">JOIN DISCORD ↗</a>
     </div>
-
-    <div class="stats">
-      <div><strong>MC STORE</strong><span>Your cape destination</span></div>
-      <div><strong>9 Capes</strong><span>Explore the collection</span></div>
-      <div><strong>Discord</strong><span>Order assistance</span></div>
-    </div>
-  </header>
-
-  <section id="shop">
-    <div class="head">
-      <div>
-        <div class="kicker">OUR COLLECTION</div>
-        <h2>Featured <span class="gradient">Capes</span></h2>
-        <p class="sub">Select a cape to open its product details.</p>
-      </div>
-      <a class="btn" href="https://discord.com/invite/F38vcYVHA" target="_blank" rel="noopener">Ask About Stock ↗</a>
-    </div>
-    <div class="products" id="products"></div>
-  </section>
-
-  <div class="discord">
-    <div class="kicker">NEED HELP?</div>
-    <h2>Join the <span class="gradient">MC STORE</span> Discord</h2>
-    <p>Contact our team for orders, availability, and restock questions.</p>
-    <a class="btn" href="https://discord.com/invite/F38vcYVHA" target="_blank" rel="noopener">Join Discord ↗</a>
+    <div class="hero-dots" id="heroDots" aria-label="Choose featured cape"></div>
+   </div>
   </div>
+  <div class="stats">
+   <div><strong>MC STORE</strong><span>Your cape destination</span></div>
+   <div><strong>9 Capes</strong><span>Explore the collection</span></div>
+   <div><strong>Discord</strong><span>Order assistance</span></div>
+  </div>
+ </header>
+
+ <section id="shop">
+  <div class="head">
+   <div>
+    <div class="kicker">OUR COLLECTION</div>
+    <h2>Featured <span class="gradient">Capes</span></h2>
+    <p class="sub">Select a cape to open its product details.</p>
+   </div>
+   <a class="btn" href="https://discord.com/invite/F38vcYVHA" target="_blank" rel="noopener">Ask About Stock ↗</a>
+  </div>
+  <div class="products" id="products"></div>
+ </section>
+
+ <div class="discord">
+  <div class="kicker">NEED HELP?</div>
+  <h2>Join the <span class="gradient">MC STORE</span> Discord</h2>
+  <p>Contact our team for orders, availability, and restock questions.</p>
+  <a class="btn" href="https://discord.com/invite/F38vcYVHA" target="_blank" rel="noopener">Join Discord ↗</a>
+ </div>
 </main>
 
 <section id="details">
-  <div class="back-row">
-    <button class="back-btn" type="button" onclick="showHome('shop')">← Back to Capes</button>
+ <div class="back-row">
+  <button class="back-btn" type="button" onclick="showHome('shop')">← Back to Capes</button>
+ </div>
+ <div id="detailContent"></div>
+ <div class="recommendations">
+  <div class="head">
+   <div>
+    <div class="kicker">DISCOVER MORE</div>
+    <h2>You Might Also <span class="gradient">Like</span></h2>
+    <p class="sub">Here are some other capes you might like.</p>
+   </div>
   </div>
-  <div id="detailContent"></div>
-  <div class="recommendations">
-    <div class="head">
-      <div>
-        <div class="kicker">DISCOVER MORE</div>
-        <h2>You Might Also <span class="gradient">Like</span></h2>
-        <p class="sub">Here are some other capes you might like.</p>
-      </div>
-    </div>
-    <div class="products" id="recommendedProducts"></div>
-  </div>
+  <div class="products" id="recommendedProducts"></div>
+ </div>
 </section>
 
 <div id="not-found">
-  <h2>Cape not found</h2>
-  <p class="sub">We couldn't find that cape.</p>
-  <button class="back-btn" type="button" onclick="showHome('shop')" style="margin-top:22px">← Back to Capes</button>
+ <h2>Cape not found</h2>
+ <p class="sub">We couldn't find that cape.</p>
+ <button class="back-btn" type="button" onclick="showHome('shop')">← Back to Capes</button>
 </div>
 
 <footer>
-  <span>© <span id="year"></span> MC STORE. All rights reserved.</span>
-  <span>Independent community shop. Not affiliated with Mojang or Microsoft.</span>
+ <span>© <span id="year"></span> MC STORE. All rights reserved.</span>
+ <span>Independent community shop. Not affiliated with Mojang or Microsoft.</span>
 </footer>
+
+<!-- SIGN IN / CREATE ACCOUNT / PASSWORD RESET -->
+<div class="auth-overlay" id="authOverlay" role="dialog" aria-modal="true" aria-labelledby="authTitle">
+ <div class="auth-box">
+  <button class="auth-close" id="authCloseBtn" type="button" aria-label="Close">×</button>
+  <div class="kicker">WELCOME TO MC STORE</div>
+  <h2 id="authTitle">Sign In</h2>
+  <p id="authSubtitle">Sign in to your MC STORE account.</p>
+  <form id="authForm">
+   <input id="authEmail" type="email" placeholder="Email address" autocomplete="email" required>
+   <input id="authPassword" type="password" placeholder="Password" autocomplete="current-password" minlength="6" required>
+   <button class="btn" id="authSubmitBtn" type="submit">Sign In</button>
+  </form>
+  <button class="auth-forgot" id="authForgotBtn" type="button">Forgot password?</button>
+  <button class="auth-switch" id="authSwitchBtn" type="button">Don't have an account? Create Account</button>
+  <p class="auth-message" id="authMessage" role="status" aria-live="polite"></p>
+ </div>
+</div>
 
 <script>
 const DISCORD_URL = "https://discord.com/invite/F38vcYVHA";
 
 const capes = [
-  {id:"corrupted",name:"Corrupted Cape",price:"$10",stock:true,image:"media/cloakFront%20(2).webp",description:"A distinctive cape for your Minecraft collection."},
-  {id:"aurora",name:"Aurora Cape",price:"$7",stock:true,image:"media/aurora-front.png",description:"A vibrant cape for players who want to stand out."},
-  {id:"builder",name:"Builder Cape",price:"$9",stock:true,image:"media/320%20(1).png",description:"A classic addition for Minecraft cape collectors."},
-  {id:"experience",name:"Experience Cape",price:"Not in stock",stock:false,image:"media/320%20(2).png",description:"A special cape for your Minecraft collection."},
-  {id:"crafter",name:"Crafter Cape",price:"Not in stock",stock:false,image:"media/320%20(3).png",description:"A distinctive cape for Minecraft fans and collectors."},
-  {id:"menace",name:"Menace Cape",price:"Not in stock",stock:false,image:"media/320%20(5).png",description:"A striking cape for your Minecraft collection."},
-  {id:"copper",name:"Copper Cape",price:"Not in stock",stock:false,image:"media/320%20(6).png",description:"A copper-themed cape for Minecraft players."},
-  {id:"moonlight",name:"Moonlight Cape",price:"Not in stock",stock:false,image:"media/cloakFront%20(4).webp",description:"A moonlight-inspired cape for your collection."},
-  {id:"purple-heart",name:"Purple Heart Cape",price:"Not in stock",stock:false,image:"media/320%20(7).png",description:"A purple-themed cape for your Minecraft collection."}
+ {id:"corrupted",name:"Corrupted Cape",price:"$10",stock:true,image:"media/cloakFront%20(2).webp",description:"A distinctive cape for your Minecraft collection."},
+ {id:"aurora",name:"Aurora Cape",price:"$6",stock:true,image:"media/aurora-front.png",description:"A vibrant cape for players who want to stand out."},
+ {id:"builder",name:"Builder Cape",price:"$9",stock:true,image:"media/320%20(1).png",description:"A classic addition for Minecraft cape collectors."},
+ {id:"experience",name:"Experience Cape",price:"Not in stock",stock:false,image:"media/320%20(2).png",description:"A special cape for your Minecraft collection."},
+ {id:"crafter",name:"Crafter Cape",price:"Not in stock",stock:false,image:"media/320%20(3).png",description:"A distinctive cape for Minecraft fans and collectors."},
+ {id:"menace",name:"Menace Cape",price:"Not in stock",stock:false,image:"media/320%20(5).png",description:"A striking cape for your Minecraft collection."},
+ {id:"copper",name:"Copper Cape",price:"Not in stock",stock:false,image:"media/320%20(6).png",description:"A copper-themed cape for Minecraft players."},
+ {id:"moonlight",name:"Moonlight Cape",price:"Not in stock",stock:false,image:"media/cloakFront%20(4).webp",description:"A moonlight-inspired cape for your collection."},
+ {id:"purple-heart",name:"Purple Heart Cape",price:"Not in stock",stock:false,image:"media/320%20(7).png",description:"A purple-themed cape for your Minecraft collection."}
 ];
 
 document.getElementById("year").textContent = new Date().getFullYear();
@@ -471,195 +396,308 @@ let heroCapeIndex = 0;
 let heroTimer = null;
 let heroPaused = false;
 let animationTimer = null;
-
 const heroAd = document.getElementById("heroAd");
 
 function showHeroCape(index, animate = true) {
-  const cape = capes[index];
-  if (!cape) return;
+ const cape = capes[index];
+ if (!cape) return;
+ heroCapeIndex = index;
+ clearTimeout(animationTimer);
+ heroAd.classList.remove("ad-changing");
 
-  heroCapeIndex = index;
+ const image = document.getElementById("heroCapeImage");
+ image.src = cape.image;
+ image.alt = cape.name;
 
-  // Reset the previous animation so it can replay on every cape change.
-  clearTimeout(animationTimer);
-  heroAd.classList.remove("ad-changing");
+ document.getElementById("heroCapeTitle").innerHTML =
+  cape.name.replace(" Cape", '<br><span class="gradient">Cape.</span>');
+ document.getElementById("heroCapeDescription").textContent = cape.description;
+ document.getElementById("heroCapePrice").textContent = cape.price;
 
-  const image = document.getElementById("heroCapeImage");
+ const eyebrow = document.getElementById("heroCapeEyebrow");
+ eyebrow.textContent = cape.stock ? "✦ AVAILABLE NOW" : "✦ COLLECTION SPOTLIGHT";
 
-  // Update the image and its details before restarting the zoom effect.
-  image.src = cape.image;
-  image.alt = cape.name;
+ const stock = document.getElementById("heroCapeStock");
+ stock.textContent = cape.stock ? "✓ IN STOCK" : "✕ NOT IN STOCK";
+ stock.classList.toggle("sold", !cape.stock);
 
-  document.getElementById("heroCapeTitle").innerHTML =
-    cape.name.replace(" Cape", '<br><span class="gradient">Cape.</span>');
+ const view = document.getElementById("heroViewCape");
+ view.href = "#cape/" + encodeURIComponent(cape.id);
+ view.onclick = function(){openCape(cape.id);return false;};
 
-  document.getElementById("heroCapeDescription").textContent = cape.description;
-  document.getElementById("heroCapePrice").textContent = cape.price;
+ document.getElementById("heroDots").innerHTML = capes.map((c,i) =>
+  `<button type="button" class="hero-dot ${i===index?"active":""}"
+   aria-label="Show ${c.name}" title="${c.name}"
+   onclick="showHeroCape(${i});restartHeroSlider()"></button>`
+ ).join("");
 
-  const eyebrow = document.getElementById("heroCapeEyebrow");
-  eyebrow.textContent = cape.stock ? "✦ AVAILABLE NOW" : "✦ COLLECTION SPOTLIGHT";
-
-  const stock = document.getElementById("heroCapeStock");
-  stock.textContent = cape.stock ? "✓ IN STOCK" : "✕ NOT IN STOCK";
-  stock.classList.toggle("sold", !cape.stock);
-
-  const view = document.getElementById("heroViewCape");
-  view.href = "#cape/" + encodeURIComponent(cape.id);
-  view.onclick = function () {
-    openCape(cape.id);
-    return false;
-  };
-
-  document.getElementById("heroDots").innerHTML = capes.map((c, i) =>
-    `<button type="button"
-      class="hero-dot ${i === index ? "active" : ""}"
-      aria-label="Show ${c.name}"
-      title="${c.name}"
-      onclick="showHeroCape(${i});restartHeroSlider()"></button>`
-  ).join("");
-
-  if (animate) {
-    // Force a reflow to restart CSS animations, including when the same
-    // featured cape is selected again.
-    void heroAd.offsetWidth;
-    heroAd.classList.add("ad-changing");
-
-    animationTimer = setTimeout(() => {
-      heroAd.classList.remove("ad-changing");
-    }, 1050);
-  }
+ if (animate) {
+  void heroAd.offsetWidth;
+  heroAd.classList.add("ad-changing");
+  animationTimer = setTimeout(() => heroAd.classList.remove("ad-changing"),1050);
+ }
 }
 
 function restartHeroSlider() {
-  clearInterval(heroTimer);
-  heroTimer = setInterval(() => {
-    if (!heroPaused) {
-      showHeroCape((heroCapeIndex + 1) % capes.length, true);
-    }
-  }, 2500);
+ clearInterval(heroTimer);
+ heroTimer = setInterval(() => {
+  if (!heroPaused) showHeroCape((heroCapeIndex+1)%capes.length,true);
+ },4000);
 }
-
-heroAd.addEventListener("mouseenter", () => { heroPaused = true; });
-heroAd.addEventListener("mouseleave", () => { heroPaused = false; });
-
-showHeroCape(0, false);
+heroAd.addEventListener("mouseenter",()=>{heroPaused=true;});
+heroAd.addEventListener("mouseleave",()=>{heroPaused=false;});
+showHeroCape(0,false);
 restartHeroSlider();
 
 function capeCard(c) {
-  return `
-    <a class="card" href="#cape/${encodeURIComponent(c.id)}"
-       onclick="openCape('${c.id}');return false;">
-      <div class="art">
-        <span class="tag ${c.stock ? "" : "sold"}">${c.stock ? "IN STOCK" : "NOT IN STOCK"}</span>
-        <img class="cape-img" src="${c.image}" alt="${c.name}" loading="lazy">
-      </div>
-      <div class="info">
-        <h3>${c.name}</h3>
-        <p>${c.description}</p>
-        <div class="price-row">
-          <div class="${c.stock ? "price" : "sold-price"}">
-            ${c.price}
-            <small>${c.stock ? "Available now" : "Currently unavailable"}</small>
-          </div>
-          <span class="btn order">VIEW CAPE ↗</span>
-        </div>
-      </div>
-    </a>`;
+ return `
+ <a class="card" href="#cape/${encodeURIComponent(c.id)}"
+ onclick="openCape('${c.id}');return false;">
+  <div class="art">
+   <span class="tag ${c.stock?"":"sold"}">${c.stock?"IN STOCK":"NOT IN STOCK"}</span>
+   <img class="cape-img" src="${c.image}" alt="${c.name}" loading="lazy">
+  </div>
+  <div class="info">
+   <h3>${c.name}</h3>
+   <p>${c.description}</p>
+   <div class="price-row">
+    <div class="${c.stock?"price":"sold-price"}">${c.price}
+     <small>${c.stock?"Available now":"Currently unavailable"}</small>
+    </div>
+    <span class="btn order">VIEW CAPE ↗</span>
+   </div>
+  </div>
+ </a>`;
 }
-
 document.getElementById("products").innerHTML = capes.map(capeCard).join("");
 
 function renderRecommendations(currentCape) {
-  const others = capes.filter(c => c.id !== currentCape.id);
-
-  for (let i = others.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [others[i], others[j]] = [others[j], others[i]];
-  }
-
-  document.getElementById("recommendedProducts").innerHTML =
-    others.slice(0, 4).map(capeCard).join("");
+ const others = capes.filter(c=>c.id!==currentCape.id);
+ for(let i=others.length-1;i>0;i--){
+  const j=Math.floor(Math.random()*(i+1));
+  [others[i],others[j]]=[others[j],others[i]];
+ }
+ document.getElementById("recommendedProducts").innerHTML =
+  others.slice(0,4).map(capeCard).join("");
 }
 
-function showHome(sectionId = "home") {
-  document.getElementById("homePage").style.display = "block";
-  document.getElementById("details").style.display = "none";
-  document.getElementById("not-found").style.display = "none";
-  document.title = "MC STORE | Cape Shop";
-
-  history.replaceState(null, "", window.location.pathname + window.location.search);
-
-  requestAnimationFrame(() => {
-    const target = document.getElementById(sectionId === "shop" ? "shop" : "home");
-    if (target) target.scrollIntoView({behavior:"smooth",block:"start"});
-  });
+function showHome(sectionId="home") {
+ document.getElementById("homePage").style.display="block";
+ document.getElementById("details").style.display="none";
+ document.getElementById("not-found").style.display="none";
+ document.title="MC STORE | Cape Shop";
+ history.replaceState(null,"",window.location.pathname+window.location.search);
+ requestAnimationFrame(()=>{
+  const target=document.getElementById(sectionId==="shop"?"shop":"home");
+  if(target) target.scrollIntoView({behavior:"smooth",block:"start"});
+ });
 }
 
 function openCape(id) {
-  const cape = capes.find(c => c.id === id);
+ const cape=capes.find(c=>c.id===id);
+ document.getElementById("homePage").style.display="none";
+ document.getElementById("details").style.display="block";
+ document.getElementById("not-found").style.display="none";
 
-  document.getElementById("homePage").style.display = "none";
-  document.getElementById("details").style.display = "block";
-  document.getElementById("not-found").style.display = "none";
-
-  if (!cape) {
-    document.getElementById("details").style.display = "none";
-    document.getElementById("not-found").style.display = "block";
-    return;
-  }
-
-  document.title = cape.name + " | MC STORE";
-
-  document.getElementById("detailContent").innerHTML = `
-    <div class="detail-card">
-      <div class="detail-art">
-        <img src="${cape.image}" alt="${cape.name}">
-      </div>
-      <div class="detail-info">
-        <div class="kicker">MC STORE CAPE COLLECTION</div>
-        <h1>${cape.name}</h1>
-        <span class="stock-label ${cape.stock ? "" : "sold"}">
-          ${cape.stock ? "✓ IN STOCK" : "✕ NOT IN STOCK"}
-        </span>
-        <p>${cape.description}</p>
-        <div class="detail-price">${cape.price}</div>
-        <p>${cape.stock
-          ? "This cape is currently listed as available. Contact us on Discord for ordering information."
-          : "This cape is currently unavailable. Join our Discord to ask about future restocks."}</p>
-        <div class="detail-actions">
-          <a class="btn" href="${DISCORD_URL}" target="_blank" rel="noopener">
-            ${cape.stock ? "ORDER ON DISCORD ↗" : "ASK ABOUT RESTOCK ↗"}
-          </a>
-        </div>
-      </div>
-    </div>`;
-
-  renderRecommendations(cape);
-  history.replaceState(null, "", "#cape/" + encodeURIComponent(cape.id));
-  window.scrollTo({top:0,behavior:"smooth"});
+ if(!cape){
+  document.getElementById("details").style.display="none";
+  document.getElementById("not-found").style.display="block";
+  return;
+ }
+ document.title=cape.name+" | MC STORE";
+ document.getElementById("detailContent").innerHTML=`
+  <div class="detail-card">
+   <div class="detail-art"><img src="${cape.image}" alt="${cape.name}"></div>
+   <div class="detail-info">
+    <div class="kicker">MC STORE CAPE COLLECTION</div>
+    <h1>${cape.name}</h1>
+    <span class="stock-label ${cape.stock?"":"sold"}">${cape.stock?"✓ IN STOCK":"✕ NOT IN STOCK"}</span>
+    <p>${cape.description}</p>
+    <div class="detail-price">${cape.price}</div>
+    <p>${cape.stock
+      ?"This cape is currently listed as available. Contact us on Discord for ordering information."
+      :"This cape is currently unavailable. Join our Discord to ask about future restocks."}</p>
+    <div class="detail-actions">
+     <a class="btn" href="${DISCORD_URL}" target="_blank" rel="noopener">
+      ${cape.stock?"ORDER ON DISCORD ↗":"ASK ABOUT RESTOCK ↗"}
+     </a>
+    </div>
+   </div>
+  </div>`;
+ renderRecommendations(cape);
+ history.replaceState(null,"","#cape/"+encodeURIComponent(cape.id));
+ window.scrollTo({top:0,behavior:"smooth"});
 }
 
 function handleRoute() {
-  const match = window.location.hash.match(/^#cape\/(.+)$/);
+ const match=window.location.hash.match(/^#cape\/(.+)$/);
+ if(match){
+  let id=match[1];
+  try{id=decodeURIComponent(id);}catch(e){}
+  openCape(id);
+ }else{
+  showHome(window.location.hash==="#shop"?"shop":"home");
+ }
+}
+window.addEventListener("hashchange",handleRoute);
+if(window.location.hash.startsWith("#cape/")) handleRoute();
+else if(window.location.hash==="#shop") showHome("shop");
+else showHome("home");
+</script>
 
-  if (match) {
-    let id = match[1];
-    try { id = decodeURIComponent(id); } catch (e) {}
-    openCape(id);
-  } else {
-    showHome(window.location.hash === "#shop" ? "shop" : "home");
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+import {
+ getAuth,
+ createUserWithEmailAndPassword,
+ signInWithEmailAndPassword,
+ sendPasswordResetEmail,
+ signOut,
+ onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
+
+const firebaseConfig = {
+ apiKey: "AIzaSyA9ogKFh1DHU87Du5ly51Uk-nKLb6-_2RI",
+ authDomain: "mcstore-b9c85.firebaseapp.com",
+ projectId: "mcstore-b9c85",
+ storageBucket: "mcstore-b9c85.firebasestorage.app",
+ messagingSenderId: "25933524292",
+ appId: "1:25933524292:web:c3843197954eab92957b11"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+
+const overlay = document.getElementById("authOverlay");
+const form = document.getElementById("authForm");
+const title = document.getElementById("authTitle");
+const subtitle = document.getElementById("authSubtitle");
+const submit = document.getElementById("authSubmitBtn");
+const message = document.getElementById("authMessage");
+const switchBtn = document.getElementById("authSwitchBtn");
+const forgotBtn = document.getElementById("authForgotBtn");
+const password = document.getElementById("authPassword");
+const email = document.getElementById("authEmail");
+const openBtn = document.getElementById("authOpenBtn");
+const signOutBtn = document.getElementById("authSignOutBtn");
+const userLabel = document.getElementById("authUserLabel");
+
+let creatingAccount = false;
+
+function showMessage(text,type="success"){
+ message.textContent=text;
+ message.className="auth-message "+type;
+}
+
+function setMode(create){
+ creatingAccount=create;
+ title.textContent=create?"Create Account":"Sign In";
+ subtitle.textContent=create
+  ?"Create your MC STORE account with your email."
+  :"Sign in to your MC STORE account.";
+ submit.textContent=create?"Create Account":"Sign In";
+ password.autocomplete=create?"new-password":"current-password";
+ password.required=true;
+ switchBtn.textContent=create
+  ?"Already have an account? Sign In"
+  :"Don't have an account? Create Account";
+ forgotBtn.hidden=create;
+ showMessage("");
+}
+
+openBtn.addEventListener("click",()=>{
+ setMode(false);
+ overlay.classList.add("open");
+ email.focus();
+});
+
+document.getElementById("authCloseBtn").addEventListener("click",()=>{
+ overlay.classList.remove("open");
+});
+
+overlay.addEventListener("click",event=>{
+ if(event.target===overlay) overlay.classList.remove("open");
+});
+
+document.addEventListener("keydown",event=>{
+ if(event.key==="Escape") overlay.classList.remove("open");
+});
+
+switchBtn.addEventListener("click",()=>setMode(!creatingAccount));
+
+form.addEventListener("submit",async event=>{
+ event.preventDefault();
+ submit.disabled=true;
+ submit.textContent="Please wait...";
+ showMessage("");
+
+ try{
+  if(creatingAccount){
+   await createUserWithEmailAndPassword(auth,email.value.trim(),password.value);
+   showMessage("Account created successfully!");
+  }else{
+   await signInWithEmailAndPassword(auth,email.value.trim(),password.value);
+   showMessage("Signed in successfully!");
   }
-}
+  setTimeout(()=>overlay.classList.remove("open"),800);
+ }catch(error){
+  const errors={
+   "auth/email-already-in-use":"This email already has an account. Sign in instead.",
+   "auth/invalid-email":"Please enter a valid email address.",
+   "auth/weak-password":"Choose a stronger password with at least 6 characters.",
+   "auth/invalid-credential":"Email or password is incorrect.",
+   "auth/user-not-found":"No account was found for that email.",
+   "auth/too-many-requests":"Too many attempts. Try again later.",
+   "auth/network-request-failed":"Network error. Check your internet connection.",
+   "auth/operation-not-allowed":"Enable Email/Password sign-in in Firebase Authentication.",
+   "auth/unauthorized-domain":"Add mc-store.github.io to Firebase Authorized domains."
+  };
+  showMessage(errors[error.code]||"Could not complete the request. Check Firebase settings.","error");
+ }finally{
+  submit.disabled=false;
+  submit.textContent=creatingAccount?"Create Account":"Sign In";
+ }
+});
 
-window.addEventListener("hashchange", handleRoute);
+forgotBtn.addEventListener("click",async()=>{
+ if(!email.value.trim()){
+  showMessage("Enter your email address first.","error");
+  email.focus();
+  return;
+ }
+ try{
+  await sendPasswordResetEmail(auth,email.value.trim());
+  showMessage("If an account exists for this email, a reset link will be sent.");
+ }catch(error){
+  const errors={
+   "auth/invalid-email":"Please enter a valid email address.",
+   "auth/too-many-requests":"Too many attempts. Try again later.",
+   "auth/unauthorized-domain":"Add mc-store.github.io to Firebase Authorized domains."
+  };
+  showMessage(errors[error.code]||"Could not send the reset email. Check Firebase settings.","error");
+ }
+});
 
-if (window.location.hash.startsWith("#cape/")) {
-  handleRoute();
-} else if (window.location.hash === "#shop") {
-  showHome("shop");
-} else {
-  showHome("home");
-}
+signOutBtn.addEventListener("click",async()=>{
+ signOutBtn.disabled=true;
+ try{
+  await signOut(auth);
+ }catch(error){
+  openBtn.hidden=false;
+  overlay.classList.add("open");
+  showMessage("Could not sign out. Please try again.","error");
+ }finally{
+  signOutBtn.disabled=false;
+ }
+});
+
+onAuthStateChanged(auth,user=>{
+ openBtn.hidden=!!user;
+ signOutBtn.hidden=!user;
+ userLabel.hidden=!user;
+ userLabel.textContent=user?user.email:"";
+ if(user) overlay.classList.remove("open");
+});
 </script>
 </body>
 </html>
