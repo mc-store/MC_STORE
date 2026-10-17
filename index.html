@@ -1,258 +1,308 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#f5f1e5">
+<meta name="theme-color" content="#20100b">
 <title>MC STORE | Minecraft Cape Shop</title>
 <style>
-:root {
-  --bg:#f5f1e5;
-  --card:#fffdf7;
-  --text:#292724;
-  --muted:#77736b;
-  --blue:#36c5f5;
-  --blue-dark:#087eb3;
-  --orange:#ff8b27;
-  --line:#e5dfd1;
-}
+:root{--orange:#ff641c;--yellow:#ffd65a;--text:#fff9ee;--muted:#c8b9a5;--panel:#24170d;--line:#ffc75b45}
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-body{font-family:Arial,sans-serif;background:var(--bg);color:var(--text)}
-a{text-decoration:none;color:inherit}
+body{font-family:Arial,sans-serif;color:var(--text);background:radial-gradient(ellipse at 10% 5%,#ffb52e33,transparent 38%),radial-gradient(ellipse at 95% 30%,#ff401b25,transparent 40%),linear-gradient(135deg,#20100b,#3a170b 45%,#171009);background-attachment:fixed;min-height:100vh}
+a{color:inherit;text-decoration:none}
 button{font:inherit;cursor:pointer}
 [hidden]{display:none!important}
-.sale{padding:9px;text-align:center;background:#ff8b27;color:#fff;font-size:11px;font-weight:bold}
-nav{position:sticky;top:0;z-index:10;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:18px 5%;background:var(--card);border-bottom:1px solid var(--line)}
-.logo{font-size:24px;font-weight:1000}
-.logo span{color:var(--blue-dark)}
-.nav-links{display:flex;gap:18px;font-size:13px}
-.nav-links a:hover{color:var(--blue-dark)}
-main{max-width:1200px;margin:auto}
-.hero{display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:30px;padding:55px 5%}
-.eyebrow{font-size:11px;font-weight:bold;letter-spacing:2px;color:var(--blue-dark)}
-h1{font-size:clamp(38px,6vw,68px);line-height:1.05;margin:20px 0}
-h1 span{color:#a52d4a}
-p{line-height:1.8}
-.hero p,.product p{color:var(--muted)}
-.buttons{display:flex;gap:12px;flex-wrap:wrap;margin-top:22px}
-.btn{display:inline-block;border:0;border-radius:8px;padding:13px 18px;background:var(--blue);color:#10232c;font-size:12px;font-weight:bold}
-.btn.dark{background:#292724;color:white}
-.hero-visual{height:350px;display:flex;align-items:center;justify-content:center;background:#e9e3d5;border-radius:18px}
-.hero-visual img{width:90%;height:90%;object-fit:contain}
-.hero-bottom{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:15px}
-.price{font-size:24px;font-weight:bold}
-section{padding:45px 5%}
-.section-head{text-align:center;margin-bottom:28px}
-.section-head h2{font-size:36px;margin:12px}
-.filters{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-bottom:25px}
-.filter{border:1px solid var(--line);border-radius:25px;background:var(--card);padding:11px 18px;font-size:12px;font-weight:bold}
-.filter.active,.filter:hover{background:var(--blue)}
+.sale{text-align:center;padding:12px;background:#17110d;border-bottom:1px solid var(--line);font-size:11px;font-weight:900;letter-spacing:1.5px;color:#ffd65a}
+.sale span{color:var(--orange)}
+nav{position:sticky;top:0;z-index:10;display:flex;justify-content:space-between;align-items:center;padding:12px 6%;gap:15px;background:#170f09ed;backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.logo{font-size:23px;font-weight:1000;letter-spacing:-1px}
+.logo span{color:var(--orange)}
+.links{display:flex;align-items:center;gap:16px;flex-wrap:wrap;font-size:12px}
+.links a:not(.btn){color:var(--muted);padding:9px;border-radius:7px}
+.links a:not(.btn):hover{color:white;background:#5865f233}
+.btn{display:inline-flex;justify-content:center;align-items:center;padding:12px 17px;border-radius:8px;border:1px solid #ffe08b70;color:white;background:linear-gradient(110deg,#ff641c,#e5a32c);font-size:11px;font-weight:900;transition:.2s}
+.btn:hover{transform:translateY(-2px);box-shadow:0 8px 22px #ff641c44}
+.btn.dark{background:#28180e;border-color:#ffc75b55}
+.cart-btn{border:1px solid #ffc75b55;border-radius:8px;padding:10px 13px;background:#28180e;color:white;font-size:12px}
+main{max-width:1250px;margin:auto}
+.hero{padding:45px 6% 55px}
+.hero-ad{display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:35px;padding:28px;border:1px solid var(--line);border-radius:22px;background:linear-gradient(135deg,#34210ff2,#17110bf5);box-shadow:0 15px 45px #0003}
+.hero-ad-image,.art,.detail-art{display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;background:radial-gradient(ellipse,#ffad2930,transparent 65%),#24170d;border-radius:15px}
+.hero-ad-image{height:320px}
+.hero-ad-image img{width:88%;height:285px;object-fit:contain;filter:drop-shadow(0 12px 18px #0009)}
+.eyebrow,.kicker{font-size:10px;font-weight:900;letter-spacing:2px;color:#ffd15c}
+.eyebrow{display:inline-block;padding:8px 13px;border:1px solid #ffd15c66;border-radius:30px;background:#ffb51a12}
+.hero h1{font-size:clamp(38px,5vw,62px);letter-spacing:-2px;line-height:1.05;margin:18px 0}
+.gradient{background:linear-gradient(100deg,#ffe77b,#ff9c26,#ff4b27);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p,.sub{color:var(--muted);font-size:13px;line-height:1.9}
+.hero p{max-width:480px;margin-bottom:18px}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.stats{display:flex;justify-content:center;gap:45px;flex-wrap:wrap;margin-top:30px;text-align:center}
+.stats strong{display:block;font-size:16px}
+.stats span{display:block;color:var(--muted);font-size:10px;margin-top:5px}
+section{padding:55px 6%}
+.head{display:flex;justify-content:space-between;align-items:end;gap:18px;flex-wrap:wrap;margin-bottom:25px}
+.head h2{font-size:clamp(27px,4vw,38px);margin-top:9px}
+.sub{margin-top:8px}
+.filters{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:22px}
+.filter{padding:10px 16px;border:1px solid var(--line);border-radius:25px;background:#25170d;color:var(--muted);font-size:11px;font-weight:900}
+.filter.active,.filter:hover{background:var(--orange);color:white;border-color:var(--orange)}
 .products{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
-.product{background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden}
-.product-art{height:220px;background:#e9e3d5;display:flex;align-items:center;justify-content:center;cursor:pointer;position:relative}
-.product-art img{width:85%;height:90%;object-fit:contain}
-.tag{position:absolute;top:10px;left:10px;background:#292724;color:white;padding:7px;font-size:10px}
-.product-info{padding:16px}
-.product-info h3{font-size:16px}
-.product-info p{font-size:12px;margin-top:8px;min-height:45px}
-.product-bottom{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:15px;flex-wrap:wrap}
-.product-price{font-weight:bold;font-size:18px}
-.small-btn{border:0;border-radius:7px;background:#292724;color:white;padding:11px;font-size:10px;font-weight:bold}
+.card{overflow:hidden;border:1px solid var(--line);border-radius:16px;background:linear-gradient(145deg,#34210ff2,#17110bf5);transition:transform .25s,border-color .25s}
+.card:hover{transform:translateY(-5px);border-color:#ffce55}
+.art{height:225px;border-radius:0;background-color:#24170d}
+.cape-img{width:170px;height:190px;object-fit:contain;filter:drop-shadow(0 12px 18px #0009);transition:.3s}
+.card:hover .cape-img{transform:scale(1.06)}
+.tag{position:absolute;top:12px;left:12px;z-index:2;padding:6px 9px;border-radius:5px;background:#173522;color:#91ffb0;font-size:9px;font-weight:900}
+.info{padding:17px}
+.info h3{font-size:15px}
+.info p{min-height:40px;margin-top:8px;color:var(--muted);font-size:11px;line-height:1.8}
+.price-row{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-top:15px}
+.price{font-size:17px;font-weight:900;color:#ffda70}
+.small-btn{padding:10px 11px;border:0;border-radius:7px;background:#ff641c;color:white;font-size:10px;font-weight:900}
 .trust{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}
-.trust-item,.discord-section{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:25px;text-align:center}
-.trust-item p,.discord-section p{font-size:12px;color:var(--muted);margin-top:8px}
-.discord-section{margin:20px 5% 50px}
-footer{padding:25px 5%;border-top:1px solid var(--line);font-size:12px;color:var(--muted)}
-#details{max-width:1200px;margin:auto}
-.detail-card{display:grid;grid-template-columns:1fr 1fr;gap:25px;padding:20px;background:var(--card);border:1px solid var(--line);border-radius:15px}
-.detail-art{min-height:300px;display:flex;justify-content:center;align-items:center;background:#e9e3d5;border-radius:12px}
+.trust-item,.discord-box{padding:23px;text-align:center;border:1px solid var(--line);border-radius:13px;background:#25170d}
+.trust-item p,.discord-box p{font-size:12px;line-height:1.8;color:var(--muted);margin-top:8px}
+.discord-box{margin:10px 6% 55px}
+.discord-box h2{margin-top:10px}
+.discord-box .btn{margin-top:18px}
+#details{max-width:1250px;margin:auto;padding:35px 6% 65px}
+.back-btn{margin-bottom:20px;padding:11px 15px;border:1px solid var(--line);border-radius:8px;background:#28180e;color:#ffd65a;font-weight:900}
+.detail-card{display:grid;grid-template-columns:1fr 1fr;gap:30px;align-items:center;padding:25px;border:1px solid var(--line);border-radius:18px;background:#25170d}
+.detail-art{min-height:320px}
 .detail-art img{width:90%;height:300px;object-fit:contain}
-.detail-info h2{font-size:32px;margin:15px 0}
-.detail-price{font-size:28px;font-weight:bold;margin:20px 0}
-.back-btn{padding:12px 16px;border:1px solid var(--line);background:var(--card);border-radius:20px;margin-bottom:20px}
-.recommend-title{text-align:center;margin:35px 0 20px}
-.overlay{display:none;position:fixed;inset:0;background:#0007;z-index:20}
+.detail-info h2{font-size:clamp(27px,4vw,38px);margin:15px 0}
+.detail-info p{color:var(--muted);font-size:13px;line-height:1.9}
+.detail-price{font-size:28px;font-weight:900;color:#ffda70;margin:20px 0}
+.recommend-title{margin:35px 0 18px}
+footer{padding:25px 6%;border-top:1px solid var(--line);color:var(--muted);font-size:11px;line-height:1.8}
+.overlay{display:none;position:fixed;inset:0;background:#0009;z-index:20}
 .overlay.open{display:block}
-.cart-panel{position:fixed;right:0;top:0;bottom:0;width:min(400px,100%);z-index:30;background:var(--bg);padding:22px;overflow:auto;transform:translateX(100%);transition:.2s}
+.cart-panel{position:fixed;right:0;top:0;bottom:0;width:min(390px,100%);z-index:30;background:#21140b;padding:22px;overflow:auto;transform:translateX(100%);transition:.2s;border-left:1px solid var(--line)}
 .cart-panel.open{transform:translateX(0)}
 .cart-header,.cart-total{display:flex;justify-content:space-between;align-items:center}
-.close-btn{border:0;background:none;font-size:28px}
-.cart-items{margin:20px 0}
-.cart-line{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--line)}
-.cart-line img{width:60px;height:60px;object-fit:contain}
+.close-btn{border:0;background:none;color:white;font-size:28px}
+.cart-items{margin:18px 0}
+.cart-line{display:flex;align-items:center;gap:10px;padding:12px 0;border-bottom:1px solid var(--line)}
+.cart-line img{width:55px;height:55px;object-fit:contain}
 .cart-line div{flex:1}
-.cart-line h3{font-size:12px}
-.cart-line p{font-size:12px}
-.remove-btn{border:0;background:none;color:#a52d4a;font-size:11px}
-.cart-total{font-size:19px;font-weight:bold;padding:15px 0}
-.cart-help{font-size:11px;color:var(--muted);margin:15px 0}
-.empty{text-align:center;padding:25px;color:var(--muted)}
-@media(max-width:700px){
- nav{flex-wrap:wrap;padding:15px}
- .nav-links{gap:12px;font-size:11px}
- .hero{grid-template-columns:1fr;padding:35px 5%}
- .hero-visual{height:270px}
- .products{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
- .product-art{height:145px}
- .product-info{padding:10px}
- .product-info h3{font-size:13px}
- .product-info p{font-size:11px}
- .product-price{font-size:14px}
- .small-btn{padding:9px 7px}
- .trust{grid-template-columns:1fr}
- .detail-card{grid-template-columns:1fr}
- .detail-art{min-height:230px}
- .detail-art img{height:220px}
- .detail-info h2{font-size:26px}
+.cart-line h3,.cart-line p{font-size:11px}
+.cart-line p{color:#ffda70;margin-top:5px}
+.remove-btn{border:0;background:none;color:#ffaaaa;font-size:10px}
+.cart-total{padding:15px 0;font-size:18px;font-weight:900}
+.cart-help{font-size:11px;color:var(--muted);line-height:1.7;margin-bottom:15px}
+.empty{text-align:center;color:var(--muted);padding:22px}
+@media(max-width:800px){
+.hero-ad{grid-template-columns:1fr}
+.hero-ad-image{height:240px}
+.hero-ad-image img{height:220px}
+.products{grid-template-columns:repeat(2,minmax(0,1fr))}
+.trust{grid-template-columns:1fr}
+.detail-card{gap:18px;padding:17px}
+}
+@media(max-width:540px){
+nav{padding:10px 4%;flex-wrap:wrap}
+.logo{font-size:20px}
+.links{gap:5px;font-size:10px}
+.links a:not(.btn){padding:6px}
+.links .btn{padding:9px}
+.hero{padding:25px 4% 40px}
+.hero-ad{padding:15px;gap:20px}
+.hero h1{font-size:38px}
+.stats{gap:22px}
+.stats strong{font-size:13px}
+section{padding:42px 4%}
+.products{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.art{height:145px}
+.cape-img{width:105px;height:125px}
+.info{padding:11px}
+.info h3{font-size:12px}
+.info p{font-size:10px;min-height:50px}
+.price{font-size:13px}
+.small-btn{padding:8px 7px;font-size:9px}
+.detail-card{grid-template-columns:1fr;padding:13px}
+.detail-art{min-height:230px}
+.detail-art img{height:220px}
+#details{padding:25px 4% 45px}
+.discord-box{margin:10px 4% 40px}
 }
 </style>
 </head>
 <body>
-
-<div class="sale">⚡ MC STORE SALE · DISCOVER YOUR NEXT CAPE · LIMITED COLLECTION</div>
+<div class="sale">☠ <span>SPOOKY SALE</span> ✦ PRICE DROP 👻 · MC STORE CAPE COLLECTION</div>
 
 <nav>
-  <a class="logo" href="#home" onclick="showHome();return false">MC <span>STORE</span></a>
-  <div class="nav-links">
-    <a href="#home" onclick="showHome();return false">Home</a>
-    <a href="#shop" onclick="showHome('shop');return false">Shop</a>
-    <a href="#about" onclick="showHome('about');return false">About</a>
-    <a href="https://discord.com/invite/F38vcYVHA" target="_blank">Discord ↗</a>
-  </div>
-  <button class="small-btn" onclick="openCart()">🛒 Cart (<span id="cartCount">0</span>)</button>
+ <a class="logo" href="#home" onclick="showHome('home');return false">MC <span>STORE</span></a>
+ <div class="links">
+  <a href="#home" onclick="showHome('home');return false">Home</a>
+  <a href="#shop" onclick="showHome('shop');return false">Capes</a>
+  <a class="btn" href="#shop" onclick="showHome('shop');return false">Shop Now ↗</a>
+  <a href="https://discord.com/invite/F38vcYVHA" target="_blank" rel="noopener">Discord ↗</a>
+ </div>
+ <button class="cart-btn" onclick="openCart()">🛒 Cart (<span id="cartCount">0</span>)</button>
 </nav>
 
 <main id="homePage">
 <header class="hero" id="home">
+ <div class="hero-ad">
+  <div class="hero-ad-image"><img id="heroCapeImage" alt="Featured Minecraft cape"></div>
   <div>
-    <div class="eyebrow">WELCOME TO MC STORE</div>
-    <h1>Your Next<br><span>Minecraft Cape.</span></h1>
-    <p>Explore our Minecraft cape collection. Find your favourite design and contact our team for availability and orders.</p>
-    <div class="buttons">
-      <a class="btn" href="#shop" onclick="showHome('shop');return false">EXPLORE CAPES ↗</a>
-      <a class="btn dark" href="https://discord.com/invite/F38vcYVHA" target="_blank">CONTACT US</a>
-    </div>
+   <span class="eyebrow">FEATURED CAPE</span>
+   <h1 id="heroCapeTitle">Your next <span class="gradient">Minecraft Cape.</span></h1>
+   <p>Explore our collection of Minecraft cape listings. Open a cape to see its details, then contact our team on Discord to ask about availability and ordering.</p>
+   <div class="actions">
+    <a class="btn" href="#shop" onclick="showHome('shop');return false">EXPLORE CAPES ↗</a>
+    <a class="btn dark" href="https://discord.com/invite/F38vcYVHA" target="_blank" rel="noopener">CONTACT US</a>
+   </div>
   </div>
-  <div>
-    <div class="hero-visual">
-      <img src="media/cloakFront%20(2).webp" alt="Featured cape">
-    </div>
-    <div class="hero-bottom">
-      <div><div class="eyebrow">FEATURED PRODUCT</div><strong>Menace Cape Code</strong></div>
-      <div><div class="price">$7.99</div><button class="btn" onclick="openCape('menace')">VIEW CAPE ↗</button></div>
-    </div>
-  </div>
+ </div>
+ <div class="stats">
+  <div><strong>MC STORE</strong><span>Your cape destination</span></div>
+  <div><strong>10 Listings</strong><span>Explore the collection</span></div>
+  <div><strong>Discord</strong><span>Order assistance</span></div>
+ </div>
 </header>
 
 <section id="shop">
-  <div class="section-head">
-    <div class="eyebrow">THE COLLECTION</div>
-    <h2>Our Products</h2>
-    <p>Choose a category and explore the cape listings.</p>
-  </div>
-  <div class="filters" id="filters">
-    <button class="filter active" data-filter="all">All Capes</button>
-    <button class="filter" data-filter="classic">Classic</button>
-    <button class="filter" data-filter="special">Special</button>
-  </div>
-  <div class="products" id="products"></div>
+ <div class="head">
+  <div><div class="kicker">OUR COLLECTION</div><h2>Featured <span class="gradient">Capes</span></h2><p class="sub">Use the category filters or open a cape for details.</p></div>
+  <a class="btn" href="https://discord.com/invite/F38vcYVHA" target="_blank" rel="noopener">Ask About Stock ↗</a>
+ </div>
+ <div class="filters" id="filters">
+  <button class="filter active" data-filter="all">All Capes</button>
+  <button class="filter" data-filter="classic">Classic</button>
+  <button class="filter" data-filter="special">Special</button>
+ </div>
+ <div class="products" id="products"></div>
 </section>
 
 <section class="trust" id="about">
-  <div class="trust-item"><h3>🧥 Cape Collection</h3><p>Browse our product listings.</p></div>
-  <div class="trust-item"><h3>💬 Order Assistance</h3><p>Contact us on Discord for help.</p></div>
-  <div class="trust-item"><h3>🔎 Check Before Buying</h3><p>Verify validity and region restrictions.</p></div>
+ <div class="trust-item"><h3>🧥 Cape Collection</h3><p>Browse the available listings.</p></div>
+ <div class="trust-item"><h3>💬 Order Assistance</h3><p>Contact the team on Discord.</p></div>
+ <div class="trust-item"><h3>🔎 Check Before Buying</h3><p>Confirm validity and region restrictions before ordering.</p></div>
 </section>
-
-<div class="discord-section">
-  <div class="eyebrow">NEED HELP?</div>
-  <h2>Join Our Discord</h2>
-  <p>Ask about cape availability and ordering.</p>
-  <div class="buttons" style="justify-content:center">
-    <a class="btn" href="https://discord.com/invite/F38vcYVHA" target="_blank">JOIN DISCORD ↗</a>
-  </div>
-</div>
 </main>
 
 <section id="details" hidden>
-  <button class="back-btn" onclick="showHome('shop')">← Back to Shop</button>
-  <div id="detailContent"></div>
-  <h2 class="recommend-title">You might also like</h2>
-  <div class="products" id="recommendedProducts"></div>
+ <button class="back-btn" onclick="showHome('shop')">← Back to Capes</button>
+ <div id="detailContent"></div>
+ <h2 class="recommend-title">You Might Also Like</h2>
+ <div class="products" id="recommendedProducts"></div>
 </section>
 
+<div class="discord-box">
+ <div class="kicker">NEED HELP?</div>
+ <h2>Join Our <span class="gradient">Discord</span></h2>
+ <p>Ask about cape availability, redemption requirements and ordering.</p>
+ <a class="btn" href="https://discord.com/invite/F38vcYVHA" target="_blank" rel="noopener">JOIN DISCORD ↗</a>
+</div>
+
 <footer>
-  <strong>MC STORE</strong> · Independent third-party store, not affiliated with Mojang or Microsoft.
-  <p>Minecraft is a trademark of its respective owner.</p>
+ <strong>MC STORE</strong> · Independent third-party store, not affiliated with Mojang or Microsoft.<br>
+ Minecraft is a trademark of its respective owner.
 </footer>
 
 <div class="overlay" id="overlay" onclick="closeCart()"></div>
 <aside class="cart-panel" id="cartPanel">
-  <div class="cart-header"><h2>Your Cart 🛒</h2><button class="close-btn" onclick="closeCart()">×</button></div>
-  <div class="cart-items" id="cartItems"></div>
-  <div class="cart-total"><span>Total</span><span id="cartTotal">$0.00</span></div>
-  <p class="cart-help">Demo cart only. No payment or automatic code delivery is connected.</p>
-  <a class="btn" href="https://discord.com/invite/F38vcYVHA" target="_blank">CONTACT TO ORDER ↗</a>
+ <div class="cart-header"><h2>Your Cart 🛒</h2><button class="close-btn" onclick="closeCart()">×</button></div>
+ <div class="cart-items" id="cartItems"></div>
+ <div class="cart-total"><span>Total</span><span id="cartTotal">$0.00</span></div>
+ <p class="cart-help">Demo cart only. No payment or automatic code delivery is connected. Contact us on Discord to confirm an order.</p>
+ <a class="btn" href="https://discord.com/invite/F38vcYVHA" target="_blank" rel="noopener">CONTACT TO ORDER ↗</a>
 </aside>
 
 <script>
 const DISCORD_URL="https://discord.com/invite/F38vcYVHA";
-const fallback="media/cloakFront%20(2).webp";
 
+/* Put each cape's own image file in the media folder and edit its path below.
+   Missing images are hidden rather than replaced with the wrong cape. */
 const capes=[
-{id:"menace",name:"Menace Cape Code",price:7.99,image:fallback,category:"special",tag:"POPULAR"},
-{id:"experience",name:"Experience Cape Code",price:79.99,image:"media/experience.webp",category:"classic",tag:"CLASSIC"},
-{id:"builder",name:"Builder Cape Code",price:9.99,image:"media/builder.webp",category:"classic",tag:""},
-{id:"purple-heart",name:"Purple Heart Cape Code",price:9.99,image:"media/purple-heart.webp",category:"special",tag:""},
-{id:"home",name:"Home Cape Code",price:9.99,image:"media/home.webp",category:"classic",tag:""},
-{id:"pan",name:"Pan Cape Code",price:9.99,image:"media/pan.webp",category:"classic",tag:""},
-{id:"copper",name:"Copper Cape Code",price:9.99,image:"media/copper.webp",category:"special",tag:""},
-{id:"common",name:"Common Cape Code",price:4.99,image:"media/common.webp",category:"classic",tag:""},
-{id:"aurora",name:"Aurora Cape Code",price:19.99,image:"media/aurora.webp",category:"special",tag:"FEATURED"},
-{id:"moonlight",name:"Moonlight Trail Cape Code",price:149.99,image:"media/moonlight.webp",category:"special",tag:"RARE"}
+ {id:"menace",name:"Menace Cape Code",price:7.99,image:"media/menace.webp",category:"special",tag:"POPULAR"},
+ {id:"experience",name:"Experience Cape Code",price:79.99,image:"media/experience.webp",category:"classic",tag:"CLASSIC"},
+ {id:"builder",name:"Builder Cape Code",price:9.99,image:"media/builder.webp",category:"classic",tag:""},
+ {id:"purple-heart",name:"Purple Heart Cape Code",price:9.99,image:"media/purple-heart.webp",category:"special",tag:""},
+ {id:"home",name:"Home Cape Code",price:9.99,image:"media/home.webp",category:"classic",tag:""},
+ {id:"pan",name:"Pan Cape Code",price:9.99,image:"media/pan.webp",category:"classic",tag:""},
+ {id:"copper",name:"Copper Cape Code",price:9.99,image:"media/copper.webp",category:"special",tag:""},
+ {id:"common",name:"Common Cape Code",price:4.99,image:"media/common.webp",category:"classic",tag:""},
+ {id:"aurora",name:"Aurora Cape Code",price:19.99,image:"media/aurora.webp",category:"special",tag:"FEATURED"},
+ {id:"moonlight",name:"Moonlight Trail Cape Code",price:149.99,image:"media/moonlight.webp",category:"special",tag:"RARE"}
 ];
 
 const $=id=>document.getElementById(id);
 const money=n=>"$"+n.toFixed(2);
 let cart=[];
 
-function makeImage(cape){
+function makeImage(cape,extraClass="cape-img"){
  const img=document.createElement("img");
+ img.className=extraClass;
  img.src=cape.image;
  img.alt=cape.name;
- img.onerror=function(){this.onerror=null;this.src=fallback};
+ img.loading="lazy";
+ img.onerror=function(){
+  this.onerror=null;
+  this.style.display="none";
+  const holder=this.parentElement;
+  if(holder&&!holder.querySelector(".missing-image")){
+   const note=document.createElement("span");
+   note.className="missing-image";
+   note.textContent="Add image: "+cape.image;
+   note.style.cssText="color:#c8b9a5;font-size:11px;text-align:center;padding:12px;overflow-wrap:anywhere";
+   holder.appendChild(note);
+  }
+ };
  return img;
 }
 
 function card(cape){
  const article=document.createElement("article");
- article.className="product";
+ article.className="card";
+
  const art=document.createElement("div");
- art.className="product-art";
+ art.className="art";
+ art.tabIndex=0;
+ art.setAttribute("role","button");
+ art.setAttribute("aria-label","View "+cape.name);
  art.onclick=()=>openCape(cape.id);
+ art.onkeydown=e=>{
+  if(e.key==="Enter"||e.key===" "){
+   e.preventDefault();
+   openCape(cape.id);
+  }
+ };
+
  if(cape.tag){
   const tag=document.createElement("span");
   tag.className="tag";
   tag.textContent=cape.tag;
   art.appendChild(tag);
  }
+
  art.appendChild(makeImage(cape));
+
  const info=document.createElement("div");
- info.className="product-info";
+ info.className="info";
+
  const title=document.createElement("h3");
  title.textContent=cape.name;
+
  const desc=document.createElement("p");
  desc.textContent="Check availability and redemption details before ordering.";
+
  const bottom=document.createElement("div");
- bottom.className="product-bottom";
+ bottom.className="price-row";
+
  const price=document.createElement("span");
- price.className="product-price";
+ price.className="price";
  price.textContent=money(cape.price);
+
  const btn=document.createElement("button");
  btn.className="small-btn";
  btn.textContent="VIEW DETAILS ↗";
  btn.onclick=()=>openCape(cape.id);
+
  bottom.append(price,btn);
  info.append(title,desc,bottom);
  article.append(art,info);
@@ -262,56 +312,79 @@ function card(cape){
 function render(filter="all",target="products",exclude=""){
  const box=$(target);
  box.replaceChildren();
- capes.filter(c=>(filter==="all"||c.category===filter)&&c.id!==exclude)
- .forEach(c=>box.appendChild(card(c)));
+ capes
+  .filter(c=>(filter==="all"||c.category===filter)&&c.id!==exclude)
+  .forEach(c=>box.appendChild(card(c)));
 }
 
 function showHome(section="home"){
  $("details").hidden=true;
  $("homePage").hidden=false;
- if(section==="home")window.scrollTo({top:0,behavior:"smooth"});
- else setTimeout(()=>$(section).scrollIntoView({behavior:"smooth"}),50);
+
+ if(section==="home"){
+  window.scrollTo({top:0,behavior:"smooth"});
+ }else{
+  setTimeout(()=>{
+   const el=$(section);
+   if(el)el.scrollIntoView({behavior:"smooth"});
+  },30);
+ }
 }
 
 function openCape(id){
  const cape=capes.find(c=>c.id===id);
  if(!cape)return;
+
  $("homePage").hidden=true;
  $("details").hidden=false;
+
  const box=$("detailContent");
  box.replaceChildren();
+
  const wrap=document.createElement("div");
  wrap.className="detail-card";
+
  const art=document.createElement("div");
  art.className="detail-art";
- art.appendChild(makeImage(cape));
+ art.appendChild(makeImage(cape,""));
+
  const info=document.createElement("div");
  info.className="detail-info";
+
  const category=document.createElement("div");
- category.className="eyebrow";
+ category.className="kicker";
  category.textContent=cape.category==="classic"?"CLASSIC CAPE":"SPECIAL CAPE";
+
  const title=document.createElement("h2");
  title.textContent=cape.name;
+
  const desc=document.createElement("p");
  desc.textContent="Contact us to confirm availability, code validity and redemption restrictions.";
+
  const price=document.createElement("div");
  price.className="detail-price";
  price.textContent=money(cape.price);
+
  const add=document.createElement("button");
  add.className="btn";
  add.textContent="ADD TO CART 🛒";
  add.onclick=()=>addToCart(cape.id);
+
  const contact=document.createElement("a");
  contact.className="btn dark";
  contact.href=DISCORD_URL;
  contact.target="_blank";
+ contact.rel="noopener";
  contact.textContent="ASK ABOUT THIS CAPE ↗";
- const buttons=document.createElement("div");
- buttons.className="buttons";
- buttons.append(add,contact);
- info.append(category,title,desc,price,buttons);
+
+ const actions=document.createElement("div");
+ actions.className="actions";
+ actions.append(add,contact);
+
+ info.append(category,title,desc,price,actions);
  wrap.append(art,info);
  box.appendChild(wrap);
+
  render("all","recommendedProducts",cape.id);
  window.scrollTo({top:0,behavior:"smooth"});
 }
@@ -329,24 +402,31 @@ function renderCart(){
  const box=$("cartItems");
  box.replaceChildren();
  let total=0;
+
  if(!cart.length){
   const p=document.createElement("p");
   p.className="empty";
   p.textContent="Your cart is empty.";
   box.appendChild(p);
  }
+
  cart.forEach(item=>{
   const cape=capes.find(c=>c.id===item.id);
   total+=cape.price*item.qty;
+
   const line=document.createElement("div");
   line.className="cart-line";
-  line.appendChild(makeImage(cape));
+  line.appendChild(makeImage(cape,""));
+
   const info=document.createElement("div");
   const title=document.createElement("h3");
   title.textContent=cape.name+" × "+item.qty;
+
   const price=document.createElement("p");
   price.textContent=money(cape.price*item.qty);
+
   info.append(title,price);
+
   const remove=document.createElement("button");
   remove.className="remove-btn";
   remove.textContent="REMOVE";
@@ -354,9 +434,11 @@ function renderCart(){
    cart=cart.filter(c=>c.id!==item.id);
    renderCart();
   };
+
   line.append(info,remove);
   box.appendChild(line);
  });
+
  $("cartTotal").textContent=money(total);
 }
 
@@ -364,6 +446,7 @@ function openCart(){
  $("overlay").classList.add("open");
  $("cartPanel").classList.add("open");
 }
+
 function closeCart(){
  $("overlay").classList.remove("open");
  $("cartPanel").classList.remove("open");
@@ -372,9 +455,25 @@ function closeCart(){
 $("filters").addEventListener("click",e=>{
  const btn=e.target.closest("[data-filter]");
  if(!btn)return;
- document.querySelectorAll(".filter").forEach(b=>b.classList.toggle("active",b===btn));
+
+ document.querySelectorAll(".filter").forEach(b=>{
+  b.classList.toggle("active",b===btn);
+ });
+
  render(btn.dataset.filter);
 });
+
+$("heroCapeImage").src=capes[0].image;
+$("heroCapeImage").onerror=function(){
+ this.onerror=null;
+ this.style.display="none";
+ const holder=this.parentElement;
+ holder.insertAdjacentHTML(
+  "beforeend",
+  '<div style="padding:15px;text-align:center;color:#c8b9a5;font-size:12px">Add the cape image files to the media folder.</div>'
+ );
+};
+
 render();
 renderCart();
 </script>
