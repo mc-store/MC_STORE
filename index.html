@@ -6,65 +6,30 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#ff641c">
 <title>MC STORE | Cape Shop</title>
-
 <style>
-:root{
-  --orange:#ff641c;
-  --yellow:#ffd65a;
-  --dark:#15100b;
-  --panel:#21170e;
-  --text:#fff9ee;
-  --muted:#c8b9a5;
-}
+:root{--orange:#ff641c;--yellow:#ffd65a;--text:#fff9ee;--muted:#c8b9a5}
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-body{
-  font-family:Inter,Arial,sans-serif;
-  color:var(--text);
-  background:
-    radial-gradient(ellipse at 10% 5%,#ffb52e55,transparent 38%),
-    radial-gradient(ellipse at 95% 30%,#ff401b35,transparent 40%),
-    linear-gradient(135deg,#20100b,#3a170b 45%,#171009);
-  background-attachment:fixed;
-  min-height:100vh
-}
+body{font-family:Inter,Arial,sans-serif;color:var(--text);background:radial-gradient(ellipse at 10% 5%,#ffb52e55,transparent 38%),radial-gradient(ellipse at 95% 30%,#ff401b35,transparent 40%),linear-gradient(135deg,#20100b,#3a170b 45%,#171009);background-attachment:fixed;min-height:100vh}
 a{color:inherit;text-decoration:none}
 button{font-family:inherit}
-.sale{
-  display:flex;justify-content:center;align-items:center;gap:14px;
-  flex-wrap:wrap;padding:15px 10px;text-align:center;
-  font-size:13px;font-weight:1000;letter-spacing:2px;
-  color:#fff3dc;
-  background:linear-gradient(100deg,#170807,#6b120c,#ff641c,#250707,#170807);
-  background-size:300% 100%;
-  border-bottom:1px solid #ff742d80;
-  animation:spookyBg 7s linear infinite
-}
-.spooky{color:#ff6b35;text-shadow:0 0 8px #ff351d,0 0 20px #ff351d99;animation:spookyPulse 1.5s ease-in-out infinite alternate}
-.sale-divider{color:#ffcb64;animation:spinStar 4s linear infinite}
-.drop{background:linear-gradient(90deg,#fff0b3,#ff9c37,#ff3d27,#fff0b3);background-size:200% auto;background-clip:text;-webkit-background-clip:text;color:transparent;animation:textShine 3s linear infinite}
-.ghost{display:inline-block;animation:ghostFloat 2s ease-in-out infinite}
-@keyframes spookyBg{to{background-position:300% 0}}
-@keyframes spookyPulse{to{transform:scale(1.07)}}
-@keyframes spinStar{to{transform:rotate(360deg)}}
-@keyframes textShine{to{background-position:200% center}}
-@keyframes ghostFloat{0%,100%{transform:translateY(0) rotate(-8deg)}50%{transform:translateY(-5px) rotate(8deg)}}
-nav{
-  position:sticky;top:0;z-index:5;display:flex;
-  justify-content:space-between;align-items:center;
-  padding:12px 7%;gap:15px;background:#170f09ed;
-  backdrop-filter:blur(14px);border-bottom:1px solid #ffc04b40
-}
+
+/* SIMPLE CLASSIC SALE BANNER WITH SUBTLE EFFECTS */
+.sale{display:flex;justify-content:center;align-items:center;gap:12px;flex-wrap:wrap;padding:13px 10px;text-align:center;font-size:12px;font-weight:900;letter-spacing:1.5px;color:#fff;background:#17110d;border-bottom:1px solid #ff641c66;overflow:hidden}
+.spooky{color:#ff641c;animation:softGlow 2s ease-in-out infinite alternate}
+.sale-divider{display:inline-block;color:#ffd65a;animation:starSpin 5s linear infinite}
+.drop{color:#ffd65a;animation:dropGlow 2.5s ease-in-out infinite alternate}
+.ghost{display:inline-block;animation:ghostFloat 2.2s ease-in-out infinite}
+@keyframes softGlow{from{text-shadow:0 0 2px #ff641c33}to{text-shadow:0 0 10px #ff641caa}}
+@keyframes dropGlow{from{text-shadow:0 0 2px #ffd65a22}to{text-shadow:0 0 9px #ffd65a99}}
+@keyframes starSpin{to{transform:rotate(360deg)}}
+@keyframes ghostFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+
+nav{position:sticky;top:0;z-index:5;display:flex;justify-content:space-between;align-items:center;padding:12px 7%;gap:15px;background:#170f09ed;backdrop-filter:blur(14px);border-bottom:1px solid #ffc04b40}
 .logo{width:150px;height:52px;object-fit:contain}
 .links{display:flex;align-items:center;gap:22px;font-size:13px}
 .links>a:not(.btn){color:var(--muted)}
-.btn{
-  display:inline-flex;justify-content:center;align-items:center;
-  padding:13px 19px;border-radius:9px;
-  border:1px solid #ffe08b70;color:#fff;
-  background:linear-gradient(110deg,#ff641c,#e5a32c);
-  font-size:12px;font-weight:900;cursor:pointer;transition:.25s
-}
+.btn{display:inline-flex;justify-content:center;align-items:center;padding:13px 19px;border-radius:9px;border:1px solid #ffe08b70;color:#fff;background:linear-gradient(110deg,#ff641c,#e5a32c);font-size:12px;font-weight:900;cursor:pointer;transition:.25s}
 .btn:hover{transform:translateY(-3px);box-shadow:0 8px 25px #ff641c55}
 .hero{text-align:center;padding:105px 20px 75px}
 .eyebrow{display:inline-block;padding:9px 15px;border-radius:30px;border:1px solid #ffd15c80;background:#ffb51a16;color:#ffdb74;font-size:10px;font-weight:900;letter-spacing:2px}
@@ -102,7 +67,7 @@ h2{font-size:clamp(27px,4vw,38px)}
 .discord p{max-width:500px;margin:15px auto 24px;color:var(--muted);font-size:13px;line-height:1.9}
 footer{padding:25px 7%;border-top:1px solid #ffc75b30;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;color:var(--muted);font-size:11px}
 
-/* CAPE DETAILS - INSIDE INDEX.HTML */
+/* PRODUCT DETAILS IN THE SAME PAGE */
 #details{display:none;min-height:65vh;padding:45px 7% 75px}
 .back-row{display:flex;justify-content:flex-start;margin-bottom:30px}
 .back-btn{background:#2a1a0e;border:1px solid #ffbf4c80;color:#ffda70;padding:12px 17px;border-radius:9px;font-size:13px;font-weight:900;cursor:pointer}
@@ -117,35 +82,12 @@ footer{padding:25px 7%;border-top:1px solid #ffc75b30;display:flex;justify-conte
 .stock-label.sold{background:#3c2020;color:#ffaaaa;border-color:#ff777755}
 .detail-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:25px}
 #not-found{display:none;text-align:center;padding:70px 20px}
-@media(max-width:850px){
-  .products{grid-template-columns:repeat(2,minmax(0,1fr))}
-  section{padding:50px 5%}
-  nav{padding:12px 5%}
-  .detail-card{gap:20px;padding:20px}
-}
-@media(max-width:540px){
-  .products{grid-template-columns:1fr}
-  .hero{padding:75px 18px 55px}
-  nav{padding:8px 4%}
-  .logo{width:100px;height:42px}
-  .links{gap:12px;font-size:11px}
-  .links .btn{padding:10px}
-  .stats{gap:24px}
-  .discord{margin:15px 5% 45px}
-  footer{flex-direction:column}
-  .sale{gap:9px;font-size:11px;letter-spacing:1px}
-  #details{padding:28px 5% 50px}
-  .detail-card{grid-template-columns:1fr;padding:15px;gap:22px}
-  .detail-art{min-height:270px}
-  .detail-art img{height:260px}
-  .detail-info h1{margin:12px 0}
-}
-@media(prefers-reduced-motion:reduce){
-  *,*:before,*:after{animation:none!important;transition:none!important}
-}
+
+@media(max-width:850px){.products{grid-template-columns:repeat(2,minmax(0,1fr))}section{padding:50px 5%}nav{padding:12px 5%}.detail-card{gap:20px;padding:20px}}
+@media(max-width:540px){.products{grid-template-columns:1fr}.hero{padding:75px 18px 55px}nav{padding:8px 4%}.logo{width:100px;height:42px}.links{gap:12px;font-size:11px}.links .btn{padding:10px}.stats{gap:24px}.discord{margin:15px 5% 45px}footer{flex-direction:column}.sale{gap:9px;font-size:11px;letter-spacing:1px}#details{padding:28px 5% 50px}.detail-card{grid-template-columns:1fr;padding:15px;gap:22px}.detail-art{min-height:270px}.detail-art img{height:260px}.detail-info h1{margin:12px 0}}
+@media(prefers-reduced-motion:reduce){.spooky,.sale-divider,.drop,.ghost,*,*:before,*:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 </style>
 </head>
-
 <body>
 
 <div class="sale">
@@ -156,13 +98,13 @@ footer{padding:25px 7%;border-top:1px solid #ffc75b30;display:flex;justify-conte
 </div>
 
 <nav>
-  <a href="#home" onclick="showHome()">
+  <a href="#home" onclick="showHome('home');return false;">
     <img class="logo" src="media/1792194385872.png" alt="MC STORE">
   </a>
-  <div class="links" id="navLinks">
-    <a href="#home" onclick="showHome()">Home</a>
-    <a href="#shop" onclick="showHome()">Capes</a>
-    <a class="btn" href="#shop" onclick="showHome()">Shop Now ↗</a>
+  <div class="links">
+    <a href="#home" onclick="showHome('home');return false;">Home</a>
+    <a href="#shop" onclick="showHome('shop');return false;">Capes</a>
+    <a class="btn" href="#shop" onclick="showHome('shop');return false;">Shop Now ↗</a>
   </div>
 </nav>
 
@@ -172,7 +114,7 @@ footer{padding:25px 7%;border-top:1px solid #ffc75b30;display:flex;justify-conte
     <h1>Discover Minecraft<br><span class="gradient">Capes.</span></h1>
     <p>Explore our cape collection. Select any cape to see its price, details, and availability.</p>
     <div class="actions">
-      <a class="btn" href="#shop">Explore Collection ↗</a>
+      <a class="btn" href="#shop" onclick="showHome('shop');return false;">Explore Collection ↗</a>
       <a class="btn" href="https://discord.com/invite/F38vcYVHA" target="_blank" rel="noopener">Join Discord ↗</a>
     </div>
     <div class="stats">
@@ -204,7 +146,7 @@ footer{padding:25px 7%;border-top:1px solid #ffc75b30;display:flex;justify-conte
 
 <section id="details">
   <div class="back-row">
-    <button class="back-btn" type="button" onclick="showHome()">← Back to Home</button>
+    <button class="back-btn" type="button" onclick="showHome('shop')">← Back to Home</button>
   </div>
   <div id="detailContent"></div>
 </section>
@@ -212,7 +154,7 @@ footer{padding:25px 7%;border-top:1px solid #ffc75b30;display:flex;justify-conte
 <div id="not-found">
   <h2>Cape not found</h2>
   <p class="sub">We couldn't find that cape.</p>
-  <button class="back-btn" type="button" onclick="showHome()" style="margin-top:22px">← Back to Home</button>
+  <button class="back-btn" type="button" onclick="showHome('shop')" style="margin-top:22px">← Back to Home</button>
 </div>
 
 <footer>
@@ -221,180 +163,104 @@ footer{padding:25px 7%;border-top:1px solid #ffc75b30;display:flex;justify-conte
 </footer>
 
 <script>
-const DISCORD_URL = "https://discord.com/invite/F38vcYVHA";
+const DISCORD_URL="https://discord.com/invite/F38vcYVHA";
 
-const capes = [
-  {
-    id:"corrupted",
-    name:"Corrupted Cape",
-    price:"$10",
-    stock:true,
-    image:"media/cloakFront%20(2).webp",
-    description:"A distinctive cape for your Minecraft collection."
-  },
-  {
-    id:"aurora",
-    name:"Aurora Cape",
-    price:"$7",
-    stock:true,
-    image:"media/aurora-front.png",
-    description:"A vibrant cape for players who want to stand out."
-  },
-  {
-    id:"builder",
-    name:"Builder Cape",
-    price:"$9",
-    stock:true,
-    image:"media/320%20(1).png",
-    description:"A classic addition for Minecraft cape collectors."
-  },
-  {
-    id:"experience",
-    name:"Experience Cape",
-    price:"Not in stock",
-    stock:false,
-    image:"media/320%20(2).png",
-    description:"A special cape for your Minecraft collection."
-  },
-  {
-    id:"crafter",
-    name:"Crafter Cape",
-    price:"Not in stock",
-    stock:false,
-    image:"media/320%20(3).png",
-    description:"A distinctive cape for Minecraft fans and collectors."
-  },
-  {
-    id:"menace",
-    name:"Menace Cape",
-    price:"Not in stock",
-    stock:false,
-    image:"media/320%20(5).png",
-    description:"A striking cape for your Minecraft collection."
-  },
-  {
-    id:"copper",
-    name:"Copper Cape",
-    price:"Not in stock",
-    stock:false,
-    image:"media/320%20(6).png",
-    description:"A copper-themed cape for Minecraft players."
-  },
-  {
-    id:"moonlight",
-    name:"Moonlight Cape",
-    price:"Not in stock",
-    stock:false,
-    image:"media/cloakFront%20(4).webp",
-    description:"A moonlight-inspired cape for your collection."
-  },
-  {
-    id:"purple-heart",
-    name:"Purple Heart Cape",
-    price:"Not in stock",
-    stock:false,
-    image:"media/320%20(7).png",
-    description:"A purple-themed cape for your Minecraft collection."
-  }
+const capes=[
+{id:"corrupted",name:"Corrupted Cape",price:"$10",stock:true,image:"media/cloakFront%20(2).webp",description:"A distinctive cape for your Minecraft collection."},
+{id:"aurora",name:"Aurora Cape",price:"$7",stock:true,image:"media/aurora-front.png",description:"A vibrant cape for players who want to stand out."},
+{id:"builder",name:"Builder Cape",price:"$9",stock:true,image:"media/320%20(1).png",description:"A classic addition for Minecraft cape collectors."},
+{id:"experience",name:"Experience Cape",price:"Not in stock",stock:false,image:"media/320%20(2).png",description:"A special cape for your Minecraft collection."},
+{id:"crafter",name:"Crafter Cape",price:"Not in stock",stock:false,image:"media/320%20(3).png",description:"A distinctive cape for Minecraft fans and collectors."},
+{id:"menace",name:"Menace Cape",price:"Not in stock",stock:false,image:"media/320%20(5).png",description:"A striking cape for your Minecraft collection."},
+{id:"copper",name:"Copper Cape",price:"Not in stock",stock:false,image:"media/320%20(6).png",description:"A copper-themed cape for Minecraft players."},
+{id:"moonlight",name:"Moonlight Cape",price:"Not in stock",stock:false,image:"media/cloakFront%20(4).webp",description:"A moonlight-inspired cape for your collection."},
+{id:"purple-heart",name:"Purple Heart Cape",price:"Not in stock",stock:false,image:"media/320%20(7).png",description:"A purple-themed cape for your Minecraft collection."}
 ];
 
-const products = document.getElementById("products");
+document.getElementById("year").textContent=new Date().getFullYear();
 
-document.getElementById("year").textContent = new Date().getFullYear();
-
-products.innerHTML = capes.map(c => `
-  <a class="card" href="#cape/${encodeURIComponent(c.id)}"
-     onclick="openCape('${c.id}');return false;">
-    <div class="art">
-      <span class="tag ${c.stock ? "" : "sold"}">
-        ${c.stock ? "IN STOCK" : "NOT IN STOCK"}
-      </span>
-      <img class="cape-img" src="${c.image}" alt="${c.name}" loading="lazy">
+document.getElementById("products").innerHTML=capes.map(c=>`
+<a class="card" href="#cape/${encodeURIComponent(c.id)}" onclick="openCape('${c.id}');return false;">
+  <div class="art">
+    <span class="tag ${c.stock?"":"sold"}">${c.stock?"IN STOCK":"NOT IN STOCK"}</span>
+    <img class="cape-img" src="${c.image}" alt="${c.name}" loading="lazy">
+  </div>
+  <div class="info">
+    <h3>${c.name}</h3>
+    <p>${c.description}</p>
+    <div class="price-row">
+      <div class="${c.stock?"price":"sold-price"}">${c.price}<small>${c.stock?"Available now":"Currently unavailable"}</small></div>
+      <span class="btn order">VIEW DETAILS ↗</span>
     </div>
-    <div class="info">
-      <h3>${c.name}</h3>
-      <p>${c.description}</p>
-      <div class="price-row">
-        <div class="${c.stock ? "price" : "sold-price"}">
-          ${c.price}
-          <small>${c.stock ? "Available now" : "Currently unavailable"}</small>
-        </div>
-        <span class="btn order">VIEW DETAILS ↗</span>
-      </div>
-    </div>
-  </a>
-`).join("");
+  </div>
+</a>`).join("");
 
-function showHome(){
-  document.getElementById("homePage").style.display = "block";
-  document.getElementById("details").style.display = "none";
-  document.getElementById("not-found").style.display = "none";
-  document.title = "MC STORE | Cape Shop";
-  history.replaceState(null, "", window.location.pathname + window.location.search);
-  window.scrollTo({top:0,behavior:"smooth"});
+function showHome(sectionId="home"){
+  document.getElementById("homePage").style.display="block";
+  document.getElementById("details").style.display="none";
+  document.getElementById("not-found").style.display="none";
+  document.title="MC STORE | Cape Shop";
+  history.replaceState(null,"",window.location.pathname+window.location.search);
+  requestAnimationFrame(()=>{
+    const target=document.getElementById(sectionId==="shop"?"shop":"home");
+    if(target)target.scrollIntoView({behavior:"smooth",block:"start"});
+  });
 }
 
 function openCape(id){
-  const cape = capes.find(c => c.id === id);
-  document.getElementById("homePage").style.display = "none";
-  document.getElementById("details").style.display = "block";
-  document.getElementById("not-found").style.display = "none";
+  const cape=capes.find(c=>c.id===id);
+  document.getElementById("homePage").style.display="none";
+  document.getElementById("details").style.display="block";
+  document.getElementById("not-found").style.display="none";
 
   if(!cape){
-    document.getElementById("details").style.display = "none";
-    document.getElementById("not-found").style.display = "block";
+    document.getElementById("details").style.display="none";
+    document.getElementById("not-found").style.display="block";
     return;
   }
 
-  document.title = cape.name + " | MC STORE";
-
-  document.getElementById("detailContent").innerHTML = `
+  document.title=cape.name+" | MC STORE";
+  document.getElementById("detailContent").innerHTML=`
     <div class="detail-card">
-      <div class="detail-art">
-        <img src="${cape.image}" alt="${cape.name}">
-      </div>
+      <div class="detail-art"><img src="${cape.image}" alt="${cape.name}"></div>
       <div class="detail-info">
         <div class="kicker">MC STORE CAPE COLLECTION</div>
         <h1>${cape.name}</h1>
-        <span class="stock-label ${cape.stock ? "" : "sold"}">
-          ${cape.stock ? "✓ IN STOCK" : "✕ NOT IN STOCK"}
-        </span>
+        <span class="stock-label ${cape.stock?"":"sold"}">${cape.stock?"✓ IN STOCK":"✕ NOT IN STOCK"}</span>
         <p>${cape.description}</p>
         <div class="detail-price">${cape.price}</div>
-        <p>${cape.stock
-          ? "This cape is currently listed as available. Contact us on Discord for ordering information."
-          : "This cape is currently unavailable. Join our Discord to ask about future restocks."
-        }</p>
+        <p>${cape.stock?"This cape is currently listed as available. Contact us on Discord for ordering information.":"This cape is currently unavailable. Join our Discord to ask about future restocks."}</p>
         <div class="detail-actions">
-          <a class="btn" href="${DISCORD_URL}" target="_blank" rel="noopener">
-            ${cape.stock ? "ORDER ON DISCORD ↗" : "ASK ABOUT RESTOCK ↗"}
-          </a>
+          <a class="btn" href="${DISCORD_URL}" target="_blank" rel="noopener">${cape.stock?"ORDER ON DISCORD ↗":"ASK ABOUT RESTOCK ↗"}</a>
         </div>
       </div>
-    </div>
-  `;
-
-  history.replaceState(null, "", "#cape/" + encodeURIComponent(cape.id));
+    </div>`;
+  history.replaceState(null,"","#cape/"+encodeURIComponent(cape.id));
   window.scrollTo({top:0,behavior:"smooth"});
 }
 
 function handleRoute(){
-  const match = window.location.hash.match(/^#cape\/(.+)$/);
+  const match=window.location.hash.match(/^#cape\/(.+)$/);
   if(match){
-    let id = match[1];
-    try{id = decodeURIComponent(id)}catch(e){}
+    let id=match[1];
+    try{id=decodeURIComponent(id)}catch(e){}
     openCape(id);
   }else{
-    showHome();
+    const section=window.location.hash==="#shop"?"shop":"home";
+    showHome(section);
   }
 }
 
-window.addEventListener("hashchange", handleRoute);
+window.addEventListener("hashchange",handleRoute);
 
 if(window.location.hash.startsWith("#cape/")){
   handleRoute();
+}else if(window.location.hash==="#shop"){
+  showHome("shop");
+}else{
+  showHome("home");
 }
 </script>
-
 </body>
 </html>
+```
