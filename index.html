@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,6 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#ff641c">
 <title>MC STORE | Cape Shop</title>
+
 <style>
 :root{--orange:#ff641c;--yellow:#ffd65a;--text:#fff9ee;--muted:#c8b9a5}
 *{box-sizing:border-box;margin:0;padding:0}
@@ -12,37 +14,52 @@ html{scroll-behavior:smooth}
 body{font-family:Inter,Arial,sans-serif;color:var(--text);background:radial-gradient(ellipse at 10% 5%,#ffb52e55,transparent 38%),radial-gradient(ellipse at 95% 30%,#ff401b35,transparent 40%),linear-gradient(135deg,#20100b,#3a170b 45%,#171009);background-attachment:fixed;min-height:100vh}
 a{color:inherit;text-decoration:none}
 button{font-family:inherit}
-.sale{display:flex;justify-content:center;align-items:center;gap:12px;flex-wrap:wrap;padding:13px 10px;text-align:center;font-size:12px;font-weight:900;letter-spacing:1.5px;color:#fff;background:#17110d;border-bottom:1px solid #ff641c66;overflow:hidden}
-.spooky{color:#ff641c;animation:softGlow 2s ease-in-out infinite alternate}
+
+.sale{display:flex;justify-content:center;align-items:center;gap:12px;flex-wrap:wrap;padding:13px 10px;text-align:center;font-size:12px;font-weight:900;letter-spacing:1.5px;background:#17110d;border-bottom:1px solid #ff641c66;overflow:hidden}
+.spooky{color:#ff641c;animation:softGlow 1.5s ease-in-out infinite alternate}
 .sale-divider{display:inline-block;color:#ffd65a;animation:starSpin 5s linear infinite}
-.drop{color:#ffd65a;animation:dropGlow 2.5s ease-in-out infinite alternate}
-.ghost{display:inline-block;animation:ghostFloat 2.2s ease-in-out infinite}
-@keyframes softGlow{from{text-shadow:0 0 2px #ff641c33}to{text-shadow:0 0 10px #ff641caa}}
-@keyframes dropGlow{from{text-shadow:0 0 2px #ffd65a22}to{text-shadow:0 0 9px #ffd65a99}}
+.drop{color:#ffd65a;animation:dropGlow 1.5s ease-in-out infinite alternate}
+.ghost{display:inline-block;animation:ghostFloat 2s ease-in-out infinite}
+@keyframes softGlow{to{text-shadow:0 0 13px #ff641c}}
+@keyframes dropGlow{to{text-shadow:0 0 12px #ffd65a}}
 @keyframes starSpin{to{transform:rotate(360deg)}}
-@keyframes ghostFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+@keyframes ghostFloat{50%{transform:translateY(-5px)}}
+
 nav{position:sticky;top:0;z-index:5;display:flex;justify-content:space-between;align-items:center;padding:12px 7%;gap:15px;background:#170f09ed;backdrop-filter:blur(14px);border-bottom:1px solid #ffc04b40}
 .logo{width:150px;height:52px;object-fit:contain}
 .links{display:flex;align-items:center;gap:22px;font-size:13px}
 .links>a:not(.btn){color:var(--muted)}
-.btn{display:inline-flex;justify-content:center;align-items:center;padding:13px 19px;border-radius:9px;border:1px solid #ffe08b70;color:#fff;background:linear-gradient(110deg,#ff641c,#e5a32c);font-size:12px;font-weight:900;cursor:pointer;transition:.25s}
+.btn{display:inline-flex;justify-content:center;align-items:center;padding:13px 19px;border-radius:9px;border:1px solid #ffe08b70;color:#fff;background:linear-gradient(110deg,#ff641c,#e5a32c);font-size:12px;font-weight:900;cursor:pointer;transition:transform .25s,box-shadow .25s}
 .btn:hover{transform:translateY(-3px);box-shadow:0 8px 25px #ff641c55}
+
 .hero{text-align:center;padding:65px 20px 75px}
 .eyebrow{display:inline-block;padding:9px 15px;border-radius:30px;border:1px solid #ffd15c80;background:#ffb51a16;color:#ffdb74;font-size:10px;font-weight:900;letter-spacing:2px}
-h1{font-size:clamp(40px,7vw,76px);letter-spacing:-3px;line-height:1.1;margin:25px 0}
 .gradient{background:linear-gradient(100deg,#ffe77b,#ff9c26,#ff4b27);-webkit-background-clip:text;background-clip:text;color:transparent}
+h1{font-size:clamp(40px,7vw,76px);letter-spacing:-3px;line-height:1.1;margin:25px 0}
 .hero p{max-width:570px;margin:0 auto 26px;color:var(--muted);font-size:14px;line-height:1.9}
 .actions{display:flex;justify-content:flex-start;gap:12px;flex-wrap:wrap}
 .stats{display:flex;justify-content:center;gap:50px;flex-wrap:wrap;margin-top:45px}
 .stats strong{display:block;font-size:18px}
 .stats span{display:block;color:var(--muted);font-size:11px;margin-top:6px}
 
-/* ROTATING HERO CAPE AD */
-.hero-ad{max-width:1050px;margin:30px auto 0;display:grid;grid-template-columns:.9fr 1.1fr;align-items:center;gap:35px;text-align:left;padding:30px;border:1px solid #ffc75b45;border-radius:22px;background:linear-gradient(135deg,#34210ff2,#17110bf5);box-shadow:0 15px 45px #0003}
+/* ANIMATED CAPE AD */
+.hero-ad{max-width:1050px;margin:30px auto 0;display:grid;grid-template-columns:.9fr 1.1fr;align-items:center;gap:35px;text-align:left;padding:30px;border:1px solid #ffc75b45;border-radius:22px;background:linear-gradient(135deg,#34210ff2,#17110bf5);box-shadow:0 15px 45px #0003;position:relative;overflow:hidden;transition:border-color .35s,box-shadow .35s}
+.hero-ad:before{content:"";position:absolute;inset:-2px;background:linear-gradient(110deg,transparent 15%,#ff641c20 45%,#ffd65a25 55%,transparent 85%);transform:translateX(-110%);pointer-events:none}
+.hero-ad.ad-changing{border-color:#ffb52e;box-shadow:0 0 25px #ff641c30,0 15px 45px #0005}
+.hero-ad.ad-changing:before{animation:shineSweep .7s ease-out}
+@keyframes shineSweep{to{transform:translateX(110%)}}
+
 .hero-ad-image{height:310px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;border-radius:15px;background:radial-gradient(ellipse,#ffad2935,transparent 65%),#24170d}
-.hero-ad-image:after{content:"";position:absolute;width:160px;height:160px;border-radius:50%;background:#ff9e1e30;filter:blur(40px)}
-.hero-ad-image img{position:relative;z-index:1;width:85%;height:275px;object-fit:contain;filter:drop-shadow(0 12px 18px #0009);animation:capeFloat 3s ease-in-out infinite}
-.hero-ad-content{min-width:0}
+.hero-ad-image:after{content:"";position:absolute;width:160px;height:160px;border-radius:50%;background:#ff9e1e40;filter:blur(40px);transition:transform .4s}
+.hero-ad-image img{position:relative;z-index:1;width:85%;height:275px;object-fit:contain;filter:drop-shadow(0 12px 18px #0009);animation:capeFloat 2s ease-in-out infinite;transition:filter .3s}
+.hero-ad.ad-changing .hero-ad-image img{animation:capeEnter .65s cubic-bezier(.2,.8,.2,1) both}
+.hero-ad.ad-changing .hero-ad-content .ad-text{animation:textEnter .55s ease both}
+.hero-ad.ad-changing .hero-ad-image:after{transform:scale(1.35)}
+@keyframes capeFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+@keyframes capeEnter{0%{opacity:0;transform:translateX(45px) scale(.78) rotate(8deg);filter:blur(5px) drop-shadow(0 0 0 #ff641c00)}65%{opacity:1;transform:translateX(-5px) scale(1.04) rotate(-2deg);filter:blur(0) drop-shadow(0 0 22px #ff9c2680)}100%{opacity:1;transform:translateX(0) scale(1) rotate(0);filter:drop-shadow(0 12px 18px #0009)}}
+@keyframes textEnter{0%{opacity:0;transform:translateY(15px)}100%{opacity:1;transform:translateY(0)}}
+
+.hero-ad-content{min-width:0;position:relative;z-index:1}
 .hero-ad-content h1{font-size:clamp(32px,4vw,49px);letter-spacing:-1.8px;margin:20px 0}
 .hero-ad-content p{max-width:500px;margin:0 0 18px;color:var(--muted);font-size:14px;line-height:1.9}
 .hero-cape-price{color:#ffda70;font-size:27px;font-weight:900;margin:17px 0}
@@ -50,9 +67,9 @@ h1{font-size:clamp(40px,7vw,76px);letter-spacing:-3px;line-height:1.1;margin:25p
 .hero-cape-stock.sold{background:#3c2020;color:#ffaaaa;border-color:#ff777755}
 .hero-ad-content .actions{margin-top:8px}
 .hero-dots{display:flex;align-items:center;gap:8px;margin-top:24px}
-.hero-dot{width:9px;height:9px;padding:0;border:0;border-radius:50%;background:#80634a;cursor:pointer;transition:width .25s,background .25s}
-.hero-dot.active{width:25px;border-radius:10px;background:#ff641c}
-@keyframes capeFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.hero-dot{width:9px;height:9px;padding:0;border:0;border-radius:50%;background:#80634a;cursor:pointer;transition:width .25s,background .25s,box-shadow .25s}
+.hero-dot.active{width:26px;border-radius:10px;background:#ff641c;box-shadow:0 0 12px #ff641c90}
+
 section{padding:65px 7%}
 .head{display:flex;justify-content:space-between;align-items:end;gap:20px;flex-wrap:wrap;margin-bottom:30px}
 .kicker{font-size:10px;font-weight:900;letter-spacing:2px;color:#ffd15c;margin-bottom:10px}
@@ -76,11 +93,12 @@ h2{font-size:clamp(27px,4vw,38px)}
 .price small{display:block;color:var(--muted);font-size:10px;font-weight:500;margin-top:4px}
 .sold-price{font-size:12px;color:#ffaaaa}
 .order{font-size:10px;padding:11px 13px}
+
 .discord{margin:20px 7% 70px;padding:50px 22px;text-align:center;border-radius:20px;border:1px solid #ffcf6555;background:radial-gradient(ellipse at 0 100%,#ff9b2033,transparent 55%),radial-gradient(ellipse at 100% 0,#ff401b16,transparent 55%),#24190f}
 .discord p{max-width:500px;margin:15px auto 24px;color:var(--muted);font-size:13px;line-height:1.9}
 footer{padding:25px 7%;border-top:1px solid #ffc75b30;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;color:var(--muted);font-size:11px}
 
-/* CAPE DETAILS */
+/* DETAILS */
 #details{display:none;min-height:65vh;padding:45px 7% 75px}
 .back-row{display:flex;justify-content:flex-start;margin-bottom:30px}
 .back-btn{background:#2a1a0e;border:1px solid #ffbf4c80;color:#ffda70;padding:12px 17px;border-radius:9px;font-size:13px;font-weight:900;cursor:pointer}
@@ -94,8 +112,6 @@ footer{padding:25px 7%;border-top:1px solid #ffc75b30;display:flex;justify-conte
 .stock-label{display:inline-block;padding:8px 12px;border-radius:7px;font-size:11px;font-weight:900;background:#173522;color:#91ffb0;border:1px solid #43d87866}
 .stock-label.sold{background:#3c2020;color:#ffaaaa;border-color:#ff777755}
 .detail-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:25px}
-
-/* YOU MIGHT ALSO LIKE */
 .recommendations{max-width:1200px;margin:55px auto 0;padding-top:35px;border-top:1px solid #ffc75b35}
 .recommendations .head{margin-bottom:25px}
 .recommendations .products{grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
@@ -114,11 +130,11 @@ footer{padding:25px 7%;border-top:1px solid #ffc75b30;display:flex;justify-conte
 @media(max-width:850px){.products{grid-template-columns:repeat(2,minmax(0,1fr))}section{padding:50px 5%}nav{padding:12px 5%}.detail-card{gap:20px;padding:20px}}
 @media(max-width:650px){.hero-ad{grid-template-columns:1fr;gap:22px;padding:18px;text-align:center}.hero-ad-image{height:230px}.hero-ad-image img{height:210px}.hero-ad-content h1{font-size:36px}.hero-ad-content .actions{justify-content:center}.hero-dots{justify-content:center}.hero-ad-content p{margin-left:auto;margin-right:auto}}
 @media(max-width:540px){.products{grid-template-columns:1fr}.hero{padding:45px 14px 55px}nav{padding:8px 4%}.logo{width:100px;height:42px}.links{gap:12px;font-size:11px}.links .btn{padding:10px}.stats{gap:24px}.discord{margin:15px 5% 45px}footer{flex-direction:column}.sale{gap:9px;font-size:11px;letter-spacing:1px}#details{padding:28px 5% 50px}.detail-card{grid-template-columns:1fr;padding:15px;gap:22px}.detail-art{min-height:270px}.detail-art img{height:260px}.detail-info h1{margin:12px 0}.recommendations{margin-top:40px;padding-top:25px}.recommendations .products{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.recommendations .art{height:135px}.recommendations .cape-img{width:90px;height:105px}.recommendations .info{padding:11px}.recommendations .info h3{font-size:12px}.recommendations .price-row{align-items:flex-start;flex-direction:column}.recommendations .order{width:100%}}
-@media(prefers-reduced-motion:reduce){.spooky,.sale-divider,.drop,.ghost,*,*:before,*:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}.hero-ad-image img{animation:none!important}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 </style>
 </head>
-<body>
 
+<body>
 <div class="sale">
   <span class="spooky">☠ SPOOKY SALE</span>
   <span class="sale-divider">✦</span>
@@ -143,19 +159,16 @@ footer{padding:25px 7%;border-top:1px solid #ffc75b30;display:flex;justify-conte
       <div class="hero-ad-image">
         <img id="heroCapeImage" src="media/cloakFront%20(2).webp" alt="Corrupted Cape">
       </div>
-
       <div class="hero-ad-content">
-        <span class="eyebrow" id="heroCapeEyebrow">FEATURED CAPE</span>
-        <h1 id="heroCapeTitle">Discover Minecraft<br><span class="gradient">Corrupted Cape.</span></h1>
-        <p id="heroCapeDescription">A distinctive cape for your Minecraft collection.</p>
-        <span class="hero-cape-stock" id="heroCapeStock">✓ IN STOCK</span>
-        <div class="hero-cape-price" id="heroCapePrice">$10</div>
-
+        <span class="eyebrow ad-text" id="heroCapeEyebrow">FEATURED CAPE</span>
+        <h1 class="ad-text" id="heroCapeTitle">Corrupted<br><span class="gradient">Cape.</span></h1>
+        <p class="ad-text" id="heroCapeDescription">A distinctive cape for your Minecraft collection.</p>
+        <span class="hero-cape-stock ad-text" id="heroCapeStock">✓ IN STOCK</span>
+        <div class="hero-cape-price ad-text" id="heroCapePrice">$10</div>
         <div class="actions">
-          <a class="btn" href="#cape/corrupted" id="heroViewCape" onclick="openCape('corrupted');return false;">View Cape ↗</a>
-          <a class="btn" href="https://discord.com/invite/F38vcYVHA" target="_blank" rel="noopener">Join Discord ↗</a>
+          <a class="btn" href="#cape/corrupted" id="heroViewCape" onclick="openCape('corrupted');return false;">VIEW CAPE ↗</a>
+          <a class="btn" href="https://discord.com/invite/F38vcYVHA" target="_blank" rel="noopener">JOIN DISCORD ↗</a>
         </div>
-
         <div class="hero-dots" id="heroDots" aria-label="Choose featured cape"></div>
       </div>
     </div>
@@ -192,8 +205,7 @@ footer{padding:25px 7%;border-top:1px solid #ffc75b30;display:flex;justify-conte
     <button class="back-btn" type="button" onclick="showHome('shop')">← Back to Capes</button>
   </div>
   <div id="detailContent"></div>
-
-  <div class="recommendations" id="recommendations">
+  <div class="recommendations">
     <div class="head">
       <div>
         <div class="kicker">DISCOVER MORE</div>
@@ -233,76 +245,73 @@ const capes=[
 
 document.getElementById("year").textContent=new Date().getFullYear();
 
-/* ROTATING CAPE AD */
-const heroCapeIds=[
-  "corrupted",
-  "aurora",
-  "builder",
-  "experience",
-  "crafter",
-  "menace",
-  "copper",
-  "moonlight",
-  "purple-heart"
-];
-
+/* FAST AUTOMATIC CAPE ADVERTISEMENT */
 let heroCapeIndex=0;
 let heroTimer=null;
+let heroPaused=false;
+const heroAd=document.getElementById("heroAd");
 
-function showHeroCape(index){
-  const cape=capes.find(c=>c.id===heroCapeIds[index]);
+function showHeroCape(index,animate=true){
+  const cape=capes[index];
   if(!cape)return;
 
   heroCapeIndex=index;
 
-  const image=document.getElementById("heroCapeImage");
-  const title=document.getElementById("heroCapeTitle");
-  const description=document.getElementById("heroCapeDescription");
-  const price=document.getElementById("heroCapePrice");
-  const stock=document.getElementById("heroCapeStock");
-  const view=document.getElementById("heroViewCape");
-  const eyebrow=document.getElementById("heroCapeEyebrow");
+  if(animate){
+    heroAd.classList.remove("ad-changing");
+    void heroAd.offsetWidth;
+    heroAd.classList.add("ad-changing");
+  }
 
+  const image=document.getElementById("heroCapeImage");
   image.src=cape.image;
   image.alt=cape.name;
-  title.innerHTML='<span class="gradient">'+cape.name+'</span>';
-  description.textContent=cape.description;
-  price.textContent=cape.price;
-  eyebrow.textContent=cape.stock?"AVAILABLE NOW":"COLLECTION SPOTLIGHT";
 
+  document.getElementById("heroCapeTitle").innerHTML=
+    cape.name.replace(" Cape","<br><span class=\"gradient\">Cape.</span>");
+
+  document.getElementById("heroCapeDescription").textContent=cape.description;
+  document.getElementById("heroCapePrice").textContent=cape.price;
+
+  const eyebrow=document.getElementById("heroCapeEyebrow");
+  eyebrow.textContent=cape.stock?"✦ AVAILABLE NOW":"✦ COLLECTION SPOTLIGHT";
+
+  const stock=document.getElementById("heroCapeStock");
   stock.textContent=cape.stock?"✓ IN STOCK":"✕ NOT IN STOCK";
   stock.classList.toggle("sold",!cape.stock);
 
+  const view=document.getElementById("heroViewCape");
   view.href="#cape/"+encodeURIComponent(cape.id);
   view.onclick=function(){
     openCape(cape.id);
     return false;
   };
 
-  document.getElementById("heroDots").innerHTML=heroCapeIds.map((id,i)=>
-    '<button type="button" class="hero-dot '+(i===index?'active':'')+'" aria-label="Show '+capes.find(c=>c.id===id).name+'" title="'+capes.find(c=>c.id===id).name+'" '+(i===index?'aria-current="true"':'')+' onclick="showHeroCape('+i+');startHeroSlider()"></button>'
+  document.getElementById("heroDots").innerHTML=capes.map((c,i)=>
+    `<button type="button" class="hero-dot ${i===index?"active":""}" aria-label="Show ${c.name}" title="${c.name}" onclick="showHeroCape(${i});restartHeroSlider()"></button>`
   ).join("");
 }
 
-function startHeroSlider(){
+function restartHeroSlider(){
   clearInterval(heroTimer);
-  heroTimer=setInterval(function(){
-    showHeroCape((heroCapeIndex+1)%heroCapeIds.length);
-  },4000);
+  heroTimer=setInterval(()=>{
+    if(!heroPaused){
+      showHeroCape((heroCapeIndex+1)%capes.length,true);
+    }
+  },2500);
 }
 
-showHeroCape(0);
-startHeroSlider();
-
-document.getElementById("heroAd").addEventListener("mouseenter",function(){
-  clearInterval(heroTimer);
+heroAd.addEventListener("mouseenter",()=>{
+  heroPaused=true;
+});
+heroAd.addEventListener("mouseleave",()=>{
+  heroPaused=false;
 });
 
-document.getElementById("heroAd").addEventListener("mouseleave",function(){
-  startHeroSlider();
-});
+showHeroCape(0,false);
+restartHeroSlider();
 
-function capeCard(c,compact=false){
+function capeCard(c){
   return `
   <a class="card" href="#cape/${encodeURIComponent(c.id)}" onclick="openCape('${c.id}');return false;">
     <div class="art">
@@ -324,9 +333,12 @@ document.getElementById("products").innerHTML=capes.map(c=>capeCard(c)).join("")
 
 function renderRecommendations(currentCape){
   const others=capes.filter(c=>c.id!==currentCape.id);
-  const shuffled=[...others].sort(()=>Math.random()-.5);
-  const selected=shuffled.slice(0,4);
-  document.getElementById("recommendedProducts").innerHTML=selected.map(c=>capeCard(c,true)).join("");
+  for(let i=others.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [others[i],others[j]]=[others[j],others[i]];
+  }
+  document.getElementById("recommendedProducts").innerHTML=
+    others.slice(0,4).map(c=>capeCard(c)).join("");
 }
 
 function showHome(sectionId="home"){
@@ -334,6 +346,7 @@ function showHome(sectionId="home"){
   document.getElementById("details").style.display="none";
   document.getElementById("not-found").style.display="none";
   document.title="MC STORE | Cape Shop";
+
   history.replaceState(null,"",window.location.pathname+window.location.search);
 
   requestAnimationFrame(()=>{
@@ -344,6 +357,7 @@ function showHome(sectionId="home"){
 
 function openCape(id){
   const cape=capes.find(c=>c.id===id);
+
   document.getElementById("homePage").style.display="none";
   document.getElementById("details").style.display="block";
   document.getElementById("not-found").style.display="none";
@@ -355,6 +369,7 @@ function openCape(id){
   }
 
   document.title=cape.name+" | MC STORE";
+
   document.getElementById("detailContent").innerHTML=`
     <div class="detail-card">
       <div class="detail-art"><img src="${cape.image}" alt="${cape.name}"></div>
@@ -378,14 +393,12 @@ function openCape(id){
 
 function handleRoute(){
   const match=window.location.hash.match(/^#cape\/(.+)$/);
-
   if(match){
     let id=match[1];
     try{id=decodeURIComponent(id)}catch(e){}
     openCape(id);
   }else{
-    const section=window.location.hash==="#shop"?"shop":"home";
-    showHome(section);
+    showHome(window.location.hash==="#shop"?"shop":"home");
   }
 }
 
@@ -401,3 +414,4 @@ if(window.location.hash.startsWith("#cape/")){
 </script>
 </body>
 </html>
+```
