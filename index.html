@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,14 +8,33 @@
 <title>MC STORE | Cape Shop</title>
 
 <style>
-:root{--orange:#ff641c;--yellow:#ffd65a;--text:#fff9ee;--muted:#c8b9a5}
+:root{
+  --orange:#ff641c;
+  --yellow:#ffd65a;
+  --text:#fff9ee;
+  --muted:#c8b9a5;
+}
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-body{font-family:Inter,Arial,sans-serif;color:var(--text);background:radial-gradient(ellipse at 10% 5%,#ffb52e55,transparent 38%),radial-gradient(ellipse at 95% 30%,#ff401b35,transparent 40%),linear-gradient(135deg,#20100b,#3a170b 45%,#171009);background-attachment:fixed;min-height:100vh}
+body{
+  font-family:Inter,Arial,sans-serif;
+  color:var(--text);
+  background:
+    radial-gradient(ellipse at 10% 5%,#ffb52e55,transparent 38%),
+    radial-gradient(ellipse at 95% 30%,#ff401b35,transparent 40%),
+    linear-gradient(135deg,#20100b,#3a170b 45%,#171009);
+  background-attachment:fixed;
+  min-height:100vh;
+}
 a{color:inherit;text-decoration:none}
-button{font-family:inherit}
+button{font-family:inherit;cursor:pointer}
 
-.sale{display:flex;justify-content:center;align-items:center;gap:12px;flex-wrap:wrap;padding:13px 10px;text-align:center;font-size:12px;font-weight:900;letter-spacing:1.5px;background:#17110d;border-bottom:1px solid #ff641c66;overflow:hidden}
+.sale{
+  display:flex;justify-content:center;align-items:center;gap:12px;
+  flex-wrap:wrap;padding:13px 10px;text-align:center;
+  font-size:12px;font-weight:900;letter-spacing:1.5px;
+  background:#17110d;border-bottom:1px solid #ff641c66;overflow:hidden
+}
 .spooky{color:#ff641c;animation:softGlow 1.5s ease-in-out infinite alternate}
 .sale-divider{display:inline-block;color:#ffd65a;animation:starSpin 5s linear infinite}
 .drop{color:#ffd65a;animation:dropGlow 1.5s ease-in-out infinite alternate}
@@ -24,16 +44,34 @@ button{font-family:inherit}
 @keyframes starSpin{to{transform:rotate(360deg)}}
 @keyframes ghostFloat{50%{transform:translateY(-5px)}}
 
-nav{position:sticky;top:0;z-index:5;display:flex;justify-content:space-between;align-items:center;padding:12px 7%;gap:15px;background:#170f09ed;backdrop-filter:blur(14px);border-bottom:1px solid #ffc04b40}
+nav{
+  position:sticky;top:0;z-index:5;display:flex;
+  justify-content:space-between;align-items:center;
+  padding:12px 7%;gap:15px;background:#170f09ed;
+  backdrop-filter:blur(14px);border-bottom:1px solid #ffc04b40
+}
 .logo{width:150px;height:52px;object-fit:contain}
 .links{display:flex;align-items:center;gap:22px;font-size:13px}
 .links>a:not(.btn){color:var(--muted)}
-.btn{display:inline-flex;justify-content:center;align-items:center;padding:13px 19px;border-radius:9px;border:1px solid #ffe08b70;color:#fff;background:linear-gradient(110deg,#ff641c,#e5a32c);font-size:12px;font-weight:900;cursor:pointer;transition:transform .25s,box-shadow .25s}
+.btn{
+  display:inline-flex;justify-content:center;align-items:center;
+  padding:13px 19px;border-radius:9px;border:1px solid #ffe08b70;
+  color:#fff;background:linear-gradient(110deg,#ff641c,#e5a32c);
+  font-size:12px;font-weight:900;cursor:pointer;
+  transition:transform .25s,box-shadow .25s
+}
 .btn:hover{transform:translateY(-3px);box-shadow:0 8px 25px #ff641c55}
 
 .hero{text-align:center;padding:65px 20px 75px}
-.eyebrow{display:inline-block;padding:9px 15px;border-radius:30px;border:1px solid #ffd15c80;background:#ffb51a16;color:#ffdb74;font-size:10px;font-weight:900;letter-spacing:2px}
-.gradient{background:linear-gradient(100deg,#ffe77b,#ff9c26,#ff4b27);-webkit-background-clip:text;background-clip:text;color:transparent}
+.eyebrow{
+  display:inline-block;padding:9px 15px;border-radius:30px;
+  border:1px solid #ffd15c80;background:#ffb51a16;
+  color:#ffdb74;font-size:10px;font-weight:900;letter-spacing:2px
+}
+.gradient{
+  background:linear-gradient(100deg,#ffe77b,#ff9c26,#ff4b27);
+  -webkit-background-clip:text;background-clip:text;color:transparent
+}
 h1{font-size:clamp(40px,7vw,76px);letter-spacing:-3px;line-height:1.1;margin:25px 0}
 .hero p{max-width:570px;margin:0 auto 26px;color:var(--muted);font-size:14px;line-height:1.9}
 .actions{display:flex;justify-content:flex-start;gap:12px;flex-wrap:wrap}
@@ -41,70 +79,126 @@ h1{font-size:clamp(40px,7vw,76px);letter-spacing:-3px;line-height:1.1;margin:25p
 .stats strong{display:block;font-size:18px}
 .stats span{display:block;color:var(--muted);font-size:11px;margin-top:6px}
 
-/* ANIMATED CAPE AD */
-.hero-ad{max-width:1050px;margin:30px auto 0;display:grid;grid-template-columns:.9fr 1.1fr;align-items:center;gap:35px;text-align:left;padding:30px;border:1px solid #ffc75b45;border-radius:22px;background:linear-gradient(135deg,#34210ff2,#17110bf5);box-shadow:0 15px 45px #0003;position:relative;overflow:hidden;transition:border-color .35s,box-shadow .35s}
-.hero-ad:before{content:"";position:absolute;inset:-2px;background:linear-gradient(110deg,transparent 15%,#ff641c20 45%,#ffd65a25 55%,transparent 85%);transform:translateX(-110%);pointer-events:none}
-.hero-ad.ad-changing{border-color:#ffb52e;box-shadow:0 0 25px #ff641c30,0 15px 45px #0005}
-.hero-ad.ad-changing:before{animation:shineSweep .7s ease-out}
-@keyframes shineSweep{to{transform:translateX(110%)}}
-
-.hero-ad-image{height:310px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;border-radius:15px;background:radial-gradient(ellipse,#ffad2935,transparent 65%),#24170d}
-.hero-ad-image:after{content:"";position:absolute;width:160px;height:160px;border-radius:50%;background:#ff9e1e40;filter:blur(40px);transition:transform .5s,background .5s}
-.hero-ad.ad-changing .hero-ad-image:after{transform:scale(1.45);background:#ff9e1e70}
-
-.hero-ad-image img{position:relative;z-index:1;width:85%;height:275px;object-fit:contain;filter:drop-shadow(0 12px 18px #0009);animation:capeFloat 2s ease-in-out infinite}
-.hero-ad.ad-changing .hero-ad-image img{animation:capeZoom .8s cubic-bezier(.22,1,.36,1) both}
-
-.hero-ad.ad-changing .hero-ad-content .ad-text{animation:textEnter .55s ease both}
-.hero-ad.ad-changing #heroCapeTitle{animation-delay:.04s}
-.hero-ad.ad-changing #heroCapeDescription{animation-delay:.08s}
-.hero-ad.ad-changing #heroCapeStock{animation-delay:.12s}
-.hero-ad.ad-changing #heroCapePrice{animation-delay:.16s}
-.hero-ad.ad-changing .actions{animation:textEnter .55s .18s both}
-
-@keyframes capeFloat{
-  0%,100%{transform:translateY(0)}
-  50%{transform:translateY(-7px)}
+/* FEATURED CAPE */
+.hero-ad{
+  max-width:1050px;margin:30px auto 0;
+  display:grid;grid-template-columns:.9fr 1.1fr;
+  align-items:center;gap:35px;text-align:left;padding:30px;
+  border:1px solid #ffc75b45;border-radius:22px;
+  background:linear-gradient(135deg,#34210ff2,#17110bf5);
+  box-shadow:0 15px 45px #0003;position:relative;overflow:hidden;
+  transition:border-color .35s,box-shadow .35s
+}
+.hero-ad:before{
+  content:"";position:absolute;inset:-2px;
+  background:linear-gradient(110deg,transparent 15%,#ff641c20 45%,#ffd65a25 55%,transparent 85%);
+  transform:translateX(-110%);pointer-events:none
+}
+.hero-ad.ad-changing{
+  border-color:#ffb52e;
+  box-shadow:0 0 32px #ff641c35,0 15px 45px #0005
+}
+.hero-ad.ad-changing:before{animation:shineSweep .9s ease-out}
+@keyframes shineSweep{
+  0%{transform:translateX(-110%)}
+  100%{transform:translateX(110%)}
 }
 
-/* Zoom in, grow bigger, then return to normal size */
+.hero-ad-image{
+  height:310px;display:flex;align-items:center;justify-content:center;
+  position:relative;overflow:hidden;border-radius:15px;
+  background:radial-gradient(ellipse,#ffad2935,transparent 65%),#24170d;
+  perspective:800px
+}
+.hero-ad-image:after{
+  content:"";position:absolute;width:160px;height:160px;border-radius:50%;
+  background:#ff9e1e40;filter:blur(40px);
+  transition:transform .65s,background .65s
+}
+.hero-ad.ad-changing .hero-ad-image:after{
+  transform:scale(1.65);
+  background:#ff9e1e85
+}
+.hero-ad-image img{
+  position:relative;z-index:1;width:85%;height:275px;
+  object-fit:contain;transform-origin:center center;
+  filter:drop-shadow(0 12px 18px #0009);
+  animation:capeFloat 2.8s ease-in-out infinite;
+  will-change:transform,filter,opacity
+}
+
+/* ZOOM: fade in, zoom forward, bounce gently, settle */
+.hero-ad.ad-changing .hero-ad-image img{
+  animation:capeZoom 1s cubic-bezier(.16,1,.3,1) both
+}
+@keyframes capeFloat{
+  0%,100%{transform:translateY(0) rotate(0deg)}
+  50%{transform:translateY(-7px) rotate(.7deg)}
+}
 @keyframes capeZoom{
   0%{
     opacity:0;
-    transform:scale(.45);
-    filter:blur(4px) drop-shadow(0 0 5px #ff641c);
+    transform:scale(.45) rotate(-5deg);
+    filter:blur(5px) drop-shadow(0 0 0 #ff641c00)
   }
-  55%{
+  38%{
     opacity:1;
-    transform:scale(1.22);
-    filter:blur(0) drop-shadow(0 0 28px #ff9c26);
+    transform:scale(1.2) rotate(2deg);
+    filter:blur(0) drop-shadow(0 0 28px #ff9c26)
   }
-  75%{
-    transform:scale(.94);
-    filter:drop-shadow(0 0 16px #ff9c2680);
+  58%{
+    opacity:1;
+    transform:scale(1.08) rotate(-1deg);
+    filter:drop-shadow(0 0 24px #ff9c26)
+  }
+  76%{
+    transform:scale(.97) rotate(.4deg);
+    filter:drop-shadow(0 0 16px #ff9c2680)
+  }
+  90%{
+    transform:scale(1.025) rotate(0deg);
+    filter:drop-shadow(0 0 12px #ff641c65)
   }
   100%{
     opacity:1;
-    transform:scale(1);
-    filter:drop-shadow(0 12px 18px #0009);
+    transform:scale(1) rotate(0deg);
+    filter:drop-shadow(0 12px 18px #0009)
   }
 }
-
-@keyframes textEnter{
-  0%{opacity:0;transform:translateY(15px)}
-  100%{opacity:1;transform:translateY(0)}
-}
-
 .hero-ad-content{min-width:0;position:relative;z-index:1}
 .hero-ad-content h1{font-size:clamp(32px,4vw,49px);letter-spacing:-1.8px;margin:20px 0}
 .hero-ad-content p{max-width:500px;margin:0 0 18px;color:var(--muted);font-size:14px;line-height:1.9}
 .hero-cape-price{color:#ffda70;font-size:27px;font-weight:900;margin:17px 0}
-.hero-cape-stock{display:inline-block;font-size:10px;font-weight:900;padding:7px 10px;border-radius:6px;background:#173522;color:#91ffb0;border:1px solid #43d87866;margin-bottom:16px}
+.hero-cape-stock{
+  display:inline-block;font-size:10px;font-weight:900;
+  padding:7px 10px;border-radius:6px;background:#173522;color:#91ffb0;
+  border:1px solid #43d87866;margin-bottom:16px
+}
 .hero-cape-stock.sold{background:#3c2020;color:#ffaaaa;border-color:#ff777755}
 .hero-ad-content .actions{margin-top:8px}
 .hero-dots{display:flex;align-items:center;gap:8px;margin-top:24px}
-.hero-dot{width:9px;height:9px;padding:0;border:0;border-radius:50%;background:#80634a;cursor:pointer;transition:width .25s,background .25s,box-shadow .25s}
-.hero-dot.active{width:26px;border-radius:10px;background:#ff641c;box-shadow:0 0 12px #ff641c90}
+.hero-dot{
+  width:9px;height:9px;padding:0;border:0;border-radius:50%;
+  background:#80634a;transition:width .25s,background .25s,box-shadow .25s
+}
+.hero-dot.active{
+  width:26px;border-radius:10px;background:#ff641c;
+  box-shadow:0 0 12px #ff641c90
+}
+
+/* Text also enters smoothly when the featured cape changes */
+.hero-ad.ad-changing .ad-text{animation:textEnter .65s both}
+.hero-ad.ad-changing #heroCapeEyebrow{animation-delay:.02s}
+.hero-ad.ad-changing #heroCapeTitle{animation-delay:.08s}
+.hero-ad.ad-changing #heroCapeDescription{animation-delay:.13s}
+.hero-ad.ad-changing #heroCapeStock{animation-delay:.18s}
+.hero-ad.ad-changing #heroCapePrice{animation-delay:.23s}
+.hero-ad.ad-changing .actions{animation:textEnter .65s .26s both}
+.hero-ad.ad-changing .hero-dots{animation:textEnter .5s .3s both}
+@keyframes textEnter{
+  0%{opacity:0;transform:translateY(15px)}
+  100%{opacity:1;transform:translateY(0)}
+}
 
 section{padding:65px 7%}
 .head{display:flex;justify-content:space-between;align-items:end;gap:20px;flex-wrap:wrap;margin-bottom:30px}
@@ -112,14 +206,40 @@ section{padding:65px 7%}
 h2{font-size:clamp(27px,4vw,38px)}
 .sub{color:var(--muted);font-size:13px;line-height:1.8;margin-top:9px}
 .products{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}
-.card{display:block;overflow:hidden;border:1px solid #ffc75b38;border-radius:17px;background:linear-gradient(145deg,#34210ff2,#17110bf5);transition:transform .3s,border-color .3s,box-shadow .3s}
-.card:hover{transform:translateY(-8px);border-color:#ffce55;box-shadow:0 15px 40px #0006,0 0 24px #ffac2330}
-.art{height:245px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;background:radial-gradient(ellipse at 20% 70%,#ffad292e,transparent 55%),radial-gradient(ellipse at 80% 25%,#ffe16c24,transparent 50%),#24170d}
-.art:after{content:"";position:absolute;width:150px;height:150px;border-radius:50%;background:linear-gradient(130deg,#ff9e1e55,#fff07a30);filter:blur(35px);transition:.35s}
+.card{
+  display:block;overflow:hidden;border:1px solid #ffc75b38;border-radius:17px;
+  background:linear-gradient(145deg,#34210ff2,#17110bf5);
+  transition:transform .3s,border-color .3s,box-shadow .3s
+}
+.card:hover{
+  transform:translateY(-8px);border-color:#ffce55;
+  box-shadow:0 15px 40px #0006,0 0 24px #ffac2330
+}
+.art{
+  height:245px;display:flex;align-items:center;justify-content:center;
+  position:relative;overflow:hidden;
+  background:radial-gradient(ellipse at 20% 70%,#ffad292e,transparent 55%),
+  radial-gradient(ellipse at 80% 25%,#ffe16c24,transparent 50%),#24170d
+}
+.art:after{
+  content:"";position:absolute;width:150px;height:150px;border-radius:50%;
+  background:linear-gradient(130deg,#ff9e1e55,#fff07a30);
+  filter:blur(35px);transition:.35s
+}
 .card:hover .art:after{transform:scale(1.5)}
-.cape-img{width:165px;height:190px;object-fit:contain;z-index:1;filter:drop-shadow(0 12px 18px #0009);transition:.35s}
-.card:hover .cape-img{transform:scale(1.1) rotate(-2deg);filter:drop-shadow(0 0 13px #ffd34c55)}
-.tag{position:absolute;top:14px;left:14px;z-index:2;font-size:9px;font-weight:900;padding:7px 10px;border-radius:6px;background:#173522;color:#91ffb0;border:1px solid #43d87866}
+.cape-img{
+  width:165px;height:190px;object-fit:contain;z-index:1;
+  filter:drop-shadow(0 12px 18px #0009);transition:.35s
+}
+.card:hover .cape-img{
+  transform:scale(1.1) rotate(-2deg);
+  filter:drop-shadow(0 0 13px #ffd34c55)
+}
+.tag{
+  position:absolute;top:14px;left:14px;z-index:2;font-size:9px;font-weight:900;
+  padding:7px 10px;border-radius:6px;background:#173522;color:#91ffb0;
+  border:1px solid #43d87866
+}
 .tag.sold{background:#3c2020;color:#ffaaaa;border-color:#ff777755}
 .info{padding:20px}
 .info h3{font-size:17px}
@@ -130,22 +250,48 @@ h2{font-size:clamp(27px,4vw,38px)}
 .sold-price{font-size:12px;color:#ffaaaa}
 .order{font-size:10px;padding:11px 13px}
 
-.discord{margin:20px 7% 70px;padding:50px 22px;text-align:center;border-radius:20px;border:1px solid #ffcf6555;background:radial-gradient(ellipse at 0 100%,#ff9b2033,transparent 55%),radial-gradient(ellipse at 100% 0,#ff401b16,transparent 55%),#24190f}
+.discord{
+  margin:20px 7% 70px;padding:50px 22px;text-align:center;border-radius:20px;
+  border:1px solid #ffcf6555;
+  background:radial-gradient(ellipse at 0 100%,#ff9b2033,transparent 55%),
+  radial-gradient(ellipse at 100% 0,#ff401b16,transparent 55%),#24190f
+}
 .discord p{max-width:500px;margin:15px auto 24px;color:var(--muted);font-size:13px;line-height:1.9}
-footer{padding:25px 7%;border-top:1px solid #ffc75b30;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;color:var(--muted);font-size:11px}
+footer{
+  padding:25px 7%;border-top:1px solid #ffc75b30;
+  display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;
+  color:var(--muted);font-size:11px
+}
 
-/* DETAILS */
+/* PRODUCT DETAILS */
 #details{display:none;min-height:65vh;padding:45px 7% 75px}
 .back-row{display:flex;justify-content:flex-start;margin-bottom:30px}
-.back-btn{background:#2a1a0e;border:1px solid #ffbf4c80;color:#ffda70;padding:12px 17px;border-radius:9px;font-size:13px;font-weight:900;cursor:pointer}
+.back-btn{
+  background:#2a1a0e;border:1px solid #ffbf4c80;color:#ffda70;
+  padding:12px 17px;border-radius:9px;font-size:13px;font-weight:900
+}
 .back-btn:hover{background:#42230f}
-.detail-card{max-width:950px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:35px;align-items:center;background:linear-gradient(145deg,#34210ff2,#17110bf5);border:1px solid #ffc75b50;border-radius:20px;padding:30px}
-.detail-art{min-height:350px;display:flex;align-items:center;justify-content:center;background:radial-gradient(ellipse,#ffad2930,transparent 65%),#24170d;border-radius:15px;overflow:hidden}
-.detail-art img{width:100%;max-width:300px;height:330px;object-fit:contain;filter:drop-shadow(0 12px 20px #0009)}
+.detail-card{
+  max-width:950px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;
+  gap:35px;align-items:center;background:linear-gradient(145deg,#34210ff2,#17110bf5);
+  border:1px solid #ffc75b50;border-radius:20px;padding:30px
+}
+.detail-art{
+  min-height:350px;display:flex;align-items:center;justify-content:center;
+  background:radial-gradient(ellipse,#ffad2930,transparent 65%),#24170d;
+  border-radius:15px;overflow:hidden
+}
+.detail-art img{
+  width:100%;max-width:300px;height:330px;object-fit:contain;
+  filter:drop-shadow(0 12px 20px #0009)
+}
 .detail-info h1{font-size:clamp(30px,5vw,48px);letter-spacing:-1px;margin:15px 0}
 .detail-info p{color:var(--muted);font-size:14px;line-height:1.9;margin:15px 0}
 .detail-price{font-size:27px;font-weight:900;color:#ffda70;margin:20px 0}
-.stock-label{display:inline-block;padding:8px 12px;border-radius:7px;font-size:11px;font-weight:900;background:#173522;color:#91ffb0;border:1px solid #43d87866}
+.stock-label{
+  display:inline-block;padding:8px 12px;border-radius:7px;font-size:11px;
+  font-weight:900;background:#173522;color:#91ffb0;border:1px solid #43d87866
+}
 .stock-label.sold{background:#3c2020;color:#ffaaaa;border-color:#ff777755}
 .detail-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:25px}
 .recommendations{max-width:1200px;margin:55px auto 0;padding-top:35px;border-top:1px solid #ffc75b35}
@@ -162,11 +308,52 @@ footer{padding:25px 7%;border-top:1px solid #ffc75b30;display:flex;justify-conte
 .recommendations .order{font-size:9px;padding:10px}
 #not-found{display:none;text-align:center;padding:70px 20px}
 
-@media(max-width:1000px){.recommendations .products{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:850px){.products{grid-template-columns:repeat(2,minmax(0,1fr))}section{padding:50px 5%}nav{padding:12px 5%}.detail-card{gap:20px;padding:20px}}
-@media(max-width:650px){.hero-ad{grid-template-columns:1fr;gap:22px;padding:18px;text-align:center}.hero-ad-image{height:230px}.hero-ad-image img{height:210px}.hero-ad-content h1{font-size:36px}.hero-ad-content .actions{justify-content:center}.hero-dots{justify-content:center}.hero-ad-content p{margin-left:auto;margin-right:auto}}
-@media(max-width:540px){.products{grid-template-columns:1fr}.hero{padding:45px 14px 55px}nav{padding:8px 4%}.logo{width:100px;height:42px}.links{gap:12px;font-size:11px}.links .btn{padding:10px}.stats{gap:24px}.discord{margin:15px 5% 45px}footer{flex-direction:column}.sale{gap:9px;font-size:11px;letter-spacing:1px}#details{padding:28px 5% 50px}.detail-card{grid-template-columns:1fr;padding:15px;gap:22px}.detail-art{min-height:270px}.detail-art img{height:260px}.detail-info h1{margin:12px 0}.recommendations{margin-top:40px;padding-top:25px}.recommendations .products{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.recommendations .art{height:135px}.recommendations .cape-img{width:90px;height:105px}.recommendations .info{padding:11px}.recommendations .info h3{font-size:12px}.recommendations .price-row{align-items:flex-start;flex-direction:column}.recommendations .order{width:100%}}
-@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+@media(max-width:1000px){
+  .recommendations .products{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:850px){
+  .products{grid-template-columns:repeat(2,minmax(0,1fr))}
+  section{padding:50px 5%}
+  nav{padding:12px 5%}
+  .detail-card{gap:20px;padding:20px}
+}
+@media(max-width:650px){
+  .hero-ad{grid-template-columns:1fr;gap:22px;padding:18px;text-align:center}
+  .hero-ad-image{height:230px}
+  .hero-ad-image img{height:210px}
+  .hero-ad-content h1{font-size:36px}
+  .hero-ad-content .actions{justify-content:center}
+  .hero-dots{justify-content:center}
+  .hero-ad-content p{margin-left:auto;margin-right:auto}
+}
+@media(max-width:540px){
+  .products{grid-template-columns:1fr}
+  .hero{padding:45px 14px 55px}
+  nav{padding:8px 4%}
+  .logo{width:100px;height:42px}
+  .links{gap:12px;font-size:11px}
+  .links .btn{padding:10px}
+  .stats{gap:24px}
+  .discord{margin:15px 5% 45px}
+  footer{flex-direction:column}
+  .sale{gap:9px;font-size:11px;letter-spacing:1px}
+  #details{padding:28px 5% 50px}
+  .detail-card{grid-template-columns:1fr;padding:15px;gap:22px}
+  .detail-art{min-height:270px}
+  .detail-art img{height:260px}
+  .detail-info h1{margin:12px 0}
+  .recommendations{margin-top:40px;padding-top:25px}
+  .recommendations .products{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+  .recommendations .art{height:135px}
+  .recommendations .cape-img{width:90px;height:105px}
+  .recommendations .info{padding:11px}
+  .recommendations .info h3{font-size:12px}
+  .recommendations .price-row{align-items:flex-start;flex-direction:column}
+  .recommendations .order{width:100%}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*:before,*:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+}
 </style>
 </head>
 
@@ -265,187 +452,213 @@ footer{padding:25px 7%;border-top:1px solid #ffc75b30;display:flex;justify-conte
 </footer>
 
 <script>
-const DISCORD_URL="https://discord.com/invite/F38vcYVHA";
+const DISCORD_URL = "https://discord.com/invite/F38vcYVHA";
 
-const capes=[
-{id:"corrupted",name:"Corrupted Cape",price:"$10",stock:true,image:"media/cloakFront%20(2).webp",description:"A distinctive cape for your Minecraft collection."},
-{id:"aurora",name:"Aurora Cape",price:"$7",stock:true,image:"media/aurora-front.png",description:"A vibrant cape for players who want to stand out."},
-{id:"builder",name:"Builder Cape",price:"$9",stock:true,image:"media/320%20(1).png",description:"A classic addition for Minecraft cape collectors."},
-{id:"experience",name:"Experience Cape",price:"Not in stock",stock:false,image:"media/320%20(2).png",description:"A special cape for your Minecraft collection."},
-{id:"crafter",name:"Crafter Cape",price:"Not in stock",stock:false,image:"media/320%20(3).png",description:"A distinctive cape for Minecraft fans and collectors."},
-{id:"menace",name:"Menace Cape",price:"Not in stock",stock:false,image:"media/320%20(5).png",description:"A striking cape for your Minecraft collection."},
-{id:"copper",name:"Copper Cape",price:"Not in stock",stock:false,image:"media/320%20(6).png",description:"A copper-themed cape for Minecraft players."},
-{id:"moonlight",name:"Moonlight Cape",price:"Not in stock",stock:false,image:"media/cloakFront%20(4).webp",description:"A moonlight-inspired cape for your collection."},
-{id:"purple-heart",name:"Purple Heart Cape",price:"Not in stock",stock:false,image:"media/320%20(7).png",description:"A purple-themed cape for your Minecraft collection."}
+const capes = [
+  {id:"corrupted",name:"Corrupted Cape",price:"$10",stock:true,image:"media/cloakFront%20(2).webp",description:"A distinctive cape for your Minecraft collection."},
+  {id:"aurora",name:"Aurora Cape",price:"$7",stock:true,image:"media/aurora-front.png",description:"A vibrant cape for players who want to stand out."},
+  {id:"builder",name:"Builder Cape",price:"$9",stock:true,image:"media/320%20(1).png",description:"A classic addition for Minecraft cape collectors."},
+  {id:"experience",name:"Experience Cape",price:"Not in stock",stock:false,image:"media/320%20(2).png",description:"A special cape for your Minecraft collection."},
+  {id:"crafter",name:"Crafter Cape",price:"Not in stock",stock:false,image:"media/320%20(3).png",description:"A distinctive cape for Minecraft fans and collectors."},
+  {id:"menace",name:"Menace Cape",price:"Not in stock",stock:false,image:"media/320%20(5).png",description:"A striking cape for your Minecraft collection."},
+  {id:"copper",name:"Copper Cape",price:"Not in stock",stock:false,image:"media/320%20(6).png",description:"A copper-themed cape for Minecraft players."},
+  {id:"moonlight",name:"Moonlight Cape",price:"Not in stock",stock:false,image:"media/cloakFront%20(4).webp",description:"A moonlight-inspired cape for your collection."},
+  {id:"purple-heart",name:"Purple Heart Cape",price:"Not in stock",stock:false,image:"media/320%20(7).png",description:"A purple-themed cape for your Minecraft collection."}
 ];
 
-document.getElementById("year").textContent=new Date().getFullYear();
+document.getElementById("year").textContent = new Date().getFullYear();
 
-let heroCapeIndex=0;
-let heroTimer=null;
-let heroPaused=false;
-let animationTimer=null;
-const heroAd=document.getElementById("heroAd");
+let heroCapeIndex = 0;
+let heroTimer = null;
+let heroPaused = false;
+let animationTimer = null;
 
-function showHeroCape(index,animate=true){
-  const cape=capes[index];
-  if(!cape)return;
+const heroAd = document.getElementById("heroAd");
 
-  heroCapeIndex=index;
+function showHeroCape(index, animate = true) {
+  const cape = capes[index];
+  if (!cape) return;
 
+  heroCapeIndex = index;
+
+  // Reset the previous animation so it can replay on every cape change.
   clearTimeout(animationTimer);
   heroAd.classList.remove("ad-changing");
 
-  if(animate){
-    void heroAd.offsetWidth;
-    heroAd.classList.add("ad-changing");
-    animationTimer=setTimeout(()=>{
-      heroAd.classList.remove("ad-changing");
-    },850);
-  }
+  const image = document.getElementById("heroCapeImage");
 
-  const image=document.getElementById("heroCapeImage");
-  image.src=cape.image;
-  image.alt=cape.name;
+  // Update the image and its details before restarting the zoom effect.
+  image.src = cape.image;
+  image.alt = cape.name;
 
-  document.getElementById("heroCapeTitle").innerHTML=
-    cape.name.replace(" Cape","<br><span class=\"gradient\">Cape.</span>");
+  document.getElementById("heroCapeTitle").innerHTML =
+    cape.name.replace(" Cape", '<br><span class="gradient">Cape.</span>');
 
-  document.getElementById("heroCapeDescription").textContent=cape.description;
-  document.getElementById("heroCapePrice").textContent=cape.price;
+  document.getElementById("heroCapeDescription").textContent = cape.description;
+  document.getElementById("heroCapePrice").textContent = cape.price;
 
-  const eyebrow=document.getElementById("heroCapeEyebrow");
-  eyebrow.textContent=cape.stock?"✦ AVAILABLE NOW":"✦ COLLECTION SPOTLIGHT";
+  const eyebrow = document.getElementById("heroCapeEyebrow");
+  eyebrow.textContent = cape.stock ? "✦ AVAILABLE NOW" : "✦ COLLECTION SPOTLIGHT";
 
-  const stock=document.getElementById("heroCapeStock");
-  stock.textContent=cape.stock?"✓ IN STOCK":"✕ NOT IN STOCK";
-  stock.classList.toggle("sold",!cape.stock);
+  const stock = document.getElementById("heroCapeStock");
+  stock.textContent = cape.stock ? "✓ IN STOCK" : "✕ NOT IN STOCK";
+  stock.classList.toggle("sold", !cape.stock);
 
-  const view=document.getElementById("heroViewCape");
-  view.href="#cape/"+encodeURIComponent(cape.id);
-  view.onclick=function(){
+  const view = document.getElementById("heroViewCape");
+  view.href = "#cape/" + encodeURIComponent(cape.id);
+  view.onclick = function () {
     openCape(cape.id);
     return false;
   };
 
-  document.getElementById("heroDots").innerHTML=capes.map((c,i)=>
-    `<button type="button" class="hero-dot ${i===index?"active":""}" aria-label="Show ${c.name}" title="${c.name}" onclick="showHeroCape(${i});restartHeroSlider()"></button>`
+  document.getElementById("heroDots").innerHTML = capes.map((c, i) =>
+    `<button type="button"
+      class="hero-dot ${i === index ? "active" : ""}"
+      aria-label="Show ${c.name}"
+      title="${c.name}"
+      onclick="showHeroCape(${i});restartHeroSlider()"></button>`
   ).join("");
+
+  if (animate) {
+    // Force a reflow to restart CSS animations, including when the same
+    // featured cape is selected again.
+    void heroAd.offsetWidth;
+    heroAd.classList.add("ad-changing");
+
+    animationTimer = setTimeout(() => {
+      heroAd.classList.remove("ad-changing");
+    }, 1050);
+  }
 }
 
-function restartHeroSlider(){
+function restartHeroSlider() {
   clearInterval(heroTimer);
-  heroTimer=setInterval(()=>{
-    if(!heroPaused){
-      showHeroCape((heroCapeIndex+1)%capes.length,true);
+  heroTimer = setInterval(() => {
+    if (!heroPaused) {
+      showHeroCape((heroCapeIndex + 1) % capes.length, true);
     }
-  },2500);
+  }, 2500);
 }
 
-heroAd.addEventListener("mouseenter",()=>{heroPaused=true});
-heroAd.addEventListener("mouseleave",()=>{heroPaused=false});
+heroAd.addEventListener("mouseenter", () => { heroPaused = true; });
+heroAd.addEventListener("mouseleave", () => { heroPaused = false; });
 
-showHeroCape(0,false);
+showHeroCape(0, false);
 restartHeroSlider();
 
-function capeCard(c){
+function capeCard(c) {
   return `
-  <a class="card" href="#cape/${encodeURIComponent(c.id)}" onclick="openCape('${c.id}');return false;">
-    <div class="art">
-      <span class="tag ${c.stock?"":"sold"}">${c.stock?"IN STOCK":"NOT IN STOCK"}</span>
-      <img class="cape-img" src="${c.image}" alt="${c.name}" loading="lazy">
-    </div>
-    <div class="info">
-      <h3>${c.name}</h3>
-      <p>${c.description}</p>
-      <div class="price-row">
-        <div class="${c.stock?"price":"sold-price"}">${c.price}<small>${c.stock?"Available now":"Currently unavailable"}</small></div>
-        <span class="btn order">VIEW CAPE ↗</span>
+    <a class="card" href="#cape/${encodeURIComponent(c.id)}"
+       onclick="openCape('${c.id}');return false;">
+      <div class="art">
+        <span class="tag ${c.stock ? "" : "sold"}">${c.stock ? "IN STOCK" : "NOT IN STOCK"}</span>
+        <img class="cape-img" src="${c.image}" alt="${c.name}" loading="lazy">
       </div>
-    </div>
-  </a>`;
+      <div class="info">
+        <h3>${c.name}</h3>
+        <p>${c.description}</p>
+        <div class="price-row">
+          <div class="${c.stock ? "price" : "sold-price"}">
+            ${c.price}
+            <small>${c.stock ? "Available now" : "Currently unavailable"}</small>
+          </div>
+          <span class="btn order">VIEW CAPE ↗</span>
+        </div>
+      </div>
+    </a>`;
 }
 
-document.getElementById("products").innerHTML=capes.map(c=>capeCard(c)).join("");
+document.getElementById("products").innerHTML = capes.map(capeCard).join("");
 
-function renderRecommendations(currentCape){
-  const others=capes.filter(c=>c.id!==currentCape.id);
-  for(let i=others.length-1;i>0;i--){
-    const j=Math.floor(Math.random()*(i+1));
-    [others[i],others[j]]=[others[j],others[i]];
+function renderRecommendations(currentCape) {
+  const others = capes.filter(c => c.id !== currentCape.id);
+
+  for (let i = others.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [others[i], others[j]] = [others[j], others[i]];
   }
-  document.getElementById("recommendedProducts").innerHTML=
-    others.slice(0,4).map(c=>capeCard(c)).join("");
+
+  document.getElementById("recommendedProducts").innerHTML =
+    others.slice(0, 4).map(capeCard).join("");
 }
 
-function showHome(sectionId="home"){
-  document.getElementById("homePage").style.display="block";
-  document.getElementById("details").style.display="none";
-  document.getElementById("not-found").style.display="none";
-  document.title="MC STORE | Cape Shop";
+function showHome(sectionId = "home") {
+  document.getElementById("homePage").style.display = "block";
+  document.getElementById("details").style.display = "none";
+  document.getElementById("not-found").style.display = "none";
+  document.title = "MC STORE | Cape Shop";
 
-  history.replaceState(null,"",window.location.pathname+window.location.search);
+  history.replaceState(null, "", window.location.pathname + window.location.search);
 
-  requestAnimationFrame(()=>{
-    const target=document.getElementById(sectionId==="shop"?"shop":"home");
-    if(target)target.scrollIntoView({behavior:"smooth",block:"start"});
+  requestAnimationFrame(() => {
+    const target = document.getElementById(sectionId === "shop" ? "shop" : "home");
+    if (target) target.scrollIntoView({behavior:"smooth",block:"start"});
   });
 }
 
-function openCape(id){
-  const cape=capes.find(c=>c.id===id);
+function openCape(id) {
+  const cape = capes.find(c => c.id === id);
 
-  document.getElementById("homePage").style.display="none";
-  document.getElementById("details").style.display="block";
-  document.getElementById("not-found").style.display="none";
+  document.getElementById("homePage").style.display = "none";
+  document.getElementById("details").style.display = "block";
+  document.getElementById("not-found").style.display = "none";
 
-  if(!cape){
-    document.getElementById("details").style.display="none";
-    document.getElementById("not-found").style.display="block";
+  if (!cape) {
+    document.getElementById("details").style.display = "none";
+    document.getElementById("not-found").style.display = "block";
     return;
   }
 
-  document.title=cape.name+" | MC STORE";
+  document.title = cape.name + " | MC STORE";
 
-  document.getElementById("detailContent").innerHTML=`
+  document.getElementById("detailContent").innerHTML = `
     <div class="detail-card">
-      <div class="detail-art"><img src="${cape.image}" alt="${cape.name}"></div>
+      <div class="detail-art">
+        <img src="${cape.image}" alt="${cape.name}">
+      </div>
       <div class="detail-info">
         <div class="kicker">MC STORE CAPE COLLECTION</div>
         <h1>${cape.name}</h1>
-        <span class="stock-label ${cape.stock?"":"sold"}">${cape.stock?"✓ IN STOCK":"✕ NOT IN STOCK"}</span>
+        <span class="stock-label ${cape.stock ? "" : "sold"}">
+          ${cape.stock ? "✓ IN STOCK" : "✕ NOT IN STOCK"}
+        </span>
         <p>${cape.description}</p>
         <div class="detail-price">${cape.price}</div>
-        <p>${cape.stock?"This cape is currently listed as available. Contact us on Discord for ordering information.":"This cape is currently unavailable. Join our Discord to ask about future restocks."}</p>
+        <p>${cape.stock
+          ? "This cape is currently listed as available. Contact us on Discord for ordering information."
+          : "This cape is currently unavailable. Join our Discord to ask about future restocks."}</p>
         <div class="detail-actions">
-          <a class="btn" href="${DISCORD_URL}" target="_blank" rel="noopener">${cape.stock?"ORDER ON DISCORD ↗":"ASK ABOUT RESTOCK ↗"}</a>
+          <a class="btn" href="${DISCORD_URL}" target="_blank" rel="noopener">
+            ${cape.stock ? "ORDER ON DISCORD ↗" : "ASK ABOUT RESTOCK ↗"}
+          </a>
         </div>
       </div>
     </div>`;
 
   renderRecommendations(cape);
-  history.replaceState(null,"","#cape/"+encodeURIComponent(cape.id));
+  history.replaceState(null, "", "#cape/" + encodeURIComponent(cape.id));
   window.scrollTo({top:0,behavior:"smooth"});
 }
 
-function handleRoute(){
-  const match=window.location.hash.match(/^#cape\/(.+)$/);
-  if(match){
-    let id=match[1];
-    try{id=decodeURIComponent(id)}catch(e){}
+function handleRoute() {
+  const match = window.location.hash.match(/^#cape\/(.+)$/);
+
+  if (match) {
+    let id = match[1];
+    try { id = decodeURIComponent(id); } catch (e) {}
     openCape(id);
-  }else{
-    showHome(window.location.hash==="#shop"?"shop":"home");
+  } else {
+    showHome(window.location.hash === "#shop" ? "shop" : "home");
   }
 }
 
-window.addEventListener("hashchange",handleRoute);
+window.addEventListener("hashchange", handleRoute);
 
-if(window.location.hash.startsWith("#cape/")){
+if (window.location.hash.startsWith("#cape/")) {
   handleRoute();
-}else if(window.location.hash==="#shop"){
+} else if (window.location.hash === "#shop") {
   showHome("shop");
-}else{
+} else {
   showHome("home");
 }
 </script>
