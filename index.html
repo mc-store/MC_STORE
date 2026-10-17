@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#080b12">
-<meta name="description" content="MC STORE — Browse Minecraft capes, explore our collection, and order through Discord.">
+<meta name="description" content="MC STORE — Builder, Aurora, and Corrupted Capes are in stock. All other capes are currently not in stock.">
 <title>MC STORE | Minecraft Cape Shop</title>
 
 <style>
@@ -121,7 +121,6 @@ nav {
   -webkit-backdrop-filter: blur(18px);
 }
 
-/* MC STORE logo */
 .brand {
   display: inline-flex;
   align-items: center;
@@ -440,6 +439,18 @@ h2 {
   background: #00e5ff12;
 }
 
+.tag.stock {
+  color: #8af7b0;
+  border-color: #35d77966;
+  background: #123522;
+}
+
+.tag.sold {
+  color: #ffaaaa;
+  border-color: #ff777755;
+  background: #3a1c25;
+}
+
 .details {
   padding: 22px;
 }
@@ -581,11 +592,11 @@ footer {
 
 <div class="sale-marquee" aria-label="MC STORE announcements">
   <div class="sale-track">
-    <span>MC STORE ✦ SPECIAL OFFERS</span>
-    <span>MINECRAFT CAPES ✦ EXPLORE THE COLLECTION</span>
+    <span>IN STOCK: BUILDER ✦ AURORA ✦ CORRUPTED CAPES</span>
+    <span>OTHER CAPES: NOT IN STOCK</span>
     <span>QUESTIONS? JOIN OUR DISCORD</span>
-    <span>MC STORE ✦ SPECIAL OFFERS</span>
-    <span>MINECRAFT CAPES ✦ EXPLORE THE COLLECTION</span>
+    <span>IN STOCK: BUILDER ✦ AURORA ✦ CORRUPTED CAPES</span>
+    <span>OTHER CAPES: NOT IN STOCK</span>
     <span>QUESTIONS? JOIN OUR DISCORD</span>
   </div>
 </div>
@@ -605,7 +616,7 @@ footer {
 <header class="hero" id="home">
   <span class="eyebrow">THE MC STORE COLLECTION</span>
   <h1>Discover Minecraft<br><span class="gradient">Capes.</span></h1>
-  <p>Explore our collection of Minecraft capes, check availability, and contact our team on Discord to place your order.</p>
+  <p>Builder, Aurora, and Corrupted Capes are currently in stock. All other capes are not in stock. Contact our team on Discord to order or ask about restocks.</p>
 
   <div class="hero-actions">
     <a class="btn" href="#shop">Explore Collection ↗</a>
@@ -624,7 +635,7 @@ footer {
     <div>
       <div class="kicker">OUR COLLECTION</div>
       <h2>Featured <span class="gradient">Capes</span></h2>
-      <p class="sub">Browse our collection and contact us for availability and pricing.</p>
+      <p class="sub">Currently in stock: Builder Cape, Aurora Cape, and Corrupted Cape. All other capes are not in stock.</p>
     </div>
     <a class="btn" href="https://discord.com/invite/F38vcYVHA" target="_blank" rel="noopener noreferrer">Ask About Stock ↗</a>
   </div>
@@ -634,7 +645,7 @@ footer {
     <!-- Corrupted Cape -->
     <article class="card">
       <div class="art">
-        <span class="tag orange">FEATURED</span>
+        <span class="tag stock">IN STOCK</span>
         <img class="cape-img" src="media/cloakFront%20(2).webp" alt="Corrupted Cape" loading="lazy">
       </div>
       <div class="details">
@@ -650,7 +661,7 @@ footer {
     <!-- Aurora Cape -->
     <article class="card">
       <div class="art">
-        <span class="tag blue">POPULAR</span>
+        <span class="tag stock">IN STOCK</span>
         <img class="cape-img" src="media/aurora-front.png" alt="Aurora Cape" loading="lazy">
       </div>
       <div class="details">
@@ -666,7 +677,7 @@ footer {
     <!-- Builder Cape -->
     <article class="card">
       <div class="art">
-        <span class="tag orange">COLLECTION</span>
+        <span class="tag stock">IN STOCK</span>
         <img class="cape-img" src="media/320%20(1).png" alt="Builder Cape" loading="lazy">
       </div>
       <div class="details">
@@ -682,15 +693,15 @@ footer {
     <!-- Experience Cape -->
     <article class="card">
       <div class="art">
-        <span class="tag blue">EXCLUSIVE</span>
+        <span class="tag sold">NOT IN STOCK</span>
         <img class="cape-img" src="media/320%20(2).png" alt="Experience Cape" loading="lazy">
       </div>
       <div class="details">
         <h3>Experience Cape</h3>
         <p>A special cape to add to your Minecraft collection.</p>
         <div class="price-row">
-          <div class="price">Contact us<small>For current price</small></div>
-          <a class="btn order" href="https://discord.com/invite/F38vcYVHA" target="_blank" rel="noopener noreferrer">Order ↗</a>
+          <div class="price">Not in stock<small>Ask about restock</small></div>
+          <a class="btn order btn-secondary" href="https://discord.com/invite/F38vcYVHA" target="_blank" rel="noopener noreferrer">Restock info ↗</a>
         </div>
       </div>
     </article>
@@ -698,15 +709,15 @@ footer {
     <!-- Crafter Cape -->
     <article class="card">
       <div class="art">
-        <span class="tag orange">RARE</span>
+        <span class="tag sold">NOT IN STOCK</span>
         <img class="cape-img" src="media/320%20(3).png" alt="Crafter Cape" loading="lazy">
       </div>
       <div class="details">
         <h3>Crafter Cape</h3>
         <p>A distinctive cape for Minecraft fans and collectors.</p>
         <div class="price-row">
-          <div class="price">Contact us<small>For current price</small></div>
-          <a class="btn order" href="https://discord.com/invite/F38vcYVHA" target="_blank" rel="noopener noreferrer">Order ↗</a>
+          <div class="price">Not in stock<small>Ask about restock</small></div>
+          <a class="btn order btn-secondary" href="https://discord.com/invite/F38vcYVHA" target="_blank" rel="noopener noreferrer">Restock info ↗</a>
         </div>
       </div>
     </article>
@@ -714,15 +725,15 @@ footer {
     <!-- Menace Cape -->
     <article class="card">
       <div class="art">
-        <span class="tag orange">COLLECTION</span>
+        <span class="tag sold">NOT IN STOCK</span>
         <img class="cape-img" src="media/320%20(5).png" alt="Menace Cape" loading="lazy">
       </div>
       <div class="details">
         <h3>Menace Cape</h3>
         <p>A striking cape for your Minecraft collection.</p>
         <div class="price-row">
-          <div class="price">Contact us<small>For current price</small></div>
-          <a class="btn order" href="https://discord.com/invite/F38vcYVHA" target="_blank" rel="noopener noreferrer">Order ↗</a>
+          <div class="price">Not in stock<small>Ask about restock</small></div>
+          <a class="btn order btn-secondary" href="https://discord.com/invite/F38vcYVHA" target="_blank" rel="noopener noreferrer">Restock info ↗</a>
         </div>
       </div>
     </article>
@@ -730,15 +741,15 @@ footer {
     <!-- Copper Cape -->
     <article class="card">
       <div class="art">
-        <span class="tag blue">COLLECTION</span>
+        <span class="tag sold">NOT IN STOCK</span>
         <img class="cape-img" src="media/320%20(6).png" alt="Copper Cape" loading="lazy">
       </div>
       <div class="details">
         <h3>Copper Cape</h3>
         <p>A copper-themed cape for Minecraft players.</p>
         <div class="price-row">
-          <div class="price">Contact us<small>For current price</small></div>
-          <a class="btn order" href="https://discord.com/invite/F38vcYVHA" target="_blank" rel="noopener noreferrer">Order ↗</a>
+          <div class="price">Not in stock<small>Ask about restock</small></div>
+          <a class="btn order btn-secondary" href="https://discord.com/invite/F38vcYVHA" target="_blank" rel="noopener noreferrer">Restock info ↗</a>
         </div>
       </div>
     </article>
@@ -746,15 +757,15 @@ footer {
     <!-- Moonlight Cape -->
     <article class="card">
       <div class="art">
-        <span class="tag blue">COLLECTION</span>
+        <span class="tag sold">NOT IN STOCK</span>
         <img class="cape-img" src="media/cloakFront%20(4).webp" alt="Moonlight Cape" loading="lazy">
       </div>
       <div class="details">
         <h3>Moonlight Cape</h3>
         <p>A moonlight-inspired cape for your Minecraft collection.</p>
         <div class="price-row">
-          <div class="price">Contact us<small>For current price</small></div>
-          <a class="btn order" href="https://discord.com/invite/F38vcYVHA" target="_blank" rel="noopener noreferrer">Order ↗</a>
+          <div class="price">Not in stock<small>Ask about restock</small></div>
+          <a class="btn order btn-secondary" href="https://discord.com/invite/F38vcYVHA" target="_blank" rel="noopener noreferrer">Restock info ↗</a>
         </div>
       </div>
     </article>
@@ -762,15 +773,15 @@ footer {
     <!-- Purple Heart Cape -->
     <article class="card">
       <div class="art">
-        <span class="tag orange">COLLECTION</span>
+        <span class="tag sold">NOT IN STOCK</span>
         <img class="cape-img" src="media/320%20(7).png" alt="Purple Heart Cape" loading="lazy">
       </div>
       <div class="details">
         <h3>Purple Heart Cape</h3>
         <p>A purple-themed cape to add to your Minecraft collection.</p>
         <div class="price-row">
-          <div class="price">Contact us<small>For current price</small></div>
-          <a class="btn order" href="https://discord.com/invite/F38vcYVHA" target="_blank" rel="noopener noreferrer">Order ↗</a>
+          <div class="price">Not in stock<small>Ask about restock</small></div>
+          <a class="btn order btn-secondary" href="https://discord.com/invite/F38vcYVHA" target="_blank" rel="noopener noreferrer">Restock info ↗</a>
         </div>
       </div>
     </article>
@@ -781,7 +792,7 @@ footer {
 <section class="discord" id="discord">
   <div class="kicker">NEED ASSISTANCE?</div>
   <h2>Questions? <span class="gradient">We're here to help.</span></h2>
-  <p>Visit our Discord to ask about cape availability, pricing, and ordering. Our community team is ready to help.</p>
+  <p>Visit our Discord to order the capes currently in stock or ask our team about restock updates for unavailable capes.</p>
   <a class="btn" href="https://discord.com/invite/F38vcYVHA" target="_blank" rel="noopener noreferrer">Join Our Discord ↗</a>
 </section>
 
