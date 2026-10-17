@@ -4,23 +4,19 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#080b12">
-<meta name="description" content="MC STORE — Builder, Aurora, and Corrupted Capes are in stock. All other capes are currently not in stock.">
 <title>MC STORE | Minecraft Cape Shop</title>
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap');
 
 :root {
   --bg: #080b12;
   --panel: #101722;
-  --panel2: #131f2c;
   --border: #253745;
   --text: #f4faff;
   --muted: #9aabb8;
   --cyan: #00e5ff;
-  --cyan2: #00b8d4;
-  --orange: #b95013;
-  --orange2: #e07828;
+  --orange: #e07828;
 }
 
 * {
@@ -39,10 +35,8 @@ body {
   font-family: Inter, Arial, sans-serif;
   overflow-x: hidden;
   background:
-    radial-gradient(ellipse at 0% 8%, rgba(0,229,255,.13), transparent 35%),
-    radial-gradient(ellipse at 100% 24%, rgba(185,80,19,.17), transparent 37%),
-    radial-gradient(ellipse at 15% 58%, rgba(0,184,212,.08), transparent 34%),
-    radial-gradient(ellipse at 90% 82%, rgba(224,120,40,.09), transparent 36%),
+    radial-gradient(ellipse at 0% 8%, #00e5ff20, transparent 35%),
+    radial-gradient(ellipse at 100% 24%, #b9501329, transparent 37%),
     #080b12;
   background-attachment: fixed;
 }
@@ -50,61 +44,34 @@ body {
 a {
   color: inherit;
   text-decoration: none;
-  -webkit-tap-highlight-color: transparent;
 }
 
-::selection {
-  background: #00e5ff55;
-  color: white;
-}
-
-/* Announcement ticker */
 .sale-marquee {
   overflow: hidden;
   white-space: nowrap;
-  background: linear-gradient(100deg, #873b12, #007d91, #a44813, #007d91);
-  background-size: 250% 100%;
-  animation: banner-glow 12s ease infinite;
+  background: linear-gradient(100deg, #873b12, #007d91, #a44813);
   color: white;
-  padding: 11px 0;
+  padding: 12px 0;
   border-bottom: 1px solid #00e5ff35;
 }
 
 .sale-track {
   display: flex;
   width: max-content;
-  animation: sale-scroll 32s linear infinite;
+  animation: scroll 30s linear infinite;
 }
 
 .sale-track span {
-  flex-shrink: 0;
   padding: 0 25px;
   font-size: 11px;
   font-weight: 900;
   letter-spacing: 2px;
 }
 
-.sale-track span::after {
-  content: " ✦ ";
-  margin-left: 30px;
-  color: var(--cyan);
-}
-
-.sale-marquee:hover .sale-track {
-  animation-play-state: paused;
-}
-
-@keyframes sale-scroll {
-  from { transform: translateX(0); }
+@keyframes scroll {
   to { transform: translateX(-50%); }
 }
 
-@keyframes banner-glow {
-  0%, 100% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-}
-
-/* Navigation */
 nav {
   min-height: 76px;
   display: flex;
@@ -113,24 +80,10 @@ nav {
   gap: 20px;
   padding: 10px 8%;
   border-bottom: 1px solid #00e5ff20;
-  background: rgba(8,11,18,.88);
+  background: #080b12ed;
   position: sticky;
   top: 0;
   z-index: 10;
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
-}
-
-.brand {
-  display: inline-flex;
-  align-items: center;
-  flex-shrink: 0;
-  white-space: nowrap;
-  transition: transform .3s ease;
-}
-
-.brand:hover {
-  transform: translateY(-1px);
 }
 
 .brand-logo {
@@ -138,58 +91,20 @@ nav {
   width: 165px;
   height: 58px;
   object-fit: contain;
-  object-position: left center;
-  background: transparent;
-  border: none;
-  box-shadow: none;
-  filter: drop-shadow(0 2px 5px rgba(0,0,0,.25));
-  transition: transform .3s ease, filter .3s ease;
-}
-
-.brand:hover .brand-logo {
-  transform: scale(1.04);
-  filter: drop-shadow(0 0 8px #00e5ff55);
 }
 
 .links {
   display: flex;
   align-items: center;
-  gap: 28px;
+  gap: 25px;
 }
 
 .links a:not(.btn) {
-  position: relative;
   color: var(--muted);
   font-size: 13px;
   font-weight: 600;
-  padding: 9px 0;
-  transition: color .3s ease, text-shadow .3s ease;
 }
 
-.links a:not(.btn)::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 100%;
-  height: 2px;
-  border-radius: 10px;
-  background: linear-gradient(90deg, var(--cyan), var(--orange2));
-  transform: scaleX(0);
-  transform-origin: center;
-  transition: transform .3s ease;
-}
-
-.links a:not(.btn):hover {
-  color: var(--cyan);
-  text-shadow: 0 0 12px #00e5ff35;
-}
-
-.links a:not(.btn):hover::after {
-  transform: scaleX(1);
-}
-
-/* Buttons */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -203,43 +118,28 @@ nav {
   font-weight: 800;
   border: 1px solid #00e5ff35;
   cursor: pointer;
-  transition: transform .25s ease, filter .25s ease,
-              box-shadow .25s ease, border-color .25s ease;
+  transition: .25s;
 }
 
 .btn:hover {
   transform: translateY(-3px);
   filter: brightness(1.15);
-  border-color: #00e5ff95;
-  box-shadow: 0 8px 28px #00cfe52b, 0 4px 20px #b9501320;
-}
-
-.btn:active {
-  transform: translateY(-1px) scale(.98);
+  box-shadow: 0 8px 28px #00cfe52b;
 }
 
 .btn-secondary {
-  background: rgba(16,23,34,.8);
+  background: #101722;
   border: 1px solid #344650;
 }
 
-.btn-secondary:hover {
-  background: #10212b;
-}
-
-/* Hero */
 .hero {
   text-align: center;
   padding: 112px 20px 85px;
-  background:
-    radial-gradient(ellipse at 15% 8%, #00e5ff13, transparent 42%),
-    radial-gradient(ellipse at 85% 10%, #b9501320, transparent 42%);
 }
 
 .eyebrow {
   display: inline-block;
   border: 1px solid #00e5ff50;
-  background: linear-gradient(100deg, #00e5ff12, #b950131c);
   color: var(--cyan);
   padding: 9px 15px;
   border-radius: 30px;
@@ -256,7 +156,7 @@ h1 {
 }
 
 .gradient {
-  background: linear-gradient(100deg, var(--cyan), #65f0ff 45%, var(--orange2));
+  background: linear-gradient(100deg, var(--cyan), #65f0ff 45%, var(--orange));
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -297,7 +197,6 @@ h1 {
   margin-top: 6px;
 }
 
-/* Collection */
 section {
   padding: 72px 8%;
 }
@@ -340,16 +239,16 @@ h2 {
 
 .card {
   border: 1px solid #263b49;
-  background: linear-gradient(150deg, rgba(19,31,44,.96), rgba(12,19,29,.96));
+  background: linear-gradient(150deg, #131f2cf5, #0c131df5);
   border-radius: 16px;
   overflow: hidden;
-  transition: transform .3s ease, border-color .3s ease, box-shadow .3s ease;
+  transition: .3s;
 }
 
 .card:hover {
   transform: translateY(-7px);
   border-color: var(--cyan);
-  box-shadow: 0 15px 40px #0006, 0 0 25px #00e5ff12;
+  box-shadow: 0 15px 40px #0006;
 }
 
 .art {
@@ -365,53 +264,6 @@ h2 {
     #0a111b;
 }
 
-.art::before,
-.art::after {
-  content: "";
-  position: absolute;
-  border: 1px solid #00e5ff18;
-  border-radius: 50%;
-  pointer-events: none;
-  transition: transform .4s ease, border-color .4s ease;
-}
-
-.art::before {
-  width: 190px;
-  height: 190px;
-}
-
-.art::after {
-  width: 145px;
-  height: 145px;
-  border-color: #e078281a;
-}
-
-.card:hover .art::before {
-  transform: scale(1.12);
-  border-color: #00e5ff70;
-}
-
-.card:hover .art::after {
-  transform: scale(1.15);
-  border-color: #e0782870;
-}
-
-.cape-img {
-  display: block;
-  position: relative;
-  z-index: 1;
-  width: 165px;
-  height: 190px;
-  object-fit: contain;
-  filter: drop-shadow(0 12px 22px #0009);
-  transition: transform .35s ease, filter .35s ease;
-}
-
-.card:hover .cape-img {
-  transform: scale(1.08);
-  filter: drop-shadow(0 14px 26px #000b);
-}
-
 .tag {
   position: absolute;
   top: 15px;
@@ -424,19 +276,6 @@ h2 {
   border-radius: 6px;
   font-size: 9px;
   font-weight: 800;
-  letter-spacing: .7px;
-}
-
-.tag.orange {
-  color: #f4a267;
-  border-color: #e0782855;
-  background: #b950131b;
-}
-
-.tag.blue {
-  color: var(--cyan);
-  border-color: #00e5ff55;
-  background: #00e5ff12;
 }
 
 .tag.stock {
@@ -451,6 +290,19 @@ h2 {
   background: #3a1c25;
 }
 
+.cape-img {
+  display: block;
+  width: 165px;
+  height: 190px;
+  object-fit: contain;
+  filter: drop-shadow(0 12px 22px #0009);
+  transition: .35s;
+}
+
+.card:hover .cape-img {
+  transform: scale(1.08);
+}
+
 .details {
   padding: 22px;
 }
@@ -458,11 +310,6 @@ h2 {
 .details h3 {
   font-size: 17px;
   font-weight: 800;
-  transition: color .25s ease;
-}
-
-.card:hover .details h3 {
-  color: var(--cyan);
 }
 
 .details p {
@@ -500,7 +347,6 @@ h2 {
   padding: 11px 14px;
 }
 
-/* Discord section */
 .discord {
   margin: 20px 8% 75px;
   padding: 58px 25px;
@@ -510,14 +356,7 @@ h2 {
   background:
     radial-gradient(ellipse at 0% 100%, #b9501328, transparent 55%),
     radial-gradient(ellipse at 100% 0%, #00e5ff1d, transparent 55%),
-    rgba(16,23,34,.92);
-  transition: border-color .3s ease, box-shadow .3s ease, transform .3s ease;
-}
-
-.discord:hover {
-  border-color: #e07828a0;
-  box-shadow: 0 12px 40px #00e5ff12;
-  transform: translateY(-2px);
+    #101722ed;
 }
 
 .discord p {
@@ -528,7 +367,6 @@ h2 {
   line-height: 1.9;
 }
 
-/* Footer */
 footer {
   border-top: 1px solid #00e5ff25;
   padding: 27px 8%;
@@ -541,27 +379,17 @@ footer {
   font-size: 11px;
 }
 
-@media(max-width: 850px) {
+@media (max-width: 850px) {
   nav { padding: 10px 5%; }
-  .links { gap: 16px; }
   section { padding: 55px 5%; }
   .products { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .discord { margin: 15px 5% 50px; }
 }
 
-@media(max-width: 540px) {
-  nav {
-    min-height: 66px;
-    gap: 10px;
-    padding: 8px 4%;
-  }
-
-  .brand-logo {
-    width: 112px;
-    height: 42px;
-  }
-
-  .links { gap: 13px; }
+@media (max-width: 540px) {
+  nav { min-height: 66px; gap: 10px; padding: 8px 4%; }
+  .brand-logo { width: 105px; height: 42px; }
+  .links { gap: 12px; }
   .links a:not(.btn) { font-size: 11px; }
   .links .btn { padding: 10px 12px; font-size: 11px; }
   .hero { padding: 76px 18px 58px; }
@@ -570,14 +398,10 @@ footer {
   .products { grid-template-columns: 1fr; }
   .art { height: 260px; }
   .discord { padding: 42px 20px; }
-
-  footer {
-    flex-direction: column;
-    align-items: flex-start;
-  }
+  footer { flex-direction: column; align-items: flex-start; }
 }
 
-@media(prefers-reduced-motion: reduce) {
+@media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after {
     animation-duration: .01ms !important;
@@ -590,7 +414,7 @@ footer {
 
 <body>
 
-<div class="sale-marquee" aria-label="MC STORE announcements">
+<div class="sale-marquee">
   <div class="sale-track">
     <span>IN STOCK: BUILDER ✦ AURORA ✦ CORRUPTED CAPES</span>
     <span>OTHER CAPES: NOT IN STOCK</span>
@@ -602,25 +426,30 @@ footer {
 </div>
 
 <nav>
-  <a class="brand" href="#home" aria-label="MC STORE home">
+  <a class="brand" href="#home">
     <img class="brand-logo" src="media/1792194385872.png" alt="MC STORE Logo">
   </a>
-
   <div class="links">
     <a href="#home">Home</a>
     <a href="#shop">Capes</a>
-    <a class="btn" href="#discord">Shop Now ↗</a>
+    <a class="btn" href="#shop">Shop Now ↗</a>
   </div>
 </nav>
 
 <header class="hero" id="home">
   <span class="eyebrow">THE MC STORE COLLECTION</span>
   <h1>Discover Minecraft<br><span class="gradient">Capes.</span></h1>
-  <p>Builder, Aurora, and Corrupted Capes are currently in stock. All other capes are not in stock. Contact our team on Discord to order or ask about restocks.</p>
+  <p>
+    Builder, Aurora, and Corrupted Capes are currently in stock.
+    All other capes are not in stock. Contact our team on Discord
+    to order or ask about restocks.
+  </p>
 
   <div class="hero-actions">
     <a class="btn" href="#shop">Explore Collection ↗</a>
-    <a class="btn btn-secondary" href="https://discord.com/invite/F38vcYVHA" target="_blank" rel="noopener noreferrer">Join Discord ↗</a>
+    <a class="btn btn-secondary"
+       href="https://discord.com/invite/F38vcYVHA"
+       target="_blank" rel="noopener noreferrer">Join Discord ↗</a>
   </div>
 
   <div class="stats">
@@ -635,153 +464,163 @@ footer {
     <div>
       <div class="kicker">OUR COLLECTION</div>
       <h2>Featured <span class="gradient">Capes</span></h2>
-      <p class="sub">Currently in stock: Builder Cape, Aurora Cape, and Corrupted Cape. All other capes are not in stock.</p>
+      <p class="sub">
+        Currently in stock: Builder Cape, Aurora Cape, and Corrupted Cape.
+        All other capes are not in stock.
+      </p>
     </div>
-    <a class="btn" href="https://discord.com/invite/F38vcYVHA" target="_blank" rel="noopener noreferrer">Ask About Stock ↗</a>
+    <a class="btn" href="https://discord.com/invite/F38vcYVHA"
+       target="_blank" rel="noopener noreferrer">Ask About Stock ↗</a>
   </div>
 
   <div class="products">
 
-    <!-- Corrupted Cape -->
+    <!-- 1. CORRUPTED CAPE -->
     <article class="card">
       <div class="art">
         <span class="tag stock">IN STOCK</span>
-        <img class="cape-img" src="media/cloakFront%20(2).webp" alt="Corrupted Cape" loading="lazy">
+        <img class="cape-img" src="media/cloakFront%20(2).webp"
+             alt="Corrupted Cape" loading="lazy">
       </div>
       <div class="details">
         <h3>Corrupted Cape</h3>
         <p>A distinctive cape for your Minecraft collection.</p>
         <div class="price-row">
           <div class="price">Contact us<small>For current price</small></div>
-          <a class="btn order" href="https://discord.com/invite/F38vcYVHA" target="_blank" rel="noopener noreferrer">Order ↗</a>
+          <a class="btn order" href="https://discord.com/invite/F38vcYVHA"
+             target="_blank" rel="noopener noreferrer">BUY NOW ↗</a>
         </div>
       </div>
     </article>
 
-    <!-- Aurora Cape -->
+    <!-- 2. AURORA CAPE -->
     <article class="card">
       <div class="art">
         <span class="tag stock">IN STOCK</span>
-        <img class="cape-img" src="media/aurora-front.png" alt="Aurora Cape" loading="lazy">
+        <img class="cape-img" src="media/aurora-front.png"
+             alt="Aurora Cape" loading="lazy">
       </div>
       <div class="details">
         <h3>Aurora Cape</h3>
         <p>A vibrant cape for players who want to stand out.</p>
         <div class="price-row">
           <div class="price">Contact us<small>For current price</small></div>
-          <a class="btn order" href="https://discord.com/invite/F38vcYVHA" target="_blank" rel="noopener noreferrer">Order ↗</a>
+          <a class="btn order" href="https://discord.com/invite/F38vcYVHA"
+             target="_blank" rel="noopener noreferrer">BUY NOW ↗</a>
         </div>
       </div>
     </article>
 
-    <!-- Builder Cape -->
+    <!-- 3. BUILDER CAPE -->
     <article class="card">
       <div class="art">
         <span class="tag stock">IN STOCK</span>
-        <img class="cape-img" src="media/320%20(1).png" alt="Builder Cape" loading="lazy">
+        <img class="cape-img" src="media/320%20(1).png"
+             alt="Builder Cape" loading="lazy">
       </div>
       <div class="details">
         <h3>Builder Cape</h3>
         <p>A classic addition for Minecraft cape collectors.</p>
         <div class="price-row">
           <div class="price">Contact us<small>For current price</small></div>
-          <a class="btn order" href="https://discord.com/invite/F38vcYVHA" target="_blank" rel="noopener noreferrer">Order ↗</a>
+          <a class="btn order" href="https://discord.com/invite/F38vcYVHA"
+             target="_blank" rel="noopener noreferrer">BUY NOW ↗</a>
         </div>
       </div>
     </article>
 
-    <!-- Experience Cape -->
+    <!-- 4. EXPERIENCE CAPE -->
     <article class="card">
       <div class="art">
         <span class="tag sold">NOT IN STOCK</span>
-        <img class="cape-img" src="media/320%20(2).png" alt="Experience Cape" loading="lazy">
+        <img class="cape-img" src="media/320%20(2).png"
+             alt="Experience Cape" loading="lazy">
       </div>
       <div class="details">
         <h3>Experience Cape</h3>
         <p>A special cape to add to your Minecraft collection.</p>
         <div class="price-row">
-          <div class="price">Not in stock<small>Ask about restock</small></div>
-          <a class="btn order btn-secondary" href="https://discord.com/invite/F38vcYVHA" target="_blank" rel="noopener noreferrer">Restock info ↗</a>
+          <div class="price">Not in stock<small>Currently unavailable</small></div>
         </div>
       </div>
     </article>
 
-    <!-- Crafter Cape -->
+    <!-- 5. CRAFTER CAPE -->
     <article class="card">
       <div class="art">
         <span class="tag sold">NOT IN STOCK</span>
-        <img class="cape-img" src="media/320%20(3).png" alt="Crafter Cape" loading="lazy">
+        <img class="cape-img" src="media/320%20(3).png"
+             alt="Crafter Cape" loading="lazy">
       </div>
       <div class="details">
         <h3>Crafter Cape</h3>
         <p>A distinctive cape for Minecraft fans and collectors.</p>
         <div class="price-row">
-          <div class="price">Not in stock<small>Ask about restock</small></div>
-          <a class="btn order btn-secondary" href="https://discord.com/invite/F38vcYVHA" target="_blank" rel="noopener noreferrer">Restock info ↗</a>
+          <div class="price">Not in stock<small>Currently unavailable</small></div>
         </div>
       </div>
     </article>
 
-    <!-- Menace Cape -->
+    <!-- 6. MENACE CAPE -->
     <article class="card">
       <div class="art">
         <span class="tag sold">NOT IN STOCK</span>
-        <img class="cape-img" src="media/320%20(5).png" alt="Menace Cape" loading="lazy">
+        <img class="cape-img" src="media/320%20(5).png"
+             alt="Menace Cape" loading="lazy">
       </div>
       <div class="details">
         <h3>Menace Cape</h3>
         <p>A striking cape for your Minecraft collection.</p>
         <div class="price-row">
-          <div class="price">Not in stock<small>Ask about restock</small></div>
-          <a class="btn order btn-secondary" href="https://discord.com/invite/F38vcYVHA" target="_blank" rel="noopener noreferrer">Restock info ↗</a>
+          <div class="price">Not in stock<small>Currently unavailable</small></div>
         </div>
       </div>
     </article>
 
-    <!-- Copper Cape -->
+    <!-- 7. COPPER CAPE -->
     <article class="card">
       <div class="art">
         <span class="tag sold">NOT IN STOCK</span>
-        <img class="cape-img" src="media/320%20(6).png" alt="Copper Cape" loading="lazy">
+        <img class="cape-img" src="media/320%20(6).png"
+             alt="Copper Cape" loading="lazy">
       </div>
       <div class="details">
         <h3>Copper Cape</h3>
         <p>A copper-themed cape for Minecraft players.</p>
         <div class="price-row">
-          <div class="price">Not in stock<small>Ask about restock</small></div>
-          <a class="btn order btn-secondary" href="https://discord.com/invite/F38vcYVHA" target="_blank" rel="noopener noreferrer">Restock info ↗</a>
+          <div class="price">Not in stock<small>Currently unavailable</small></div>
         </div>
       </div>
     </article>
 
-    <!-- Moonlight Cape -->
+    <!-- 8. MOONLIGHT CAPE -->
     <article class="card">
       <div class="art">
         <span class="tag sold">NOT IN STOCK</span>
-        <img class="cape-img" src="media/cloakFront%20(4).webp" alt="Moonlight Cape" loading="lazy">
+        <img class="cape-img" src="media/cloakFront%20(4).webp"
+             alt="Moonlight Cape" loading="lazy">
       </div>
       <div class="details">
         <h3>Moonlight Cape</h3>
         <p>A moonlight-inspired cape for your Minecraft collection.</p>
         <div class="price-row">
-          <div class="price">Not in stock<small>Ask about restock</small></div>
-          <a class="btn order btn-secondary" href="https://discord.com/invite/F38vcYVHA" target="_blank" rel="noopener noreferrer">Restock info ↗</a>
+          <div class="price">Not in stock<small>Currently unavailable</small></div>
         </div>
       </div>
     </article>
 
-    <!-- Purple Heart Cape -->
+    <!-- 9. PURPLE HEART CAPE -->
     <article class="card">
       <div class="art">
         <span class="tag sold">NOT IN STOCK</span>
-        <img class="cape-img" src="media/320%20(7).png" alt="Purple Heart Cape" loading="lazy">
+        <img class="cape-img" src="media/320%20(7).png"
+             alt="Purple Heart Cape" loading="lazy">
       </div>
       <div class="details">
         <h3>Purple Heart Cape</h3>
         <p>A purple-themed cape to add to your Minecraft collection.</p>
         <div class="price-row">
-          <div class="price">Not in stock<small>Ask about restock</small></div>
-          <a class="btn order btn-secondary" href="https://discord.com/invite/F38vcYVHA" target="_blank" rel="noopener noreferrer">Restock info ↗</a>
+          <div class="price">Not in stock<small>Currently unavailable</small></div>
         </div>
       </div>
     </article>
@@ -789,20 +628,26 @@ footer {
   </div>
 </section>
 
-<section class="discord" id="discord">
-  <div class="kicker">NEED ASSISTANCE?</div>
-  <h2>Questions? <span class="gradient">We're here to help.</span></h2>
-  <p>Visit our Discord to order the capes currently in stock or ask our team about restock updates for unavailable capes.</p>
-  <a class="btn" href="https://discord.com/invite/F38vcYVHA" target="_blank" rel="noopener noreferrer">Join Our Discord ↗</a>
-</section>
+<div class="discord" id="discord">
+  <div class="kicker">NEED HELP?</div>
+  <h2>Join the <span class="gradient">MC STORE</span> Discord</h2>
+  <p>
+    Have a question about an available cape or a future restock?
+    Join our Discord community to contact us.
+  </p>
+  <a class="btn" href="https://discord.com/invite/F38vcYVHA"
+     target="_blank" rel="noopener noreferrer">Join Discord ↗</a>
+</div>
 
 <footer>
-  <a class="brand" href="#home" aria-label="MC STORE home">
-    <img class="brand-logo" src="media/1792194385872.png" alt="MC STORE Logo">
-  </a>
-  <span>© 2026 MC STORE. All rights reserved.</span>
-  <span>MC STORE is an independent shop and is not affiliated with Mojang Studios or Microsoft.</span>
+  <span>© <span id="year">2026</span> MC STORE. All rights reserved.</span>
+  <span>Independent community shop. Not affiliated with Mojang or Microsoft.</span>
 </footer>
 
+<script>
+document.getElementById('year').textContent = new Date().getFullYear();
+</script>
+
 </body>
-</html>
+  </html>
+  
