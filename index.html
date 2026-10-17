@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -41,22 +42,41 @@ h1{font-size:clamp(40px,7vw,76px);letter-spacing:-3px;line-height:1.1;margin:25p
 .stats strong{display:block;font-size:18px}
 .stats span{display:block;color:var(--muted);font-size:11px;margin-top:6px}
 
-/* ANIMATED CAPE AD */
+/* CAPE SLIDER */
 .hero-ad{max-width:1050px;margin:30px auto 0;display:grid;grid-template-columns:.9fr 1.1fr;align-items:center;gap:35px;text-align:left;padding:30px;border:1px solid #ffc75b45;border-radius:22px;background:linear-gradient(135deg,#34210ff2,#17110bf5);box-shadow:0 15px 45px #0003;position:relative;overflow:hidden;transition:border-color .35s,box-shadow .35s}
 .hero-ad:before{content:"";position:absolute;inset:-2px;background:linear-gradient(110deg,transparent 15%,#ff641c20 45%,#ffd65a25 55%,transparent 85%);transform:translateX(-110%);pointer-events:none}
-.hero-ad.ad-changing{border-color:#ffb52e;box-shadow:0 0 25px #ff641c30,0 15px 45px #0005}
-.hero-ad.ad-changing:before{animation:shineSweep .7s ease-out}
+.hero-ad.ad-changing{border-color:#ffb52e;box-shadow:0 0 30px #ff641c40,0 15px 45px #0005}
+.hero-ad.ad-changing:before{animation:shineSweep .75s ease-out}
 @keyframes shineSweep{to{transform:translateX(110%)}}
 
 .hero-ad-image{height:310px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;border-radius:15px;background:radial-gradient(ellipse,#ffad2935,transparent 65%),#24170d}
-.hero-ad-image:after{content:"";position:absolute;width:160px;height:160px;border-radius:50%;background:#ff9e1e40;filter:blur(40px);transition:transform .4s}
-.hero-ad-image img{position:relative;z-index:1;width:85%;height:275px;object-fit:contain;filter:drop-shadow(0 12px 18px #0009);animation:capeFloat 2s ease-in-out infinite;transition:filter .3s}
-.hero-ad.ad-changing .hero-ad-image img{animation:capeEnter .65s cubic-bezier(.2,.8,.2,1) both}
-.hero-ad.ad-changing .hero-ad-content .ad-text{animation:textEnter .55s ease both}
-.hero-ad.ad-changing .hero-ad-image:after{transform:scale(1.35)}
-@keyframes capeFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
-@keyframes capeEnter{0%{opacity:0;transform:translateX(45px) scale(.78) rotate(8deg);filter:blur(5px) drop-shadow(0 0 0 #ff641c00)}65%{opacity:1;transform:translateX(-5px) scale(1.04) rotate(-2deg);filter:blur(0) drop-shadow(0 0 22px #ff9c2680)}100%{opacity:1;transform:translateX(0) scale(1) rotate(0);filter:drop-shadow(0 12px 18px #0009)}}
-@keyframes textEnter{0%{opacity:0;transform:translateY(15px)}100%{opacity:1;transform:translateY(0)}}
+.hero-ad-image:after{content:"";position:absolute;width:160px;height:160px;border-radius:50%;background:#ff9e1e40;filter:blur(40px);transition:transform .5s,background .5s}
+.hero-ad.ad-changing .hero-ad-image:after{transform:scale(1.55);background:#ff9e1e70}
+
+.hero-ad-image img{position:relative;z-index:1;width:85%;height:275px;object-fit:contain;filter:drop-shadow(0 12px 18px #0009);animation:capeFloat 2s ease-in-out infinite}
+.hero-ad.ad-changing .hero-ad-image img{animation:capeEnter .7s cubic-bezier(.22,1,.36,1) both}
+
+.hero-ad.ad-changing .ad-text{animation:textEnter .55s cubic-bezier(.22,1,.36,1) both}
+.hero-ad.ad-changing #heroCapeTitle{animation-delay:.04s}
+.hero-ad.ad-changing #heroCapeDescription{animation-delay:.08s}
+.hero-ad.ad-changing #heroCapeStock{animation-delay:.12s}
+.hero-ad.ad-changing #heroCapePrice{animation-delay:.16s}
+.hero-ad.ad-changing .actions{animation:textEnter .55s .18s both}
+
+@keyframes capeFloat{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-7px)}
+}
+@keyframes capeEnter{
+  0%{opacity:0;transform:translateX(65px) scale(.65) rotate(10deg);filter:blur(7px) drop-shadow(0 0 0 #ff641c00)}
+  60%{opacity:1;transform:translateX(-7px) scale(1.08) rotate(-3deg);filter:blur(0) drop-shadow(0 0 26px #ff9c26bb)}
+  82%{transform:translateX(3px) scale(.98) rotate(1deg)}
+  100%{opacity:1;transform:translateX(0) scale(1) rotate(0);filter:drop-shadow(0 12px 18px #0009)}
+}
+@keyframes textEnter{
+  0%{opacity:0;transform:translateY(18px)}
+  100%{opacity:1;transform:translateY(0)}
+}
 
 .hero-ad-content{min-width:0;position:relative;z-index:1}
 .hero-ad-content h1{font-size:clamp(32px,4vw,49px);letter-spacing:-1.8px;margin:20px 0}
@@ -97,7 +117,7 @@ h2{font-size:clamp(27px,4vw,38px)}
 .discord p{max-width:500px;margin:15px auto 24px;color:var(--muted);font-size:13px;line-height:1.9}
 footer{padding:25px 7%;border-top:1px solid #ffc75b30;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;color:var(--muted);font-size:11px}
 
-/* DETAILS */
+/* PRODUCT DETAILS */
 #details{display:none;min-height:65vh;padding:45px 7% 75px}
 .back-row{display:flex;justify-content:flex-start;margin-bottom:30px}
 .back-btn{background:#2a1a0e;border:1px solid #ffbf4c80;color:#ffda70;padding:12px 17px;border-radius:9px;font-size:13px;font-weight:900;cursor:pointer}
@@ -244,10 +264,11 @@ const capes=[
 
 document.getElementById("year").textContent=new Date().getFullYear();
 
-/* FAST AUTOMATIC CAPE ADVERTISEMENT */
+/* AUTOMATIC CAPE SLIDER WITH ANIMATION */
 let heroCapeIndex=0;
 let heroTimer=null;
 let heroPaused=false;
+let animationTimer=null;
 const heroAd=document.getElementById("heroAd");
 
 function showHeroCape(index,animate=true){
@@ -256,10 +277,15 @@ function showHeroCape(index,animate=true){
 
   heroCapeIndex=index;
 
+  clearTimeout(animationTimer);
+  heroAd.classList.remove("ad-changing");
+
   if(animate){
-    heroAd.classList.remove("ad-changing");
     void heroAd.offsetWidth;
     heroAd.classList.add("ad-changing");
+    animationTimer=setTimeout(()=>{
+      heroAd.classList.remove("ad-changing");
+    },750);
   }
 
   const image=document.getElementById("heroCapeImage");
@@ -300,12 +326,8 @@ function restartHeroSlider(){
   },2500);
 }
 
-heroAd.addEventListener("mouseenter",()=>{
-  heroPaused=true;
-});
-heroAd.addEventListener("mouseleave",()=>{
-  heroPaused=false;
-});
+heroAd.addEventListener("mouseenter",()=>{heroPaused=true});
+heroAd.addEventListener("mouseleave",()=>{heroPaused=false});
 
 showHeroCape(0,false);
 restartHeroSlider();
