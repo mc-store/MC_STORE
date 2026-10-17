@@ -209,4 +209,174 @@ const capes=[
 {id:"pan",name:"Pan Cape Code",price:9.99,image:"media/pan.webp",category:"classic",tag:""},
 {id:"copper",name:"Copper Cape Code",price:9.99,image:"media/copper.webp",category:"special",tag:""},
 {id:"common",name:"Common Cape Code",price:4.99,image:"media/common.webp",category:"classic",tag:""},
-{id:"aurora",name:"Aurora Cape Code",price:19.99,image
+{id:"aurora",name:"Aurora Cape Code",price:19.99,image:"media/aurora.webp",category:"special",tag:"FEATURED"},
+{id:"moonlight",name:"Moonlight Trail Cape Code",price:149.99,image:"media/moonlight.webp",category:"special",tag:"RARE"}
+];
+
+const $=id=>document.getElementById(id);
+const money=n=>"$"+n.toFixed(2);
+let cart=[];
+
+function makeImage(cape){
+ const img=document.createElement("img");
+ img.src=cape.image;
+ img.alt=cape.name;
+ img.onerror=function(){this.onerror=null;this.src=fallback};
+ return img;
+}
+
+function card(cape){
+ const article=document.createElement("article");
+ article.className="product";
+ const art=document.createElement("div");
+ art.className="product-art";
+ art.onclick=()=>openCape(cape.id);
+ if(cape.tag){
+  const tag=document.createElement("span");
+  tag.className="tag";
+  tag.textContent=cape.tag;
+  art.appendChild(tag);
+ }
+ art.appendChild(makeImage(cape));
+ const info=document.createElement("div");
+ info.className="product-info";
+ const title=document.createElement("h3");
+ title.textContent=cape.name;
+ const desc=document.createElement("p");
+ desc.textContent="Check availability and redemption details before ordering.";
+ const bottom=document.createElement("div");
+ bottom.className="product-bottom";
+ const price=document.createElement("span");
+ price.className="product-price";
+ price.textContent=money(cape.price);
+ const btn=document.createElement("button");
+ btn.className="small-btn";
+ btn.textContent="VIEW DETAILS ↗";
+ btn.onclick=()=>openCape(cape.id);
+ bottom.append(price,btn);
+ info.append(title,desc,bottom);
+ article.append(art,info);
+ return article;
+}
+
+function render(filter="all",target="products",exclude=""){
+ const box=$(target);
+ box.replaceChildren();
+ capes.filter(c=>(filter==="all"||c.category===filter)&&c.id!==exclude)
+ .forEach(c=>box.appendChild(card(c)));
+}
+
+function showHome(section="home"){
+ $("details").hidden=true;
+ $("homePage").hidden=false;
+ if(section==="home")window.scrollTo({top:0,behavior:"smooth"});
+ else setTimeout(()=>$(section).scrollIntoView({behavior:"smooth"}),50);
+}
+
+function openCape(id){
+ const cape=capes.find(c=>c.id===id);
+ if(!cape)return;
+ $("homePage").hidden=true;
+ $("details").hidden=false;
+ const box=$("detailContent");
+ box.replaceChildren();
+ const wrap=document.createElement("div");
+ wrap.className="detail-card";
+ const art=document.createElement("div");
+ art.className="detail-art";
+ art.appendChild(makeImage(cape));
+ const info=document.createElement("div");
+ info.className="detail-info";
+ const category=document.createElement("div");
+ category.className="eyebrow";
+ category.textContent=cape.category==="classic"?"CLASSIC CAPE":"SPECIAL CAPE";
+ const title=document.createElement("h2");
+ title.textContent=cape.name;
+ const desc=document.createElement("p");
+ desc.textContent="Contact us to confirm availability, code validity and redemption restrictions.";
+ const price=document.createElement("div");
+ price.className="detail-price";
+ price.textContent=money(cape.price);
+ const add=document.createElement("button");
+ add.className="btn";
+ add.textContent="ADD TO CART 🛒";
+ add.onclick=()=>addToCart(cape.id);
+ const contact=document.createElement("a");
+ contact.className="btn dark";
+ contact.href=DISCORD_URL;
+ contact.target="_blank";
+ contact.textContent="ASK ABOUT THIS CAPE ↗";
+ const buttons=document.createElement("div");
+ buttons.className="buttons";
+ buttons.append(add,contact);
+ info.append(category,title,desc,price,buttons);
+ wrap.append(art,info);
+ box.appendChild(wrap);
+ render("all","recommendedProducts",cape.id);
+ window.scrollTo({top:0,behavior:"smooth"});
+}
+
+function addToCart(id){
+ const existing=cart.find(c=>c.id===id);
+ if(existing)existing.qty++;
+ else cart.push({id,qty:1});
+ renderCart();
+ openCart();
+}
+
+function renderCart(){
+ $("cartCount").textContent=cart.reduce((sum,c)=>sum+c.qty,0);
+ const box=$("cartItems");
+ box.replaceChildren();
+ let total=0;
+ if(!cart.length){
+  const p=document.createElement("p");
+  p.className="empty";
+  p.textContent="Your cart is empty.";
+  box.appendChild(p);
+ }
+ cart.forEach(item=>{
+  const cape=capes.find(c=>c.id===item.id);
+  total+=cape.price*item.qty;
+  const line=document.createElement("div");
+  line.className="cart-line";
+  line.appendChild(makeImage(cape));
+  const info=document.createElement("div");
+  const title=document.createElement("h3");
+  title.textContent=cape.name+" × "+item.qty;
+  const price=document.createElement("p");
+  price.textContent=money(cape.price*item.qty);
+  info.append(title,price);
+  const remove=document.createElement("button");
+  remove.className="remove-btn";
+  remove.textContent="REMOVE";
+  remove.onclick=()=>{
+   cart=cart.filter(c=>c.id!==item.id);
+   renderCart();
+  };
+  line.append(info,remove);
+  box.appendChild(line);
+ });
+ $("cartTotal").textContent=money(total);
+}
+
+function openCart(){
+ $("overlay").classList.add("open");
+ $("cartPanel").classList.add("open");
+}
+function closeCart(){
+ $("overlay").classList.remove("open");
+ $("cartPanel").classList.remove("open");
+}
+
+$("filters").addEventListener("click",e=>{
+ const btn=e.target.closest("[data-filter]");
+ if(!btn)return;
+ document.querySelectorAll(".filter").forEach(b=>b.classList.toggle("active",b===btn));
+ render(btn.dataset.filter);
+});
+render();
+renderCart();
+</script>
+</body>
+</html>
