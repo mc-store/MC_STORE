@@ -1,53 +1,95 @@
-
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#ff641c">
+<meta name="theme-color" content="#f5f6f8">
 <title>MC STORE | Cape Shop</title>
 <style>
-:root{--orange:#ff641c;--yellow:#ffd65a;--text:#fff9ee;--muted:#c8b9a5}
+:root{
+  --orange:#ff641c;
+  --yellow:#ffd65a;
+  --text:#202124;
+  --muted:#6b7280;
+  --page:#f5f6f8;
+  --panel:#ffffff;
+  --border:#e5e7eb;
+}
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-body{font-family:Inter,Arial,sans-serif;color:var(--text);background:radial-gradient(ellipse at 10% 5%,#ffb52e55,transparent 38%),radial-gradient(ellipse at 95% 30%,#ff401b35,transparent 40%),linear-gradient(135deg,#20100b,#3a170b 45%,#171009);background-attachment:fixed;min-height:100vh}
+body{
+  font-family:Inter,Arial,sans-serif;
+  color:var(--text);
+  background:linear-gradient(135deg,#fff 0%,#f4f5f7 55%,#e9ebef 100%);
+  background-attachment:fixed;
+  min-height:100vh
+}
 a{color:inherit;text-decoration:none}
 button,input{font-family:inherit}
 button{cursor:pointer}
 [hidden]{display:none!important}
 
-.sale{display:flex;justify-content:center;align-items:center;gap:12px;flex-wrap:wrap;padding:13px 10px;text-align:center;font-size:12px;font-weight:900;letter-spacing:1.5px;background:#17110d;border-bottom:1px solid #ff641c66}
-.spooky{color:#ff641c;animation:softGlow 1.5s ease-in-out infinite alternate}
-.sale-divider{color:#ffd65a;animation:starSpin 5s linear infinite}
-.drop{color:#ffd65a;animation:dropGlow 1.5s ease-in-out infinite alternate}
+.sale{
+  display:flex;justify-content:center;align-items:center;gap:12px;
+  flex-wrap:wrap;padding:13px 10px;text-align:center;font-size:12px;
+  font-weight:900;letter-spacing:1.5px;background:#fff;
+  border-bottom:1px solid var(--border)
+}
+.spooky{color:var(--orange);animation:softGlow 1.5s ease-in-out infinite alternate}
+.sale-divider{color:#9ca3af;animation:starSpin 5s linear infinite}
+.drop{color:#555e6b;animation:dropGlow 1.5s ease-in-out infinite alternate}
 .ghost{animation:ghostFloat 2s ease-in-out infinite}
-@keyframes softGlow{to{text-shadow:0 0 13px #ff641c}}
-@keyframes dropGlow{to{text-shadow:0 0 12px #ffd65a}}
+@keyframes softGlow{to{text-shadow:0 0 10px #ff641c55}}
+@keyframes dropGlow{to{text-shadow:0 0 10px #6b728055}}
 @keyframes starSpin{to{transform:rotate(360deg)}}
 @keyframes ghostFloat{50%{transform:translateY(-5px)}}
 
-nav{position:sticky;top:0;z-index:10;display:flex;justify-content:space-between;align-items:center;padding:12px 7%;gap:15px;background:#170f09ed;backdrop-filter:blur(14px);border-bottom:1px solid #ffc04b40}
+nav{
+  position:sticky;top:0;z-index:10;display:flex;justify-content:space-between;
+  align-items:center;padding:12px 7%;gap:15px;background:#ffffffed;
+  backdrop-filter:blur(14px);border-bottom:1px solid var(--border)
+}
 .logo{width:150px;height:52px;object-fit:contain}
 .links{display:flex;align-items:center;gap:18px;font-size:13px;flex-wrap:wrap}
-.links>a:not(.btn){color:var(--muted)}
-.btn{display:inline-flex;justify-content:center;align-items:center;padding:13px 19px;border-radius:9px;border:1px solid #ffe08b70;color:white;background:linear-gradient(110deg,#ff641c,#e5a32c);font-size:12px;font-weight:900;cursor:pointer;transition:transform .25s,box-shadow .25s}
-.btn:hover{transform:translateY(-3px);box-shadow:0 8px 25px #ff641c55}
-.auth-btn{border:1px solid #ffe08b70;border-radius:9px;padding:11px 14px;background:linear-gradient(110deg,#ff641c,#e5a32c);color:white;font-size:12px;font-weight:900}
-.auth-user{color:#ffd65a;font-size:11px;max-width:140px;overflow-wrap:anywhere}
-
-/* Blue hover and focus effects for the navbar */
-.links>a:not(.btn){display:inline-flex;align-items:center;padding:10px 12px;border:1px solid transparent;border-radius:9px;color:var(--muted);transition:color .22s ease,background .22s ease,border-color .22s ease,transform .22s ease,box-shadow .22s ease}
-.links>a:not(.btn):hover,.links>a:not(.btn):focus-visible{color:#fff!important;background:#5865f21c;border-color:#7189ff;box-shadow:0 0 0 1px #5865f22e,0 0 18px #5865f255;transform:translateY(-2px) scale(1.035);outline:none}
-.links .btn{transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease,filter .22s ease}
-.links .btn:hover,.links .btn:focus-visible{border-color:#8da0ff;box-shadow:0 0 0 1px #5865f255,0 0 22px #5865f277;transform:translateY(-3px) scale(1.045);filter:brightness(1.06);outline:none}
-.auth-btn{transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease,filter .22s ease}
-.auth-btn:hover,.auth-btn:focus-visible{border-color:#8da0ff;box-shadow:0 0 0 1px #5865f255,0 0 22px #5865f277;transform:translateY(-2px) scale(1.07);filter:brightness(1.08);outline:none}
-.links>a:not(.btn):active,.links .btn:active,.auth-btn:active{transform:translateY(0) scale(.98)}
-@media(prefers-reduced-motion:reduce){.links>a:not(.btn),.links .btn,.auth-btn{transition:none}}
+.links>a:not(.btn){color:#626975}
+.links>a:not(.btn){
+  display:inline-flex;align-items:center;padding:10px 12px;
+  border:1px solid transparent;border-radius:9px;
+  transition:color .22s,background .22s,border-color .22s,transform .22s
+}
+.links>a:not(.btn):hover,.links>a:not(.btn):focus-visible{
+  color:#202124;background:#f0f1f3;border-color:#d8dbe0;
+  transform:translateY(-2px);outline:none
+}
+.btn{
+  display:inline-flex;justify-content:center;align-items:center;
+  padding:13px 19px;border-radius:9px;border:1px solid #ff641c40;
+  color:white;background:linear-gradient(110deg,#ff641c,#f28b35);
+  font-size:12px;font-weight:900;cursor:pointer;
+  transition:transform .25s,box-shadow .25s
+}
+.btn:hover{transform:translateY(-3px);box-shadow:0 8px 25px #ff641c30}
+.links .btn:hover{filter:brightness(1.04)}
+.auth-btn{
+  border:1px solid #ff641c40;border-radius:9px;padding:11px 14px;
+  background:linear-gradient(110deg,#ff641c,#f28b35);
+  color:white;font-size:12px;font-weight:900;
+  transition:transform .22s,box-shadow .22s
+}
+.auth-btn:hover{transform:translateY(-2px);box-shadow:0 5px 18px #ff641c30}
+.auth-user{color:#555e6b;font-size:11px;max-width:140px;overflow-wrap:anywhere}
 
 .hero{text-align:center;padding:55px 20px 70px}
-.gradient{background:linear-gradient(100deg,#ffe77b,#ff9c26,#ff4b27);-webkit-background-clip:text;background-clip:text;color:transparent}
-.eyebrow{display:inline-block;padding:9px 15px;border-radius:30px;border:1px solid #ffd15c80;background:#ffb51a16;color:#ffdb74;font-size:10px;font-weight:900;letter-spacing:2px}
+.gradient{
+  background:linear-gradient(100deg,#ff641c,#f29b38);
+  -webkit-background-clip:text;background-clip:text;color:transparent
+}
+.eyebrow{
+  display:inline-block;padding:9px 15px;border-radius:30px;
+  border:1px solid #ff641c40;background:#ff641c0c;color:#e95a1c;
+  font-size:10px;font-weight:900;letter-spacing:2px
+}
 h1{font-size:clamp(40px,7vw,76px);letter-spacing:-3px;line-height:1.1;margin:25px 0}
 .hero p{max-width:570px;margin:0 auto 26px;color:var(--muted);font-size:14px;line-height:1.9}
 .actions{display:flex;justify-content:flex-start;gap:12px;flex-wrap:wrap}
@@ -55,58 +97,108 @@ h1{font-size:clamp(40px,7vw,76px);letter-spacing:-3px;line-height:1.1;margin:25p
 .stats strong{display:block;font-size:18px}
 .stats span{display:block;color:var(--muted);font-size:11px;margin-top:6px}
 
-.hero-ad{max-width:1050px;margin:15px auto 0;display:grid;grid-template-columns:.9fr 1.1fr;align-items:center;gap:35px;text-align:left;padding:30px;border:1px solid #ffc75b45;border-radius:22px;background:linear-gradient(135deg,#34210ff2,#17110bf5);box-shadow:0 15px 45px #0003;position:relative;overflow:hidden;transition:border-color .35s,box-shadow .35s}
-.hero-ad.ad-changing{border-color:#ffb52e;box-shadow:0 0 32px #ff641c35,0 15px 45px #0005}
-.hero-ad-image{height:310px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;border-radius:15px;background:radial-gradient(ellipse,#ffad2935,transparent 65%),#24170d}
-.hero-ad-image img{position:relative;z-index:1;width:85%;height:275px;object-fit:contain;filter:drop-shadow(0 12px 18px #0009);animation:capeFloat 2.8s ease-in-out infinite}
+.hero-ad{
+  max-width:1050px;margin:15px auto 0;display:grid;
+  grid-template-columns:.9fr 1.1fr;align-items:center;gap:35px;
+  text-align:left;padding:30px;border:1px solid var(--border);
+  border-radius:22px;background:linear-gradient(145deg,#fff,#f4f5f7);
+  box-shadow:0 15px 45px #2021240b;position:relative;overflow:hidden;
+  transition:border-color .35s,box-shadow .35s
+}
+.hero-ad.ad-changing{border-color:#ffb17f;box-shadow:0 0 25px #ff641c14,0 15px 45px #0000000b}
+.hero-ad-image{
+  height:310px;display:flex;align-items:center;justify-content:center;
+  position:relative;overflow:hidden;border-radius:15px;
+  background:radial-gradient(ellipse,#e5e7eb 0%,transparent 70%),#f1f2f4
+}
+.hero-ad-image img{
+  position:relative;z-index:1;width:85%;height:275px;object-fit:contain;
+  filter:drop-shadow(0 12px 18px #0002);animation:capeFloat 2.8s ease-in-out infinite
+}
 @keyframes capeFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
 .hero-ad.ad-changing .hero-ad-image img{animation:capeZoom 1s ease both}
-@keyframes capeZoom{0%{opacity:0;transform:scale(.45) rotate(-5deg)}40%{opacity:1;transform:scale(1.2) rotate(2deg);filter:drop-shadow(0 0 28px #ff9c26)}75%{transform:scale(.97)}100%{opacity:1;transform:scale(1)}}
+@keyframes capeZoom{
+  0%{opacity:0;transform:scale(.45) rotate(-5deg)}
+  40%{opacity:1;transform:scale(1.2) rotate(2deg);filter:drop-shadow(0 0 25px #ff9c2655)}
+  75%{transform:scale(.97)}
+  100%{opacity:1;transform:scale(1)}
+}
 .hero-ad-content{min-width:0}
 .hero-ad-content h1{font-size:clamp(32px,4vw,49px);letter-spacing:-1.8px;margin:20px 0}
 .hero-ad-content p{max-width:500px;margin:0 0 18px;color:var(--muted);font-size:14px;line-height:1.9}
-.hero-cape-price{color:#ffda70;font-size:27px;font-weight:900;margin:17px 0}
-.hero-cape-stock,.stock-label,.tag{display:inline-block;font-size:10px;font-weight:900;padding:7px 10px;border-radius:6px;background:#173522;color:#91ffb0;border:1px solid #43d87866}
-.sold{background:#3c2020!important;color:#ffaaaa!important;border-color:#ff777755!important}
+.hero-cape-price{color:#e95a1c;font-size:27px;font-weight:900;margin:17px 0}
+.hero-cape-stock,.stock-label,.tag{
+  display:inline-block;font-size:10px;font-weight:900;padding:7px 10px;
+  border-radius:6px;background:#e8f7ed;color:#168343;border:1px solid #b9e6c8
+}
+.sold{background:#fff0f0!important;color:#d43b3b!important;border-color:#f5c5c5!important}
 .hero-dots{display:flex;align-items:center;gap:8px;margin-top:24px}
-.hero-dot{width:9px;height:9px;padding:0;border:0;border-radius:50%;background:#80634a}
-.hero-dot.active{width:26px;border-radius:10px;background:#ff641c}
+.hero-dot{width:9px;height:9px;padding:0;border:0;border-radius:50%;background:#d1d5db}
+.hero-dot.active{width:26px;border-radius:10px;background:var(--orange)}
 
 section{padding:65px 7%}
 .head{display:flex;justify-content:space-between;align-items:end;gap:20px;flex-wrap:wrap;margin-bottom:30px}
-.kicker{font-size:10px;font-weight:900;letter-spacing:2px;color:#ffd15c;margin-bottom:10px}
+.kicker{font-size:10px;font-weight:900;letter-spacing:2px;color:#e95a1c;margin-bottom:10px}
 h2{font-size:clamp(27px,4vw,38px)}
 .sub{color:var(--muted);font-size:13px;line-height:1.8;margin-top:9px}
 .products{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}
-.card{display:block;overflow:hidden;border:1px solid #ffc75b38;border-radius:17px;background:linear-gradient(145deg,#34210ff2,#17110bf5);transition:transform .3s,border-color .3s,box-shadow .3s}
-.card:hover{transform:translateY(-7px);border-color:#ffce55;box-shadow:0 15px 40px #0006}
-.art{height:245px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;background:radial-gradient(ellipse at 20% 70%,#ffad292e,transparent 55%),radial-gradient(ellipse at 80% 25%,#ffe16c24,transparent 50%),#24170d}
-.cape-img{width:165px;height:190px;object-fit:contain;z-index:1;filter:drop-shadow(0 12px 18px #0009);transition:.35s}
+.card{
+  display:block;overflow:hidden;border:1px solid var(--border);border-radius:17px;
+  background:#fff;transition:transform .3s,border-color .3s,box-shadow .3s
+}
+.card:hover{transform:translateY(-7px);border-color:#ffb38c;box-shadow:0 15px 40px #20212412}
+.art{
+  height:245px;display:flex;align-items:center;justify-content:center;
+  position:relative;overflow:hidden;
+  background:radial-gradient(ellipse at 20% 70%,#e5e7ebaa,transparent 55%),
+  radial-gradient(ellipse at 80% 25%,#f3f4f6,transparent 50%),#f0f1f3
+}
+.cape-img{
+  width:165px;height:190px;object-fit:contain;z-index:1;
+  filter:drop-shadow(0 12px 18px #0002);transition:.35s
+}
 .card:hover .cape-img{transform:scale(1.1) rotate(-2deg)}
 .tag{position:absolute;top:14px;left:14px;z-index:2;font-size:9px}
 .info{padding:20px}
 .info h3{font-size:17px}
 .info p{font-size:12px;line-height:1.8;color:var(--muted);margin-top:9px;min-height:43px}
 .price-row{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-top:20px}
-.price{font-size:17px;font-weight:900;color:#ffda70}
+.price{font-size:17px;font-weight:900;color:#e95a1c}
 .price small{display:block;color:var(--muted);font-size:10px;font-weight:500;margin-top:4px}
-.sold-price{font-size:12px;color:#ffaaaa}
+.sold-price{font-size:12px;color:#d43b3b}
 .order{font-size:10px;padding:11px 13px}
-.discord{margin:20px 7% 70px;padding:50px 22px;text-align:center;border-radius:20px;border:1px solid #ffcf6555;background:radial-gradient(ellipse at 0 100%,#ff9b2033,transparent 55%),#24190f}
+
+.discord{
+  margin:20px 7% 70px;padding:50px 22px;text-align:center;border-radius:20px;
+  border:1px solid var(--border);background:linear-gradient(145deg,#fff,#f1f2f4)
+}
 .discord p{max-width:500px;margin:15px auto 24px;color:var(--muted);font-size:13px;line-height:1.9}
-footer{padding:25px 7%;border-top:1px solid #ffc75b30;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;color:var(--muted);font-size:11px}
+footer{
+  padding:25px 7%;border-top:1px solid var(--border);display:flex;
+  justify-content:space-between;gap:12px;flex-wrap:wrap;color:var(--muted);font-size:11px
+}
 
 #details{display:none;min-height:65vh;padding:45px 7% 75px}
 .back-row{display:flex;justify-content:flex-start;margin-bottom:30px}
-.back-btn{background:#2a1a0e;border:1px solid #ffbf4c80;color:#ffda70;padding:12px 17px;border-radius:9px;font-size:13px;font-weight:900}
-.detail-card{max-width:950px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:35px;align-items:center;background:linear-gradient(145deg,#34210ff2,#17110bf5);border:1px solid #ffc75b50;border-radius:20px;padding:30px}
-.detail-art{min-height:350px;display:flex;align-items:center;justify-content:center;background:radial-gradient(ellipse,#ffad2930,transparent 65%),#24170d;border-radius:15px}
+.back-btn{
+  background:#fff;border:1px solid #d1d5db;color:#374151;
+  padding:12px 17px;border-radius:9px;font-size:13px;font-weight:900
+}
+.detail-card{
+  max-width:950px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;
+  gap:35px;align-items:center;background:#fff;border:1px solid var(--border);
+  border-radius:20px;padding:30px;box-shadow:0 15px 40px #2021240a
+}
+.detail-art{
+  min-height:350px;display:flex;align-items:center;justify-content:center;
+  background:radial-gradient(ellipse,#e5e7eb,transparent 70%),#f1f2f4;border-radius:15px
+}
 .detail-art img{width:100%;max-width:300px;height:330px;object-fit:contain}
 .detail-info h1{font-size:clamp(30px,5vw,48px);letter-spacing:-1px;margin:15px 0}
 .detail-info p{color:var(--muted);font-size:14px;line-height:1.9;margin:15px 0}
-.detail-price{font-size:27px;font-weight:900;color:#ffda70;margin:20px 0}
+.detail-price{font-size:27px;font-weight:900;color:#e95a1c;margin:20px 0}
 .detail-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:25px}
-.recommendations{max-width:1200px;margin:55px auto 0;padding-top:35px;border-top:1px solid #ffc75b35}
+.recommendations{max-width:1200px;margin:55px auto 0;padding-top:35px;border-top:1px solid var(--border)}
 .recommendations .products{grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
 .recommendations .art{height:175px}
 .recommendations .cape-img{width:120px;height:135px}
@@ -115,46 +207,71 @@ footer{padding:25px 7%;border-top:1px solid #ffc75b30;display:flex;justify-conte
 .recommendations .info p{font-size:11px;min-height:0}
 #not-found{display:none;text-align:center;padding:70px 20px}
 
-.auth-overlay{position:fixed;inset:0;z-index:1000;display:none;align-items:center;justify-content:center;padding:18px;background:#080503df;backdrop-filter:blur(9px)}
+.auth-overlay{
+  position:fixed;inset:0;z-index:1000;display:none;align-items:center;
+  justify-content:center;padding:18px;background:#11182799;backdrop-filter:blur(9px)
+}
 .auth-overlay.open{display:flex}
-.auth-box{width:100%;max-width:420px;position:relative;padding:30px;border:1px solid #ffc75b70;border-radius:20px;background:linear-gradient(145deg,#34210f,#17110b);box-shadow:0 20px 70px #0009}
-.auth-close{position:absolute;top:12px;right:15px;border:0;background:none;color:#fff9ee;font-size:28px}
-.auth-box h2{margin:12px 0;color:#fff9ee}
+.auth-box{
+  width:100%;max-width:420px;position:relative;padding:30px;
+  border:1px solid var(--border);border-radius:20px;background:#fff;
+  box-shadow:0 20px 70px #0002
+}
+.auth-close{position:absolute;top:12px;right:15px;border:0;background:none;color:#374151;font-size:28px}
+.auth-box h2{margin:12px 0;color:#202124}
 .auth-box p{color:var(--muted);font-size:13px;line-height:1.7;margin-bottom:18px}
-.auth-box input{display:block;width:100%;margin:12px 0;padding:14px;color:#fff9ee;background:#160e09;border:1px solid #ffc75b55;border-radius:9px;outline:none}
-.auth-box input:focus{border-color:#ff641c}
+.auth-box input{
+  display:block;width:100%;margin:12px 0;padding:14px;color:#202124;
+  background:#f9fafb;border:1px solid #d1d5db;border-radius:9px;outline:none
+}
+.auth-box input:focus{border-color:var(--orange)}
 .auth-box .btn{width:100%;margin-top:8px}
 .auth-box .btn:disabled{opacity:.6;cursor:wait}
-.auth-switch,.auth-forgot{display:block;text-align:center;margin:17px auto 0;color:#ffd65a;font-size:12px;cursor:pointer;background:none;border:0}
+.auth-switch,.auth-forgot{
+  display:block;text-align:center;margin:17px auto 0;color:#e95a1c;
+  font-size:12px;cursor:pointer;background:none;border:0
+}
 .auth-message{font-size:12px!important;margin-top:14px!important;overflow-wrap:anywhere}
-.auth-message.error{color:#ffaaaa!important}
-.auth-message.success{color:#91ffb0!important}
+.auth-message.error{color:#d43b3b!important}
+.auth-message.success{color:#168343!important}
+
 @media(max-width:1000px){.recommendations .products{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:850px){.products{grid-template-columns:repeat(2,minmax(0,1fr))}section{padding:50px 5%}nav{padding:12px 5%}.detail-card{gap:20px;padding:20px}}
 @media(max-width:650px){.hero-ad{grid-template-columns:1fr;gap:22px;padding:18px;text-align:center}.hero-ad-image{height:230px}.hero-ad-image img{height:210px}.hero-ad-content h1{font-size:36px}.hero-ad-content .actions{justify-content:center}.hero-dots{justify-content:center}.hero-ad-content p{margin-left:auto;margin-right:auto}}
-@media(max-width:540px){.products{grid-template-columns:1fr}.hero{padding:35px 14px 50px}nav{padding:8px 4%}.logo{width:85px;height:42px}.links{gap:8px;font-size:10px}.links .btn{padding:10px}.auth-btn{padding:9px;font-size:10px}.auth-user{max-width:70px}.stats{gap:24px}.discord{margin:15px 5% 45px}footer{flex-direction:column}.sale{gap:9px;font-size:11px;letter-spacing:1px}#details{padding:28px 5% 50px}.detail-card{grid-template-columns:1fr;padding:15px;gap:22px}.detail-art{min-height:270px}.detail-art img{height:260px}.recommendations{margin-top:40px;padding-top:25px}.recommendations .products{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.recommendations .art{height:135px}.recommendations .cape-img{width:90px;height:105px}.recommendations .info{padding:11px}.recommendations .info h3{font-size:12px}.auth-box{padding:24px}}
+@media(max-width:540px){
+ .products{grid-template-columns:1fr}.hero{padding:35px 14px 50px}
+ nav{padding:8px 4%}.logo{width:85px;height:42px}.links{gap:8px;font-size:10px}
+ .links .btn{padding:10px}.auth-btn{padding:9px;font-size:10px}.auth-user{max-width:70px}
+ .stats{gap:24px}.discord{margin:15px 5% 45px}footer{flex-direction:column}
+ .sale{gap:9px;font-size:11px;letter-spacing:1px}#details{padding:28px 5% 50px}
+ .detail-card{grid-template-columns:1fr;padding:15px;gap:22px}.detail-art{min-height:270px}
+ .detail-art img{height:260px}.recommendations{margin-top:40px;padding-top:25px}
+ .recommendations .products{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+ .recommendations .art{height:135px}.recommendations .cape-img{width:90px;height:105px}
+ .recommendations .info{padding:11px}.recommendations .info h3{font-size:12px}.auth-box{padding:24px}
+}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 
-/* Discord server popover */
-.discord-float{position:fixed;right:22px;top:50%;transform:translateY(-50%);z-index:100;display:flex;align-items:center;justify-content:center}
-.discord-float-link{position:relative;display:flex;align-items:center;justify-content:center;width:58px;height:58px;border-radius:18px;background:#5865f2;color:white;box-shadow:0 8px 26px #0007;border:1px solid #ffffff30;transition:transform .25s,box-shadow .25s,border-radius .25s;overflow:visible;cursor:pointer}
+/* Discord server preview */
+.discord-float{position:fixed;right:0;top:50%;transform:translateY(-50%);z-index:100;display:flex;align-items:center;justify-content:center}
+.discord-float-link{position:relative;display:flex;align-items:center;justify-content:center;width:58px;height:58px;border-radius:18px;background:#5865f2;color:white;box-shadow:0 8px 26px #0002;border:1px solid #ffffff50;transition:transform .25s,box-shadow .25s,border-radius .25s;overflow:visible;cursor:pointer}
 .discord-float-link svg{width:31px;height:31px;flex-shrink:0}
-.discord-float-link:hover,.discord-float.open .discord-float-link{transform:scale(1.05);box-shadow:0 10px 32px #5865f277;border-radius:16px}
-.discord-popover{position:absolute;right:58px;top:50%;width:270px;padding:17px;border-radius:16px;background:linear-gradient(145deg,#24243a,#17131f);border:1px solid #7c86ff;box-shadow:0 14px 45px #0009;display:block;opacity:0;visibility:hidden;transform:translate(12px,-50%);transition:opacity .22s,transform .22s,visibility .22s;pointer-events:none}
+.discord-float-link:hover,.discord-float.open .discord-float-link{transform:scale(1.05);box-shadow:0 10px 32px #5865f255;border-radius:16px}
+.discord-popover{position:absolute;right:58px;top:50%;width:270px;padding:17px;border-radius:16px;background:#fff;border:1px solid #d1d5db;box-shadow:0 14px 45px #0002;display:block;opacity:0;visibility:hidden;transform:translate(12px,-50%);transition:opacity .22s,transform .22s,visibility .22s;pointer-events:none}
 .discord-popover::after{content:"";position:absolute;left:100%;top:0;width:10px;height:100%}
 .discord-float:hover .discord-popover,.discord-float:focus-within .discord-popover,.discord-float.open .discord-popover{opacity:1;visibility:visible;transform:translate(0,-50%);pointer-events:auto}
 .discord-server-top{display:flex;align-items:center;gap:12px;margin-bottom:13px}
-.discord-server-image{width:62px;height:62px;flex:0 0 62px;object-fit:cover;border-radius:15px;background:#21170f;border:1px solid #ffffff28;box-shadow:0 4px 16px #0006}
-.discord-server-name{font-size:15px;font-weight:900;color:#fff;margin-bottom:5px;line-height:1.35}
-.discord-server-caption{font-size:10px;color:#c8ccff;line-height:1.5}
-.discord-server-desc{color:#d0d2e4;font-size:11px;line-height:1.7;margin:0 0 14px}
+.discord-server-image{width:62px;height:62px;flex:0 0 62px;object-fit:cover;border-radius:15px;background:#f3f4f6;border:1px solid var(--border);box-shadow:0 4px 16px #0001}
+.discord-server-name{font-size:15px;font-weight:900;color:#202124;margin-bottom:5px;line-height:1.35}
+.discord-server-caption{font-size:10px;color:#6b7280;line-height:1.5}
+.discord-server-desc{color:#4b5563;font-size:11px;line-height:1.7;margin:0 0 14px}
 .discord-server-stats{display:flex;gap:9px;flex-wrap:wrap;margin:12px 0 13px}
-.discord-stat{display:inline-flex;align-items:center;gap:5px;padding:6px 8px;border:1px solid #ffffff16;border-radius:7px;background:#ffffff09;color:#e5e6ff;font-size:10px}
-.discord-live-dot{width:7px;height:7px;border-radius:50%;background:#43df8b;display:inline-block;box-shadow:0 0 8px #43df8b88}
-.discord-connection{font-size:9px;color:#a9adc7;margin-top:5px}
+.discord-stat{display:inline-flex;align-items:center;gap:5px;padding:6px 8px;border:1px solid #e5e7eb;border-radius:7px;background:#f9fafb;color:#374151;font-size:10px}
+.discord-live-dot{width:7px;height:7px;border-radius:50%;background:#22c55e;display:inline-block;box-shadow:0 0 8px #22c55e55}
+.discord-connection{font-size:9px;color:#6b7280;margin-top:5px}
 .discord-join{display:flex;width:100%;align-items:center;justify-content:center;padding:11px 12px;background:#5865f2;border-radius:8px;color:#fff;font-size:11px;font-weight:900;white-space:nowrap;transition:background .2s,transform .2s}
 .discord-join:hover{background:#4752c4;transform:translateY(-1px)}
-@media(max-width:540px){.discord-float{right:14px}.discord-float-link{width:52px;height:52px;border-radius:16px}.discord-popover{right:52px;width:min(300px,calc(100vw - 80px));padding:13px}.discord-server-image{width:54px;height:54px;flex-basis:54px}.discord-server-name{font-size:13px}.discord-join{padding:10px;font-size:10px}}
+@media(max-width:540px){.discord-float{right:0}.discord-float-link{width:52px;height:52px;border-radius:16px}.discord-popover{right:52px;width:min(300px,calc(100vw - 80px));padding:13px}.discord-server-image{width:54px;height:54px;flex-basis:54px}.discord-server-name{font-size:13px}.discord-join{padding:10px;font-size:10px}}
 </style>
 </head>
 <body>
@@ -311,118 +428,6 @@ setInterval(refreshDiscordServerInfo,5*60*1000);
   <p class="auth-message" id="authMessage" role="status" aria-live="polite"></p>
  </div>
 </div>
-
-<script>
-const DISCORD_URL="https://discord.com/invite/F38vcYVHA";
-const capes=[
-{id:"corrupted",name:"Corrupted Cape",price:"$10",stock:true,image:"media/cloakFront%20(2).webp",description:"A distinctive cape for your Minecraft collection."},
-{id:"aurora",name:"Aurora Cape",price:"$6",stock:true,image:"media/aurora-front.png",description:"A vibrant cape for players who want to stand out."},
-{id:"builder",name:"Builder Cape",price:"$9",stock:true,image:"media/320%20(1).png",description:"A classic addition for Minecraft cape collectors."},
-{id:"experience",name:"Experience Cape",price:"Not in stock",stock:false,image:"media/320%20(2).png",description:"A special cape for your Minecraft collection."},
-{id:"crafter",name:"Crafter Cape",price:"Not in stock",stock:false,image:"media/320%20(3).png",description:"A distinctive cape for Minecraft fans and collectors."},
-{id:"menace",name:"Menace Cape",price:"Not in stock",stock:false,image:"media/320%20(5).png",description:"A striking cape for your Minecraft collection."},
-{id:"copper",name:"Copper Cape",price:"Not in stock",stock:false,image:"media/320%20(6).png",description:"A copper-themed cape for Minecraft players."},
-{id:"moonlight",name:"Moonlight Cape",price:"Not in stock",stock:false,image:"media/cloakFront%20(4).webp",description:"A moonlight-inspired cape for your collection."},
-{id:"purple-heart",name:"Purple Heart Cape",price:"Not in stock",stock:false,image:"media/320%20(7).png",description:"A purple-themed cape for your Minecraft collection."}
-];
-
-document.getElementById("year").textContent=new Date().getFullYear();
-let heroCapeIndex=0,heroTimer=null,heroPaused=false,animationTimer=null;
-const heroAd=document.getElementById("heroAd");
-
-function showHeroCape(index,animate=true){
- const cape=capes[index];
- if(!cape)return;
- heroCapeIndex=index;
- clearTimeout(animationTimer);
- heroAd.classList.remove("ad-changing");
- const image=document.getElementById("heroCapeImage");
- image.src=cape.image;
- image.alt=cape.name;
- document.getElementById("heroCapeTitle").innerHTML=cape.name.replace(" Cape",'<br><span class="gradient">Cape.</span>');
- document.getElementById("heroCapeDescription").textContent=cape.description;
- document.getElementById("heroCapePrice").textContent=cape.price;
- document.getElementById("heroCapeEyebrow").textContent=cape.stock?"✦ AVAILABLE NOW":"✦ COLLECTION SPOTLIGHT";
- const stock=document.getElementById("heroCapeStock");
- stock.textContent=cape.stock?"✓ IN STOCK":"✕ NOT IN STOCK";
- stock.classList.toggle("sold",!cape.stock);
- const view=document.getElementById("heroViewCape");
- view.href="#cape/"+encodeURIComponent(cape.id);
- view.onclick=()=>{openCape(cape.id);return false};
- document.getElementById("heroDots").innerHTML=capes.map((c,i)=>`<button type="button" class="hero-dot ${i===index?"active":""}" aria-label="Show ${c.name}" title="${c.name}" onclick="showHeroCape(${i});restartHeroSlider()"></button>`).join("");
- if(animate){
-  void heroAd.offsetWidth;
-  heroAd.classList.add("ad-changing");
-  animationTimer=setTimeout(()=>heroAd.classList.remove("ad-changing"),1050);
- }
-}
-function restartHeroSlider(){
- clearInterval(heroTimer);
- heroTimer=setInterval(()=>{if(!heroPaused)showHeroCape((heroCapeIndex+1)%capes.length,true)},4000);
-}
-heroAd.addEventListener("mouseenter",()=>heroPaused=true);
-heroAd.addEventListener("mouseleave",()=>heroPaused=false);
-showHeroCape(0,false);
-restartHeroSlider();
-
-function capeCard(c){
- return `<a class="card" href="#cape/${encodeURIComponent(c.id)}" onclick="openCape('${c.id}');return false;"><div class="art"><span class="tag ${c.stock?"":"sold"}">${c.stock?"IN STOCK":"NOT IN STOCK"}</span><img class="cape-img" src="${c.image}" alt="${c.name}" loading="lazy"></div><div class="info"><h3>${c.name}</h3><p>${c.description}</p><div class="price-row"><div class="${c.stock?"price":"sold-price"}">${c.price}<small>${c.stock?"Available now":"Currently unavailable"}</small></div><span class="btn order">VIEW CAPE ↗</span></div></div></a>`;
-}
-document.getElementById("products").innerHTML=capes.map(capeCard).join("");
-
-function renderRecommendations(currentCape){
- const others=capes.filter(c=>c.id!==currentCape.id);
- for(let i=others.length-1;i>0;i--){
-  const j=Math.floor(Math.random()*(i+1));
-  [others[i],others[j]]=[others[j],others[i]];
- }
- document.getElementById("recommendedProducts").innerHTML=others.slice(0,4).map(capeCard).join("");
-}
-
-function showHome(sectionId="home"){
- document.getElementById("homePage").style.display="block";
- document.getElementById("details").style.display="none";
- document.getElementById("not-found").style.display="none";
- document.title="MC STORE | Cape Shop";
- history.replaceState(null,"",window.location.pathname+window.location.search);
- requestAnimationFrame(()=>{
-  const target=document.getElementById(sectionId==="shop"?"shop":"home");
-  if(target)target.scrollIntoView({behavior:"smooth",block:"start"});
- });
-}
-
-function openCape(id){
- const cape=capes.find(c=>c.id===id);
- document.getElementById("homePage").style.display="none";
- document.getElementById("details").style.display="block";
- document.getElementById("not-found").style.display="none";
- if(!cape){
-  document.getElementById("details").style.display="none";
-  document.getElementById("not-found").style.display="block";
-  return;
- }
- document.title=cape.name+" | MC STORE";
- document.getElementById("detailContent").innerHTML=`<div class="detail-card"><div class="detail-art"><img src="${cape.image}" alt="${cape.name}"></div><div class="detail-info"><div class="kicker">MC STORE CAPE COLLECTION</div><h1>${cape.name}</h1><span class="stock-label ${cape.stock?"":"sold"}">${cape.stock?"✓ IN STOCK":"✕ NOT IN STOCK"}</span><p>${cape.description}</p><div class="detail-price">${cape.price}</div><p>${cape.stock?"This cape is currently listed as available. Contact us on Discord for ordering information.":"This cape is currently unavailable. Join our Discord to ask about future restocks."}</p><div class="detail-actions"><a class="btn" href="${DISCORD_URL}" target="_blank" rel="noopener">${cape.stock?"ORDER ON DISCORD ↗":"ASK ABOUT RESTOCK ↗"}</a></div></div></div>`;
- renderRecommendations(cape);
- history.replaceState(null,"","#cape/"+encodeURIComponent(cape.id));
- window.scrollTo({top:0,behavior:"smooth"});
-}
-
-function handleRoute(){
- const match=window.location.hash.match(/^#cape\/(.+)$/);
- if(match){
-  let id=match[1];
-  try{id=decodeURIComponent(id)}catch(e){}
-  openCape(id);
- }else{
-  showHome(window.location.hash==="#shop"?"shop":"home");
- }
-}
-window.addEventListener("hashchange",handleRoute);
-if(window.location.hash.startsWith("#cape/"))handleRoute();
-else if(window.location.hash==="#shop")showHome("shop");
-else showHome("home");
-</script>
 
 <script type="module">
 import {initializeApp} from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
