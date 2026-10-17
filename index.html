@@ -253,7 +253,7 @@ footer{padding:25px 7%;border-top:1px solid #ffc75b30;display:flex;justify-conte
 const discordFloat=document.getElementById('discordFloat');
 const discordFloatButton=document.getElementById('discordFloatButton');
 const DISCORD_INVITE_CODE='F38vcYVHA';
-const DISCORD_INVITE_URL=https://discord.com/invite/${DISCORD_INVITE_CODE};
+const DISCORD_INVITE_URL=`https://discord.com/invite/${DISCORD_INVITE_CODE}`;
 discordFloatButton.addEventListener('click',()=>{
  const opened=discordFloat.classList.toggle('open');
  discordFloatButton.setAttribute('aria-expanded',String(opened));
@@ -269,8 +269,8 @@ document.addEventListener('click',event=>{
 async function refreshDiscordServerInfo(){
  const connection=document.getElementById('discordConnection');
  try{
-  const response=await fetch(https://discord.com/api/v10/invites/${DISCORD_INVITE_CODE}?with_counts=true,{cache:'no-store'});
-  if(!response.ok)throw new Error(Discord API returned ${response.status});
+  const response=await fetch(`https://discord.com/api/v10/invites/${DISCORD_INVITE_CODE}?with_counts=true`,{cache:'no-store'});
+  if(!response.ok)throw new Error(`Discord API returned ${response.status}`);
   const data=await response.json();
   if(!data.guild)throw new Error('Invite did not include server information');
   const guild=data.guild;
@@ -348,7 +348,7 @@ function showHeroCape(index,animate=true){
  const view=document.getElementById("heroViewCape");
  view.href="#cape/"+encodeURIComponent(cape.id);
  view.onclick=()=>{openCape(cape.id);return false};
- document.getElementById("heroDots").innerHTML=capes.map((c,i)=><button type="button" class="hero-dot ${i===index?"active":""}" aria-label="Show ${c.name}" title="${c.name}" onclick="showHeroCape(${i});restartHeroSlider()"></button>).join("");
+ document.getElementById("heroDots").innerHTML=capes.map((c,i)=>`<button type="button" class="hero-dot ${i===index?"active":""}" aria-label="Show ${c.name}" title="${c.name}" onclick="showHeroCape(${i});restartHeroSlider()"></button>`).join("");
  if(animate){
   void heroAd.offsetWidth;
   heroAd.classList.add("ad-changing");
@@ -365,7 +365,7 @@ showHeroCape(0,false);
 restartHeroSlider();
 
 function capeCard(c){
- return <a class="card" href="#cape/${encodeURIComponent(c.id)}" onclick="openCape('${c.id}');return false;"><div class="art"><span class="tag ${c.stock?"":"sold"}">${c.stock?"IN STOCK":"NOT IN STOCK"}</span><img class="cape-img" src="${c.image}" alt="${c.name}" loading="lazy"></div><div class="info"><h3>${c.name}</h3><p>${c.description}</p><div class="price-row"><div class="${c.stock?"price":"sold-price"}">${c.price}<small>${c.stock?"Available now":"Currently unavailable"}</small></div><span class="btn order">VIEW CAPE ↗</span></div></div></a>;
+ return `<a class="card" href="#cape/${encodeURIComponent(c.id)}" onclick="openCape('${c.id}');return false;"><div class="art"><span class="tag ${c.stock?"":"sold"}">${c.stock?"IN STOCK":"NOT IN STOCK"}</span><img class="cape-img" src="${c.image}" alt="${c.name}" loading="lazy"></div><div class="info"><h3>${c.name}</h3><p>${c.description}</p><div class="price-row"><div class="${c.stock?"price":"sold-price"}">${c.price}<small>${c.stock?"Available now":"Currently unavailable"}</small></div><span class="btn order">VIEW CAPE ↗</span></div></div></a>`;
 }
 document.getElementById("products").innerHTML=capes.map(capeCard).join("");
 
@@ -401,7 +401,7 @@ function openCape(id){
   return;
  }
  document.title=cape.name+" | MC STORE";
- document.getElementById("detailContent").innerHTML=<div class="detail-card"><div class="detail-art"><img src="${cape.image}" alt="${cape.name}"></div><div class="detail-info"><div class="kicker">MC STORE CAPE COLLECTION</div><h1>${cape.name}</h1><span class="stock-label ${cape.stock?"":"sold"}">${cape.stock?"✓ IN STOCK":"✕ NOT IN STOCK"}</span><p>${cape.description}</p><div class="detail-price">${cape.price}</div><p>${cape.stock?"This cape is currently listed as available. Contact us on Discord for ordering information.":"This cape is currently unavailable. Join our Discord to ask about future restocks."}</p><div class="detail-actions"><a class="btn" href="${DISCORD_URL}" target="_blank" rel="noopener">${cape.stock?"ORDER ON DISCORD ↗":"ASK ABOUT RESTOCK ↗"}</a></div></div></div>;
+ document.getElementById("detailContent").innerHTML=`<div class="detail-card"><div class="detail-art"><img src="${cape.image}" alt="${cape.name}"></div><div class="detail-info"><div class="kicker">MC STORE CAPE COLLECTION</div><h1>${cape.name}</h1><span class="stock-label ${cape.stock?"":"sold"}">${cape.stock?"✓ IN STOCK":"✕ NOT IN STOCK"}</span><p>${cape.description}</p><div class="detail-price">${cape.price}</div><p>${cape.stock?"This cape is currently listed as available. Contact us on Discord for ordering information.":"This cape is currently unavailable. Join our Discord to ask about future restocks."}</p><div class="detail-actions"><a class="btn" href="${DISCORD_URL}" target="_blank" rel="noopener">${cape.stock?"ORDER ON DISCORD ↗":"ASK ABOUT RESTOCK ↗"}</a></div></div></div>`;
  renderRecommendations(cape);
  history.replaceState(null,"","#cape/"+encodeURIComponent(cape.id));
  window.scrollTo({top:0,behavior:"smooth"});
