@@ -1,0 +1,119 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#ff9d16">
+<title>Cape Details | MC STORE</title>
+<style>
+:root{--orange:#ff9418;--yellow:#ffd65a;--cyan:#00e5ff;--text:#fff9ee;--muted:#c8b9a5}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  min-height:100vh;font-family:Inter,Arial,sans-serif;color:var(--text);
+  background:radial-gradient(ellipse at 10% 5%,#ffb52e55,transparent 38%),
+  radial-gradient(ellipse at 95% 35%,#ff6d1650,transparent 40%),
+  linear-gradient(135deg,#20150b,#3a210b 45%,#171009);
+  background-attachment:fixed
+}
+a{text-decoration:none;color:inherit}
+.btn{display:inline-flex;align-items:center;justify-content:center;padding:13px 19px;border-radius:9px;border:1px solid #ffe08b70;color:white;background:linear-gradient(110deg,#ff8218,#e5b32c);font-size:12px;font-weight:900;transition:.25s}
+.btn:hover{transform:translateY(-3px);box-shadow:0 8px 25px #ff9c1845}
+nav{display:flex;align-items:center;justify-content:space-between;gap:15px;padding:12px 7%;background:#170f09ed;border-bottom:1px solid #ffc04b40}
+.logo{width:150px;height:52px;object-fit:contain}
+.topline{padding:12px;text-align:center;font-size:11px;font-weight:900;letter-spacing:1.5px;color:#211000;background:linear-gradient(90deg,#ff9c19,#ffe56b,#ff7b18)}
+main{max-width:1050px;margin:55px auto;padding:0 22px}
+.back{display:inline-block;color:#ffda70;font-size:13px;margin-bottom:25px}
+.product{
+  display:grid;grid-template-columns:1fr 1fr;overflow:hidden;border-radius:20px;
+  border:1px solid #ffc75b60;background:linear-gradient(145deg,#34210ff5,#17110bf5);
+  box-shadow:0 20px 70px #0004
+}
+.art{min-height:430px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;
+background:radial-gradient(ellipse at center,#ffbd353d,transparent 55%),radial-gradient(ellipse at bottom,#ff762e30,transparent 60%),#24170d}
+.art:after{content:"";position:absolute;width:220px;height:220px;border-radius:50%;background:linear-gradient(135deg,#ff9e1e55,#fff07a30);filter:blur(45px)}
+.art img{position:relative;z-index:1;width:65%;height:330px;object-fit:contain;filter:drop-shadow(0 0 20px #ffd34c30);animation:float 3s ease-in-out infinite}
+@keyframes float{50%{transform:translateY(-9px)}}
+.info{padding:45px 35px;align-self:center}
+.kicker{font-size:10px;font-weight:900;letter-spacing:2px;color:#ffda70}
+h1{font-size:clamp(28px,4vw,43px);margin:16px 0}
+.gradient{background:linear-gradient(100deg,#ffe77b,#ff9c26,#00e5ff);-webkit-background-clip:text;background-clip:text;color:transparent}
+.status{display:inline-block;padding:7px 10px;border-radius:6px;font-size:10px;font-weight:900;background:#173522;color:#91ffb0;border:1px solid #43d87866}
+.status.sold{background:#3c2020;color:#ffaaaa;border-color:#ff777755}
+.description{font-size:13px;color:var(--muted);line-height:1.9;margin:22px 0}
+.label{font-size:10px;letter-spacing:2px;color:var(--muted);font-weight:900}
+.price{font-size:34px;font-weight:900;margin:7px 0 24px;color:#ffda70}
+.buttons{display:flex;gap:10px;flex-wrap:wrap}
+.secondary{background:#261b10;border-color:#6e5030}
+.note{font-size:10px;color:var(--muted);line-height:1.8;margin-top:20px}
+footer{padding:25px 7%;margin-top:65px;border-top:1px solid #ffc75b30;color:var(--muted);font-size:11px;text-align:center}
+@media(max-width:650px){nav{padding:10px 5%}.logo{width:110px}.product{grid-template-columns:1fr}.art{min-height:260px}.art img{height:220px}.info{padding:28px 22px}main{margin:30px auto;padding:0 15px}}
+</style>
+</head>
+<body>
+<div class="topline">✦ MC STORE CAPE COLLECTION ✦</div>
+<nav>
+  <a href="index.html"><img class="logo" src="media/1792194385872.png" alt="MC STORE"></a>
+  <a class="btn" href="index.html">← BACK TO SHOP</a>
+</nav>
+
+<main>
+  <a class="back" href="index.html">← Back to Home Page</a>
+  <div class="product">
+    <div class="art">
+      <img id="capeImage" src="" alt="">
+    </div>
+    <div class="info">
+      <div class="kicker">MC STORE / CAPES</div>
+      <h1 class="gradient" id="capeName">Cape</h1>
+      <span class="status" id="capeStatus">IN STOCK</span>
+      <p class="description" id="capeDescription"></p>
+      <div class="label">PRICE</div>
+      <div class="price" id="capePrice"></div>
+      <div class="buttons">
+        <a class="btn" id="buyButton" href="https://discord.com/invite/F38vcYVHA" target="_blank" rel="noopener">BUY NOW ↗</a>
+        <a class="btn secondary" href="index.html#shop">MORE CAPES</a>
+      </div>
+      <p class="note">Contact our Discord team to arrange your order and confirm availability. Orders are handled through Discord.</p>
+    </div>
+  </div>
+</main>
+
+<footer>© <span id="year"></span> MC STORE. Independent community shop.</footer>
+
+<script>
+const capes = {
+  "corrupted":{name:"Corrupted Cape",price:"$10",stock:true,image:"media/cloakFront%20(2).webp",description:"A distinctive cape for your Minecraft collection. Contact our team on Discord to arrange your order."},
+  "aurora":{name:"Aurora Cape",price:"$7",stock:true,image:"media/aurora-front.png",description:"A vibrant cape for players who want to stand out. Contact our team on Discord to arrange your order."},
+  "builder":{name:"Builder Cape",price:"$9",stock:true,image:"media/320%20(1).png",description:"A classic addition for Minecraft cape collectors. Contact our team on Discord to arrange your order."},
+  "experience":{name:"Experience Cape",price:"Not in stock",stock:false,image:"media/320%20(2).png",description:"This cape is currently unavailable. Contact our Discord community to ask about future restocks."},
+  "crafter":{name:"Crafter Cape",price:"Not in stock",stock:false,image:"media/320%20(3).png",description:"This cape is currently unavailable. Contact our Discord community to ask about future restocks."},
+  "menace":{name:"Menace Cape",price:"Not in stock",stock:false,image:"media/320%20(5).png",description:"This cape is currently unavailable. Contact our Discord community to ask about future restocks."},
+  "copper":{name:"Copper Cape",price:"Not in stock",stock:false,image:"media/320%20(6).png",description:"This cape is currently unavailable. Contact our Discord community to ask about future restocks."},
+  "moonlight":{name:"Moonlight Cape",price:"Not in stock",stock:false,image:"media/cloakFront%20(4).webp",description:"This cape is currently unavailable. Contact our Discord community to ask about future restocks."},
+  "purple-heart":{name:"Purple Heart Cape",price:"Not in stock",stock:false,image:"media/320%20(7).png",description:"This cape is currently unavailable. Contact our Discord community to ask about future restocks."}
+};
+
+const id = new URLSearchParams(location.search).get("cape") || "builder";
+const cape = capes[id] || capes.builder;
+
+document.title = cape.name + " | MC STORE";
+document.getElementById("year").textContent = new Date().getFullYear();
+document.getElementById("capeName").textContent = cape.name;
+document.getElementById("capePrice").textContent = cape.price;
+document.getElementById("capeDescription").textContent = cape.description;
+
+const image = document.getElementById("capeImage");
+image.src = cape.image;
+image.alt = cape.name;
+
+const status = document.getElementById("capeStatus");
+status.textContent = cape.stock ? "IN STOCK" : "NOT IN STOCK";
+status.classList.toggle("sold", !cape.stock);
+
+if (!cape.stock) {
+  document.getElementById("buyButton").style.display = "none";
+}
+</script>
+</body>
+</html>
