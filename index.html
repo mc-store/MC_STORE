@@ -4,13 +4,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#ff9d16">
+<meta name="theme-color" content="#ff641c">
 <title>MC STORE | Cape Shop</title>
+
 <style>
 :root {
-  --orange:#ff9418;
+  --orange:#ff641c;
   --yellow:#ffd65a;
-  --cyan:#00e5ff;
   --dark:#15100b;
   --panel:#21170e;
   --text:#fff9ee;
@@ -19,125 +19,345 @@
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
 body{
-  font-family:Inter,Arial,sans-serif;color:var(--text);
+  font-family:Inter,Arial,sans-serif;
+  color:var(--text);
   background:
     radial-gradient(ellipse at 10% 5%,#ffb52e55,transparent 38%),
-    radial-gradient(ellipse at 95% 30%,#ff6d1650,transparent 40%),
-    linear-gradient(135deg,#20150b,#3a210b 45%,#171009);
-  background-attachment:fixed;min-height:100vh
+    radial-gradient(ellipse at 95% 30%,#ff401b35,transparent 40%),
+    linear-gradient(135deg,#20100b,#3a170b 45%,#171009);
+  background-attachment:fixed;
+  min-height:100vh
 }
 a{color:inherit;text-decoration:none}
+
+/* SPOOKY SALE ANIMATION */
 .sale{
-  padding:12px;text-align:center;font-size:11px;font-weight:900;
-  letter-spacing:1.5px;color:#211000;
-  background:linear-gradient(90deg,#ff9c19,#ffe56b,#ff7b18,#ffce47);
-  background-size:250% 100%;animation:flow 8s linear infinite
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:14px;
+  flex-wrap:wrap;
+  overflow:hidden;
+  padding:15px 10px;
+  text-align:center;
+  font-size:13px;
+  font-weight:1000;
+  letter-spacing:2px;
+  color:#fff3dc;
+  background:linear-gradient(100deg,#170807,#6b120c,#ff641c,#250707,#170807);
+  background-size:300% 100%;
+  border-bottom:1px solid #ff742d80;
+  animation:spookyBg 7s linear infinite
 }
-@keyframes flow{to{background-position:250% 0}}
+.spooky{
+  color:#ff6b35;
+  text-shadow:0 0 8px #ff351d,0 0 20px #ff351d99;
+  animation:spookyPulse 1.5s ease-in-out infinite alternate
+}
+.sale-divider{
+  color:#ffcb64;
+  animation:spinStar 4s linear infinite
+}
+.drop{
+  background:linear-gradient(90deg,#fff0b3,#ff9c37,#ff3d27,#fff0b3);
+  background-size:200% auto;
+  background-clip:text;
+  -webkit-background-clip:text;
+  color:transparent;
+  animation:textShine 3s linear infinite
+}
+.ghost{
+  display:inline-block;
+  animation:ghostFloat 2s ease-in-out infinite
+}
+@keyframes spookyBg{
+  to{background-position:300% 0}
+}
+@keyframes spookyPulse{
+  from{transform:scale(1)}
+  to{transform:scale(1.07)}
+}
+@keyframes spinStar{
+  to{transform:rotate(360deg)}
+}
+@keyframes textShine{
+  to{background-position:200% center}
+}
+@keyframes ghostFloat{
+  0%,100%{transform:translateY(0) rotate(-8deg)}
+  50%{transform:translateY(-5px) rotate(8deg)}
+}
+
 nav{
-  position:sticky;top:0;z-index:5;display:flex;justify-content:space-between;
-  align-items:center;padding:12px 7%;gap:15px;
-  background:#170f09ed;backdrop-filter:blur(14px);
+  position:sticky;
+  top:0;
+  z-index:5;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:12px 7%;
+  gap:15px;
+  background:#170f09ed;
+  backdrop-filter:blur(14px);
   border-bottom:1px solid #ffc04b40
 }
 .logo{width:150px;height:52px;object-fit:contain}
 .links{display:flex;align-items:center;gap:22px;font-size:13px}
 .links>a:not(.btn){color:var(--muted)}
 .btn{
-  display:inline-flex;justify-content:center;align-items:center;
-  padding:13px 19px;border-radius:9px;border:1px solid #ffe08b70;
-  color:#fff;background:linear-gradient(110deg,#ff8218,#e5b32c);
-  font-size:12px;font-weight:900;cursor:pointer;transition:.25s
+  display:inline-flex;
+  justify-content:center;
+  align-items:center;
+  padding:13px 19px;
+  border-radius:9px;
+  border:1px solid #ffe08b70;
+  color:#fff;
+  background:linear-gradient(110deg,#ff641c,#e5a32c);
+  font-size:12px;
+  font-weight:900;
+  cursor:pointer;
+  transition:.25s
 }
-.btn:hover{transform:translateY(-3px);box-shadow:0 8px 25px #ff9c1845}
+.btn:hover{
+  transform:translateY(-3px);
+  box-shadow:0 8px 25px #ff641c55
+}
 .hero{text-align:center;padding:105px 20px 75px}
 .eyebrow{
-  display:inline-block;padding:9px 15px;border-radius:30px;
-  border:1px solid #ffd15c80;background:#ffb51a16;
-  color:#ffdb74;font-size:10px;font-weight:900;letter-spacing:2px
+  display:inline-block;
+  padding:9px 15px;
+  border-radius:30px;
+  border:1px solid #ffd15c80;
+  background:#ffb51a16;
+  color:#ffdb74;
+  font-size:10px;
+  font-weight:900;
+  letter-spacing:2px
 }
-h1{font-size:clamp(40px,7vw,76px);letter-spacing:-3px;line-height:1.1;margin:25px 0}
+h1{
+  font-size:clamp(40px,7vw,76px);
+  letter-spacing:-3px;
+  line-height:1.1;
+  margin:25px 0
+}
 .gradient{
-  background:linear-gradient(100deg,#ffe77b,#ff9c26,#00e5ff);
-  -webkit-background-clip:text;background-clip:text;color:transparent
+  background:linear-gradient(100deg,#ffe77b,#ff9c26,#ff4b27);
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent
 }
-.hero p{max-width:570px;margin:0 auto 26px;color:var(--muted);font-size:14px;line-height:1.9}
-.actions{display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
-.stats{display:flex;justify-content:center;gap:50px;flex-wrap:wrap;margin-top:45px}
+.hero p{
+  max-width:570px;
+  margin:0 auto 26px;
+  color:var(--muted);
+  font-size:14px;
+  line-height:1.9
+}
+.actions{
+  display:flex;
+  justify-content:center;
+  gap:12px;
+  flex-wrap:wrap
+}
+.stats{
+  display:flex;
+  justify-content:center;
+  gap:50px;
+  flex-wrap:wrap;
+  margin-top:45px
+}
 .stats strong{display:block;font-size:18px}
-.stats span{display:block;color:var(--muted);font-size:11px;margin-top:6px}
+.stats span{
+  display:block;
+  color:var(--muted);
+  font-size:11px;
+  margin-top:6px
+}
 section{padding:65px 7%}
-.head{display:flex;justify-content:space-between;align-items:end;gap:20px;flex-wrap:wrap;margin-bottom:30px}
-.kicker{font-size:10px;font-weight:900;letter-spacing:2px;color:#ffd15c;margin-bottom:10px}
+.head{
+  display:flex;
+  justify-content:space-between;
+  align-items:end;
+  gap:20px;
+  flex-wrap:wrap;
+  margin-bottom:30px
+}
+.kicker{
+  font-size:10px;
+  font-weight:900;
+  letter-spacing:2px;
+  color:#ffd15c;
+  margin-bottom:10px
+}
 h2{font-size:clamp(27px,4vw,38px)}
-.sub{color:var(--muted);font-size:13px;line-height:1.8;margin-top:9px}
-.products{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}
+.sub{
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.8;
+  margin-top:9px
+}
+.products{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:22px
+}
 .card{
-  display:block;overflow:hidden;border:1px solid #ffc75b38;border-radius:17px;
+  display:block;
+  overflow:hidden;
+  border:1px solid #ffc75b38;
+  border-radius:17px;
   background:linear-gradient(145deg,#34210ff2,#17110bf5);
   transition:transform .3s,border-color .3s,box-shadow .3s
 }
 .card:hover{
-  transform:translateY(-8px);border-color:#ffce55;
+  transform:translateY(-8px);
+  border-color:#ffce55;
   box-shadow:0 15px 40px #0006,0 0 24px #ffac2330
 }
 .art{
-  height:245px;display:flex;align-items:center;justify-content:center;
-  position:relative;overflow:hidden;
+  height:245px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  position:relative;
+  overflow:hidden;
   background:
     radial-gradient(ellipse at 20% 70%,#ffad292e,transparent 55%),
     radial-gradient(ellipse at 80% 25%,#ffe16c24,transparent 50%),
     #24170d
 }
 .art:after{
-  content:"";position:absolute;width:150px;height:150px;border-radius:50%;
+  content:"";
+  position:absolute;
+  width:150px;
+  height:150px;
+  border-radius:50%;
   background:linear-gradient(130deg,#ff9e1e55,#fff07a30);
-  filter:blur(35px);transition:.35s
+  filter:blur(35px);
+  transition:.35s
 }
 .card:hover .art:after{transform:scale(1.5)}
 .cape-img{
-  width:165px;height:190px;object-fit:contain;z-index:1;
-  filter:drop-shadow(0 12px 18px #0009);transition:.35s
+  width:165px;
+  height:190px;
+  object-fit:contain;
+  z-index:1;
+  filter:drop-shadow(0 12px 18px #0009);
+  transition:.35s
 }
-.card:hover .cape-img{transform:scale(1.1) rotate(-2deg);filter:drop-shadow(0 0 13px #ffd34c55)}
+.card:hover .cape-img{
+  transform:scale(1.1) rotate(-2deg);
+  filter:drop-shadow(0 0 13px #ffd34c55)
+}
 .tag{
-  position:absolute;top:14px;left:14px;z-index:2;
-  font-size:9px;font-weight:900;padding:7px 10px;border-radius:6px;
-  background:#173522;color:#91ffb0;border:1px solid #43d87866
+  position:absolute;
+  top:14px;
+  left:14px;
+  z-index:2;
+  font-size:9px;
+  font-weight:900;
+  padding:7px 10px;
+  border-radius:6px;
+  background:#173522;
+  color:#91ffb0;
+  border:1px solid #43d87866
 }
-.tag.sold{background:#3c2020;color:#ffaaaa;border-color:#ff777755}
+.tag.sold{
+  background:#3c2020;
+  color:#ffaaaa;
+  border-color:#ff777755
+}
 .info{padding:20px}
 .info h3{font-size:17px}
-.info p{font-size:12px;line-height:1.8;color:var(--muted);margin-top:9px;min-height:43px}
-.price-row{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-top:20px}
+.info p{
+  font-size:12px;
+  line-height:1.8;
+  color:var(--muted);
+  margin-top:9px;
+  min-height:43px
+}
+.price-row{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-top:20px
+}
 .price{font-size:17px;font-weight:900;color:#ffda70}
-.price small{display:block;color:var(--muted);font-size:10px;font-weight:500;margin-top:4px}
+.price small{
+  display:block;
+  color:var(--muted);
+  font-size:10px;
+  font-weight:500;
+  margin-top:4px
+}
 .sold-price{font-size:12px;color:#ffaaaa}
 .order{font-size:10px;padding:11px 13px}
 .discord{
-  margin:20px 7% 70px;padding:50px 22px;text-align:center;border-radius:20px;
+  margin:20px 7% 70px;
+  padding:50px 22px;
+  text-align:center;
+  border-radius:20px;
   border:1px solid #ffcf6555;
-  background:radial-gradient(ellipse at 0 100%,#ff9b2033,transparent 55%),
-             radial-gradient(ellipse at 100% 0,#00e5ff16,transparent 55%),#24190f
+  background:
+    radial-gradient(ellipse at 0 100%,#ff9b2033,transparent 55%),
+    radial-gradient(ellipse at 100% 0,#ff401b16,transparent 55%),
+    #24190f
 }
-.discord p{max-width:500px;margin:15px auto 24px;color:var(--muted);font-size:13px;line-height:1.9}
-footer{padding:25px 7%;border-top:1px solid #ffc75b30;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;color:var(--muted);font-size:11px}
-@media(max-width:850px){.products{grid-template-columns:repeat(2,minmax(0,1fr))}section{padding:50px 5%}nav{padding:12px 5%}}
+.discord p{
+  max-width:500px;
+  margin:15px auto 24px;
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.9
+}
+footer{
+  padding:25px 7%;
+  border-top:1px solid #ffc75b30;
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  flex-wrap:wrap;
+  color:var(--muted);
+  font-size:11px
+}
+@media(max-width:850px){
+  .products{grid-template-columns:repeat(2,minmax(0,1fr))}
+  section{padding:50px 5%}
+  nav{padding:12px 5%}
+}
 @media(max-width:540px){
-  .products{grid-template-columns:1fr}.hero{padding:75px 18px 55px}
-  nav{padding:8px 4%}.logo{width:100px;height:42px}.links{gap:12px;font-size:11px}
-  .links .btn{padding:10px}.stats{gap:24px}.discord{margin:15px 5% 45px}
+  .products{grid-template-columns:1fr}
+  .hero{padding:75px 18px 55px}
+  nav{padding:8px 4%}
+  .logo{width:100px;height:42px}
+  .links{gap:12px;font-size:11px}
+  .links .btn{padding:10px}
+  .stats{gap:24px}
+  .discord{margin:15px 5% 45px}
   footer{flex-direction:column}
+  .sale{gap:9px;font-size:11px;letter-spacing:1px}
 }
-@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}}
+@media(prefers-reduced-motion:reduce){
+  *,*:before,*:after{animation:none!important;transition:none!important}
+}
 </style>
 </head>
+
 <body>
 
-<div class="sale">✦ BUILDER $9 &nbsp; ✦ AURORA $7 &nbsp; ✦ CORRUPTED $10 &nbsp; ✦ MC STORE ✦</div>
+<div class="sale">
+  <span class="spooky">☠ SPOOKY SALE</span>
+  <span class="sale-divider">✦</span>
+  <span class="drop">PRICE DROP</span>
+  <span class="ghost">👻</span>
+</div>
 
 <nav>
-  <a href="index.html"><img class="logo" src="media/1792194385872.png" alt="MC STORE"></a>
+  <a href="index.html">
+    <img class="logo" src="media/1792194385872.png" alt="MC STORE">
+  </a>
   <div class="links">
     <a href="#home">Home</a>
     <a href="#shop">Capes</a>
@@ -148,10 +368,14 @@ footer{padding:25px 7%;border-top:1px solid #ffc75b30;display:flex;justify-conte
 <header class="hero" id="home">
   <span class="eyebrow">THE MC STORE COLLECTION</span>
   <h1>Discover Minecraft<br><span class="gradient">Capes.</span></h1>
-  <p>Explore our cape collection. Open any cape to see its dedicated page, price, details, and availability.</p>
+  <p>
+    Explore our cape collection. Open any cape to see its dedicated page,
+    price, details, and availability.
+  </p>
   <div class="actions">
     <a class="btn" href="#shop">Explore Collection ↗</a>
-    <a class="btn" href="https://discord.com/invite/F38vcYVHA" target="_blank" rel="noopener">Join Discord ↗</a>
+    <a class="btn" href="https://discord.com/invite/F38vcYVHA"
+       target="_blank" rel="noopener">Join Discord ↗</a>
   </div>
   <div class="stats">
     <div><strong>MC STORE</strong><span>Your cape destination</span></div>
@@ -167,7 +391,8 @@ footer{padding:25px 7%;border-top:1px solid #ffc75b30;display:flex;justify-conte
       <h2>Featured <span class="gradient">Capes</span></h2>
       <p class="sub">Select a cape to open its own product page.</p>
     </div>
-    <a class="btn" href="https://discord.com/invite/F38vcYVHA" target="_blank" rel="noopener">Ask About Stock ↗</a>
+    <a class="btn" href="https://discord.com/invite/F38vcYVHA"
+       target="_blank" rel="noopener">Ask About Stock ↗</a>
   </div>
   <div class="products" id="products"></div>
 </section>
@@ -176,7 +401,8 @@ footer{padding:25px 7%;border-top:1px solid #ffc75b30;display:flex;justify-conte
   <div class="kicker">NEED HELP?</div>
   <h2>Join the <span class="gradient">MC STORE</span> Discord</h2>
   <p>Contact our team for orders, availability, and restock questions.</p>
-  <a class="btn" href="https://discord.com/invite/F38vcYVHA" target="_blank" rel="noopener">Join Discord ↗</a>
+  <a class="btn" href="https://discord.com/invite/F38vcYVHA"
+     target="_blank" rel="noopener">Join Discord ↗</a>
 </div>
 
 <footer>
@@ -186,15 +412,78 @@ footer{padding:25px 7%;border-top:1px solid #ffc75b30;display:flex;justify-conte
 
 <script>
 const capes = [
-  {id:"corrupted",name:"Corrupted Cape",price:"$10",stock:true,image:"media/cloakFront%20(2).webp",description:"A distinctive cape for your Minecraft collection."},
-  {id:"aurora",name:"Aurora Cape",price:"$7",stock:true,image:"media/aurora-front.png",description:"A vibrant cape for players who want to stand out."},
-  {id:"builder",name:"Builder Cape",price:"$9",stock:true,image:"media/320%20(1).png",description:"A classic addition for Minecraft cape collectors."},
-  {id:"experience",name:"Experience Cape",price:"Not in stock",stock:false,image:"media/320%20(2).png",description:"A special cape for your Minecraft collection."},
-  {id:"crafter",name:"Crafter Cape",price:"Not in stock",stock:false,image:"media/320%20(3).png",description:"A distinctive cape for Minecraft fans and collectors."},
-  {id:"menace",name:"Menace Cape",price:"Not in stock",stock:false,image:"media/320%20(5).png",description:"A striking cape for your Minecraft collection."},
-  {id:"copper",name:"Copper Cape",price:"Not in stock",stock:false,image:"media/320%20(6).png",description:"A copper-themed cape for Minecraft players."},
-  {id:"moonlight",name:"Moonlight Cape",price:"Not in stock",stock:false,image:"media/cloakFront%20(4).webp",description:"A moonlight-inspired cape for your collection."},
-  {id:"purple-heart",name:"Purple Heart Cape",price:"Not in stock",stock:false,image:"media/320%20(7).png",description:"A purple-themed cape for your Minecraft collection."}
+  {
+    id:"corrupted",
+    name:"Corrupted Cape",
+    price:"$10",
+    stock:true,
+    image:"media/cloakFront%20(2).webp",
+    description:"A distinctive cape for your Minecraft collection."
+  },
+  {
+    id:"aurora",
+    name:"Aurora Cape",
+    price:"$7",
+    stock:true,
+    image:"media/aurora-front.png",
+    description:"A vibrant cape for players who want to stand out."
+  },
+  {
+    id:"builder",
+    name:"Builder Cape",
+    price:"$9",
+    stock:true,
+    image:"media/320%20(1).png",
+    description:"A classic addition for Minecraft cape collectors."
+  },
+  {
+    id:"experience",
+    name:"Experience Cape",
+    price:"Not in stock",
+    stock:false,
+    image:"media/320%20(2).png",
+    description:"A special cape for your Minecraft collection."
+  },
+  {
+    id:"crafter",
+    name:"Crafter Cape",
+    price:"Not in stock",
+    stock:false,
+    image:"media/320%20(3).png",
+    description:"A distinctive cape for Minecraft fans and collectors."
+  },
+  {
+    id:"menace",
+    name:"Menace Cape",
+    price:"Not in stock",
+    stock:false,
+    image:"media/320%20(5).png",
+    description:"A striking cape for your Minecraft collection."
+  },
+  {
+    id:"copper",
+    name:"Copper Cape",
+    price:"Not in stock",
+    stock:false,
+    image:"media/320%20(6).png",
+    description:"A copper-themed cape for Minecraft players."
+  },
+  {
+    id:"moonlight",
+    name:"Moonlight Cape",
+    price:"Not in stock",
+    stock:false,
+    image:"media/cloakFront%20(4).webp",
+    description:"A moonlight-inspired cape for your collection."
+  },
+  {
+    id:"purple-heart",
+    name:"Purple Heart Cape",
+    price:"Not in stock",
+    stock:false,
+    image:"media/320%20(7).png",
+    description:"A purple-themed cape for your Minecraft collection."
+  }
 ];
 
 document.getElementById("year").textContent = new Date().getFullYear();
@@ -202,14 +491,20 @@ document.getElementById("year").textContent = new Date().getFullYear();
 document.getElementById("products").innerHTML = capes.map(c => `
   <a class="card" href="cape.html?cape=${encodeURIComponent(c.id)}">
     <div class="art">
-      <span class="tag ${c.stock ? "" : "sold"}">${c.stock ? "IN STOCK" : "NOT IN STOCK"}</span>
-      <img class="cape-img" src="${c.image}" alt="${c.name}" loading="lazy">
+      <span class="tag ${c.stock ? "" : "sold"}">
+        ${c.stock ? "IN STOCK" : "NOT IN STOCK"}
+      </span>
+      <img class="cape-img"
+           src="${c.image}"
+           alt="${c.name}"
+           loading="lazy">
     </div>
     <div class="info">
       <h3>${c.name}</h3>
       <p>${c.description}</p>
       <div class="price-row">
-        <div class="${c.stock ? "price" : "sold-price"}">${c.price}
+        <div class="${c.stock ? "price" : "sold-price"}">
+          ${c.price}
           <small>${c.stock ? "Available now" : "Currently unavailable"}</small>
         </div>
         <span class="btn order">VIEW DETAILS ↗</span>
@@ -218,5 +513,6 @@ document.getElementById("products").innerHTML = capes.map(c => `
   </a>
 `).join("");
 </script>
+
 </body>
 </html>
