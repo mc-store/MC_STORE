@@ -1141,6 +1141,10 @@ footer { border-color: rgba(73, 174, 255, .18); }
 }
 
 
+.shop-section-heading{margin-bottom:26px}
+.shop-section-heading h2{font-size:clamp(30px,4.5vw,46px);letter-spacing:-1.7px}
+.shop-section-heading p{max-width:640px}
+
 /* Discord invite preview card — inspired by the supplied reference */
 .discord-float{left:8px!important;right:auto!important;top:50%;z-index:150}
 .discord-float-button{width:54px;height:54px;border-radius:15px;background:#5865f2!important;color:#fff!important;flex-shrink:0}
@@ -1206,72 +1210,44 @@ nav{position:sticky!important;top:0!important;background:rgba(255,253,247,.96)!i
 @media(max-width:620px){.nav-inner{width:94%!important}.products{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:11px!important}.card-art{height:150px!important}.card-img{height:130px!important}.card h3{font-size:13px!important}.card-desc{font-size:10px!important;min-height:48px!important}.card-body{padding:11px!important}.card-price{font-size:15px!important}.sale-group span,.sale-group b{padding:0 18px;font-size:9px}}
 
 
-/* Reference-inspired homepage flow: headline, large cape presentation, then the full collection */
-.showcase-heading{
-  font-size:clamp(42px,6vw,72px);
-  line-height:1.02;
-  letter-spacing:-3px;
-  margin:24px 0 18px;
-  max-width:620px;
-}
-.showcase-description{
-  max-width:500px;
-  color:var(--muted);
-  font-size:14px;
-  line-height:1.95;
-}
-.showcase-head{
-  display:flex;align-items:flex-end;justify-content:space-between;
-  gap:20px;flex-wrap:wrap;margin-bottom:25px;
-}
-.showcase-head h2{font-size:clamp(29px,4vw,42px);letter-spacing:-1.5px;margin-top:10px}
-.showcase-head p{color:var(--muted);font-size:12px;line-height:1.8;margin-top:9px}
-.cape-showcase{
-  border-top:1px solid var(--line);
-  border-bottom:1px solid var(--line);
-  background:linear-gradient(180deg,rgba(5,18,36,.35),rgba(7,22,40,.68));
-}
-.showcase-rail{
-  display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;
-}
-.showcase-tile{
-  min-width:0;position:relative;overflow:hidden;
-  border:1px solid rgba(83,183,255,.23);border-radius:17px;
-  background:linear-gradient(145deg,#102b4a,#061427);
-  transition:transform .22s,border-color .22s,box-shadow .22s;
-}
-.showcase-tile:hover{
-  transform:translateY(-5px);border-color:rgba(83,229,255,.72);
-  box-shadow:0 14px 35px rgba(0,0,0,.25),0 0 22px rgba(23,133,255,.15);
-}
-.showcase-tile button{
-  display:block;width:100%;padding:0;border:0;background:transparent;color:inherit;text-align:left;
-}
-.showcase-tile-art{
-  height:190px;display:flex;align-items:center;justify-content:center;
-  padding:18px;position:relative;
-  background:radial-gradient(ellipse at 50% 38%,rgba(29,155,255,.2),transparent 62%);
-}
-.showcase-tile-art img{
-  width:100%;height:155px;object-fit:contain;
-  filter:drop-shadow(0 12px 15px rgba(0,0,0,.55));
-  transition:transform .25s;
-}
-.showcase-tile:hover img{transform:scale(1.07) rotate(-1deg)}
-.showcase-tile-info{padding:14px 15px;border-top:1px solid rgba(83,183,255,.14)}
-.showcase-tile-info strong{display:block;font-size:13px}
-.showcase-tile-info span{display:block;font-size:10px;margin-top:7px;color:var(--muted)}
-.showcase-tile-info .available{color:var(--green)}
-.showcase-tile-info .unavailable{color:var(--red)}
-@media(max-width:900px){.showcase-rail{grid-template-columns:repeat(3,minmax(0,1fr))}}
-@media(max-width:620px){
-  .showcase-heading{font-size:clamp(40px,11vw,58px);letter-spacing:-2.4px}
-  .showcase-rail{grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}
-  .showcase-tile-art{height:155px;padding:12px}
-  .showcase-tile-art img{height:125px}
-  .showcase-tile-info{padding:12px}
-}
-@media(max-width:390px){.showcase-tile-art{height:135px}.showcase-tile-art img{height:105px}}
+
+/* Final polish: cohesive midnight-blue palette, cape details as a separate view,
+   floating Discord only, and a dedicated full-screen authentication page. */
+:root{--cyan:#65e7ff;--cyan-light:#d5f9ff;--blue:#3988ff;--orange:#ff985d;--orange-light:#ffd0a6;--bg:#061225;--panel:#0c1d35;--panel2:#102949;--text:#f4f9ff;--muted:#a9bed5;--line:rgba(115,203,255,.2);--green:#73f6b5;--red:#ff929e}
+body{background:radial-gradient(ellipse at 8% 5%,rgba(24,135,255,.2),transparent 34%),radial-gradient(ellipse at 95% 20%,rgba(34,211,255,.12),transparent 32%),linear-gradient(145deg,#040b19,#091a31 50%,#040b18);color:#f4f9ff}
+body::before{opacity:.38}
+.featured,.card,.detail-card,.trust-item,.discord-banner,.auth-box{color:#f4f9ff!important;background-color:#0b1c32!important}
+.featured,.detail-card,.card,.trust-item{border-color:rgba(101,207,255,.24)!important}
+.featured-image,.card-art,.detail-art{background:radial-gradient(ellipse at center,rgba(40,160,255,.19),transparent 65%),linear-gradient(145deg,#102949,#061326)!important}
+.featured-info h2,.card h3,.detail-info h1,.trust-item h3,.discord-server-name,.auth-box h2{color:#f4f9ff!important}
+.featured-price,.card-price,.detail-price,.showcase-price{color:#baf4ff!important}
+.featured-price small,.card-price small,.card-desc,.detail-info>p,.detail-note,.trust-item p,.discord-banner p,.footer-note,.footer-links a,.copyright,.showcase-price small{color:#a9bed5!important}
+.featured-bottom,.card-bottom,.hero-stats,footer,.copyright{border-color:rgba(115,203,255,.2)!important}
+.search-wrap input,.sort-select,.auth-box input{background:#061326!important;color:#f4f9ff!important;border-color:rgba(115,203,255,.26)!important}
+.search-wrap input::placeholder,.auth-box input::placeholder{color:#8da9c6!important}
+.filter{background:#091a30!important;color:#b9cce0!important;border-color:rgba(115,203,255,.22)!important}
+.filter:hover,.filter.active{color:#e5fbff!important;background:#12385b!important;border-color:#65dfff!important}
+.discord-float{left:8px!important;right:auto!important;top:50%!important}
+.discord-popover{background:linear-gradient(145deg,#132b49,#07162a)!important;border-color:rgba(101,160,255,.6)!important}
+.discord-server-name,.discord-description{color:#f4f9ff!important}
+.discord-connection,.discord-count{color:#a9bed5!important}
+.discord-count{background:#0b1e37!important;border-color:#274363!important}
+.auth-overlay{z-index:300;background:rgba(2,8,20,.96)!important;backdrop-filter:blur(20px)!important;padding:24px!important}
+.auth-box{width:min(100%,470px)!important;max-width:470px!important;padding:36px!important;border:1px solid rgba(101,207,255,.35)!important;border-radius:24px!important;background:radial-gradient(ellipse at 100% 0%,rgba(40,120,255,.17),transparent 48%),linear-gradient(145deg,#102947,#061326 78%)!important;box-shadow:0 25px 80px rgba(0,0,0,.45),0 0 35px rgba(40,130,255,.12)!important}
+.auth-box h2{font-size:32px!important;margin:13px 0!important}
+.auth-box>p{color:#a9bed5!important}
+.auth-box input{min-height:49px!important;border-radius:12px!important}
+.auth-box form .btn{width:100%;min-height:48px!important}
+.auth-close{width:40px!important;height:40px!important;display:grid!important;place-items:center!important;border-radius:12px!important;top:15px!important;left:15px!important;right:auto!important;background:#123052!important;color:#e9faff!important;font-size:18px!important}
+.auth-switch,.auth-forgot{color:#9deeff!important}
+.auth-message{overflow-wrap:anywhere}
+body.auth-page-open{overflow:hidden}
+body.auth-page-open> .sale,body.auth-page-open>nav,body.auth-page-open>#homePage,body.auth-page-open>#details,body.auth-page-open>#not-found,body.auth-page-open>footer{visibility:hidden!important;pointer-events:none!important}
+body.auth-page-open .discord-float{visibility:hidden!important;pointer-events:none!important}
+.discord-float-button{background:linear-gradient(145deg,#6477ff,#3f58d8)!important;color:#fff!important}
+.back-row{margin-bottom:25px}
+.back-btn{cursor:pointer}
+@media(max-width:620px){.auth-overlay{padding:14px!important}.auth-box{padding:30px 22px!important}.discord-float{left:7px!important;right:auto!important}}
 
 </style>
 
@@ -1377,6 +1353,96 @@ nav{
  .card-art{height:145px!important}.card-img{height:125px!important}
  .card h3{font-size:13px!important}
 }
+
+/* Rotating cape showcase: large cape image beside live cape details */
+.cape-showcase-layout{grid-template-columns:1fr 1fr;gap:clamp(28px,5vw,72px);align-items:center}
+.cape-showcase-copy{padding:18px 0}
+.cape-showcase-copy .pill{margin-bottom:19px}
+.cape-showcase-copy>.stock{margin-bottom:12px}
+.cape-showcase-copy h1{font-size:clamp(42px,6vw,72px);letter-spacing:-2.6px;line-height:1.03;margin:13px 0 17px}
+.cape-showcase-copy>p{max-width:510px;font-size:14px;line-height:1.9;color:var(--muted)}
+.showcase-price{font-size:clamp(27px,3vw,38px);font-weight:1000;color:var(--cyan-light);margin-top:23px}
+.showcase-price small{display:block;font-size:11px;font-weight:500;color:var(--muted);margin-top:5px}
+.showcase-art{padding:20px;border-radius:26px;min-height:460px;display:flex;flex-direction:column;justify-content:space-between}
+.showcase-art .featured-image{height:370px;margin:12px 0 0;flex:1}
+.showcase-art .featured-image img{height:min(350px,38vw);width:90%;object-fit:contain}
+.showcase-bottom{justify-content:flex-start;border-top:1px solid var(--line);margin-top:26px;padding-top:17px}
+.showcase-hint{font-size:10px;color:var(--muted)}
+@media(max-width:900px){.cape-showcase-layout{grid-template-columns:1fr;gap:25px}.cape-showcase-copy{text-align:left}.cape-showcase-copy>p{margin:0}.showcase-art{width:min(580px,100%);margin:auto;min-height:360px}.showcase-art .featured-image{height:290px}.showcase-art .featured-image img{height:260px}.showcase-bottom{justify-content:space-between}}
+@media(max-width:620px){.cape-showcase-copy h1{font-size:clamp(40px,11vw,58px);letter-spacing:-1.8px}.showcase-art{min-height:300px;padding:14px}.showcase-art .featured-image{height:235px}.showcase-art .featured-image img{height:220px}.showcase-hint{font-size:9px}}
+</style>
+
+<style id="mc-store-pro-final-polish">
+:root{--cyan:#6cecff;--cyan-light:#d5faff;--blue:#438cff;--orange:#ff9b63;--orange-light:#ffd1ad;--bg:#050d1c;--panel:#0b1c33;--panel2:#102947;--text:#f4fbff;--muted:#a9c1d8;--line:rgba(105,211,255,.22);--green:#73f5b4;--red:#ff9ba8}
+html{scroll-behavior:smooth;scrollbar-color:#2589d7 #061326}
+body{color:#f4fbff!important;background:radial-gradient(ellipse at 10% 8%,rgba(25,139,255,.22),transparent 35%),radial-gradient(ellipse at 91% 19%,rgba(0,218,255,.13),transparent 31%),linear-gradient(145deg,#030916,#081a30 50%,#040b18)!important;background-attachment:fixed!important}
+body::before{display:block!important;opacity:.42!important}
+nav{background:rgba(4,13,29,.9)!important;border:0!important;border-bottom:1px solid rgba(105,211,255,.24)!important;border-radius:0!important;box-shadow:0 10px 32px #0003!important;backdrop-filter:blur(18px)!important}
+.nav-inner{min-height:76px!important}
+.nav-links{margin-left:auto!important;justify-content:flex-end!important}
+.nav-link{color:#bad1e6!important;border:1px solid transparent!important}
+.nav-link:hover,.nav-link.active{color:#f4fcff!important;background:linear-gradient(120deg,#167bd82c,#35ddff12)!important;border-color:#63dcff42!important;box-shadow:0 0 20px #168cff12!important}
+.btn,.nav-links .btn{background:linear-gradient(115deg,#78efff,#42bdff 48%,#5286ff)!important;color:#031326!important;border:1px solid #a8f3ff75!important;border-radius:12px!important;box-shadow:0 7px 22px #167fff30,inset 0 1px #ffffff75!important;transition:transform .23s,filter .23s,box-shadow .23s!important}
+.btn:hover,.nav-links .btn:hover{transform:translateY(-3px) scale(1.025)!important;filter:brightness(1.09)!important;box-shadow:0 12px 28px #168cff55,0 0 20px #43dfff20!important}
+.btn-outline{background:linear-gradient(140deg,#112c4a,#081a31)!important;color:#e7faff!important;border-color:#5fcfff55!important}
+.sale{background:repeating-linear-gradient(115deg,#ff8d2c 0 55px,#ffb33c 55px 105px,#101f35 105px 160px)!important;border-bottom:1px solid #ffba69!important}
+.hero{display:block!important;padding-top:clamp(42px,6vw,76px)!important;padding-bottom:clamp(45px,6vw,76px)!important;color:#f4fbff!important}
+.cape-showcase-layout{grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;gap:clamp(28px,5vw,76px)!important}
+.cape-showcase-copy h1{background:linear-gradient(100deg,#f3fdff 0%,#7deaff 35%,#6e9cff 72%,#d9fbff 100%);background-size:200% 200%;-webkit-background-clip:text;background-clip:text;color:transparent!important;animation:mcTitleFlow 7s ease-in-out infinite!important;text-shadow:none!important}
+.cape-showcase-copy>p{color:#b2c9df!important}
+.kicker,.featured-label{color:#70eaff!important;text-shadow:0 0 20px #39cfff35!important}
+.gradient{background:linear-gradient(100deg,#c8f8ff,#53dfff,#5590ff,#c8f8ff)!important;background-size:220% 220%!important;-webkit-background-clip:text!important;background-clip:text!important;color:transparent!important;animation:mcTitleFlow 8s ease-in-out infinite!important}
+.pill{color:#d9faff!important;background:linear-gradient(110deg,#1879d725,#27d9ff10)!important;border-color:#59dfff55!important;box-shadow:0 0 25px #218cff16!important}
+.featured,.card,.detail-card,.trust-item,.discord-banner,.auth-box{color:#f4fbff!important;background:linear-gradient(145deg,rgba(14,39,68,.98),rgba(5,16,33,.99))!important;border:1px solid rgba(101,207,255,.3)!important;box-shadow:0 18px 50px #0003,inset 0 1px #ffffff09!important}
+.featured{animation:mcCardGlow 6s ease-in-out infinite!important}
+.featured-image,.card-art,.detail-art{background:radial-gradient(ellipse at center,#219fff2d,transparent 64%),linear-gradient(145deg,#102b4a,#061326)!important}
+.featured-image img{filter:drop-shadow(0 15px 20px #0008) drop-shadow(0 0 18px #28bfff24)!important;animation:floatCape 3.3s ease-in-out infinite,mcCapeGlow 5s ease-in-out infinite!important;transition:transform .35s!important}
+.showcase-art:hover .featured-image img{transform:translateY(-5px) scale(1.055)!important}
+.featured-info h2,.card h3,.detail-info h1,.trust-item h3,.discord-server-name,.auth-box h2{color:#f3fbff!important}
+.featured-price,.card-price,.detail-price,.showcase-price{color:#a8f2ff!important;text-shadow:0 0 20px #38bfff20!important}
+.featured-price small,.card-price small,.card-desc,.detail-info>p,.detail-note,.trust-item p,.discord-banner p,.footer-note,.footer-links a,.copyright,.showcase-price small{color:#a9c1d8!important}
+#shop{display:block!important;padding-top:22px!important;padding-bottom:65px!important}
+.shop-tools{display:flex!important;margin-bottom:24px!important}
+.results-line{display:block!important;color:#a9c1d8!important}
+.products{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:21px!important}
+.card{border-radius:19px!important;overflow:hidden!important;transition:transform .32s cubic-bezier(.2,.8,.2,1),border-color .32s,box-shadow .32s!important;position:relative!important}
+.card::before{content:"";position:absolute;z-index:2;top:0;left:14%;right:14%;height:1px;background:linear-gradient(90deg,transparent,#6cecff,#478bff,transparent);opacity:.65;transition:left .3s,right .3s,opacity .3s}
+.card:hover{transform:translateY(-8px)!important;border-color:#64e4ffb5!important;box-shadow:0 22px 48px #0005,0 0 28px #198bff24!important}
+.card:hover::before{left:0;right:0;opacity:1}
+.card-art{height:230px!important;overflow:hidden!important}
+.card-img{height:185px!important;transition:transform .4s cubic-bezier(.2,.8,.2,1),filter .4s!important;filter:drop-shadow(0 12px 16px #0008) drop-shadow(0 0 10px #1ba7ff15)!important}
+.card:hover .card-img{transform:scale(1.12) rotate(-2deg)!important;filter:drop-shadow(0 16px 20px #0009) drop-shadow(0 0 20px #2fcfff2b)!important}
+.card-body{background:transparent!important;padding:18px!important}
+.card h3{color:#f1fbff!important;transition:color .2s!important}
+.card:hover h3{color:#8feeff!important}
+.card-desc{color:#aac1d8!important}
+.card-bottom,.featured-bottom,.hero-stats,footer,.copyright{border-color:#6abfff24!important}
+.card-price{color:#baf5ff!important}
+.card-tag{background:#092b35e8!important;color:#8bffd0!important;border:1px solid #73f5b455!important;border-radius:9px!important;backdrop-filter:blur(8px)}
+.card-tag.sold{background:#321b28e8!important;color:#ffadb7!important;border-color:#ff9ba855!important}
+.search-wrap input,.sort-select,.auth-box input{background:#061326!important;color:#f4fbff!important;border-color:#4daeff40!important;border-radius:12px!important}
+.search-wrap input::placeholder,.auth-box input::placeholder{color:#829fbd!important}
+.filter{background:#091b32!important;color:#b6cde3!important;border-color:#4eaeff35!important;border-radius:10px!important}
+.filter:hover,.filter.active{color:#e8fbff!important;background:#12395b!important;border-color:#6cecff!important;box-shadow:0 0 18px #238dff20!important}
+.empty-state{color:#b1c7dc!important;background:#0a1d34!important;border-color:#5bbfff55!important}.empty-state strong{color:#f4fbff!important}
+.detail-card{grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important}
+.back-btn{background:linear-gradient(140deg,#123557,#081a31)!important;color:#e6faff!important;border:1px solid #60dfff50!important;border-radius:11px!important;transition:transform .2s,box-shadow .2s!important}
+.back-btn:hover{transform:translateY(-2px)!important;box-shadow:0 8px 22px #148bff25!important}
+.discord-float{left:10px!important;right:auto!important;top:50%!important;z-index:150!important}
+.discord-float-button{background:linear-gradient(145deg,#697aff,#3d56d8)!important;color:#fff!important;border:1px solid #c1d0ff65!important;box-shadow:0 10px 28px #0005,0 0 24px #5865f244!important;transition:transform .25s,box-shadow .25s!important}
+.discord-float-button:hover{transform:scale(1.1)!important;box-shadow:0 10px 30px #0005,0 0 35px #5865f277!important}
+.discord-popover{background:linear-gradient(145deg,#172b49,#08162a)!important;border:1px solid #758bff80!important;box-shadow:0 22px 55px #0008,0 0 30px #5865f220!important;color:#f4fbff!important}
+.discord-server-name,.discord-description{color:#f4fbff!important}.discord-connection,.discord-count{color:#b1c7df!important}.discord-count{background:#0c2039!important;border-color:#284563!important}
+.auth-overlay{background:rgba(1,7,19,.91)!important;backdrop-filter:blur(18px)!important}
+.auth-box{background:radial-gradient(ellipse at 100% 0%,#267bff2c,transparent 48%),linear-gradient(145deg,#102947,#061326 78%)!important;border-color:#65dfff5c!important;box-shadow:0 28px 90px #0009,0 0 40px #238dff20!important}
+.auth-box h2{color:#eafaff!important}.auth-box>p{color:#adc5dc!important}.auth-switch,.auth-forgot{color:#7deaff!important}.auth-close{background:#123052!important;color:#effbff!important;border:1px solid #5acfff35!important}
+.discord-join{background:linear-gradient(110deg,#6477ff,#3d55d8)!important;color:#fff!important}
+@keyframes mcTitleFlow{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+@keyframes mcCardGlow{0%,100%{box-shadow:0 18px 50px #0003,0 0 0 #258dff00,inset 0 1px #ffffff09}50%{box-shadow:0 18px 50px #0003,0 0 28px #258dff18,inset 0 1px #ffffff09}}
+@keyframes mcCapeGlow{0%,100%{filter:drop-shadow(0 15px 20px #0008) drop-shadow(0 0 10px #28bfff18)}50%{filter:drop-shadow(0 15px 20px #0008) drop-shadow(0 0 22px #28bfff3d)}}
+@media(max-width:900px){.cape-showcase-layout{grid-template-columns:1fr!important}.products{grid-template-columns:repeat(2,minmax(0,1fr))!important}.detail-card{grid-template-columns:1fr!important}}
+@media(max-width:620px){.nav-inner{gap:7px!important}.nav-links{gap:3px!important}.nav-link{padding:8px 7px!important}.hero{padding-top:35px!important}.cape-showcase-copy h1{font-size:clamp(39px,11vw,58px)!important}.showcase-art{min-height:300px!important}.showcase-art .featured-image{height:230px!important}.showcase-art .featured-image img{height:220px!important}.products{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:12px!important}.card-art{height:165px!important}.card-img{height:135px!important}.card-body{padding:12px!important}.card h3{font-size:13px!important}.card-desc{font-size:10px!important;min-height:45px!important}.card-price{font-size:15px!important}.discord-float{left:7px!important;right:auto!important}.discord-popover{width:min(300px,calc(100vw - 70px))!important;left:51px!important}.auth-box{padding:30px 22px!important}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;scroll-behavior:auto!important;transition:none!important}}
 </style>
 
 </head>
@@ -1401,7 +1467,6 @@ nav{
       <a class="nav-link active" href="#home" onclick="showHome('home');return false">Home</a>
       <a class="nav-link" href="#shop" onclick="showHome('shop');return false">Capes</a>
       <a class="nav-link" href="#about" onclick="showHome('about');return false">About</a>
-      <a class="btn" href="https://discord.com/invite/F38vcYVHA" target="_blank" rel="noopener noreferrer">Discord ↗</a>
       <span class="user-label" id="authUserLabel" hidden></span>
       <button class="btn btn-outline small-btn" id="authOpenBtn" type="button">Sign In</button>
       <button class="btn btn-outline small-btn" id="authSignOutBtn" type="button" hidden>Sign Out</button>
@@ -1411,72 +1476,36 @@ nav{
 
 <main id="homePage">
   <header class="hero container" id="home">
-    <div class="hero-layout">
-      <div class="hero-copy">
-        <div class="pill"><span class="pulse"></span> MC STORE · CAPE COLLECTION</div>
-        <h1 class="showcase-heading">Find Your <span class="gradient">Minecraft</span> Cape.</h1>
-        <p class="showcase-description">Explore the MC STORE cape collection. Select a cape to view its design, details, listed availability, and ordering information.</p>
+    <div class="hero-layout cape-showcase-layout">
+      <div class="hero-copy cape-showcase-copy">
+        <div class="pill"><span class="pulse"></span> <span id="featuredNumber">01 / 09</span> · CAPE SPOTLIGHT</div>
+        <span class="stock" id="featuredStock">✓ IN STOCK</span>
+        <h1 id="featuredName">Aurora Cape</h1>
+        <p id="featuredDescription">Explore the MC STORE cape collection.</p>
+        <div class="showcase-price" id="featuredPrice">$6<small>Listed price</small></div>
         <div class="hero-actions">
-          <a href="#shop" class="btn" onclick="showHome('shop');return false">Explore Capes ↗</a>
-          <a href="https://discord.com/invite/F38vcYVHA" target="_blank" rel="noopener noreferrer" class="btn btn-outline">Join Our Discord</a>
+          <button class="btn" id="featuredView" type="button">View Cape ↗</button>
+          <a href="#shop" class="btn btn-outline" onclick="showHome('shop');return false">View All Capes ↓</a>
         </div>
-
-        <div class="hero-stats">
-          <div><strong>09</strong><span>Cape designs</span></div>
-          <div><strong>24/7</strong><span>Browse the shop</span></div>
-          <div><strong>Discord</strong><span>Order assistance</span></div>
+        <div class="featured-bottom showcase-bottom">
+          <div class="featured-dots" id="featuredDots" aria-label="Choose a featured cape"></div>
+          <span class="showcase-hint">Cape showcase · auto-changing</span>
         </div>
       </div>
 
-      <div class="featured" id="featured">
+      <div class="featured showcase-art" id="featured">
         <div class="featured-top">
-          <span class="featured-label">✦ CAPE SPOTLIGHT</span>
-          <span class="featured-number" id="featuredNumber">01 / 09</span>
+          <span class="featured-label">✦ FEATURED CAPE</span>
+          <span class="featured-number">MC STORE</span>
         </div>
-
         <div class="featured-image">
           <img id="featuredImage" src="media/aurora-front.png" alt="Aurora Cape">
-        </div>
-
-        <div class="featured-info">
-          <div>
-            <span class="stock" id="featuredStock">✓ IN STOCK</span>
-            <h2 id="featuredName">Aurora Cape</h2>
-          </div>
-          <div class="featured-price" id="featuredPrice">$6<small>Listed price</small></div>
-        </div>
-
-        <div class="featured-bottom">
-          <div class="featured-dots" id="featuredDots" aria-label="Choose a featured cape"></div>
-          <button class="btn small-btn" id="featuredView" type="button">View Cape ↗</button>
         </div>
       </div>
     </div>
   </header>
 
-  <section class="cape-showcase section" id="cape-showcase">
-    <div class="container">
-      <div class="showcase-head">
-        <div>
-          <div class="kicker">THE COLLECTION</div>
-          <h2>Explore <span class="gradient">all capes.</span></h2>
-          <p>Browse the designs below, then open any cape to see its details.</p>
-        </div>
-        <a href="#shop" class="btn btn-outline" onclick="showHome('shop');return false">View full shop ↘</a>
-      </div>
-      <div class="showcase-rail" id="showcaseRail" aria-label="All cape designs"></div>
-    </div>
-  </section>
-
   <section class="section container" id="shop">
-    <div class="section-head">
-      <div>
-        <div class="kicker">SHOP THE COLLECTION</div>
-        <h2>Choose your <span class="gradient">cape.</span></h2>
-        <p>Search, filter by availability, or open a cape for more information.</p>
-      </div>
-    </div>
-
     <div class="shop-tools">
       <label class="search-wrap">
         <span class="search-icon">⌕</span>
@@ -1537,7 +1566,7 @@ nav{
 
 <section class="container" id="details">
   <div class="back-row">
-    <button class="back-btn" type="button" onclick="showHome('shop')">← Back to Capes</button>
+    <button class="back-btn" type="button" onclick="showHome('home')">← Back to Home</button>
   </div>
 
   <div id="detailContent"></div>
@@ -1558,7 +1587,7 @@ nav{
   <h2>Cape not found</h2>
   <p class="muted">We couldn't find that cape in the collection.</p>
   <br>
-  <button class="back-btn" type="button" onclick="showHome('shop')">← Back to Capes</button>
+  <button class="back-btn" type="button" onclick="showHome('home')">← Back to Home</button>
 </section>
 
 <!-- Discord server preview: opens on hover or tap -->
@@ -1572,7 +1601,7 @@ nav{
 
   <div class="discord-popover" role="region" aria-label="MC STORE Discord server preview">
     <button class="discord-close" id="discordClose" type="button" aria-label="Close Discord preview">×</button>
-    <div class="discord-preview-banner"><span>MC <b>STORE</b></span><small>MINECRAFT CAPE COMMUNITY</small></div>
+    <div class="discord-preview-banner" id="discordPreviewBanner"><span>MC <b>STORE</b></span><small>MINECRAFT CAPE COMMUNITY</small></div>
     <div class="discord-preview-content">
       <img class="discord-server-img" src="media/1792194826100.jpg" alt="MC STORE Discord icon"
            onerror="this.style.display='none'">
@@ -1580,7 +1609,7 @@ nav{
       <div class="discord-status-line"><span class="discord-live"></span><strong id="discordMembers">—</strong> Members <span class="discord-separator">·</span> <span id="discordOnline">—</span> Online</div>
       <div class="discord-connection" id="discordConnection">Minecraft cape community</div>
       <p class="discord-description" id="discordDescription">A friendly community to talk about Minecraft capes and contact the MC STORE team.</p>
-      <a class="discord-join" href="https://discord.com/invite/F38vcYVHA" target="_blank" rel="noopener noreferrer">Join Server</a>
+      <a class="discord-join" href="https://discord.gg/G75MSAVe2k" target="_blank" rel="noopener noreferrer">Join Server</a>
     </div>
   </div>
 </div>
@@ -1596,7 +1625,6 @@ nav{
         <a href="#home" onclick="showHome('home');return false">Home</a>
         <a href="#shop" onclick="showHome('shop');return false">Capes</a>
         <a href="#about" onclick="showHome('about');return false">About</a>
-        <a href="https://discord.com/invite/F38vcYVHA" target="_blank" rel="noopener noreferrer">Discord ↗</a>
       </div>
     </div>
     <div class="copyright">
@@ -1610,7 +1638,7 @@ nav{
 <!-- Firebase authentication dialog -->
 <div class="auth-overlay" id="authOverlay" role="dialog" aria-modal="true" aria-labelledby="authTitle">
   <div class="auth-box">
-    <button class="auth-close" id="authCloseBtn" type="button" aria-label="Close">×</button>
+    <button class="auth-close" id="authCloseBtn" type="button" aria-label="Back to home">←</button>
     <div class="kicker">WELCOME TO MC STORE</div>
     <h2 id="authTitle">Sign In</h2>
     <p id="authSubtitle">Sign in to your MC STORE account.</p>
@@ -1630,8 +1658,8 @@ nav{
 <script>
 "use strict";
 
-const DISCORD_URL = "https://discord.com/invite/F38vcYVHA";
-const DISCORD_INVITE_CODE = "F38vcYVHA";
+const DISCORD_URL = "https://discord.gg/G75MSAVe2k";
+const DISCORD_INVITE_CODE = "G75MSAVe2k";
 
 // Do not let History API restrictions on local file previews stop the shop UI.
 function safeReplaceState(url) {
@@ -1790,25 +1818,6 @@ function capeCard(cape) {
   `;
 }
 
-function renderShowcaseRail() {
-  const rail = document.getElementById("showcaseRail");
-  if (!rail) return;
-  rail.innerHTML = capes.map(cape => `
-    <article class="showcase-tile">
-      <button type="button" onclick="openCape('${cape.id}')" aria-label="View ${escapeHTML(cape.name)}">
-        <div class="showcase-tile-art">
-          <img src="${cape.image}" alt="${escapeHTML(cape.name)}" loading="lazy"
-               onerror="this.style.opacity='.25'">
-        </div>
-        <div class="showcase-tile-info">
-          <strong>${escapeHTML(cape.name)}</strong>
-          <span class="${cape.stock ? "available" : "unavailable"}">${cape.stock ? "● IN STOCK" : "● NOT IN STOCK"}</span>
-        </div>
-      </button>
-    </article>
-  `).join("");
-}
-
 function renderProducts() {
   const query = document.getElementById("searchInput").value.trim().toLowerCase();
   let list = capes.filter(cape => {
@@ -1859,8 +1868,7 @@ document.querySelectorAll("[data-filter]").forEach(button => {
       item.classList.toggle("active", item === button);
     });
 
-    renderShowcaseRail();
-renderProducts();
+    renderProducts();
   });
 });
 
@@ -1871,6 +1879,7 @@ function showFeatured(index) {
   document.getElementById("featuredImage").src = cape.image;
   document.getElementById("featuredImage").alt = cape.name;
   document.getElementById("featuredName").textContent = cape.name;
+  document.getElementById("featuredDescription").textContent = cape.description;
   document.getElementById("featuredPrice").innerHTML =
     `${formatPrice(cape)}<small>${cape.stock ? "Listed price" : "Currently unavailable"}</small>`;
 
@@ -1903,7 +1912,7 @@ function restartFeaturedTimer() {
   clearInterval(featuredTimer);
   featuredTimer = setInterval(() => {
     showFeatured((featuredIndex + 1) % capes.length);
-  }, 5000);
+  }, 4500);
 }
 
 document.getElementById("featured").addEventListener("mouseenter", () => {
@@ -1970,7 +1979,6 @@ function openCape(id) {
              onerror="this.style.opacity='.25'">
       </div>
       <div class="detail-info">
-        <div class="kicker">MC STORE / CAPE COLLECTION</div>
         <h1>${escapeHTML(cape.name)}</h1>
         <span class="stock ${cape.stock ? "" : "sold"}">
           ${cape.stock ? "✓ IN STOCK" : "✕ NOT IN STOCK"}
@@ -1984,8 +1992,8 @@ function openCape(id) {
           <a class="btn" href="${DISCORD_URL}" target="_blank" rel="noopener noreferrer">
             ${cape.stock ? "ASK TO ORDER ↗" : "ASK ABOUT AVAILABILITY ↗"}
           </a>
-          <button class="btn btn-outline" type="button" onclick="showHome('shop')">
-            Browse More
+          <button class="btn btn-outline" type="button" onclick="showHome('home')">
+            Back to Home
           </button>
         </div>
         <div class="detail-note">${availabilityText} Confirm the final price and details with the team before purchasing.</div>
@@ -2069,6 +2077,19 @@ async function refreshDiscordInfo() {
       document.getElementById("discordDescription").textContent = data.guild.description;
     }
 
+    // Use the real Discord server icon/banner when the invite API exposes them.
+    if (data.guild && data.guild.icon) {
+      const icon = document.querySelector(".discord-server-img");
+      icon.src = `https://cdn.discordapp.com/icons/${data.guild.id}/${data.guild.icon}.png?size=128`;
+      icon.style.display = "block";
+    }
+    if (data.guild && data.guild.banner) {
+      const banner = document.getElementById("discordPreviewBanner");
+      banner.style.backgroundImage = `linear-gradient(0deg,rgba(10,12,18,.28),rgba(10,12,18,.18)),url(https://cdn.discordapp.com/banners/${data.guild.id}/${data.guild.banner}.png?size=600)`;
+      banner.style.backgroundSize = "cover";
+      banner.style.backgroundPosition = "center";
+    }
+
     connection.innerHTML = '<span class="discord-live"></span> Server preview loaded';
   } catch (error) {
     connection.textContent = "Join our Discord to see the community";
@@ -2112,7 +2133,7 @@ function setFallbackAuthMode(create) {
   fallbackCreatingAccount = create;
   fallbackTitle.textContent = create ? "Create Account" : "Sign In";
   fallbackSubtitle.textContent = create
-    ? "Create your MC STORE account. Verify your email to sign in."
+    ? "Create your account, then open the verification link sent to your email before signing in."
     : "Sign in to your MC STORE account.";
   fallbackSubmit.textContent = create ? "Create Account" : "Sign In";
   fallbackPassword.autocomplete = create ? "new-password" : "current-password";
@@ -2131,13 +2152,14 @@ function setFallbackAuthMessage(text, type = "error") {
 fallbackOpenBtn.addEventListener("click", () => {
   if (!window.__mcStoreAuthReady) setFallbackAuthMode(false);
   fallbackOverlay.classList.add("open");
+  document.body.classList.add("auth-page-open");
 });
-fallbackCloseBtn.addEventListener("click", () => fallbackOverlay.classList.remove("open"));
+fallbackCloseBtn.addEventListener("click", () => { fallbackOverlay.classList.remove("open"); document.body.classList.remove("auth-page-open"); });
 fallbackOverlay.addEventListener("click", event => {
-  if (event.target === fallbackOverlay) fallbackOverlay.classList.remove("open");
+  if (event.target === fallbackOverlay) { fallbackOverlay.classList.remove("open"); document.body.classList.remove("auth-page-open"); }
 });
 document.addEventListener("keydown", event => {
-  if (event.key === "Escape") fallbackOverlay.classList.remove("open");
+  if (event.key === "Escape") { fallbackOverlay.classList.remove("open"); document.body.classList.remove("auth-page-open"); }
 });
 fallbackSwitch.addEventListener("click", () => {
   if (!window.__mcStoreAuthReady) setFallbackAuthMode(!fallbackCreatingAccount);
@@ -2209,7 +2231,7 @@ function setMode(create) {
   creatingAccount = create;
   title.textContent = create ? "Create Account" : "Sign In";
   subtitle.textContent = create
-    ? "Create your MC STORE account. Verify your email to sign in."
+    ? "Create your account, then open the verification link sent to your email before signing in."
     : "Sign in to your MC STORE account.";
   submit.textContent = create ? "Create Account" : "Sign In";
   password.autocomplete = create ? "new-password" : "current-password";
@@ -2223,18 +2245,19 @@ function setMode(create) {
 openBtn.addEventListener("click", () => {
   setMode(false);
   overlay.classList.add("open");
+  document.body.classList.add("auth-page-open");
 });
 
 document.getElementById("authCloseBtn").addEventListener("click", () => {
-  overlay.classList.remove("open");
+  overlay.classList.remove("open"); document.body.classList.remove("auth-page-open");
 });
 
 overlay.addEventListener("click", event => {
-  if (event.target === overlay) overlay.classList.remove("open");
+  if (event.target === overlay) { overlay.classList.remove("open"); document.body.classList.remove("auth-page-open"); }
 });
 
 document.addEventListener("keydown", event => {
-  if (event.key === "Escape") overlay.classList.remove("open");
+  if (event.key === "Escape") { overlay.classList.remove("open"); document.body.classList.remove("auth-page-open"); }
 });
 
 switchBtn.addEventListener("click", () => setMode(!creatingAccount));
@@ -2262,7 +2285,7 @@ form.addEventListener("submit", async event => {
       }
 
       await signOut(auth);
-      showMessage("Verification email sent. Check your inbox and Spam/Junk folder.");
+      showMessage("Verification email sent. Open the link in your inbox or Spam/Junk folder, then return here and sign in.");
     } else {
       const credential = await signInWithEmailAndPassword(
         auth,
@@ -2274,7 +2297,7 @@ form.addEventListener("submit", async event => {
 
       if (!credential.user.emailVerified) {
         await signOut(auth);
-        showMessage("Please verify your email using the link in your inbox.", "error");
+        showMessage("Your email is not verified yet. Open the verification link in your inbox or Spam/Junk folder, then try signing in again.", "error");
         return;
       }
 
@@ -2339,7 +2362,7 @@ onAuthStateChanged(auth, user => {
   userLabel.hidden = !user;
   userLabel.textContent = user ? user.email : "";
 
-  if (user) overlay.classList.remove("open");
+  if (user) { overlay.classList.remove("open"); document.body.classList.remove("auth-page-open"); }
 });
 </script>
 </body>
