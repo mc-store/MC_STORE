@@ -2438,7 +2438,7 @@ footer.mc-footer {
 .mc-footer .mc-footer-column a:hover span { color:#69ddff !important; }
 .mc-footer .mc-footer-bottom {
   display:flex !important;
-  justify-content:space-between !important;
+  justify-content:flex-start !important;
   align-items:center !important;
   gap:18px !important;
   flex-wrap:wrap !important;
@@ -2505,6 +2505,160 @@ footer.mc-footer {
 }
 @media (prefers-reduced-motion: reduce) {
   #featured .featured-image.cape-zoom-switch { animation: none !important; }
+}
+</style>
+
+<style id="mc-store-final-branding-and-cape-spin">
+/* Make the About and Endorsements pages consistently use the MC STORE brand. */
+#aboutPage .about-panel h1,
+#aboutPage .about-panel .gradient,
+#endorsementsPage .about-panel h1,
+#endorsementsPage .about-panel .gradient { color:#171717 !important; -webkit-text-fill-color:#171717 !important; }
+
+/* The Home cape should float on the page, without a pale-grey display tile. */
+#featured .featured-image {
+  background:transparent !important;
+  border:0 !important;
+  box-shadow:none !important;
+  border-radius:0 !important;
+  perspective:1000px !important;
+}
+#featured .featured-image:after {
+  content:none !important;
+  display:none !important;
+}
+#featured .featured-image img {
+  transform-style:preserve-3d !important;
+  backface-visibility:visible !important;
+  filter:drop-shadow(0 15px 15px rgba(0,0,0,.18)) !important;
+}
+
+/* On each cape change, zoom smoothly and rotate the cape a full 360 degrees. */
+@keyframes mcCapeSwap360 {
+  0% { opacity:.3; transform:perspective(1000px) scale(.76) rotateY(0deg) rotateZ(-3deg); }
+  22% { opacity:1; transform:perspective(1000px) scale(.98) rotateY(75deg) rotateZ(1deg); }
+  50% { opacity:1; transform:perspective(1000px) scale(1.045) rotateY(180deg) rotateZ(0deg); }
+  78% { opacity:1; transform:perspective(1000px) scale(1.02) rotateY(285deg) rotateZ(-1deg); }
+  100% { opacity:1; transform:perspective(1000px) scale(1) rotateY(360deg) rotateZ(0deg); }
+}
+#featured .featured-image.cape-zoom-switch img {
+  animation:mcCapeSwap360 .95s cubic-bezier(.2,.75,.2,1) both !important;
+  transform-origin:center center !important;
+}
+@media (prefers-reduced-motion:reduce) {
+  #featured .featured-image.cape-zoom-switch img { animation:none !important; }
+}
+</style>
+
+
+<style id="mc-store-discord-staggered-preview">
+/* The server banner is a plain cyan block: no logo, text, or decorative pattern. */
+#discordFloat .discord-preview-banner {
+  position: relative !important;
+  display: block !important;
+  height: 112px !important;
+  min-height: 112px !important;
+  background: #39d8f4 !important;
+  background-color: #39d8f4 !important;
+  background-image: none !important;
+  color: transparent !important;
+  text-shadow: none !important;
+  opacity: 0;
+  transform: translateY(-8px);
+  transition: opacity .28s ease, transform .36s cubic-bezier(.2,.8,.2,1) !important;
+}
+#discordFloat .discord-preview-banner::before,
+#discordFloat .discord-preview-banner::after,
+#discordFloat .discord-preview-banner span,
+#discordFloat .discord-preview-banner small { display:none !important; content:none !important; }
+#discordFloat:not(.dismissed):hover .discord-preview-banner,
+#discordFloat:not(.dismissed):focus-within .discord-preview-banner,
+#discordFloat.open:not(.dismissed) .discord-preview-banner {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: .02s !important;
+}
+
+/* Reveal the server icon, name, member count and button one after another. */
+#discordFloat .discord-server-img {
+  opacity: 0;
+  transform: translateY(10px) scale(.78) rotate(-5deg);
+  transition: opacity .32s ease, transform .42s cubic-bezier(.2,.8,.2,1) !important;
+}
+#discordFloat .discord-server-name,
+#discordFloat .discord-status-line,
+#discordFloat .discord-connection,
+#discordFloat .discord-description,
+#discordFloat .discord-join {
+  opacity:  0;
+  transform: translateY(9px);
+  transition: opacity .28s ease, transform .36s cubic-bezier(.2,.8,.2,1) !important;
+}
+#discordFloat:not(.dismissed):hover .discord-server-img,
+#discordFloat:not(.dismissed):focus-within .discord-server-img,
+#discordFloat.open:not(.dismissed) .discord-server-img {
+  opacity:1; transform:translateY(0) scale(1) rotate(0); transition-delay:.09s !important;
+}
+#discordFloat:not(.dismissed):hover .discord-server-name,
+#discordFloat:not(.dismissed):focus-within .discord-server-name,
+#discordFloat.open:not(.dismissed) .discord-server-name {
+  opacity:1; transform:translateY(0); transition-delay:.14s !important;
+}
+#discordFloat:not(.dismissed):hover .discord-status-line,
+#discordFloat:not(.dismissed):focus-within .discord-status-line,
+#discordFloat.open:not(.dismissed) .discord-status-line {
+  opacity:1; transform:translateY(0); transition-delay:.20s !important;
+}
+#discordFloat:not(.dismissed):hover .discord-connection,
+#discordFloat:not(.dismissed):focus-within .discord-connection,
+#discordFloat.open:not(.dismissed) .discord-connection {
+  opacity:1; transform:translateY(0); transition-delay:.25s !important;
+}
+#discordFloat:not(.dismissed):hover .discord-description,
+#discordFloat:not(.dismissed):focus-within .discord-description,
+#discordFloat.open:not(.dismissed) .discord-description {
+  opacity:1; transform:translateY(0); transition-delay:.29s !important;
+}
+#discordFloat:not(.dismissed):hover .discord-join,
+#discordFloat:not(.dismissed):focus-within .discord-join,
+#discordFloat.open:not(.dismissed) .discord-join {
+  opacity:1; transform:translateY(0); transition-delay:.34s !important;
+}
+#discordFloat .discord-status-line strong {
+  display:inline-block;
+  transform-origin:left center;
+}
+#discordFloat:not(.dismissed):hover .discord-status-line strong,
+#discordFloat:not(.dismissed):focus-within .discord-status-line strong,
+#discordFloat.open:not(.dismissed) .discord-status-line strong {
+  animation:mcDiscordCountPop .45s .22s cubic-bezier(.2,.8,.2,1) both;
+}
+@keyframes mcDiscordCountPop {
+  0% { opacity:.4; transform:translateY(5px) scale(.84); }
+  65% { opacity:1; transform:translateY(-1px) scale(1.06); }
+  100% { opacity:1; transform:translateY(0) scale(1); }
+}
+
+/* Keep the black footer design but raise the muted links to white for clear contrast. */
+.mc-footer .mc-footer-column a,
+.mc-footer .mc-footer-brand p,
+.mc-footer .mc-footer-bottom,
+.mc-footer .mc-footer-bottom a { color:#f4f4f4 !important; }
+.mc-footer .mc-footer-column a span { color:#ffffff !important; }
+.mc-footer .mc-footer-column a:hover,
+.mc-footer .mc-footer-column a:hover span { color:#55dfff !important; }
+
+@media (max-width:620px) {
+  #discordFloat .discord-preview-banner { height:100px !important; min-height:100px !important; }
+}
+@media (prefers-reduced-motion:reduce) {
+  #discordFloat .discord-preview-banner,
+  #discordFloat .discord-server-img,
+  #discordFloat .discord-server-name,
+  #discordFloat .discord-status-line,
+  #discordFloat .discord-connection,
+  #discordFloat .discord-description,
+  #discordFloat .discord-join { transition:none !important; animation:none !important; opacity:1; transform:none; }
 }
 </style>
 
@@ -2627,13 +2781,13 @@ footer.mc-footer {
   </div>
   <article class="about-panel">
     <div class="kicker">GET TO KNOW US</div>
-    <h1>About <span class="gradient">MC Capes</span></h1>
-    <p class="about-lead">Legitimate Minecraft cape codes, with a focus on clarity, verification, and trust.</p>
+    <h1>About <span class="gradient">MC STORE</span></h1>
+    <p class="about-lead">A Minecraft cape store built around clear listings, careful checks, and a better shopping experience.</p>
     <div class="about-copy">
-      <p><strong>MC Capes is the #1 store for legitimate Minecraft cape codes.</strong> Founded in December 2024, we set out to address a widespread problem in the community: scams, fake listings, and unreliable sellers.</p>
-      <p>We aim to provide a secure, trusted platform where you can purchase cape codes with confidence. Every cape code is checked and verified before it reaches you, and we work to keep product information clear so you can make an informed decision.</p>
-      <p>Alongside customer reviews and ratings, MC Capes is proudly endorsed by Minecraft YouTubers and creators. Visit our Endorsements page to explore creator features, reviews, and partner information.</p>
-      <p>MC STORE is an independent store and is not affiliated with Mojang, Minecraft, or Microsoft. Before placing an order, please confirm the cape's availability, final price, and delivery details with our team.</p>
+      <p><strong>MC STORE is an independent shop for Minecraft cape collectors.</strong> Founded in December 2024, our goal is to make cape shopping clearer in a community where misleading listings and unreliable sellers can be a concern.</p>
+      <p>We aim to make browsing and purchasing easier by showing clear product details and checking cape-code listings before they are offered. Please review each cape’s current stock, price, and delivery information so you can make an informed decision.</p>
+      <p>Community feedback matters to us. Our Endorsements page brings together creator features, customer-review information, and partner details as each item is confirmed.</p>
+      <p>MC STORE is not affiliated with Mojang, Minecraft, or Microsoft. Before placing an order, confirm the cape’s availability, final price, and delivery details. For questions or community updates, contact us through our Discord server.</p>
     </div>
     <div class="about-actions">
       <a class="btn" href="#endorsements" onclick="showEndorsements();return false">Explore Endorsements ↗</a>
@@ -2654,21 +2808,37 @@ footer.mc-footer {
       <section class="endorsement-card">
         <div class="endorsement-icon">✦</div>
         <h2>Creator Endorsements</h2>
-        <p>MC Capes is proudly endorsed by Minecraft YouTubers and creators. We will list creator names and their original links here as each entry is confirmed.</p>
+        <p>MC STORE is building a clear list of Minecraft YouTubers and creators who feature or recommend our store. Creator names and original links will be added when each endorsement or partnership is confirmed.</p>
       </section>
-      <section class="endorsement-card">
+      <section class="endorsement-card" id="customerReviewsCard">
         <div class="endorsement-icon">★</div>
         <h2>Customer Reviews</h2>
-        <p>We value customer feedback and ratings. Review links should point to their original sources so visitors can check them for themselves.</p>
+        <p>We value feedback from cape collectors. Where reviews are available, we aim to link to their original sources so visitors can read the full context for themselves.</p>
       </section>
       <section class="endorsement-card">
         <div class="endorsement-icon">✓</div>
         <h2>Verified Cape Codes</h2>
-        <p>Our store focuses on legitimate cape codes and clear listing information. Always confirm current availability and ordering details before purchasing.</p>
+        <p>MC STORE focuses on clear cape-code listings and transparent product information. Check each listing for current availability, price, and ordering details before purchasing.</p>
       </section>
     </div>
-    <p class="endorsement-note">For current community news or questions, you can also visit our Discord server. Opening this page does not redirect you to Discord.</p>
-    <a class="btn" href="https://discord.gg/G75MSAVe2k" target="_blank" rel="noopener noreferrer">Visit the Community on Discord ↗</a>
+    <p class="endorsement-note">For MC STORE community news or questions, visit our Discord server. This page stays on MC STORE; only the Discord link opens the community invitation.</p>
+    <a class="btn" href="https://discord.gg/G75MSAVe2k" target="_blank" rel="noopener noreferrer">Visit MC STORE on Discord ↗</a>
+  </article>
+</section>
+
+
+<section id="footerInfoPage" class="container about-page" hidden>
+  <div class="back-row">
+    <button class="back-btn" type="button" onclick="showHome('home')">← Back to Home</button>
+  </div>
+  <article class="about-panel">
+    <div class="kicker">MC STORE INFORMATION</div>
+    <h1 id="footerInfoTitle">MC STORE Information</h1>
+    <div class="about-copy" id="footerInfoContent"></div>
+    <div class="about-actions">
+      <a class="btn" href="https://discord.gg/G75MSAVe2k" target="_blank" rel="noopener noreferrer">Ask MC STORE on Discord ↗</a>
+      <button class="btn btn-outline" type="button" onclick="showHome('home')">Back to Home</button>
+    </div>
   </article>
 </section>
 
@@ -2709,12 +2879,12 @@ footer.mc-footer {
 
   <div class="discord-popover" role="region" aria-label="MC STORE Discord server preview">
     <button class="discord-close" id="discordClose" type="button" aria-label="Close Discord preview">×</button>
-    <div class="discord-preview-banner" id="discordPreviewBanner"><span>MC <b>CAPES</b></span><small>MINECRAFT CAPE COMMUNITY</small></div>
+    <div class="discord-preview-banner" id="discordPreviewBanner" aria-hidden="true"></div>
     <div class="discord-preview-content">
       <img class="discord-server-img" src="media/1792194826100.jpg" alt="MC STORE Discord icon"
            onerror="this.style.display='none'">
       <div class="discord-server-name" id="discordServerName">Cape Community</div>
-      <div class="discord-status-line"><span class="discord-live"></span><strong id="discordMembers">1,500+</strong> Members <span class="discord-separator">·</span> <span id="discordOnline">—</span> Online</div>
+      <div class="discord-status-line"><span class="discord-live"></span><strong id="discordMembers">—</strong> Members <span class="discord-separator">·</span> <span id="discordOnline">—</span> Online</div>
       <div class="discord-connection" id="discordConnection">Est. Jul 2026</div>
       <p class="discord-description" id="discordDescription">A friendly community to talk about all things Minecraft capes.</p>
       <a class="discord-join" href="https://discord.gg/G75MSAVe2k" target="_blank" rel="noopener noreferrer">Join Server</a>
@@ -2751,28 +2921,27 @@ footer.mc-footer {
         <a href="#home" onclick="showHome('home');return false"><span>›</span> Home</a>
         <a href="#shop" onclick="showHome('shop');return false"><span>›</span> Shop</a>
         <a href="#endorsements" onclick="showEndorsements();return false"><span>›</span> Endorsements</a>
-        <a href="https://mccapes.net/reviews" target="_blank" rel="noopener noreferrer"><span>›</span> Reviews</a>
+        <a href="#reviews" onclick="showReviews();return false"><span>›</span> Reviews</a>
       </nav>
 
       <nav class="mc-footer-column" aria-label="Company links">
         <h3>COMPANY</h3>
-        <a href="https://mccapes.net/faq" target="_blank" rel="noopener noreferrer"><span>›</span> FAQ</a>
-        <a href="https://mccapes.net/trust" target="_blank" rel="noopener noreferrer"><span>›</span> Trust Center</a>
-        <a href="https://mccapes.net/privacy" target="_blank" rel="noopener noreferrer"><span>›</span> Privacy Policy</a>
-        <a href="https://mccapes.net/terms" target="_blank" rel="noopener noreferrer"><span>›</span> Terms of Service</a>
-        <a href="https://mccapes.net/refunds" target="_blank" rel="noopener noreferrer"><span>›</span> Delivery &amp; Refund Policy</a>
+        <a href="#info/faq" onclick="showFooterInfo('faq');return false"><span>›</span> FAQ</a>
+        <a href="#info/trust" onclick="showFooterInfo('trust');return false"><span>›</span> Trust Center</a>
+        <a href="#info/privacy" onclick="showFooterInfo('privacy');return false"><span>›</span> Privacy Policy</a>
+        <a href="#info/terms" onclick="showFooterInfo('terms');return false"><span>›</span> Terms of Service</a>
+        <a href="#info/refunds" onclick="showFooterInfo('refunds');return false"><span>›</span> Delivery &amp; Refund Policy</a>
       </nav>
 
       <nav class="mc-footer-column" aria-label="Contact links">
         <h3>CONTACT</h3>
         <a href="#about" onclick="showAbout();return false"><span>›</span> About Us</a>
-        <a href="mailto:support@mccapes.net"><span>›</span> support@mccapes.net</a>
+        <a href="#home" onclick="showHome('home');return false"><span>›</span> MC STORE</a>
       </nav>
     </div>
 
     <div class="mc-footer-bottom">
       <span>© <span id="year"></span> MC STORE. All rights reserved.</span>
-      <a href="https://mccapes.net" target="_blank" rel="noopener noreferrer">mccapes.net</a>
     </div>
   </div>
 </footer>
@@ -3029,12 +3198,12 @@ function showFeatured(index) {
   featuredImage.src = cape.image;
   featuredImage.alt = cape.name;
 
-  // Give the cape preview a quick zoom-in every time the featured cape changes.
+  // Zoom and rotate the cape on its own whenever the Home showcase changes.
   const featuredFrame = featuredImage.closest(".featured-image");
   if (featuredFrame) {
     if (!featuredFrame.dataset.zoomListener) {
       featuredFrame.addEventListener("animationend", event => {
-        if (event.animationName === "mcCapeSwapZoom") {
+        if (event.animationName === "mcCapeSwap360") {
           featuredFrame.classList.remove("cape-zoom-switch");
         }
       });
@@ -3106,6 +3275,7 @@ function showHome(sectionId = "home") {
   document.getElementById("details").style.display = "none";
   document.getElementById("aboutPage").hidden = true;
   document.getElementById("endorsementsPage").hidden = true;
+  document.getElementById("footerInfoPage").hidden = true;
   document.getElementById("not-found").style.display = "none";
   document.title = "MC STORE | Minecraft Cape Shop";
 
@@ -3127,13 +3297,79 @@ function showHome(sectionId = "home") {
   requestAnimationFrame(() => target.scrollIntoView({behavior:"smooth",block:"start"}));
 }
 
+
+function showReviews() {
+  showEndorsements();
+  window.setTimeout(() => {
+    const reviewCard = document.getElementById("customerReviewsCard");
+    if (reviewCard) reviewCard.scrollIntoView({ behavior: "smooth", block: "center" });
+  }, 90);
+}
+
+const mcStoreFooterInfo = {
+  faq: {
+    title: "Frequently Asked Questions",
+    paragraphs: [
+      "Browse the Shop to review each cape’s description, listed price, and current stock status.",
+      "For questions about availability, ordering, or delivery, please ask MC STORE through the official Discord community before purchasing. Product details can change, so confirm the latest information for the cape you are interested in."
+    ]
+  },
+  trust: {
+    title: "MC STORE Trust Center",
+    paragraphs: [
+      "MC STORE aims to provide clear product listings and helpful information for Minecraft cape collectors.",
+      "Check the listed price and stock status on each cape page. When you need confirmation about a code or order, contact MC STORE through Discord before completing a purchase. Do not rely on screenshots or third-party claims as proof of current availability."
+    ]
+  },
+  privacy: {
+    title: "Privacy Information",
+    paragraphs: [
+      "This storefront contains links to third-party services, including Discord and social media. Those services have their own privacy practices and account controls.",
+      "Avoid sharing passwords, payment details, or other sensitive information in public community channels. For questions about information connected with an order or account feature, contact MC STORE through Discord before proceeding. This page is a brief privacy notice, not a substitute for a complete formal privacy policy."
+    ]
+  },
+  terms: {
+    title: "Terms of Service Information",
+    paragraphs: [
+      "Before ordering, review the individual cape listing and confirm the current price, stock status, delivery method, and any other order details with MC STORE.",
+      "The information on this page is a brief shopping guide, not a complete formal set of terms. Please contact MC STORE through Discord to clarify any terms that matter to your purchase before placing an order."
+    ]
+  },
+  refunds: {
+    title: "Delivery & Refund Information",
+    paragraphs: [
+      "Delivery timing and order eligibility can depend on the particular cape and order status. Please confirm delivery details and any applicable refund conditions with MC STORE before purchasing.",
+      "This short notice does not define a complete refund policy. For a specific order or question, contact MC STORE through the official Discord community and retain any order-related messages for reference."
+    ]
+  }
+};
+
+function showFooterInfo(topic) {
+  const info = mcStoreFooterInfo[topic];
+  if (!info) return showHome("home");
+
+  document.getElementById("homePage").style.display = "none";
+  document.getElementById("details").style.display = "none";
+  document.getElementById("aboutPage").hidden = true;
+  document.getElementById("endorsementsPage").hidden = true;
+  document.getElementById("footerInfoPage").hidden = false;
+  document.getElementById("not-found").style.display = "none";
+  document.title = info.title + " | MC STORE";
+  document.getElementById("footerInfoTitle").textContent = info.title;
+  document.getElementById("footerInfoContent").innerHTML = info.paragraphs.map(paragraph => `<p>${escapeHTML(paragraph)}</p>`).join("");
+  safeReplaceState("#info/" + topic);
+  document.querySelectorAll(".nav-link").forEach(link => link.classList.remove("active"));
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
 function showAbout() {
   document.getElementById("homePage").style.display = "none";
   document.getElementById("details").style.display = "none";
   document.getElementById("not-found").style.display = "none";
   document.getElementById("endorsementsPage").hidden = true;
+  document.getElementById("footerInfoPage").hidden = true;
   document.getElementById("aboutPage").hidden = false;
-  document.title = "About Us | MC Capes";
+  document.title = "About Us | MC STORE";
   safeReplaceState("#about");
   document.querySelectorAll(".nav-link").forEach(link => link.classList.remove("active"));
   const aboutLink = document.querySelector('a.nav-link[href="#about"]');
@@ -3145,9 +3381,10 @@ function showEndorsements() {
   document.getElementById("homePage").style.display = "none";
   document.getElementById("details").style.display = "none";
   document.getElementById("aboutPage").hidden = true;
+  document.getElementById("footerInfoPage").hidden = true;
   document.getElementById("not-found").style.display = "none";
   document.getElementById("endorsementsPage").hidden = false;
-  document.title = "Endorsements & Partners | MC Capes";
+  document.title = "Endorsements & Partners | MC STORE";
   safeReplaceState("#endorsements");
   document.querySelectorAll(".nav-link").forEach(link => link.classList.remove("active"));
   const endorsementsLink = document.querySelector('a.nav-link[href="#endorsements"]');
@@ -3162,6 +3399,7 @@ function openCape(id) {
   document.getElementById("details").style.display = "none";
   document.getElementById("aboutPage").hidden = true;
   document.getElementById("endorsementsPage").hidden = true;
+  document.getElementById("footerInfoPage").hidden = true;
   document.getElementById("homePage").classList.remove("shop-only");
   document.getElementById("not-found").style.display = "none";
 
@@ -3227,6 +3465,10 @@ function handleRoute() {
     showAbout();
   } else if (window.location.hash === "#endorsements") {
     showEndorsements();
+  } else if (window.location.hash === "#reviews") {
+    showReviews();
+  } else if (window.location.hash.startsWith("#info/")) {
+    showFooterInfo(window.location.hash.slice("#info/".length));
   } else {
     showHome("home");
   }
@@ -3297,7 +3539,7 @@ async function refreshDiscordInfo() {
     document.getElementById("discordMembers").textContent =
       Number.isFinite(data.approximate_member_count)
         ? data.approximate_member_count.toLocaleString()
-        : "1,500+";
+        : "—";
 
     document.getElementById("discordOnline").textContent =
       Number.isFinite(data.approximate_presence_count)
@@ -3317,6 +3559,7 @@ async function refreshDiscordInfo() {
 
     connection.textContent = "Est. Jul 2026";
   } catch (error) {
+    document.getElementById("discordMembers").textContent = "—";
     connection.textContent = "Minecraft cape community";
     console.info("Discord preview could not be loaded.", error);
   }
