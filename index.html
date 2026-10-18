@@ -1140,6 +1140,111 @@ footer { border-color: rgba(73, 174, 255, .18); }
   *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
 }
 </style>
+
+<style id="light-store-theme">
+:root{
+ --cyan:#38c8f4;--cyan-light:#dff8ff;--blue:#168fd5;
+ --orange:#ff8a24;--orange-light:#ffbd55;--bg:#f4f0e4;
+ --panel:#fffdf7;--panel2:#f8f5ec;--text:#292923;--muted:#68685f;
+ --line:rgba(80,72,48,.19);--green:#25884b;--red:#c83d35;
+}
+html{scrollbar-color:#c5c0b2 #f4f0e4}
+body{
+ color:#292923;
+ background:#f4f0e4!important;
+ background-image:none!important;
+}
+body::before{display:none!important}
+nav{
+ background:rgba(255,253,247,.96)!important;
+ border:1px solid #ddd6c4!important;border-radius:0 0 12px 12px;
+ box-shadow:0 3px 8px #4c432015!important;backdrop-filter:blur(12px);
+}
+.sale{
+ color:#fff;background:repeating-linear-gradient(125deg,#ff8a24 0 55px,#ffb42c 55px 105px,#24231f 105px 160px)!important;
+ border-bottom:1px solid #e6b86b;font-size:10px;
+}
+.sale span:first-child,.sale .sale-cyan,.sale .sale-star{color:#fff!important}
+.brand-fallback{color:#168fd5}
+.nav-link{color:#38382f!important}
+.nav-link:hover,.nav-link.active{color:#171710!important;background:#e8f8ff!important;border-color:#a8e8f7!important;box-shadow:none!important}
+.btn,.nav-links .btn{
+ background:linear-gradient(180deg,#65dcff,#28b9ef)!important;color:#062432!important;
+ border:1px solid #238ab2!important;border-radius:14px!important;
+ box-shadow:0 2px 0 #147da2!important;
+}
+.btn-outline{background:#fffdf7!important;color:#303027!important;border-color:#d2cbb9!important;box-shadow:none!important}
+.btn-orange{background:linear-gradient(180deg,#ffb15e,#ff852e)!important;color:#321b09!important}
+.hero,.section{color:#292923}
+.kicker,.featured-label{color:#168bb7!important;text-shadow:none!important}
+.gradient{
+ background:linear-gradient(100deg,#168fd5,#25b9d9)!important;
+ -webkit-background-clip:text!important;background-clip:text!important;color:transparent!important;animation:none!important
+}
+.pill{color:#256a7d;background:#e8f8fc;border-color:#b9e6f0;box-shadow:none}
+.featured,.card,.detail-card,.trust-item,.discord-banner,.auth-box{
+ color:#292923!important;background:#fffdf7!important;
+ border:1px solid #d8d1c0!important;box-shadow:0 2px 2px #554c351c!important;
+ animation:none!important;
+}
+.featured:before{display:none}
+.featured-image,.card-art,.detail-art{
+ background:#e8e2d3!important;
+}
+.featured-image:after,.card-art:after{background:#0002!important}
+.featured-info h2,.card h3,.detail-info h1,.trust-item h3{color:#292923!important}
+.featured-price,.card-price,.detail-price{color:#25251f!important;text-shadow:none!important}
+.featured-price small,.card-price small,.card-desc,.detail-info>p,.detail-note,
+.trust-item p,.discord-banner p,.footer-note,.footer-links a,.copyright{color:#69685f!important}
+.featured-bottom,.card-bottom,.hero-stats,footer,.copyright{border-color:#e1dac9!important}
+.stock{background:#e7f7e9!important;color:#277c3e!important;border-color:#c6e7ca!important}
+.stock.sold,.card-tag.sold{background:#ffebeb!important;color:#b93333!important;border-color:#f0c4c4!important}
+.card-tag{background:#ff8a24!important;color:white!important;border:0!important;backdrop-filter:none!important}
+.card-tag.popular{background:#e5f7fc!important;color:#187c9b!important;border:1px solid #b9e6f0!important}
+.card{border-radius:11px!important}
+.card:hover{border-color:#a5dce8!important;box-shadow:0 5px 12px #514a351b!important;transform:translateY(-2px)!important}
+.card::before{display:none}
+.card-art{height:210px!important}
+.card-img{filter:drop-shadow(0 7px 8px #0002)!important}
+.card:hover .card-img{filter:drop-shadow(0 7px 8px #0002)!important}
+.view-arrow{background:linear-gradient(180deg,#65dcff,#28b9ef)!important;color:#082b38!important;border:1px solid #218bb2!important;box-shadow:0 2px 0 #147da2!important}
+.search-wrap input,.sort-select,.auth-box input{
+ background:#f7f4eb!important;color:#292923!important;border-color:#d5cebc!important;box-shadow:none!important
+}
+.search-wrap input::placeholder,.auth-box input::placeholder{color:#8a877c!important}
+.filter{
+ background:#f8f5ec!important;color:#45443b!important;border-color:#d6cfbd!important;box-shadow:none!important
+}
+.filter:hover,.filter.active{color:#202019!important;background:#e6f8fd!important;border-color:#7ed5eb!important;box-shadow:none!important}
+.sort-select option{background:#fffdf7;color:#292923}
+.empty-state{color:#69685f!important;background:#fffdf7!important;border-color:#d6cfbd!important}
+.empty-state strong{color:#292923!important}
+.trust-icon{background:#e5f7fc!important;color:#168bb7!important;border-color:#b9e6f0!important;box-shadow:none!important}
+.discord-banner{background:#fffdf7!important}
+.discord-banner .kicker{color:#168bb7!important}
+.discord-float{left:auto!important;right:8px!important}
+.discord-popover{background:#fffdf7!important;border-color:#d6cfbd!important;box-shadow:0 8px 25px #0002!important}
+.discord-server-name,.discord-description{color:#292923!important}
+.discord-connection,.discord-count{color:#69685f!important}
+.discord-count{background:#f5f1e7!important;border-color:#e0d8c7!important}
+.auth-overlay{background:#29292388!important}
+.auth-box h2{color:#292923!important}
+.auth-box>p{color:#69685f!important}
+.auth-switch,.auth-forgot{color:#168bb7!important}
+@media(max-width:620px){
+ .card-art{height:155px!important}
+ .card-img{height:135px!important}
+ .card-body{padding:12px!important}
+ .card-desc{min-height:52px!important}
+ .nav-inner{background:#fffdf7}
+}
+@media(max-width:390px){
+ .products{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+ .card-art{height:145px!important}.card-img{height:125px!important}
+ .card h3{font-size:13px!important}
+}
+</style>
+
 </head>
 
 <body>
