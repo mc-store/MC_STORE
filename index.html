@@ -1139,6 +1139,33 @@ footer { border-color: rgba(73, 174, 255, .18); }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
 }
+
+
+/* Discord invite preview card — inspired by the supplied reference */
+.discord-float{left:8px!important;right:auto!important;top:50%;z-index:150}
+.discord-float-button{width:54px;height:54px;border-radius:15px;background:#5865f2!important;color:#fff!important;flex-shrink:0}
+.discord-popover{left:63px!important;right:auto!important;top:50%;width:min(340px,calc(100vw - 90px));padding:0!important;overflow:hidden;border:1px solid #d7d7d7!important;border-radius:16px!important;background:#292a2e!important;color:#f4f4f5!important;box-shadow:0 18px 50px #0003!important;opacity:0;visibility:hidden;pointer-events:none;transform:translate(-8px,-50%);transition:opacity .2s,transform .2s,visibility .2s}
+.discord-float:hover .discord-popover,.discord-float:focus-within .discord-popover,.discord-float.open .discord-popover{opacity:1;visibility:visible;pointer-events:auto;transform:translate(0,-50%)}
+.discord-preview-banner{height:108px;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:5px;text-align:center;background:linear-gradient(120deg,#7048bd 0%,#a86ce2 35%,#f1a16e 70%,#273f67 100%);color:#fff;text-shadow:0 2px 5px #0008;position:relative;overflow:hidden}
+.discord-preview-banner:before{content:"";position:absolute;inset:0;background:linear-gradient(135deg,#ffffff24,transparent 45%,#0003)}
+.discord-preview-banner span{font-size:32px;font-weight:1000;letter-spacing:-1.5px;position:relative}
+.discord-preview-banner b{color:#b8f3ff}
+.discord-preview-banner small{font-size:9px;letter-spacing:2px;font-weight:900;position:relative}
+.discord-preview-content{position:relative;padding:54px 17px 17px}
+.discord-server-img{position:absolute;top:-35px;left:16px;width:70px;height:70px;border-radius:18px;border:5px solid #292a2e;background:#292a2e;object-fit:cover}
+.discord-server-name{font-size:17px;font-weight:800;color:#fff!important;margin-bottom:8px;overflow-wrap:anywhere}
+.discord-status-line{display:flex;align-items:center;gap:5px;flex-wrap:wrap;color:#c9cbd0;font-size:12px}
+.discord-status-line strong{font-weight:500;color:#e4e5e7}
+.discord-separator{color:#8e9299;margin:0 1px}
+.discord-connection{font-size:11px;color:#aeb2b9!important;margin-top:5px}
+.discord-live{display:inline-block;width:9px;height:9px;flex-shrink:0;border-radius:50%;background:#23a55a;margin-right:2px}
+.discord-description{font-size:12px;line-height:1.65;color:#c9cbd0!important;margin:14px 0 17px}
+.discord-join{min-height:41px;display:flex;justify-content:center;align-items:center;padding:11px 14px;border-radius:7px;background:#248e52!important;color:#fff!important;font-size:13px;font-weight:800;transition:background .2s}
+.discord-join:hover{background:#1f9d59!important;transform:none}
+.discord-close{position:absolute;z-index:3;right:9px;top:8px;width:25px;height:25px;border:0;border-radius:50%;background:#202126aa;color:#e5e7eb;font-size:21px;line-height:1;display:grid;place-items:center}
+.discord-close:hover{background:#15161a;color:#fff}
+@media(max-width:620px){.discord-float{left:7px!important;right:auto!important}.discord-popover{width:min(320px,calc(100vw - 76px));left:51px!important}.discord-preview-banner{height:96px}.discord-preview-content{padding:50px 13px 13px}.discord-server-img{left:13px;width:64px;height:64px}.discord-server-name{font-size:15px}}
+
 </style>
 
 <style id="light-store-theme">
@@ -1281,12 +1308,6 @@ nav{
     <div class="hero-layout">
       <div class="hero-copy">
         <div class="pill"><span class="pulse"></span> YOUR MINECRAFT CAPE DESTINATION</div>
-        <h1>Stand out.<br><span class="gradient">Wear your style.</span></h1>
-        <p>
-          Explore the MC STORE cape collection. Discover your favourite designs,
-          check availability, and contact our team on Discord for ordering information.
-        </p>
-
         <div class="hero-actions">
           <a href="#shop" class="btn" onclick="showHome('shop');return false">Explore Capes ↗</a>
           <a href="https://discord.com/invite/F38vcYVHA" target="_blank" rel="noopener noreferrer" class="btn btn-outline">Join Our Discord</a>
@@ -1326,14 +1347,6 @@ nav{
   </header>
 
   <section class="section container" id="shop">
-    <div class="section-head">
-      <div>
-        <div class="kicker">THE COLLECTION</div>
-        <h2>Find your next <span class="gradient">cape.</span></h2>
-        <p>Browse the collection and select any cape to see its details.</p>
-      </div>
-      <a href="https://discord.com/invite/F38vcYVHA" target="_blank" rel="noopener noreferrer" class="btn btn-outline">Ask About Stock ↗</a>
-    </div>
 
     <div class="shop-tools">
       <label class="search-wrap">
@@ -1391,16 +1404,6 @@ nav{
     </div>
   </section>
 
-  <section class="container section">
-    <div class="discord-banner">
-      <div>
-        <div class="kicker">JOIN THE COMMUNITY</div>
-        <h2>Let's talk <span class="gradient">Minecraft.</span></h2>
-        <p>Visit our Discord server to contact the MC STORE team and ask about cape availability and ordering.</p>
-      </div>
-      <a class="btn" href="https://discord.com/invite/F38vcYVHA" target="_blank" rel="noopener noreferrer">Join MC STORE Discord ↗</a>
-    </div>
-  </section>
 </main>
 
 <section class="container" id="details">
@@ -1429,7 +1432,7 @@ nav{
   <button class="back-btn" type="button" onclick="showHome('shop')">← Back to Capes</button>
 </section>
 
-<!-- Discord floating preview -->
+<!-- Discord server preview: opens on hover or tap -->
 <div class="discord-float" id="discordFloat">
   <button class="discord-float-button" id="discordFloatButton" type="button"
           aria-label="Show Discord server information" aria-expanded="false">
@@ -1438,23 +1441,18 @@ nav{
     </svg>
   </button>
 
-  <div class="discord-popover" role="region" aria-label="MC STORE Discord information">
-    <div class="discord-popover-top">
-      <img class="discord-server-img" src="media/1792194826100.jpg" alt="MC STORE Discord icon">
-      <div>
-        <div class="discord-server-name" id="discordServerName">MC STORE Community</div>
-        <div class="discord-server-caption">Minecraft Cape Shop · Discord Community</div>
-        <div class="discord-connection" id="discordConnection">Loading server information...</div>
-      </div>
+  <div class="discord-popover" role="region" aria-label="MC STORE Discord server preview">
+    <button class="discord-close" id="discordClose" type="button" aria-label="Close Discord preview">×</button>
+    <div class="discord-preview-banner"><span>MC <b>STORE</b></span><small>MINECRAFT CAPE COMMUNITY</small></div>
+    <div class="discord-preview-content">
+      <img class="discord-server-img" src="media/1792194826100.jpg" alt="MC STORE Discord icon"
+           onerror="this.style.display='none'">
+      <div class="discord-server-name" id="discordServerName">MC STORE Community</div>
+      <div class="discord-status-line"><span class="discord-live"></span><strong id="discordMembers">—</strong> Members <span class="discord-separator">·</span> <span id="discordOnline">—</span> Online</div>
+      <div class="discord-connection" id="discordConnection">Minecraft cape community</div>
+      <p class="discord-description" id="discordDescription">A friendly community to talk about Minecraft capes and contact the MC STORE team.</p>
+      <a class="discord-join" href="https://discord.com/invite/F38vcYVHA" target="_blank" rel="noopener noreferrer">Join Server</a>
     </div>
-    <div class="discord-counts">
-      <span class="discord-count">Members: <strong id="discordMembers">—</strong></span>
-      <span class="discord-count">Online: <strong id="discordOnline">—</strong></span>
-    </div>
-    <p class="discord-description" id="discordDescription">
-      A place to contact the MC STORE team and ask about capes.
-    </p>
-    <a class="discord-join" href="https://discord.com/invite/F38vcYVHA" target="_blank" rel="noopener noreferrer">Join Server ↗</a>
   </div>
 </div>
 
@@ -1876,6 +1874,12 @@ const discordFloatButton = document.getElementById("discordFloatButton");
 discordFloatButton.addEventListener("click", () => {
   const isOpen = discordFloat.classList.toggle("open");
   discordFloatButton.setAttribute("aria-expanded", String(isOpen));
+});
+
+const discordClose = document.getElementById("discordClose");
+discordClose.addEventListener("click", () => {
+  discordFloat.classList.remove("open");
+  discordFloatButton.setAttribute("aria-expanded", "false");
 });
 
 document.addEventListener("click", event => {
