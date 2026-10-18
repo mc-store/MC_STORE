@@ -1264,7 +1264,8 @@ nav{
  .card-body{padding:12px!important}
  .card-desc{min-height:52px!important}
  .nav-inner{background:#fffdf7}
-}@media(max-width:390px){
+}
+@media(max-width:390px){
  .products{grid-template-columns:repeat(2,minmax(0,1fr))!important}
  .card-art{height:145px!important}.card-img{height:125px!important}
  .card h3{font-size:13px!important}
@@ -1630,7 +1631,7 @@ function capeCard(cape) {
          onclick="openCape('${cape.id}');return false">
         <div class="card-art">
           <span class="card-tag ${cape.stock ? "" : "sold"}">${tag}</span>
-          ${cape.label ? <span class="card-tag popular">${escapeHTML(cape.label)}</span> : ""}
+          ${cape.label ? `<span class="card-tag popular">${escapeHTML(cape.label)}</span>` : ""}
           <img class="card-img"
                src="${cape.image}"
                alt="${escapeHTML(cape.name)}"
@@ -1695,7 +1696,7 @@ function renderProducts() {
 
   document.getElementById("products").innerHTML = list.map(capeCard).join("");
   document.getElementById("resultsLine").textContent =
-    Showing ${list.length} of ${capes.length} capes;
+    `Showing ${list.length} of ${capes.length} capes`;
   document.getElementById("emptyState").hidden = list.length !== 0;
 }
 
@@ -1722,14 +1723,14 @@ function showFeatured(index) {
   document.getElementById("featuredImage").alt = cape.name;
   document.getElementById("featuredName").textContent = cape.name;
   document.getElementById("featuredPrice").innerHTML =
-    ${formatPrice(cape)}<small>${cape.stock ? "Listed price" : "Currently unavailable"}</small>;
+    `${formatPrice(cape)}<small>${cape.stock ? "Listed price" : "Currently unavailable"}</small>`;
 
   const stock = document.getElementById("featuredStock");
   stock.textContent = cape.stock ? "✓ IN STOCK" : "✕ NOT IN STOCK";
   stock.classList.toggle("sold", !cape.stock);
 
   document.getElementById("featuredNumber").textContent =
-    ${String(featuredIndex + 1).padStart(2,"0")} / ${String(capes.length).padStart(2,"0")};
+    `${String(featuredIndex + 1).padStart(2,"0")} / ${String(capes.length).padStart(2,"0")}`;
 
   document.getElementById("featuredView").onclick = () => openCape(cape.id);
 
@@ -1893,7 +1894,7 @@ async function refreshDiscordInfo() {
 
   try {
     const response = await fetch(
-      https://discord.com/api/v10/invites/${DISCORD_INVITE_CODE}?with_counts=true,
+      `https://discord.com/api/v10/invites/${DISCORD_INVITE_CODE}?with_counts=true`,
       {cache:"no-store"}
     );
 
