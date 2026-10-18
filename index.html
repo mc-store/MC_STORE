@@ -1205,6 +1205,74 @@ nav{position:sticky!important;top:0!important;background:rgba(255,253,247,.96)!i
 @media(max-width:900px){.products{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:16px!important}}
 @media(max-width:620px){.nav-inner{width:94%!important}.products{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:11px!important}.card-art{height:150px!important}.card-img{height:130px!important}.card h3{font-size:13px!important}.card-desc{font-size:10px!important;min-height:48px!important}.card-body{padding:11px!important}.card-price{font-size:15px!important}.sale-group span,.sale-group b{padding:0 18px;font-size:9px}}
 
+
+/* Reference-inspired homepage flow: headline, large cape presentation, then the full collection */
+.showcase-heading{
+  font-size:clamp(42px,6vw,72px);
+  line-height:1.02;
+  letter-spacing:-3px;
+  margin:24px 0 18px;
+  max-width:620px;
+}
+.showcase-description{
+  max-width:500px;
+  color:var(--muted);
+  font-size:14px;
+  line-height:1.95;
+}
+.showcase-head{
+  display:flex;align-items:flex-end;justify-content:space-between;
+  gap:20px;flex-wrap:wrap;margin-bottom:25px;
+}
+.showcase-head h2{font-size:clamp(29px,4vw,42px);letter-spacing:-1.5px;margin-top:10px}
+.showcase-head p{color:var(--muted);font-size:12px;line-height:1.8;margin-top:9px}
+.cape-showcase{
+  border-top:1px solid var(--line);
+  border-bottom:1px solid var(--line);
+  background:linear-gradient(180deg,rgba(5,18,36,.35),rgba(7,22,40,.68));
+}
+.showcase-rail{
+  display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;
+}
+.showcase-tile{
+  min-width:0;position:relative;overflow:hidden;
+  border:1px solid rgba(83,183,255,.23);border-radius:17px;
+  background:linear-gradient(145deg,#102b4a,#061427);
+  transition:transform .22s,border-color .22s,box-shadow .22s;
+}
+.showcase-tile:hover{
+  transform:translateY(-5px);border-color:rgba(83,229,255,.72);
+  box-shadow:0 14px 35px rgba(0,0,0,.25),0 0 22px rgba(23,133,255,.15);
+}
+.showcase-tile button{
+  display:block;width:100%;padding:0;border:0;background:transparent;color:inherit;text-align:left;
+}
+.showcase-tile-art{
+  height:190px;display:flex;align-items:center;justify-content:center;
+  padding:18px;position:relative;
+  background:radial-gradient(ellipse at 50% 38%,rgba(29,155,255,.2),transparent 62%);
+}
+.showcase-tile-art img{
+  width:100%;height:155px;object-fit:contain;
+  filter:drop-shadow(0 12px 15px rgba(0,0,0,.55));
+  transition:transform .25s;
+}
+.showcase-tile:hover img{transform:scale(1.07) rotate(-1deg)}
+.showcase-tile-info{padding:14px 15px;border-top:1px solid rgba(83,183,255,.14)}
+.showcase-tile-info strong{display:block;font-size:13px}
+.showcase-tile-info span{display:block;font-size:10px;margin-top:7px;color:var(--muted)}
+.showcase-tile-info .available{color:var(--green)}
+.showcase-tile-info .unavailable{color:var(--red)}
+@media(max-width:900px){.showcase-rail{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:620px){
+  .showcase-heading{font-size:clamp(40px,11vw,58px);letter-spacing:-2.4px}
+  .showcase-rail{grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}
+  .showcase-tile-art{height:155px;padding:12px}
+  .showcase-tile-art img{height:125px}
+  .showcase-tile-info{padding:12px}
+}
+@media(max-width:390px){.showcase-tile-art{height:135px}.showcase-tile-art img{height:105px}}
+
 </style>
 
 <style id="light-store-theme">
@@ -1345,7 +1413,9 @@ nav{
   <header class="hero container" id="home">
     <div class="hero-layout">
       <div class="hero-copy">
-        <div class="pill"><span class="pulse"></span> YOUR MINECRAFT CAPE DESTINATION</div>
+        <div class="pill"><span class="pulse"></span> MC STORE · CAPE COLLECTION</div>
+        <h1 class="showcase-heading">Find Your <span class="gradient">Minecraft</span> Cape.</h1>
+        <p class="showcase-description">Explore the MC STORE cape collection. Select a cape to view its design, details, listed availability, and ordering information.</p>
         <div class="hero-actions">
           <a href="#shop" class="btn" onclick="showHome('shop');return false">Explore Capes ↗</a>
           <a href="https://discord.com/invite/F38vcYVHA" target="_blank" rel="noopener noreferrer" class="btn btn-outline">Join Our Discord</a>
@@ -1384,7 +1454,28 @@ nav{
     </div>
   </header>
 
+  <section class="cape-showcase section" id="cape-showcase">
+    <div class="container">
+      <div class="showcase-head">
+        <div>
+          <div class="kicker">THE COLLECTION</div>
+          <h2>Explore <span class="gradient">all capes.</span></h2>
+          <p>Browse the designs below, then open any cape to see its details.</p>
+        </div>
+        <a href="#shop" class="btn btn-outline" onclick="showHome('shop');return false">View full shop ↘</a>
+      </div>
+      <div class="showcase-rail" id="showcaseRail" aria-label="All cape designs"></div>
+    </div>
+  </section>
+
   <section class="section container" id="shop">
+    <div class="section-head">
+      <div>
+        <div class="kicker">SHOP THE COLLECTION</div>
+        <h2>Choose your <span class="gradient">cape.</span></h2>
+        <p>Search, filter by availability, or open a cape for more information.</p>
+      </div>
+    </div>
 
     <div class="shop-tools">
       <label class="search-wrap">
@@ -1699,6 +1790,25 @@ function capeCard(cape) {
   `;
 }
 
+function renderShowcaseRail() {
+  const rail = document.getElementById("showcaseRail");
+  if (!rail) return;
+  rail.innerHTML = capes.map(cape => `
+    <article class="showcase-tile">
+      <button type="button" onclick="openCape('${cape.id}')" aria-label="View ${escapeHTML(cape.name)}">
+        <div class="showcase-tile-art">
+          <img src="${cape.image}" alt="${escapeHTML(cape.name)}" loading="lazy"
+               onerror="this.style.opacity='.25'">
+        </div>
+        <div class="showcase-tile-info">
+          <strong>${escapeHTML(cape.name)}</strong>
+          <span class="${cape.stock ? "available" : "unavailable"}">${cape.stock ? "● IN STOCK" : "● NOT IN STOCK"}</span>
+        </div>
+      </button>
+    </article>
+  `).join("");
+}
+
 function renderProducts() {
   const query = document.getElementById("searchInput").value.trim().toLowerCase();
   let list = capes.filter(cape => {
@@ -1749,7 +1859,8 @@ document.querySelectorAll("[data-filter]").forEach(button => {
       item.classList.toggle("active", item === button);
     });
 
-    renderProducts();
+    renderShowcaseRail();
+renderProducts();
   });
 });
 
