@@ -107,7 +107,7 @@ nav{
   color:var(--cyan);font-size:10px
 }
 .mobile-menu{display:none}
-.hero{padding:57px 0 65px}
+.hero{padding:32px 0 52px}
 .hero-layout{
   display:grid;grid-template-columns:1fr 1.03fr;
   gap:42px;align-items:center
@@ -138,8 +138,8 @@ nav{
 .hero-stats strong{display:block;font-size:17px}
 .hero-stats span{display:block;color:var(--muted);font-size:10px;margin-top:5px}
 .featured{
-  position:relative;overflow:hidden;min-width:0;
-  padding:20px;border-radius:25px;
+  position:relative;overflow:hidden;min-width:0;width:100%;
+  padding:clamp(18px,3vw,34px);border-radius:28px;
   border:1px solid #68dfff36;
   background:
     radial-gradient(ellipse at 50% 30%,#2ecfff24,transparent 55%),
@@ -158,7 +158,7 @@ nav{
 .featured-label{font-size:10px;font-weight:900;letter-spacing:1.6px;color:var(--cyan)}
 .featured-number{font-size:10px;color:var(--muted)}
 .featured-image{
-  position:relative;height:320px;margin:12px 0;
+  position:relative;height:clamp(300px,43vw,510px);margin:18px 0;
   display:flex;align-items:center;justify-content:center;
   border-radius:17px;
   background:radial-gradient(ellipse at center,#45d9ff1d,transparent 65%)
@@ -168,10 +168,16 @@ nav{
   border-radius:50%;background:#020a12;filter:blur(17px)
 }
 .featured-image img{
-  position:relative;z-index:1;width:85%;height:285px;
-  object-fit:contain;filter:drop-shadow(0 15px 22px #0009);
-  animation:floatCape 3.3s ease-in-out infinite
+  position:relative;z-index:1;width:min(90%,680px);height:95%;
+  object-fit:contain;filter:drop-shadow(0 18px 30px #00bfff30);
+  animation:floatCape 3.3s ease-in-out infinite;
+  transition:opacity .35s ease,filter .35s ease,transform .5s cubic-bezier(.2,.8,.2,1)
 }
+.featured-image img.cape-changing{opacity:0;transform:translateY(18px) scale(.94);filter:drop-shadow(0 0 24px #00cfff88)}
+.featured{box-shadow:0 0 0 1px #00d9ff14,0 25px 80px #0006,0 0 65px #009dff16}
+.featured:after{content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;background:linear-gradient(130deg,#00e5ff88,transparent 32%,#287dff66,transparent 70%,#00e5ff66);-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}
+.featured-image:before{content:"";position:absolute;inset:8% 12%;border-radius:50%;background:radial-gradient(ellipse,#00cfff1f,transparent 68%);animation:spotlightPulse 4s ease-in-out infinite}
+@keyframes spotlightPulse{0%,100%{transform:scale(.9);opacity:.45}50%{transform:scale(1.12);opacity:1}}
 @keyframes floatCape{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
 .featured-info{
   position:relative;z-index:1;display:flex;align-items:flex-end;
@@ -438,11 +444,9 @@ footer{margin-top:20px;border-top:1px solid var(--line);padding:27px 0 35px}
 .auth-message.error{color:#ff9999}
 .auth-message.success{color:var(--green)}
 @media(max-width:900px){
-  .hero-layout{grid-template-columns:1fr;gap:30px}
-  .hero-copy{text-align:center}
-  .hero-copy>p{margin:auto}
-  .hero-actions,.hero-stats{justify-content:center}
-  .featured{width:min(580px,100%);margin:auto}
+  .hero-layout{grid-template-columns:minmax(0,1fr);gap:0}
+  .hero-copy{display:none !important}
+  .featured{width:100%;margin:0}
   .products{grid-template-columns:repeat(2,minmax(0,1fr))}
   .recommendations .products{grid-template-columns:repeat(2,minmax(0,1fr))}
   .detail-card{gap:20px;padding:18px}
@@ -461,8 +465,8 @@ footer{margin-top:20px;border-top:1px solid var(--line);padding:27px 0 35px}
   .hero h1{font-size:clamp(42px,12vw,61px);letter-spacing:-2.5px}
   .hero-stats{gap:19px}
   .featured{padding:14px}
-  .featured-image{height:245px}
-  .featured-image img{height:225px}
+  .featured-image{height:clamp(260px,72vw,390px)}
+  .featured-image img{height:95%}
   .featured-info h2{font-size:21px}
   .featured-price{font-size:22px}
   .section{padding:45px 0}
@@ -1197,7 +1201,7 @@ footer { border-color: rgba(73, 174, 255, .18); }
       <div class="featured" id="featured">
         <div class="featured-top">
           <span class="featured-label">✦ CAPE SPOTLIGHT</span>
-          <span class="featured-number" id="featuredNumber">01 / 09</span>
+          <span class="featured-number" id="featuredNumber">01 / 03</span>
         </div>
 
         <div class="featured-image">
@@ -1499,6 +1503,8 @@ document.getElementById("year").textContent = new Date().getFullYear();
 let currentFilter = "all";
 let featuredIndex = 0;
 let featuredTimer = null;
+// Spotlight rotates through all nine capes, including unavailable designs.
+const spotlightCapes = capes;
 
 function formatPrice(cape) {
   return cape.stock && typeof cape.price === "number"
@@ -1613,11 +1619,17 @@ document.querySelectorAll("[data-filter]").forEach(button => {
 });
 
 function showFeatured(index) {
-  featuredIndex = (index + capes.length) % capes.length;
-  const cape = capes[featuredIndex];
+  if (!spotlightCapes.length) return;
 
-  document.getElementById("featuredImage").src = cape.image;
-  document.getElementById("featuredImage").alt = cape.name;
+  featuredIndex = ((index % spotlightCapes.length) + spotlightCapes.length) % spotlightCapes.length;
+  const cape = spotlightCapes[featuredIndex];
+
+  const image = document.getElementById("featuredImage");
+  image.classList.add("cape-changing");
+  image.onload = () => image.classList.remove("cape-changing");
+  image.onerror = () => image.classList.remove("cape-changing");
+  image.src = cape.image;
+  image.alt = cape.name;
   document.getElementById("featuredName").textContent = cape.name;
   document.getElementById("featuredPrice").innerHTML =
     `${formatPrice(cape)}<small>${cape.stock ? "Listed price" : "Currently unavailable"}</small>`;
@@ -1625,13 +1637,15 @@ function showFeatured(index) {
   const stock = document.getElementById("featuredStock");
   stock.textContent = cape.stock ? "✓ IN STOCK" : "✕ NOT IN STOCK";
   stock.classList.toggle("sold", !cape.stock);
+  document.querySelector(".featured-label").textContent = cape.stock ? "✦ AVAILABLE CAPE" : "✦ COLLECTION SPOTLIGHT";
 
   document.getElementById("featuredNumber").textContent =
-    `${String(featuredIndex + 1).padStart(2,"0")} / ${String(capes.length).padStart(2,"0")}`;
+    `${String(featuredIndex + 1).padStart(2,"0")} / ${String(spotlightCapes.length).padStart(2,"0")}`;
 
+  document.getElementById("featuredView").textContent = cape.stock ? "View Cape ↗" : "Restock Info ↗";
   document.getElementById("featuredView").onclick = () => openCape(cape.id);
 
-  document.getElementById("featuredDots").innerHTML = capes.map((item,i) => `
+  document.getElementById("featuredDots").innerHTML = spotlightCapes.map((item,i) => `
     <button type="button"
       class="dot ${i === featuredIndex ? "active" : ""}"
       aria-label="Show ${escapeHTML(item.name)}"
@@ -1649,8 +1663,9 @@ function showFeatured(index) {
 
 function restartFeaturedTimer() {
   clearInterval(featuredTimer);
+  if (spotlightCapes.length < 2) return;
   featuredTimer = setInterval(() => {
-    showFeatured((featuredIndex + 1) % capes.length);
+    showFeatured((featuredIndex + 1) % spotlightCapes.length);
   }, 5000);
 }
 
