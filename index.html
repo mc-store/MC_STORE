@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#53dfff">
+<meta name="theme-color" content="#f4f1e9">
 <title>MC STORE | Minecraft Cape Shop</title>
 <meta name="description" content="Discover Minecraft capes at MC STORE. Browse our collection, check availability, and contact us on Discord.">
 
@@ -1619,6 +1619,386 @@ body, body p, .hero-copy>p, .section-head p, .card-desc, .detail-info>p, .about-
 .cape-name.cape-name--purple-heart, .featured-info .cape-name--purple-heart, .detail-info .cape-name--purple-heart { color:#7145a5 !important; -webkit-text-fill-color:#7145a5 !important; }
 </style>
 
+
+
+<style id="mc-capes-reference-finish">
+/* Final reference-matched light storefront theme. This block intentionally comes last. */
+:root {
+  --cyan: #39c8f2;
+  --cyan-light: #d9f7ff;
+  --blue: #168fc8;
+  --orange: #f16c20;
+  --orange-light: #ff9b36;
+  --bg: #f5f2eb;
+  --panel: #fffefa;
+  --panel2: #f6f2e9;
+  --text: #24211e;
+  --muted: #625e57;
+  --line: rgba(65, 55, 40, .18);
+  --green: #237a43;
+  --red: #b72e2b;
+}
+html { scroll-padding-top: 95px; scrollbar-color: #c9c2b4 #f5f2eb; }
+body {
+  min-height: 100vh;
+  color: #24211e !important;
+  background: #f4f1e9 !important;
+  background-image: none !important;
+  font-family: Inter, Arial, sans-serif;
+}
+body::before { display: none !important; }
+.container { width: min(1185px, 88%); margin-left: auto; margin-right: auto; }
+
+/* Orange and charcoal diagonal offer ticker */
+.sale {
+  position: relative !important;
+  z-index: 70 !important;
+  display: block !important;
+  height: 34px !important;
+  min-height: 34px !important;
+  overflow: hidden !important;
+  padding: 0 !important;
+  color: #fff !important;
+  background: #202020 !important;
+  border: 0 !important;
+  border-bottom: 1px solid #dc782c !important;
+  white-space: nowrap !important;
+  letter-spacing: 1px !important;
+}
+.sale-track { display: flex !important; width: max-content; height: 34px; animation: mcPromoScroll 29s linear infinite; }
+.sale-group { display: flex; flex-shrink: 0; align-items: stretch; height: 34px; }
+.sale-group span, .sale-group b {
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 25px;
+  clip-path: polygon(13% 0,100% 0,87% 100%,0 100%);
+  font-size: 10px;
+  line-height: 1;
+  font-weight: 1000;
+  font-style: italic;
+  letter-spacing: .6px;
+}
+.sale-group span { color: #fff !important; background: #262626 !important; }
+.sale-group b { color: #23160c !important; background: linear-gradient(110deg,#ffae24,#f46b1e) !important; }
+.sale span:first-child, .sale .sale-cyan, .sale .sale-star { color: #fff !important; }
+@keyframes mcPromoScroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+.sale:hover .sale-track { animation-play-state: paused; }
+
+/* White floating navigation capsule */
+nav {
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 60 !important;
+  padding: 8px 0 0 !important;
+  background: rgba(244,241,233,.96) !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  backdrop-filter: blur(12px) !important;
+}
+.nav-inner {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 19px !important;
+  width: min(990px, 93%) !important;
+  min-height: 64px !important;
+  margin: 0 auto !important;
+  padding: 0 17px !important;
+  border: 1px solid #ded7ca !important;
+  border-radius: 15px !important;
+  background: #fffefa !important;
+  box-shadow: 0 3px 10px rgba(48,39,23,.08) !important;
+}
+.brand { display: flex !important; align-items: center; gap: 8px; flex-shrink: 0; }
+.brand img { width: 142px !important; height: 48px !important; object-fit: contain; filter: none !important; }
+.brand-fallback { color: #168fc8 !important; font-size: 23px !important; font-weight: 1000; }
+.nav-links {
+  display: flex !important;
+  flex: 1 1 auto !important;
+  justify-content: center !important;
+  align-items: center !important;
+  gap: 7px !important;
+  flex-wrap: nowrap !important;
+  margin: 0 !important;
+  min-width: 0;
+}
+.nav-link {
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  min-height: 36px;
+  padding: 9px 13px !important;
+  border: 1px solid transparent !important;
+  border-radius: 22px !important;
+  color: #3e3b36 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  font-size: 12px !important;
+  font-weight: 800 !important;
+  white-space: nowrap;
+  transition: background .18s ease, color .18s ease, transform .18s ease;
+}
+.nav-link:hover { color: #087da6 !important; background: #e7f8fd !important; border-color: #bde9f3 !important; }
+.nav-link.active, .nav-link[href="#home"].active {
+  color: #10242a !important;
+  background: linear-gradient(180deg,#7be2ff,#35c5f0) !important;
+  border-color: #178cb8 !important;
+  box-shadow: 0 2px 0 #13799e !important;
+}
+.nav-actions { display: flex; align-items: center; justify-content: flex-end; gap: 8px; flex-shrink: 0; }
+.currency-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  min-height: 31px;
+  padding: 0 10px;
+  color: #fff;
+  background: #282725;
+  border: 1px solid #504c45;
+  border-radius: 18px;
+  font-size: 10px;
+  font-weight: 900;
+  white-space: nowrap;
+}
+.currency-flag { font-size: 12px; }
+.currency-chevron { color: #e7e0d5; font-size: 10px; margin-left: 1px; }
+.cart-top, .account-icon {
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  width: 35px;
+  height: 35px;
+  flex: 0 0 35px;
+  padding: 0 !important;
+  border: 1px solid #1b89b4 !important;
+  border-radius: 11px !important;
+  color: #05202b !important;
+  background: linear-gradient(180deg,#70dfff,#2abdea) !important;
+  box-shadow: 0 2px 0 #13779d !important;
+  text-decoration: none !important;
+  transition: transform .18s ease, filter .18s ease;
+}
+.cart-top:hover, .account-icon:hover { transform: translateY(-1px); filter: brightness(1.05); }
+.cart-top svg, .account-icon svg, .view-arrow svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.account-icon svg { width: 19px; height: 19px; }
+.user-label { max-width: 110px; overflow-wrap: anywhere; color: #333 !important; font-size: 9px !important; }
+
+/* Product-first landing page like the reference screenshot */
+.hero { display: none !important; }
+#shop.section { width: min(1195px, 88%) !important; padding: 18px 0 55px !important; margin: 0 auto !important; }
+#shop .section-head, #shop .shop-tools, #shop .results-line { display: none !important; }
+.products { display: grid !important; grid-template-columns: repeat(3,minmax(0,1fr)) !important; gap: 22px !important; align-items: stretch; }
+.card {
+  min-width: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  height: 100% !important;
+  overflow: hidden !important;
+  border: 1px solid #d3cbbc !important;
+  border-radius: 13px !important;
+  background: #fffefa !important;
+  box-shadow: 0 2px 4px rgba(50,42,29,.12) !important;
+  animation: none !important;
+  transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease !important;
+}
+.card:hover { transform: translateY(-3px) !important; border-color: #b7dfe8 !important; box-shadow: 0 8px 20px rgba(50,42,29,.14) !important; }
+.card::before { display: none !important; }
+.card > a:first-child { display: block; flex: 0 0 auto; }
+.card-art {
+  position: relative !important;
+  isolation: isolate;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  height: 190px !important;
+  overflow: hidden !important;
+  background: #dcd6c8 !important;
+}
+.card-art::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: -9px;
+  background: radial-gradient(ellipse at 20% 30%,#f7d17a 0,transparent 43%), radial-gradient(ellipse at 82% 68%,#72906d 0,transparent 55%), linear-gradient(135deg,#777e76,#d5a06c 48%,#eddfb8);
+  filter: blur(3px) saturate(1.13);
+  transform: scale(1.04);
+}
+.card:nth-child(6n+1) .card-art::before { background: radial-gradient(ellipse at 15% 42%,#fff0b2 0,transparent 30%),radial-gradient(ellipse at 80% 68%,#678564 0,transparent 48%),linear-gradient(135deg,#737a67,#c58b55 51%,#e5d5ad); }
+.card:nth-child(6n+2) .card-art::before { background: radial-gradient(ellipse at 25% 35%,#ffb31e 0,transparent 38%),radial-gradient(ellipse at 80% 68%,#7c0e20 0,transparent 48%),linear-gradient(135deg,#63181b,#ef4925 55%,#ffbd47); }
+.card:nth-child(6n+3) .card-art::before { background: radial-gradient(ellipse at 15% 40%,#183d78 0,transparent 40%),radial-gradient(ellipse at 72% 55%,#527e9a 0,transparent 45%),linear-gradient(135deg,#133050,#28748c 55%,#b0d2d6); }
+.card:nth-child(6n+4) .card-art::before { background: radial-gradient(ellipse at 20% 30%,#1a3470 0,transparent 42%),radial-gradient(ellipse at 80% 67%,#e7a7ff 0,transparent 38%),linear-gradient(135deg,#253a6b,#617ac6 55%,#d7c8ef); }
+.card:nth-child(6n+5) .card-art::before { background: radial-gradient(ellipse at 20% 30%,#ffe87c 0,transparent 42%),radial-gradient(ellipse at 80% 70%,#43965c 0,transparent 42%),linear-gradient(135deg,#a34d1e,#f0a23c 55%,#e9d08a); }
+.card:nth-child(6n) .card-art::before { background: radial-gradient(ellipse at 20% 35%,#c96025 0,transparent 38%),radial-gradient(ellipse at 75% 70%,#3e9b78 0,transparent 44%),linear-gradient(135deg,#31584e,#5c9b83 55%,#e0c39b); }
+.card-art::after { content:""; position:absolute; z-index:0; bottom:17px; width:100px; height:15px; border-radius:50%; background:rgba(0,0,0,.32) !important; filter:blur(10px); }
+.card-img {
+  position: relative !important;
+  z-index: 1 !important;
+  display: block;
+  width: 79% !important;
+  height: 175px !important;
+  max-width: 92%;
+  object-fit: contain !important;
+  filter: drop-shadow(0 8px 8px rgba(0,0,0,.42)) !important;
+  transition: transform .25s ease !important;
+}
+.card:hover .card-img { transform: scale(1.045) rotate(-1deg) !important; }
+.card-tag {
+  position: absolute !important;
+  z-index: 3 !important;
+  top: 9px !important;
+  left: 9px !important;
+  max-width: calc(100% - 18px);
+  padding: 6px 9px !important;
+  overflow: hidden;
+  border: 1px solid #ff9b61 !important;
+  border-radius: 6px !important;
+  color: #fff !important;
+  background: #f16d22 !important;
+  box-shadow: 0 2px 6px rgba(0,0,0,.12) !important;
+  font-size: 9px !important;
+  line-height: 1.1 !important;
+  font-weight: 1000 !important;
+  letter-spacing: .3px;
+  text-overflow: ellipsis;
+}
+.card-tag.sold { color: #fff !important; background: #f16d22 !important; border-color: #ff9b61 !important; }
+.card-tag.popular { display: none !important; }
+.card-body {
+  display: flex !important;
+  flex: 1 1 auto !important;
+  flex-direction: column !important;
+  padding: 15px 15px 13px !important;
+  background: #fffefa !important;
+}
+.card h3 {
+  margin: 0 !important;
+  color: #29241f !important;
+  font-size: 16px !important;
+  font-weight: 800 !important;
+  line-height: 1.42 !important;
+  letter-spacing: -.1px !important;
+}
+.card-body > a:hover h3 { color: #176f92 !important; }
+.card-desc {
+  display: -webkit-box !important;
+  -webkit-box-orient: vertical !important;
+  -webkit-line-clamp: 2 !important;
+  overflow: hidden !important;
+  min-height: 40px !important;
+  margin-top: 7px !important;
+  color: #625d56 !important;
+  font-size: 11.5px !important;
+  line-height: 1.65 !important;
+}
+.card-bottom {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 10px !important;
+  margin-top: auto !important;
+  padding-top: 12px !important;
+  border-top: 1px solid #e7e0d4 !important;
+}
+.card-price { color: #211f1b !important; font-size: 18px !important; font-weight: 1000 !important; line-height: 1.2; }
+.card-price small { display: block; color: #817b72 !important; font-size: 9px !important; font-weight: 500 !important; margin-top: 4px !important; }
+.card-price.unavailable { color: #4e4941 !important; font-size: 12px !important; }
+.card-price.unavailable small { font-size: 9px !important; }
+.view-arrow {
+  display: inline-flex !important;
+  flex: 0 0 35px !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 35px !important;
+  height: 35px !important;
+  padding: 0 !important;
+  border: 1px solid #1985ad !important;
+  border-radius: 10px !important;
+  color: #092530 !important;
+  background: linear-gradient(180deg,#70dfff,#28bdeb) !important;
+  box-shadow: 0 2px 0 #14779d !important;
+  text-decoration: none !important;
+  transition: transform .18s ease, filter .18s ease !important;
+}
+.view-arrow svg { width: 18px; height: 18px; }
+.view-arrow:hover { transform: translateY(-1px) !important; filter: brightness(1.04); }
+.empty-state { margin-top: 15px; background: #fffefa !important; color: #625e57 !important; border-color: #d3cbbc !important; }
+
+/* Keep detail and About Us pages consistent with the same light palette. */
+.detail-card, .about-panel, .trust-item {
+  color: #24211e !important;
+  background: #fffefa !important;
+  border: 1px solid #d3cbbc !important;
+  box-shadow: 0 4px 14px rgba(50,42,29,.08) !important;
+}
+.detail-art, .featured-image { background: #e6dfd0 !important; }
+.detail-info h1, .about-panel h1, .section-head h2, .detail-info h2 { color: #24211e !important; }
+.detail-info > p, .detail-note, .about-copy p, .about-lead { color: #625e57 !important; }
+.back-btn { color:#2b2822 !important; background:#fffefa !important; border-color:#d3cbbc !important; }
+footer { border-top-color: #ded6c8 !important; }
+.footer-brand, .copyright { color: #34302a !important; }
+.footer-note, .footer-links a { color: #655f56 !important; }
+.footer-links a:hover { color: #087fa5 !important; }
+.discord-float { z-index: 80 !important; }
+
+@media (max-width: 900px) {
+  .container, #shop.section { width: min(94%, 760px) !important; }
+  .nav-inner { width: min(960px,94%) !important; gap: 10px !important; }
+  .brand img { width: 112px !important; }
+  .nav-links { gap: 2px !important; }
+  .nav-link { padding: 8px 9px !important; font-size: 11px !important; }
+  .products { grid-template-columns: repeat(2,minmax(0,1fr)) !important; gap: 17px !important; }
+}
+@media (max-width: 620px) {
+  .sale, .sale-track, .sale-group, .sale-group span, .sale-group b { height: 31px !important; min-height: 31px !important; }
+  .sale-group span, .sale-group b { padding: 0 17px !important; font-size: 8px !important; }
+  nav { padding-top: 6px !important; }
+  .nav-inner {
+    min-height: 0 !important;
+    flex-wrap: wrap !important;
+    justify-content: space-between !important;
+    gap: 5px 8px !important;
+    padding: 7px 9px !important;
+  }
+  .brand { width: auto !important; }
+  .brand img { width: 98px !important; height: 36px !important; }
+  .nav-links { order: 3; flex: 1 0 100% !important; justify-content: center !important; gap: 3px !important; }
+  .nav-link { min-height: 30px; padding: 6px 8px !important; font-size: 10px !important; }
+  .nav-actions { margin-left: auto; gap: 6px; }
+  .currency-pill { min-height: 28px; padding: 0 8px; font-size: 9px; }
+  .cart-top, .account-icon { width: 31px !important; height: 31px !important; flex-basis: 31px !important; border-radius: 9px !important; }
+  .cart-top svg, .account-icon svg { width: 16px; height: 16px; }
+  #shop.section { padding-top: 13px !important; }
+  .products { grid-template-columns: repeat(2,minmax(0,1fr)) !important; gap: 11px !important; }
+  .card-art { height: 152px !important; }
+  .card-img { width: 82% !important; height: 139px !important; }
+  .card-body { padding: 11px 10px 10px !important; }
+  .card h3 { font-size: 13px !important; line-height: 1.35 !important; }
+  .card-desc { min-height: 46px !important; margin-top: 6px !important; font-size: 9.5px !important; line-height: 1.55 !important; }
+  .card-price { font-size: 15px !important; }
+  .card-price small { font-size: 8px !important; }
+  .card-price.unavailable { font-size: 10px !important; }
+  .card-bottom { padding-top: 10px !important; gap: 5px !important; }
+  .view-arrow { flex-basis: 31px !important; width: 31px !important; height: 31px !important; border-radius: 8px !important; }
+  .view-arrow svg { width: 16px; height: 16px; }
+  .card-tag { top: 7px !important; left: 7px !important; padding: 5px 6px !important; font-size: 7px !important; }
+}
+@media (max-width: 370px) {
+  .brand img { width: 82px !important; }
+  .nav-link { padding: 6px 6px !important; font-size: 9px !important; }
+  .currency-pill { gap: 3px; }
+  .products { grid-template-columns: 1fr !important; }
+  .card-art { height: 205px !important; }
+  .card-img { height: 184px !important; }
+  .card h3 { font-size: 15px !important; }
+  .card-desc { min-height: 0 !important; font-size: 10px !important; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation:none !important; transition:none !important; scroll-behavior:auto !important; }
+}
+</style>
+
 </head>
 
 <body>
@@ -1629,7 +2009,7 @@ body, body p, .hero-copy>p, .section-head p, .card-desc, .detail-info>p, .about-
   </div>
 </div>
 
-<nav>
+<nav aria-label="Main navigation">
   <div class="container nav-inner">
     <a href="#home" class="brand" aria-label="MC STORE home" onclick="showHome('home');return false">
       <img src="media/1792194385872.png" alt="MC STORE logo"
@@ -1639,11 +2019,23 @@ body, body p, .hero-copy>p, .section-head p, .card-desc, .detail-info>p, .about-
 
     <div class="nav-links">
       <a class="nav-link active" href="#home" onclick="showHome('home');return false">Home</a>
-      <a class="nav-link" href="#shop" onclick="showHome('shop');return false">Capes</a>
-      <a class="nav-link" href="#about" onclick="showAbout();return false">About</a>
+      <a class="nav-link" href="#shop" onclick="showHome('shop');return false">Shop</a>
+      <a class="nav-link" href="https://discord.gg/G75MSAVe2k" target="_blank" rel="noopener noreferrer" title="Visit the MC STORE community">Endorsements</a>
+      <a class="nav-link" href="#about" onclick="showAbout();return false">About Us</a>
+    </div>
+
+    <div class="nav-actions">
+      <span class="currency-pill" aria-label="Currency: US dollars"><span class="currency-flag">🇺🇸</span><span>USD</span><span class="currency-chevron">▾</span></span>
+      <a class="cart-top" href="#shop" onclick="showHome('shop');return false" aria-label="Browse the cape shop" title="Browse the cape shop">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 4h2l2.1 10.1a2 2 0 0 0 2 1.6h7.8a2 2 0 0 0 1.9-1.4L21 8H6"/><circle cx="10" cy="20" r="1.3"/><circle cx="18" cy="20" r="1.3"/></svg>
+      </a>
       <span class="user-label" id="authUserLabel" hidden></span>
-      <button class="btn btn-outline small-btn" id="authOpenBtn" type="button">Sign In</button>
-      <button class="btn btn-outline small-btn" id="authSignOutBtn" type="button" hidden>Sign Out</button>
+      <button class="account-icon" id="authOpenBtn" type="button" aria-label="Sign in" title="Sign in">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.2"/><path d="M5.5 20a6.5 6.5 0 0 1 13 0"/></svg>
+      </button>
+      <button class="account-icon" id="authSignOutBtn" type="button" aria-label="Sign out" title="Sign out" hidden>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 5H5v14h5M13 8l4 4-4 4M7 12h10"/></svg>
+      </button>
     </div>
   </div>
 </nav>
@@ -1796,8 +2188,8 @@ body, body p, .hero-copy>p, .section-head p, .card-desc, .detail-info>p, .about-
       </div>
       <div class="footer-links">
         <a href="#home" onclick="showHome('home');return false">Home</a>
-        <a href="#shop" onclick="showHome('shop');return false">Capes</a>
-        <a href="#about" onclick="showAbout();return false">About</a>
+        <a href="#shop" onclick="showHome('shop');return false">Shop</a>
+        <a href="#about" onclick="showAbout();return false">About Us</a>
       </div>
     </div>
     <div class="copyright">
@@ -1983,8 +2375,11 @@ function capeCard(cape) {
           </div>
           <a class="view-arrow"
              href="#cape/${encodeURIComponent(cape.id)}"
-             aria-label="View ${escapeHTML(cape.name)}"
-             onclick="openCape('${cape.id}');return false">↗</a>
+             aria-label="View ${escapeHTML(cape.name)} and ordering details"
+             title="View cape details"
+             onclick="openCape('${cape.id}');return false">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 4h2l2.1 10.1a2 2 0 0 0 2 1.6h7.8a2 2 0 0 0 1.9-1.4L21 8H6"/><circle cx="10" cy="20" r="1.3"/><circle cx="18" cy="20" r="1.3"/></svg>
+          </a>
         </div>
       </div>
     </article>
@@ -2122,7 +2517,9 @@ function showHome(sectionId = "home") {
   );
   if (navLink) navLink.classList.add("active");
 
-  const target = document.getElementById(sectionId) || document.getElementById("home");
+  const target = sectionId === "home"
+    ? document.getElementById("shop")
+    : (document.getElementById(sectionId) || document.getElementById("shop"));
   requestAnimationFrame(() => target.scrollIntoView({behavior:"smooth",block:"start"}));
 }
 
