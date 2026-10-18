@@ -1249,6 +1249,140 @@ body.auth-page-open .discord-float{visibility:hidden!important;pointer-events:no
 .back-btn{cursor:pointer}
 @media(max-width:620px){.auth-overlay{padding:14px!important}.auth-box{padding:30px 22px!important}.discord-float{left:7px!important;right:auto!important}}
 
+
+
+/* Final polish: make the Discord server card touch its launcher and keep X reliable. */
+#discordFloat {
+  width: 54px !important;
+  gap: 0 !important;
+}
+#discordFloat .discord-float-button {
+  position: relative !important;
+  z-index: 152 !important;
+  width: 54px !important;
+  height: 54px !important;
+  margin: 0 !important;
+  flex: 0 0 54px !important;
+  border-radius: 15px !important;
+}
+#discordFloat:not(.dismissed):hover .discord-float-button,
+#discordFloat:not(.dismissed):focus-within .discord-float-button,
+#discordFloat.open:not(.dismissed) .discord-float-button {
+  border-top-right-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+  transform: none !important;
+}
+#discordFloat .discord-popover {
+  left: 54px !important;
+  right: auto !important;
+  top: 50% !important;
+  width: min(340px, calc(100vw - 74px)) !important;
+  margin: 0 !important;
+  border-left: 0 !important;
+  border-top-left-radius: 0 !important;
+  border-bottom-left-radius: 0 !important;
+  transform: translate(-8px, -50%) !important;
+}
+#discordFloat:not(.dismissed):hover .discord-popover,
+#discordFloat:not(.dismissed):focus-within .discord-popover,
+#discordFloat.open:not(.dismissed) .discord-popover {
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+  transform: translate(0, -50%) !important;
+}
+#discordFloat.dismissed .discord-popover,
+#discordFloat.dismissed:hover .discord-popover,
+#discordFloat.dismissed:focus-within .discord-popover,
+#discordFloat.dismissed.open .discord-popover {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  transform: translate(-8px, -50%) !important;
+}
+#discordFloat .discord-close {
+  z-index: 5 !important;
+  display: grid !important;
+  place-items: center !important;
+  width: 27px !important;
+  height: 27px !important;
+  cursor: pointer !important;
+  pointer-events: auto !important;
+}
+
+/* Featured cape: clearer labels and a centered, consistently contained cape image. */
+#featured .featured-top {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  flex-wrap: wrap !important;
+  gap: 10px !important;
+  padding: 0 !important;
+  margin: 0 0 12px !important;
+}
+#featured .featured-label,
+#featured .featured-number {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: fit-content !important;
+  min-height: 30px !important;
+  padding: 7px 11px !important;
+  border: 1px solid #d8d0c2 !important;
+  border-radius: 999px !important;
+  background: #fffdf7 !important;
+  color: #403a32 !important;
+  text-shadow: none !important;
+  font-size: 10px !important;
+  font-weight: 900 !important;
+  letter-spacing: .8px !important;
+  line-height: 1.2 !important;
+}
+#featured .featured-number {
+  color: #70675c !important;
+  font-size: 9px !important;
+  letter-spacing: 1.1px !important;
+}
+#featured .featured-image {
+  position: relative !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  overflow: hidden !important;
+  padding: 16px !important;
+  border: 1px solid #ded7ca !important;
+  box-shadow: inset 0 1px 0 #ffffffaa, 0 9px 24px #6659430b !important;
+  background: radial-gradient(ellipse at 50% 38%, #f8ffff 0%, #e5eff0 45%, #eee5d8 100%) !important;
+}
+#featured .featured-image img {
+  display: block !important;
+  position: relative !important;
+  z-index: 1 !important;
+  width: 92% !important;
+  height: 100% !important;
+  max-width: 100% !important;
+  max-height: 420px !important;
+  object-fit: contain !important;
+  object-position: center center !important;
+  filter: drop-shadow(0 13px 12px #0003) !important;
+}
+#featured .featured-image:after {
+  z-index: 0 !important;
+  bottom: 15px !important;
+  width: 42% !important;
+  height: 16px !important;
+  background: #0002 !important;
+  filter: blur(12px) !important;
+}
+@media (max-width: 620px) {
+  #discordFloat { width: 48px !important; }
+  #discordFloat .discord-float-button { width: 48px !important; height: 48px !important; flex-basis: 48px !important; }
+  #discordFloat .discord-popover { left: 48px !important; width: min(320px, calc(100vw - 62px)) !important; }
+  #featured .featured-top { gap: 7px !important; }
+  #featured .featured-label { font-size: 9px !important; }
+  #featured .featured-image { padding: 12px !important; }
+}
+
 </style>
 
 <style id="light-store-theme">
@@ -2146,6 +2280,234 @@ body.mc-reveal-ready .reveal-on-scroll.is-visible { opacity:1 !important; transf
 }
 </style>
 
+
+<style id="mc-store-reference-final">
+/* Showcase title: only Builder receives the warm brown accent. */
+#featured .featured-top { display:none !important; }
+.cape-showcase-copy h1.cape-name,
+.card h3.cape-name,
+.detail-info h1.cape-name {
+  color:#171717 !important;
+  -webkit-text-fill-color:#171717 !important;
+  background:none !important;
+  animation:none !important;
+}
+.cape-showcase-copy h1.cape-name .hero-accent {
+  color:#9a5b22 !important;
+  -webkit-text-fill-color:#9a5b22 !important;
+}
+
+/* Discord launcher and preview: joined edges, blue banner and a smooth hover reveal. */
+#discordFloat {
+  display:flex !important;
+  align-items:center !important;
+  gap:0 !important;
+  width:54px !important;
+  left:8px !important;
+  right:auto !important;
+  z-index:150 !important;
+}
+#discordFloat .discord-float-button {
+  position:relative !important;
+  z-index:152 !important;
+  flex:0 0 54px !important;
+  width:54px !important;
+  height:54px !important;
+  margin:0 !important;
+  border-radius:15px !important;
+  background:linear-gradient(145deg,#697cff,#4c58e8) !important;
+  border:1px solid #bfcaff !important;
+  box-shadow:0 8px 24px #4d5ce544 !important;
+  transition:background .25s ease, box-shadow .25s ease, border-radius .25s ease !important;
+}
+#discordFloat:not(.dismissed):hover .discord-float-button,
+#discordFloat:not(.dismissed):focus-within .discord-float-button,
+#discordFloat.open:not(.dismissed) .discord-float-button {
+  border-top-right-radius:0 !important;
+  border-bottom-right-radius:0 !important;
+}
+#discordFloat .discord-popover {
+  left:54px !important;
+  right:auto !important;
+  top:50% !important;
+  width:min(340px,calc(100vw - 74px)) !important;
+  margin:0 !important;
+  border-left:0 !important;
+  border-top-left-radius:0 !important;
+  border-bottom-left-radius:0 !important;
+  background:#292a2e !important;
+  color:#f2f3f5 !important;
+  border-color:#3c3f45 !important;
+  box-shadow:0 20px 55px #0005 !important;
+  opacity:0 !important;
+  visibility:hidden !important;
+  pointer-events:none !important;
+  transform:translate(-11px,-50%) scale(.985) !important;
+  transform-origin:left center !important;
+  transition:opacity .26s ease, transform .34s cubic-bezier(.2,.8,.2,1), visibility .26s ease !important;
+  will-change:opacity,transform;
+}
+#discordFloat:not(.dismissed):hover .discord-popover,
+#discordFloat:not(.dismissed):focus-within .discord-popover,
+#discordFloat.open:not(.dismissed) .discord-popover {
+  opacity:1 !important;
+  visibility:visible !important;
+  pointer-events:auto !important;
+  transform:translate(0,-50%) scale(1) !important;
+}
+#discordFloat.dismissed .discord-popover,
+#discordFloat.dismissed:hover .discord-popover,
+#discordFloat.dismissed:focus-within .discord-popover,
+#discordFloat.dismissed.open .discord-popover {
+  opacity:0 !important;
+  visibility:hidden !important;
+  pointer-events:none !important;
+  transform:translate(-11px,-50%) scale(.985) !important;
+}
+#discordFloat .discord-preview-banner {
+  height:118px !important;
+  background:linear-gradient(125deg,#152c76 0%,#2864d9 44%,#42a8ef 100%) !important;
+  background-color:#2864d9 !important;
+  background-image:linear-gradient(125deg,#152c76 0%,#2864d9 44%,#42a8ef 100%) !important;
+  color:#fff !important;
+}
+#discordFloat .discord-preview-banner:before {
+  background:radial-gradient(circle at 20% 20%,#ffffff22,transparent 28%),repeating-linear-gradient(135deg,#ffffff08 0 13px,transparent 13px 27px) !important;
+}
+#discordFloat .discord-server-name { color:#f2f3f5 !important; }
+#discordFloat .discord-description { color:#c8cbd0 !important; }
+#discordFloat .discord-connection { color:#aeb3bb !important; margin-top:7px !important; }
+#discordFloat .discord-close {
+  z-index:5 !important;
+  display:grid !important;
+  place-items:center !important;
+  width:27px !important;
+  height:27px !important;
+  cursor:pointer !important;
+  pointer-events:auto !important;
+  background:#474a50cc !important;
+  color:#f2f3f5 !important;
+}
+#discordFloat .discord-close:hover { background:#15161a !important; }
+#discordFloat .discord-status-line { color:#c8cbd0 !important; }
+#discordFloat .discord-status-line strong { color:#f2f3f5 !important; }
+#discordFloat .discord-separator,
+#discordFloat #discordOnline { display:none !important; }
+#discordFloat .discord-join {
+  background:#249f59 !important;
+  color:#fff !important;
+  min-height:41px !important;
+  border-radius:7px !important;
+  transition:background .2s ease, transform .2s ease !important;
+}
+#discordFloat .discord-join:hover { background:#1f8d4f !important; transform:translateY(-1px) !important; }
+
+/* Footer closely follows the provided black four-column reference. */
+footer.mc-footer {
+  display:block !important;
+  width:100% !important;
+  margin:48px 0 0 !important;
+  padding:45px 0 20px !important;
+  background:#080808 !important;
+  color:#f5f5f5 !important;
+  border-top:1px solid #242424 !important;
+  border-bottom:0 !important;
+}
+.mc-footer .mc-footer-container { width:min(1080px,88%) !important; margin:0 auto !important; }
+.mc-footer .mc-footer-grid {
+  display:grid !important;
+  grid-template-columns:1.35fr .8fr 1.15fr .9fr !important;
+  gap:clamp(24px,4vw,58px) !important;
+  align-items:start !important;
+  padding-bottom:31px !important;
+}
+.mc-footer .mc-footer-brand { min-width:0 !important; color:#f6f6f6 !important; }
+.mc-footer .mc-footer-logo { display:inline-flex !important; align-items:center !important; min-height:44px !important; margin:0 0 11px !important; text-decoration:none !important; }
+.mc-footer .mc-footer-logo img { display:block; width:158px; height:48px; object-fit:contain; object-position:left center; filter:drop-shadow(0 0 9px #229ce755); }
+.mc-footer .mc-footer-logo-fallback { color:#5ad7ff; font-size:25px; font-weight:1000; letter-spacing:-1.4px; }
+.mc-footer .mc-footer-brand p { max-width:265px; margin:0 0 17px !important; color:#dedede !important; font-size:13px !important; line-height:1.8 !important; }
+.mc-footer .mc-socials { display:flex !important; align-items:center !important; gap:13px !important; flex-wrap:wrap !important; }
+.mc-footer .mc-socials a { display:inline-flex !important; align-items:center !important; justify-content:center !important; width:23px !important; height:25px !important; color:#d4d4d4 !important; text-decoration:none !important; transition:color .2s ease, transform .2s ease !important; }
+.mc-footer .mc-socials svg { display:block; width:19px; height:19px; }
+.mc-footer .mc-socials a:hover { color:#55d7ff !important; transform:translateY(-3px) !important; }
+.mc-footer .mc-footer-column { display:flex !important; flex-direction:column !important; align-items:flex-start !important; gap:8px !important; min-width:0 !important; }
+.mc-footer .mc-footer-column h3 { margin:5px 0 6px !important; color:#efefef !important; font-size:11px !important; font-weight:900 !important; letter-spacing:1.15px !important; }
+.mc-footer .mc-footer-column a { display:flex !important; align-items:flex-start !important; gap:8px !important; color:#d2d2d2 !important; font-size:12px !important; line-height:1.55 !important; text-decoration:none !important; overflow-wrap:anywhere !important; transition:color .2s ease, transform .2s ease !important; }
+.mc-footer .mc-footer-column a span { color:#e7e7e7 !important; font-size:18px !important; line-height:1 !important; font-weight:800 !important; }
+.mc-footer .mc-footer-column a:hover { color:#69ddff !important; transform:translateX(2px) !important; }
+.mc-footer .mc-footer-column a:hover span { color:#69ddff !important; }
+.mc-footer .mc-footer-bottom {
+  display:flex !important;
+  justify-content:space-between !important;
+  align-items:center !important;
+  gap:18px !important;
+  flex-wrap:wrap !important;
+  border-top:1px solid #2a2a2a !important;
+  padding-top:20px !important;
+  color:#c9c9c9 !important;
+  font-size:12px !important;
+  line-height:1.7 !important;
+}
+.mc-footer .mc-footer-bottom a { color:#c9c9c9 !important; text-decoration:none !important; }
+.mc-footer .mc-footer-bottom a:hover { color:#69ddff !important; }
+.mc-footer #year { color:inherit !important; }
+@media(max-width:900px) {
+  .mc-footer .mc-footer-grid { grid-template-columns:1.2fr 1fr !important; gap:30px 42px !important; }
+}
+@media(max-width:620px) {
+  #discordFloat { left:7px !important; width:48px !important; }
+  #discordFloat .discord-float-button { width:48px !important; height:48px !important; flex-basis:48px !important; }
+  #discordFloat .discord-popover { left:48px !important; width:min(320px,calc(100vw - 62px)) !important; }
+  #discordFloat .discord-preview-banner { height:100px !important; }
+  #discordFloat .discord-preview-content { padding:50px 13px 13px !important; }
+  #discordFloat .discord-server-img { left:13px !important; width:64px !important; height:64px !important; }
+  .mc-footer .mc-footer-container { width:90% !important; }
+  .mc-footer .mc-footer-grid { grid-template-columns:1fr 1fr !important; gap:28px 20px !important; }
+  .mc-footer .mc-footer-brand { grid-column:1 / -1 !important; }
+  .mc-footer .mc-footer-brand p { max-width:330px !important; }
+  .mc-footer .mc-footer-logo img { width:145px !important; }
+  .mc-footer .mc-footer-bottom { align-items:flex-start !important; flex-direction:column !important; gap:7px !important; }
+}
+@media(prefers-reduced-motion:reduce) {
+  #discordFloat .discord-popover,
+  #discordFloat .discord-float-button,
+  .mc-footer .mc-socials a,
+  .mc-footer .mc-footer-column a { transition:none !important; }
+}
+</style>
+
+
+<style id="mc-store-brand-and-cape-zoom">
+/* Footer brand uses the requested MC STORE name, not the cape-logo asset. */
+.mc-footer .mc-footer-logo {
+  min-width: 158px !important;
+  min-height: 48px !important;
+}
+.mc-footer .mc-footer-logo-fallback {
+  display: inline-block !important;
+  color: #57d9ff !important;
+  font-size: 28px !important;
+  font-weight: 1000 !important;
+  letter-spacing: -1.3px !important;
+  line-height: 1 !important;
+  text-shadow: 0 0 14px rgba(48, 193, 255, .28) !important;
+}
+
+/* Zoom in smoothly when the featured cape switches in the Home showcase. */
+@keyframes mcCapeSwapZoom {
+  0% { opacity: .35; transform: scale(.82); }
+  58% { opacity: 1; transform: scale(1.045); }
+  100% { opacity: 1; transform: scale(1); }
+}
+#featured .featured-image.cape-zoom-switch {
+  transform-origin: center center !important;
+  animation: mcCapeSwapZoom .68s cubic-bezier(.2,.72,.24,1) both !important;
+}
+@media (prefers-reduced-motion: reduce) {
+  #featured .featured-image.cape-zoom-switch { animation: none !important; }
+}
+</style>
+
 </head>
 
 <body>
@@ -2352,32 +2714,65 @@ body.mc-reveal-ready .reveal-on-scroll.is-visible { opacity:1 !important; transf
       <img class="discord-server-img" src="media/1792194826100.jpg" alt="MC STORE Discord icon"
            onerror="this.style.display='none'">
       <div class="discord-server-name" id="discordServerName">Cape Community</div>
-      <div class="discord-status-line"><span class="discord-live"></span><strong id="discordMembers">—</strong> Members <span class="discord-separator">·</span> <span id="discordOnline">—</span> Online</div>
-      <div class="discord-connection" id="discordConnection">Minecraft cape community</div>
-      <p class="discord-description" id="discordDescription">A friendly community to talk about Minecraft capes and contact the MC STORE team.</p>
+      <div class="discord-status-line"><span class="discord-live"></span><strong id="discordMembers">1,500+</strong> Members <span class="discord-separator">·</span> <span id="discordOnline">—</span> Online</div>
+      <div class="discord-connection" id="discordConnection">Est. Jul 2026</div>
+      <p class="discord-description" id="discordDescription">A friendly community to talk about all things Minecraft capes.</p>
       <a class="discord-join" href="https://discord.gg/G75MSAVe2k" target="_blank" rel="noopener noreferrer">Join Server</a>
     </div>
   </div>
 </div>
 
-<footer>
-  <div class="container">
-    <div class="footer-inner">
-      <div>
-        <div class="footer-brand">MC <span>STORE</span></div>
-        <p class="footer-note">Your Minecraft cape destination. Browse the collection and contact us for ordering information.</p>
-      </div>
-      <div class="footer-links">
-        <a href="#home" onclick="showHome('home');return false">Home</a>
-        <a href="#shop" onclick="showHome('shop');return false">Shop</a>
-        <a href="#endorsements" onclick="showEndorsements();return false">Endorsements</a>
-        <a href="#about" onclick="showAbout();return false">About Us</a>
-      </div>
+<footer class="mc-footer">
+  <div class="container mc-footer-container">
+    <div class="mc-footer-grid">
+      <section class="mc-footer-brand" aria-label="MC STORE social links">
+        <a class="mc-footer-logo" href="#home" aria-label="MC STORE home" onclick="showHome('home');return false">
+          <span class="mc-footer-logo-fallback">MC STORE</span>
+        </a>
+        <p>The safest way to buy your Minecraft capes.</p>
+        <div class="mc-socials" aria-label="Social media">
+          <a href="https://discord.gg/G75MSAVe2k" target="_blank" rel="noopener noreferrer" aria-label="Join MC STORE on Discord" title="Discord">
+            <svg viewBox="0 0 127.14 96.36" aria-hidden="true"><path fill="currentColor" d="M107.7 8.07A105.15 105.15 0 0 0 81.47 0a72.06 72.06 0 0 0-3.36 6.83 97.68 97.68 0 0 0-29.08 0A72.37 72.37 0 0 0 45.67 0 105.89 105.89 0 0 0 19.42 8.09C2.79 32.75-1.72 56.8.54 80.51h.02a105.73 105.73 0 0 0 32.2 16.28 77.7 77.7 0 0 0 6.9-11.18 68.42 68.42 0 0 1-10.86-5.18c.91-.67 1.8-1.36 2.66-2.08 20.94 9.8 43.65 9.8 64.34 0 .87.72 1.76 1.41 2.66 2.08a68.68 68.68 0 0 1-10.88 5.19 77 77 0 0 0 6.9 11.17 105.25 105.25 0 0 0 32.22-16.27h.02c2.65-27.48-4.52-51.31-19.02-72.45ZM42.45 65.69c-6.27 0-11.44-5.72-11.44-12.75s5.05-12.75 11.44-12.75 11.55 5.77 11.44 12.75c0 7.03-5.05 12.75-11.44 12.75Zm42.24 0c-6.27 0-11.44-5.72-11.44-12.75s5.05-12.75 11.44-12.75 11.55 5.77 11.44 12.75c0 7.03-5.05 12.75-11.44 12.75Z"/></svg>
+          </a>
+          <a href="https://youtube.com/@realmcstore?si=0bspl3WGJa0DSbEE" target="_blank" rel="noopener noreferrer" aria-label="Visit MC STORE on YouTube" title="YouTube">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2 31.5 31.5 0 0 0 0 12a31.5 31.5 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1A31.5 31.5 0 0 0 24 12a31.5 31.5 0 0 0-.5-5.8ZM9.6 15.6V8.4l6.2 3.6-6.2 3.6Z"/></svg>
+          </a>
+          <a href="https://www.instagram.com/realmcstore?rpxt=ZHZ6eWk5MW0zYXo2" target="_blank" rel="noopener noreferrer" aria-label="Visit MC STORE on Instagram" title="Instagram">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="17.5" cy="6.8" r="1.2" fill="currentColor"/></svg>
+          </a>
+          <a href="https://www.tiktok.com/@realmcstore" target="_blank" rel="noopener noreferrer" aria-label="Visit MC STORE on TikTok" title="TikTok">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M19.6 7.1a6.6 6.6 0 0 1-4.2-4.8V2h-3.8v13.1a2.9 2.9 0 1 1-2-2.7V8.5a6.7 6.7 0 1 0 5.8 6.6V9.2a10.2 10.2 0 0 0 4.2 1V7.1Z"/></svg>
+          </a>
+        </div>
+      </section>
+
+      <nav class="mc-footer-column" aria-label="Shop links">
+        <h3>SHOP</h3>
+        <a href="#home" onclick="showHome('home');return false"><span>›</span> Home</a>
+        <a href="#shop" onclick="showHome('shop');return false"><span>›</span> Shop</a>
+        <a href="#endorsements" onclick="showEndorsements();return false"><span>›</span> Endorsements</a>
+        <a href="https://mccapes.net/reviews" target="_blank" rel="noopener noreferrer"><span>›</span> Reviews</a>
+      </nav>
+
+      <nav class="mc-footer-column" aria-label="Company links">
+        <h3>COMPANY</h3>
+        <a href="https://mccapes.net/faq" target="_blank" rel="noopener noreferrer"><span>›</span> FAQ</a>
+        <a href="https://mccapes.net/trust" target="_blank" rel="noopener noreferrer"><span>›</span> Trust Center</a>
+        <a href="https://mccapes.net/privacy" target="_blank" rel="noopener noreferrer"><span>›</span> Privacy Policy</a>
+        <a href="https://mccapes.net/terms" target="_blank" rel="noopener noreferrer"><span>›</span> Terms of Service</a>
+        <a href="https://mccapes.net/refunds" target="_blank" rel="noopener noreferrer"><span>›</span> Delivery &amp; Refund Policy</a>
+      </nav>
+
+      <nav class="mc-footer-column" aria-label="Contact links">
+        <h3>CONTACT</h3>
+        <a href="#about" onclick="showAbout();return false"><span>›</span> About Us</a>
+        <a href="mailto:support@mccapes.net"><span>›</span> support@mccapes.net</a>
+      </nav>
     </div>
-    <div class="copyright">
-      © <span id="year"></span> MC STORE. All rights reserved.
-      <br><br>
-      MC STORE is an independent community shop and is not affiliated with, endorsed by, or sponsored by Mojang or Microsoft. Product availability and prices should be confirmed with the team before ordering.
+
+    <div class="mc-footer-bottom">
+      <span>© <span id="year"></span> MC STORE. All rights reserved.</span>
+      <a href="https://mccapes.net" target="_blank" rel="noopener noreferrer">mccapes.net</a>
     </div>
   </div>
 </footer>
@@ -2630,8 +3025,26 @@ function showFeatured(index) {
   featuredIndex = (index + capes.length) % capes.length;
   const cape = capes[featuredIndex];
 
-  document.getElementById("featuredImage").src = cape.image;
-  document.getElementById("featuredImage").alt = cape.name;
+  const featuredImage = document.getElementById("featuredImage");
+  featuredImage.src = cape.image;
+  featuredImage.alt = cape.name;
+
+  // Give the cape preview a quick zoom-in every time the featured cape changes.
+  const featuredFrame = featuredImage.closest(".featured-image");
+  if (featuredFrame) {
+    if (!featuredFrame.dataset.zoomListener) {
+      featuredFrame.addEventListener("animationend", event => {
+        if (event.animationName === "mcCapeSwapZoom") {
+          featuredFrame.classList.remove("cape-zoom-switch");
+        }
+      });
+      featuredFrame.dataset.zoomListener = "true";
+    }
+    featuredFrame.classList.remove("cape-zoom-switch");
+    void featuredFrame.offsetWidth;
+    featuredFrame.classList.add("cape-zoom-switch");
+  }
+
   const featuredName = document.getElementById("featuredName");
   featuredName.innerHTML = cape.id === "builder"
     ? 'The <span class="hero-accent">Builder</span><br>Cape Code'
@@ -2826,20 +3239,41 @@ const discordFloat = document.getElementById("discordFloat");
 const discordFloatButton = document.getElementById("discordFloatButton");
 
 discordFloatButton.addEventListener("click", () => {
+  // A direct click should always be able to reopen a card dismissed with X.
+  discordFloat.classList.remove("dismissed");
   const isOpen = discordFloat.classList.toggle("open");
   discordFloatButton.setAttribute("aria-expanded", String(isOpen));
 });
 
 const discordClose = document.getElementById("discordClose");
-discordClose.addEventListener("click", () => {
+discordClose.addEventListener("click", event => {
+  event.preventDefault();
+  event.stopPropagation();
   discordFloat.classList.remove("open");
+  discordFloat.classList.add("dismissed");
   discordFloatButton.setAttribute("aria-expanded", "false");
+});
+
+// Re-enable hover preview when the pointer leaves the widget or returns to its icon.
+discordFloat.addEventListener("mouseleave", () => {
+  discordFloat.classList.remove("dismissed");
+});
+discordFloatButton.addEventListener("mouseenter", () => {
+  discordFloat.classList.remove("dismissed");
+});
+
+document.addEventListener("keydown", event => {
+  if (event.key === "Escape" && discordFloat.classList.contains("open")) {
+    discordFloat.classList.remove("open");
+    discordFloat.classList.add("dismissed");
+    discordFloatButton.setAttribute("aria-expanded", "false");
+  }
 });
 
 document.addEventListener("click", event => {
   if (!discordFloat.contains(event.target)) {
     discordFloat.classList.remove("open");
-    discordFloatButton.setAttribute("aria-expanded","false");
+    discordFloatButton.setAttribute("aria-expanded", "false");
   }
 });
 
@@ -2863,12 +3297,12 @@ async function refreshDiscordInfo() {
     document.getElementById("discordMembers").textContent =
       Number.isFinite(data.approximate_member_count)
         ? data.approximate_member_count.toLocaleString()
-        : "—";
+        : "1,500+";
 
     document.getElementById("discordOnline").textContent =
       Number.isFinite(data.approximate_presence_count)
         ? data.approximate_presence_count.toLocaleString()
-        : "—";
+        : "";
 
     if (data.guild && data.guild.description) {
       document.getElementById("discordDescription").textContent = data.guild.description;
@@ -2880,16 +3314,10 @@ async function refreshDiscordInfo() {
       icon.src = `https://cdn.discordapp.com/icons/${data.guild.id}/${data.guild.icon}.png?size=128`;
       icon.style.display = "block";
     }
-    if (data.guild && data.guild.banner) {
-      const banner = document.getElementById("discordPreviewBanner");
-      banner.style.backgroundImage = `linear-gradient(0deg,rgba(10,12,18,.28),rgba(10,12,18,.18)),url(https://cdn.discordapp.com/banners/${data.guild.id}/${data.guild.banner}.png?size=600)`;
-      banner.style.backgroundSize = "cover";
-      banner.style.backgroundPosition = "center";
-    }
 
-    connection.innerHTML = '<span class="discord-live"></span> Server preview loaded';
+    connection.textContent = "Est. Jul 2026";
   } catch (error) {
-    connection.textContent = "Join our Discord to see the community";
+    connection.textContent = "Minecraft cape community";
     console.info("Discord preview could not be loaded.", error);
   }
 }
@@ -3217,5 +3645,10 @@ onAuthStateChanged(auth, user => {
 })();
 </script>
 
+
+<script id="mc-footer-year">
+  const mcFooterYear = document.getElementById("year");
+  if (mcFooterYear) mcFooterYear.textContent = String(new Date().getFullYear());
+</script>
 </body>
 </html>
