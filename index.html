@@ -1999,6 +1999,153 @@ footer { border-top-color: #ded6c8 !important; }
 }
 </style>
 
+
+<style id="mc-store-final-requested-polish">
+/* Final requested interactions and the light reference-matched shop layout. */
+:root { --orange:#f16c20; --blue:#1698c7; --text:#24211e; }
+body { background:#f4f1e9 !important; color:#24211e !important; }
+
+/* Only the cart remains in the navbar; account/currency controls are hidden. */
+.currency-pill, #authOpenBtn, #authSignOutBtn, #authUserLabel { display:none !important; }
+.nav-actions { gap:0 !important; }
+
+/* Home is a clickable blue sticker; Shop/About/Endorsements share the same hover motion. */
+.nav-link {
+  color:#292929 !important; border-radius:999px !important;
+  transition:transform .2s ease,background .2s ease,color .2s ease,box-shadow .2s ease !important;
+}
+.nav-link:hover, .nav-link.active {
+  color:#06212b !important;
+  background:linear-gradient(180deg,#80e8ff,#28bdec) !important;
+  border-color:#1688b2 !important;
+  box-shadow:0 3px 0 #18789a,0 5px 12px #27bde733 !important;
+  transform:translateY(-2px) !important;
+}
+.nav-link:active { transform:translateY(0) scale(.97) !important; }
+
+/* Show the cape spotlight only on Home, and keep the entire shop controls visible on Shop. */
+#homePage .hero { display:block !important; padding:clamp(36px,5vw,66px) 0 44px !important; color:#25211f !important; }
+#homePage.shop-only .hero { display:none !important; }
+#shop.section { width:min(1195px,90%) !important; padding:20px 0 58px !important; }
+#shop .section-head { display:flex !important; margin-bottom:22px !important; }
+#shop .shop-tools { display:flex !important; align-items:center !important; justify-content:space-between !important; gap:12px !important; flex-wrap:wrap !important; margin-bottom:18px !important; }
+#shop .results-line { display:block !important; color:#59564f !important; font-size:12px !important; margin:0 0 14px !important; }
+#shop .section-head h2 { color:#211f1f !important; }
+#shop .section-head p { color:#66615b !important; }
+.shop-tools .search-wrap { flex:1 1 260px !important; max-width:360px !important; min-width:190px !important; }
+.shop-tools .search-wrap input { min-height:43px !important; width:100% !important; background:#fff !important; color:#282520 !important; border:1px solid #d4cdbf !important; border-radius:10px !important; padding:12px 14px 12px 38px !important; }
+.shop-tools .filters { display:flex !important; flex-wrap:wrap !important; gap:7px !important; }
+.shop-tools .filter { min-height:40px !important; padding:10px 13px !important; color:#39352f !important; background:#fffefa !important; border:1px solid #d7d0c3 !important; border-radius:10px !important; font-size:10px !important; font-weight:850 !important; }
+.shop-tools .filter.active, .shop-tools .filter:hover { color:#092431 !important; background:linear-gradient(180deg,#84eaff,#31c0ea) !important; border-color:#178db7 !important; box-shadow:0 2px 0 #157799 !important; transform:translateY(-1px) !important; }
+.shop-tools .sort-select { min-height:42px !important; padding:10px 12px !important; background:#fffefa !important; color:#282520 !important; border:1px solid #d7d0c3 !important; border-radius:10px !important; font-size:11px !important; }
+.sort-select option { background:#fffefa !important; color:#24211e !important; }
+
+/* Home showcase: large cape on the right, title and purchase details on the left. */
+.cape-showcase-layout { grid-template-columns:minmax(0,1fr) minmax(0,1fr) !important; gap:clamp(28px,5vw,72px) !important; align-items:center !important; }
+.cape-showcase-copy { padding:10px 0 !important; }
+.cape-showcase-copy h1 { color:#24211e !important; -webkit-text-fill-color:#24211e !important; background:none !important; animation:none !important; font-size:clamp(42px,5vw,66px) !important; line-height:1.04 !important; letter-spacing:-2.3px !important; margin:14px 0 17px !important; }
+.hero-accent { color:#9b4a2b !important; -webkit-text-fill-color:#9b4a2b !important; }
+.cape-showcase-copy>p { max-width:525px !important; color:#5d5953 !important; font-size:14px !important; line-height:1.9 !important; }
+.cape-showcase-copy .pill { color:#39362f !important; background:#fffefa !important; border:1px solid #d9d0bf !important; box-shadow:none !important; }
+.cape-showcase-copy .pill .pulse { background:#2da15c !important; box-shadow:0 0 8px #2da15c55 !important; }
+.showcase-price { color:#211f1b !important; font-size:clamp(28px,3.3vw,40px) !important; font-weight:1000 !important; margin-top:22px !important; }
+.showcase-price small { display:block !important; color:#66615a !important; font-size:10px !important; font-weight:500 !important; margin-top:5px !important; }
+#featured { background:transparent !important; border:0 !important; box-shadow:none !important; animation:none !important; padding:0 !important; min-width:0 !important; }
+#featured .featured-top { color:#25211d !important; padding:0 3px !important; }
+#featured .featured-label { color:#625b52 !important; text-shadow:none !important; }
+#featured .featured-number { color:#6d675f !important; }
+#featured .featured-image { min-height:360px !important; height:clamp(300px,36vw,470px) !important; margin:8px 0 0 !important; border-radius:18px !important; background:radial-gradient(ellipse at center,#dfeef1 0%,#e8e3d8 65%,#f4f1e9 100%) !important; }
+#featured .featured-image img { width:91% !important; height:94% !important; max-height:440px !important; filter:drop-shadow(0 12px 12px #0003) !important; animation:floatCape 3.6s ease-in-out infinite !important; }
+#featured .featured-image:after { bottom:15px !important; background:#0002 !important; }
+.showcase-bottom { border-top:1px solid #ded6c8 !important; padding-top:13px !important; margin-top:11px !important; }
+.showcase-hint { color:#6a645b !important; }
+.hero-actions .btn { text-decoration:none !important; }
+
+/* Product tags: orange sale label plus a stock status in the top-right corner. */
+.card-tag { display:block !important; }
+.card-tag.sale-tag { color:#fff !important; background:#f16c20 !important; border:1px solid #ff9d68 !important; }
+.card-tag.popular.stock-tag { display:block !important; left:auto !important; right:10px !important; color:#282620 !important; background:#fffefa !important; border:1px solid #d9d1c4 !important; }
+.card-tag.sold:not(.sale-tag) { color:#fff !important; background:#746d63 !important; border-color:#746d63 !important; }
+.card { opacity:1; border-radius:13px !important; }
+.card:hover { transform:translateY(-5px) !important; border-color:#8acddd !important; box-shadow:0 12px 24px #54493320 !important; }
+.card-img { transition:transform .32s cubic-bezier(.2,.8,.2,1),filter .32s ease !important; }
+.card:hover .card-img { transform:translateY(-5px) scale(1.065) rotate(-1deg) !important; }
+
+/* Discord card: blue banner and a clean Discord-like charcoal panel. */
+.discord-float { left:8px !important; right:auto !important; z-index:150 !important; }
+.discord-float-button { background:linear-gradient(145deg,#697cff,#4c58e8) !important; border:1px solid #bfcaff !important; box-shadow:0 8px 24px #4d5ce544 !important; }
+.discord-popover { background:#2b2d31 !important; color:#f2f3f5 !important; border:1px solid #3c3f45 !important; border-radius:16px !important; box-shadow:0 20px 55px #0004 !important; }
+.discord-preview-banner { height:118px !important; background:linear-gradient(125deg,#152c76 0%,#2864d9 44%,#42a8ef 100%) !important; color:#fff !important; }
+.discord-preview-banner:before { background:radial-gradient(circle at 20% 20%,#ffffff22,transparent 28%),linear-gradient(135deg,#102a6a33,transparent 55%),repeating-linear-gradient(135deg,#ffffff08 0 13px,transparent 13px 27px) !important; }
+.discord-preview-banner span { font-size:31px !important; letter-spacing:-1.4px !important; text-shadow:0 2px 7px #07143199 !important; }
+.discord-preview-banner b { color:#91e9ff !important; }
+.discord-preview-banner small { font-size:8px !important; letter-spacing:1.8px !important; }
+.discord-preview-content { padding:56px 17px 17px !important; }
+.discord-server-img { border-color:#2b2d31 !important; background:#2b2d31 !important; border-radius:17px !important; }
+.discord-server-name { color:#f2f3f5 !important; font-size:17px !important; margin-bottom:8px !important; }
+.discord-status-line { color:#c8cbd0 !important; }
+.discord-status-line strong { color:#f2f3f5 !important; }
+.discord-connection { color:#aeb3bb !important; }
+.discord-description { color:#c8cbd0 !important; font-size:12px !important; line-height:1.7 !important; margin:13px 0 15px !important; }
+.discord-count { color:#e3e6eb !important; background:#373a40 !important; border-color:#464950 !important; }
+.discord-join { min-height:40px !important; background:#249f59 !important; color:#fff !important; border:0 !important; border-radius:6px !important; font-size:13px !important; font-weight:800 !important; box-shadow:none !important; }
+.discord-join:hover { background:#1f8d4f !important; transform:translateY(-1px) !important; }
+.discord-close { background:#474a50cc !important; color:#f2f3f5 !important; }
+
+/* About Us: complete black text on the light panel. */
+.about-panel { background:#fffefa !important; color:#151515 !important; border-color:#d6cfc1 !important; box-shadow:0 8px 28px #50442a13 !important; }
+.about-panel h1, .about-panel .gradient, .about-panel p, .about-panel .about-copy p, .about-panel .about-lead { color:#151515 !important; -webkit-text-fill-color:#151515 !important; }
+.about-panel .kicker { color:#4d4a44 !important; text-shadow:none !important; }
+.about-copy { gap:17px !important; }
+.about-copy p { font-size:15px !important; line-height:1.95 !important; }
+.about-actions { display:flex; gap:10px; flex-wrap:wrap; }
+.about-actions .btn-outline { color:#24211e !important; }
+.endorsements-page { padding-top:28px; padding-bottom:72px; }
+.endorsement-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px; margin:28px 0 22px; }
+.endorsement-card { min-width:0; padding:20px; border:1px solid #e0d8cb; border-radius:13px; background:#f8f5ed; }
+.endorsement-icon { width:40px; height:40px; display:grid; place-items:center; border-radius:12px; background:#dff7ff; color:#087fa5; font-size:21px; font-weight:900; }
+.endorsement-card h2 { color:#171717 !important; font-size:16px; margin:14px 0 9px; }
+.endorsement-card p, .endorsement-note { color:#292929 !important; font-size:13px; line-height:1.85; }
+.endorsement-note { margin:0 0 20px; }
+
+/* Scroll reveal animation: items appear as they enter the viewport. */
+@keyframes mcRevealIn { from { opacity:0; transform:translateY(18px) scale(.99); } to { opacity:1; transform:translateY(0) scale(1); } }
+body.mc-reveal-ready .reveal-on-scroll:not(.is-visible) { opacity:0 !important; transform:translateY(18px) !important; }
+body.mc-reveal-ready .reveal-on-scroll.is-visible { opacity:1 !important; transform:translateY(0) !important; transition:opacity .58s ease,transform .58s cubic-bezier(.2,.75,.25,1) !important; }
+.reveal-on-scroll { will-change:opacity,transform; }
+
+@media(max-width:900px) {
+  .cape-showcase-layout { grid-template-columns:1fr !important; gap:18px !important; }
+  .cape-showcase-copy { text-align:left !important; }
+  .cape-showcase-copy>p { margin:0 !important; }
+  #featured { width:100% !important; }
+  #featured .featured-image { height:330px !important; min-height:260px !important; }
+  #featured .featured-image img { height:90% !important; }
+  .endorsement-grid { grid-template-columns:1fr !important; }
+}
+@media(max-width:680px) {
+  #homePage .hero { padding:32px 0 28px !important; }
+  .cape-showcase-copy h1 { font-size:clamp(39px,10.5vw,56px) !important; letter-spacing:-1.7px !important; }
+  #featured .featured-image { height:260px !important; min-height:230px !important; }
+  #shop.section { width:92% !important; padding-top:22px !important; }
+  #shop .shop-tools { align-items:stretch !important; }
+  .shop-tools .search-wrap { flex:1 1 100% !important; max-width:none !important; }
+  .shop-tools .filters { flex:1 1 100% !important; }
+  .shop-tools .filter { flex:1 1 auto !important; padding:9px 8px !important; font-size:9px !important; }
+  .shop-tools .sort-select { flex:1 1 100% !important; }
+  .card-tag.popular.stock-tag { right:7px !important; }
+  .discord-float { left:7px !important; }
+  .discord-popover { width:min(320px,calc(100vw - 76px)) !important; left:51px !important; }
+  .discord-preview-banner { height:100px !important; }
+  .discord-preview-content { padding:50px 13px 13px !important; }
+  .discord-server-img { left:13px !important; width:64px !important; height:64px !important; }
+  .about-copy p { font-size:13.5px !important; }
+}
+@media(prefers-reduced-motion:reduce) {
+  body.mc-reveal-ready .reveal-on-scroll:not(.is-visible), body.mc-reveal-ready .reveal-on-scroll.is-visible { opacity:1 !important; transform:none !important; transition:none !important; }
+}
+</style>
+
 </head>
 
 <body>
@@ -2020,7 +2167,7 @@ footer { border-top-color: #ded6c8 !important; }
     <div class="nav-links">
       <a class="nav-link active" href="#home" onclick="showHome('home');return false">Home</a>
       <a class="nav-link" href="#shop" onclick="showHome('shop');return false">Shop</a>
-      <a class="nav-link" href="https://discord.gg/G75MSAVe2k" target="_blank" rel="noopener noreferrer" title="Visit the MC STORE community">Endorsements</a>
+      <a class="nav-link" href="#endorsements" onclick="showEndorsements();return false">Endorsements</a>
       <a class="nav-link" href="#about" onclick="showAbout();return false">About Us</a>
     </div>
 
@@ -2082,19 +2229,20 @@ footer { border-top-color: #ded6c8 !important; }
     <div class="shop-tools">
       <label class="search-wrap">
         <span class="search-icon">⌕</span>
-        <input id="searchInput" type="search" placeholder="Search capes..." aria-label="Search capes">
+        <input id="searchInput" type="search" placeholder="Search products by name..." aria-label="Search products by name">
       </label>
 
       <div class="filters" aria-label="Filter capes">
         <button type="button" class="filter active" data-filter="all">All Capes</button>
-        <button type="button" class="filter" data-filter="available">Available</button>
+        <button type="button" class="filter" data-filter="available">In Stock</button>
+        <button type="button" class="filter" data-filter="onsale">On Sale</button>
         <button type="button" class="filter" data-filter="unavailable">Unavailable</button>
       </div>
 
       <select class="sort-select" id="sortSelect" aria-label="Sort capes">
         <option value="default">Featured first</option>
-        <option value="price-asc">Price: low to high</option>
-        <option value="price-desc">Price: high to low</option>
+        <option value="price-asc">Price: Low to High</option>
+        <option value="price-desc">Price: High to Low</option>
         <option value="name">Name: A–Z</option>
       </select>
     </div>
@@ -2117,15 +2265,48 @@ footer { border-top-color: #ded6c8 !important; }
   </div>
   <article class="about-panel">
     <div class="kicker">GET TO KNOW US</div>
-    <h1>About <span class="gradient">MC STORE</span></h1>
-    <p class="about-lead">Your place to discover Minecraft capes and connect with our team.</p>
+    <h1>About <span class="gradient">MC Capes</span></h1>
+    <p class="about-lead">Legitimate Minecraft cape codes, with a focus on clarity, verification, and trust.</p>
     <div class="about-copy">
-      <p>MC STORE was created for Minecraft players and cape collectors who want a clear, straightforward place to explore cape designs and ask about availability.</p>
-      <p>We know that buying digital items online requires care. That is why we aim to make product information easy to understand, keep our listings clear, and handle order questions directly through our Discord community.</p>
-      <p>Every listing shows the information currently available to us. Before placing an order, contact our team to confirm the cape, its availability, the final price, and the delivery details.</p>
-      <p>Whether you are searching for a rare design or simply exploring the collection, we are here to help you make an informed choice.</p>
+      <p><strong>MC Capes is the #1 store for legitimate Minecraft cape codes.</strong> Founded in December 2024, we set out to address a widespread problem in the community: scams, fake listings, and unreliable sellers.</p>
+      <p>We aim to provide a secure, trusted platform where you can purchase cape codes with confidence. Every cape code is checked and verified before it reaches you, and we work to keep product information clear so you can make an informed decision.</p>
+      <p>Alongside customer reviews and ratings, MC Capes is proudly endorsed by Minecraft YouTubers and creators. Visit our Endorsements page to explore creator features, reviews, and partner information.</p>
+      <p>MC STORE is an independent store and is not affiliated with Mojang, Minecraft, or Microsoft. Before placing an order, please confirm the cape's availability, final price, and delivery details with our team.</p>
     </div>
-    <a class="btn" href="https://discord.gg/G75MSAVe2k" target="_blank" rel="noopener noreferrer">Contact Us on Discord ↗</a>
+    <div class="about-actions">
+      <a class="btn" href="#endorsements" onclick="showEndorsements();return false">Explore Endorsements ↗</a>
+      <a class="btn btn-outline" href="https://discord.gg/G75MSAVe2k" target="_blank" rel="noopener noreferrer">Contact Us on Discord ↗</a>
+    </div>
+  </article>
+</section>
+
+<section id="endorsementsPage" class="container endorsements-page" hidden>
+  <div class="back-row">
+    <button class="back-btn" type="button" onclick="showHome('home')">← Back to Home</button>
+  </div>
+  <article class="about-panel endorsements-panel">
+    <div class="kicker">CREATORS · REVIEWS · PARTNERS</div>
+    <h1>Endorsements &amp; <span class="gradient">Partners</span></h1>
+    <p class="about-lead">Community recommendations help cape collectors find a more trustworthy place to shop.</p>
+    <div class="endorsement-grid">
+      <section class="endorsement-card">
+        <div class="endorsement-icon">✦</div>
+        <h2>Creator Endorsements</h2>
+        <p>MC Capes is proudly endorsed by Minecraft YouTubers and creators. We will list creator names and their original links here as each entry is confirmed.</p>
+      </section>
+      <section class="endorsement-card">
+        <div class="endorsement-icon">★</div>
+        <h2>Customer Reviews</h2>
+        <p>We value customer feedback and ratings. Review links should point to their original sources so visitors can check them for themselves.</p>
+      </section>
+      <section class="endorsement-card">
+        <div class="endorsement-icon">✓</div>
+        <h2>Verified Cape Codes</h2>
+        <p>Our store focuses on legitimate cape codes and clear listing information. Always confirm current availability and ordering details before purchasing.</p>
+      </section>
+    </div>
+    <p class="endorsement-note">For current community news or questions, you can also visit our Discord server. Opening this page does not redirect you to Discord.</p>
+    <a class="btn" href="https://discord.gg/G75MSAVe2k" target="_blank" rel="noopener noreferrer">Visit the Community on Discord ↗</a>
   </article>
 </section>
 
@@ -2166,11 +2347,11 @@ footer { border-top-color: #ded6c8 !important; }
 
   <div class="discord-popover" role="region" aria-label="MC STORE Discord server preview">
     <button class="discord-close" id="discordClose" type="button" aria-label="Close Discord preview">×</button>
-    <div class="discord-preview-banner" id="discordPreviewBanner"><span>MC <b>STORE</b></span><small>MINECRAFT CAPE COMMUNITY</small></div>
+    <div class="discord-preview-banner" id="discordPreviewBanner"><span>MC <b>CAPES</b></span><small>MINECRAFT CAPE COMMUNITY</small></div>
     <div class="discord-preview-content">
       <img class="discord-server-img" src="media/1792194826100.jpg" alt="MC STORE Discord icon"
            onerror="this.style.display='none'">
-      <div class="discord-server-name" id="discordServerName">MC STORE Community</div>
+      <div class="discord-server-name" id="discordServerName">Cape Community</div>
       <div class="discord-status-line"><span class="discord-live"></span><strong id="discordMembers">—</strong> Members <span class="discord-separator">·</span> <span id="discordOnline">—</span> Online</div>
       <div class="discord-connection" id="discordConnection">Minecraft cape community</div>
       <p class="discord-description" id="discordDescription">A friendly community to talk about Minecraft capes and contact the MC STORE team.</p>
@@ -2189,6 +2370,7 @@ footer { border-top-color: #ded6c8 !important; }
       <div class="footer-links">
         <a href="#home" onclick="showHome('home');return false">Home</a>
         <a href="#shop" onclick="showHome('shop');return false">Shop</a>
+        <a href="#endorsements" onclick="showEndorsements();return false">Endorsements</a>
         <a href="#about" onclick="showAbout();return false">About Us</a>
       </div>
     </div>
@@ -2241,6 +2423,7 @@ const capes = [
     name:"Aurora Cape",
     price:6,
     stock:true,
+    onSale:true,
     image:"media/aurora-front.png",
     description:"A vibrant cape for players who want a distinctive look in their Minecraft collection.",
     label:"Popular"
@@ -2250,6 +2433,7 @@ const capes = [
     name:"Builder Cape",
     price:9,
     stock:true,
+    onSale:true,
     image:"media/320%20(1).png",
     description:"A classic addition for Minecraft cape collectors and fans of building.",
     label:"Featured"
@@ -2259,6 +2443,7 @@ const capes = [
     name:"Corrupted Cape",
     price:10,
     stock:true,
+    onSale:true,
     image:"media/cloakFront%20(2).webp",
     description:"A distinctive cape design for players looking to add something different to their collection.",
     label:"Featured"
@@ -2344,7 +2529,7 @@ function escapeHTML(value) {
 function capeCard(cape) {
   const price = formatPrice(cape);
   const isFeatured = cape.id === "aurora";
-  const tag = cape.stock ? "IN STOCK" : "NOT IN STOCK";
+  const tag = cape.onSale ? "SPOOKY SALE" : (cape.stock ? "IN STOCK" : "NOT IN STOCK");
 
   return `
     <article class="card ${isFeatured ? "featured-card" : ""}">
@@ -2352,8 +2537,8 @@ function capeCard(cape) {
          aria-label="View ${escapeHTML(cape.name)} details"
          onclick="openCape('${cape.id}');return false">
         <div class="card-art">
-          <span class="card-tag ${cape.stock ? "" : "sold"}">${tag}</span>
-          ${cape.label ? `<span class="card-tag popular">${escapeHTML(cape.label)}</span>` : ""}
+          <span class="card-tag ${cape.stock ? "" : "sold"} ${cape.onSale ? "sale-tag" : ""}">${tag}</span>
+          ${cape.onSale && cape.stock ? `<span class="card-tag popular stock-tag">IN STOCK</span>` : (cape.label ? `<span class="card-tag popular">${escapeHTML(cape.label)}</span>` : "")}
           <img class="card-img"
                src="${cape.image}"
                alt="${escapeHTML(cape.name)}"
@@ -2396,6 +2581,7 @@ function renderProducts() {
     const matchesFilter =
       currentFilter === "all" ||
       (currentFilter === "available" && cape.stock) ||
+      (currentFilter === "onsale" && Boolean(cape.onSale)) ||
       (currentFilter === "unavailable" && !cape.stock);
 
     return matchesQuery && matchesFilter;
@@ -2447,7 +2633,9 @@ function showFeatured(index) {
   document.getElementById("featuredImage").src = cape.image;
   document.getElementById("featuredImage").alt = cape.name;
   const featuredName = document.getElementById("featuredName");
-  featuredName.textContent = cape.name;
+  featuredName.innerHTML = cape.id === "builder"
+    ? 'The <span class="hero-accent">Builder</span><br>Cape Code'
+    : escapeHTML(cape.name);
   featuredName.className = "cape-name cape-name--" + cape.id;
   document.getElementById("featuredDescription").textContent = cape.description;
   document.getElementById("featuredPrice").innerHTML =
@@ -2501,8 +2689,10 @@ function renderRecommendations(currentCape) {
 
 function showHome(sectionId = "home") {
   document.getElementById("homePage").style.display = "block";
+  document.getElementById("homePage").classList.toggle("shop-only", sectionId === "shop");
   document.getElementById("details").style.display = "none";
   document.getElementById("aboutPage").hidden = true;
+  document.getElementById("endorsementsPage").hidden = true;
   document.getElementById("not-found").style.display = "none";
   document.title = "MC STORE | Minecraft Cape Shop";
 
@@ -2513,12 +2703,13 @@ function showHome(sectionId = "home") {
   const navLink = document.querySelector(
     sectionId === "shop" ? 'a[href="#shop"]' :
     sectionId === "about" ? 'a[href="#about"]' :
+    sectionId === "endorsements" ? 'a[href="#endorsements"]' :
     'a[href="#home"]'
   );
   if (navLink) navLink.classList.add("active");
 
   const target = sectionId === "home"
-    ? document.getElementById("shop")
+    ? document.getElementById("home")
     : (document.getElementById(sectionId) || document.getElementById("shop"));
   requestAnimationFrame(() => target.scrollIntoView({behavior:"smooth",block:"start"}));
 }
@@ -2527,12 +2718,27 @@ function showAbout() {
   document.getElementById("homePage").style.display = "none";
   document.getElementById("details").style.display = "none";
   document.getElementById("not-found").style.display = "none";
+  document.getElementById("endorsementsPage").hidden = true;
   document.getElementById("aboutPage").hidden = false;
-  document.title = "About Us | MC STORE";
+  document.title = "About Us | MC Capes";
   safeReplaceState("#about");
   document.querySelectorAll(".nav-link").forEach(link => link.classList.remove("active"));
   const aboutLink = document.querySelector('a.nav-link[href="#about"]');
   if (aboutLink) aboutLink.classList.add("active");
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+function showEndorsements() {
+  document.getElementById("homePage").style.display = "none";
+  document.getElementById("details").style.display = "none";
+  document.getElementById("aboutPage").hidden = true;
+  document.getElementById("not-found").style.display = "none";
+  document.getElementById("endorsementsPage").hidden = false;
+  document.title = "Endorsements & Partners | MC Capes";
+  safeReplaceState("#endorsements");
+  document.querySelectorAll(".nav-link").forEach(link => link.classList.remove("active"));
+  const endorsementsLink = document.querySelector('a.nav-link[href="#endorsements"]');
+  if (endorsementsLink) endorsementsLink.classList.add("active");
   window.scrollTo({top:0,behavior:"smooth"});
 }
 
@@ -2542,6 +2748,8 @@ function openCape(id) {
   document.getElementById("homePage").style.display = "none";
   document.getElementById("details").style.display = "none";
   document.getElementById("aboutPage").hidden = true;
+  document.getElementById("endorsementsPage").hidden = true;
+  document.getElementById("homePage").classList.remove("shop-only");
   document.getElementById("not-found").style.display = "none";
 
   if (!cape) {
@@ -2604,6 +2812,8 @@ function handleRoute() {
     showHome("shop");
   } else if (window.location.hash === "#about") {
     showAbout();
+  } else if (window.location.hash === "#endorsements") {
+    showEndorsements();
   } else {
     showHome("home");
   }
@@ -2686,7 +2896,7 @@ async function refreshDiscordInfo() {
 
 /* Initial rendering */
 renderProducts();
-showFeatured(0);
+showFeatured(1);
 restartFeaturedTimer();
 refreshDiscordInfo();
 
@@ -2696,6 +2906,8 @@ if (window.location.hash.startsWith("#cape/")) {
   showHome("shop");
 } else if (window.location.hash === "#about") {
   showAbout();
+} else if (window.location.hash === "#endorsements") {
+  showEndorsements();
 } else {
   showHome("home");
 }
@@ -2952,5 +3164,58 @@ onAuthStateChanged(auth, user => {
   if (user) { overlay.classList.remove("open"); document.body.classList.remove("auth-page-open"); }
 });
 </script>
+
+<script>
+/* Reveal content on scroll and automatically observe newly-rendered product cards. */
+(() => {
+  const selectors = [
+    '.cape-showcase-copy', '#featured', '#shop .section-head', '#shop .shop-tools',
+    '#shop .card', '.detail-card', '.recommendations', '#aboutPage .about-panel',
+    '#endorsementsPage .about-panel', '.endorsement-card', 'footer .footer-inner'
+  ];
+  const collect = root => {
+    const found = [];
+    for (const selector of selectors) {
+      if (root.matches && root.matches(selector)) found.push(root);
+      if (root.querySelectorAll) found.push(...root.querySelectorAll(selector));
+    }
+    return [...new Set(found)];
+  };
+
+  if (!('IntersectionObserver' in window)) return;
+  let observer;
+  try {
+    observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.08, rootMargin: '0px 0px -20px 0px' });
+    document.body.classList.add('mc-reveal-ready');
+    collect(document).forEach(element => {
+      element.classList.add('reveal-on-scroll');
+      observer.observe(element);
+    });
+    const products = document.getElementById('products');
+    if (products && 'MutationObserver' in window) {
+      const mutations = new MutationObserver(records => {
+        records.forEach(record => record.addedNodes.forEach(node => {
+          if (node.nodeType === 1) collect(node).forEach(element => {
+            element.classList.add('reveal-on-scroll');
+            observer.observe(element);
+          });
+        }));
+      });
+      mutations.observe(products, { childList: true });
+    }
+  } catch (error) {
+    document.body.classList.remove('mc-reveal-ready');
+    console.info('Scroll reveal animations are unavailable in this browser.', error);
+  }
+})();
+</script>
+
 </body>
 </html>
