@@ -2195,3 +2195,44 @@ onAuthStateChanged(auth, user => {
 </script>
 </body>
 </html>
+/* Discord server preview on hover */
+.discord-float:hover .discord-popover,
+.discord-float:focus-within .discord-popover,
+.discord-float.open .discord-popover {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+.discord-popover {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateY(10px) scale(.97);
+  transition: opacity .2s ease, transform .2s ease, visibility .2s ease;
+}
+
+.discord-join {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+@media (hover: none) {
+  .discord-float:hover .discord-popover {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  .discord-float.open .discord-popover {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translateY(0) scale(1);
+  }
+}
