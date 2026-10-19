@@ -23701,7 +23701,6 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
 <script id="mc-store-product-detail-behavior">
 (() => {
   "use strict";
-  const MC_STEVE_SKIN = "https://crafatar.com/skins/8667ba71-b85a-4004-af54-457a9734eed7";
   let mcStoreViewer = null;
   let mcStoreActiveCape = null;
 
@@ -23833,13 +23832,18 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
       mcStoreViewer.autoRotate = false;
       mcStoreViewer.zoom = 0.92;
       mcStoreViewer.playerWrapper.rotation.y = Math.PI;
-      // Keep the player in a clean, still pose: no walking or swinging animation.
+      // Show the cape by itself: do not load or display the default Steve skin.
       mcStoreViewer.animation = null;
-      const skinLoad = mcStoreViewer.loadSkin(MC_STEVE_SKIN, {model:"default"});
+      if (mcStoreViewer.playerObject && mcStoreViewer.playerObject.skin) {
+        mcStoreViewer.playerObject.skin.visible = false;
+      }
       const capeLoad = mcStoreViewer.loadCape(cape.image);
-      const results = await Promise.allSettled([skinLoad, capeLoad]);
+      const results = await Promise.allSettled([capeLoad]);
       if (results.some(result => result.status === "rejected")) stage.classList.add("fallback-cape-only");
       if (mcStoreViewer) {
+        if (mcStoreViewer.playerObject && mcStoreViewer.playerObject.skin) {
+          mcStoreViewer.playerObject.skin.visible = false;
+        }
         mcStoreViewer.playerWrapper.rotation.y = Math.PI;
         const resize = () => {
           if (!mcStoreViewer || !document.getElementById("capeSkinViewer")) return;
