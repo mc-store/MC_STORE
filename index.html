@@ -3257,6 +3257,7 @@ const capes = [
     price:null,
     stock:false,
     image:"media/menace-cape.png",
+    detailImage:"media/menace-cape.png",
     productImage:"./capes%203D/menacecape3D",
     description:"A striking cape design in the MC STORE collection.",
     label:""
@@ -3511,9 +3512,10 @@ function showFeatured(index) {
 
 function restartFeaturedTimer() {
   clearInterval(featuredTimer);
+  // Change the featured cape every four seconds on both desktop and mobile.
   featuredTimer = setInterval(() => {
     showFeatured((featuredIndex + 1) % featuredCapes.length);
-  }, 4500);
+  }, 4000);
 }
 
 // Keep the cape showcase rotating on desktop too. Previously mouseenter/focusin
@@ -23728,7 +23730,8 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
     return `<span class="cape-name-accent cape-name-accent--${cape.id}">${safeText(accent)}</span><span class="cape-name-base">${safeText(rest)}</span>`;
   }
   function detailsImage(cape) {
-    return safeText(cape.showcaseImage || cape.image || "media/experience-cape.png");
+    // Menace uses its dedicated artwork on the opened product page.
+    return safeText(cape.detailImage || cape.showcaseImage || cape.image || "media/experience-cape.png");
   }
 
   // Replace only the product details view; the home page, filters and other sections remain intact.
@@ -23816,6 +23819,27 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
     const canvas = document.getElementById("capeSkinViewer");
     if (!stage || !canvas) return;
     stage.classList.remove("fallback-cape-only");
+
+    // Menace has its own flat artwork. Show that exact image in the detail preview
+    // instead of trying to map the artwork onto the 3D cape viewer.
+    if (cape.id === "menace") {
+      closeCurrentViewer();
+      const fallbackImage = document.getElementById("capePreviewFallback");
+      if (fallbackImage) {
+        fallbackImage.src = "media/menace-cape.png";
+        fallbackImage.onerror = function () {
+          if (this.dataset.remoteFallbackTried) {
+            this.style.display = "none";
+            return;
+          }
+          this.dataset.remoteFallbackTried = "1";
+          this.src = "https://mc-store.github.io/MC_STORE/media/menace-cape.png";
+        };
+      }
+      stage.classList.add("fallback-cape-only");
+      return;
+    }
+
     if (!window.skinview3d || typeof window.skinview3d.SkinViewer !== "function") {
       stage.classList.add("fallback-cape-only");
       return;
@@ -24002,7 +24026,7 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
   to   { transform: translate3d(0, 0, 0); }
 }
 .sale .sale-track {
-  animation: mcStorePromoScrollRight 29s linear infinite !important;
+  animation: mcStorePromoScrollRight 50s linear infinite !important;
   animation-play-state: running !important;
   will-change: transform;
 }
@@ -24048,9 +24072,13 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
 /* Keep the requested motion on PC and mobile, regardless of reduced-motion defaults. */
 @media (prefers-reduced-motion: reduce) {
   #featured .featured-image img,
-  #featured .featured-image.cape-zoom-switch img,
-  .sale .sale-track {
+  #featured .featured-image.cape-zoom-switch img {
     animation-duration: .1s !important;
+    animation-iteration-count: infinite !important;
+  }
+  /* Keep the promo ticker slow even when reduced-motion is enabled. */
+  .sale .sale-track {
+    animation-duration: 50s !important;
     animation-iteration-count: infinite !important;
   }
 }
