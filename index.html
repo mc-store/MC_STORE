@@ -23973,5 +23973,88 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
 }
 </style>
 
+
+<style id="mc-store-requested-continuous-animations">
+/* Home showcase cape: continuously rotate one full 360-degree turn every 0.1 second. */
+@keyframes mcStoreCapeContinuousSpin {
+  from { transform: perspective(1000px) rotateY(0deg); }
+  to   { transform: perspective(1000px) rotateY(360deg); }
+}
+#featured .featured-image img,
+#featured .featured-image.cape-zoom-switch img,
+#featured .featured-image img.cape-spin,
+#featured .featured-image img.is-spinning,
+#featured .featured-image img.spin-in {
+  animation: mcStoreCapeContinuousSpin .1s linear infinite !important;
+  transform-origin: 50% 50% !important;
+  transform-style: preserve-3d !important;
+  backface-visibility: visible !important;
+  will-change: transform;
+}
+#featured .featured-image {
+  perspective: 1000px !important;
+  perspective-origin: 50% 50% !important;
+}
+
+/* Promo strip: duplicate groups allow a seamless continuous move to the RIGHT. */
+@keyframes mcStorePromoScrollRight {
+  from { transform: translate3d(-50%, 0, 0); }
+  to   { transform: translate3d(0, 0, 0); }
+}
+.sale .sale-track {
+  animation: mcStorePromoScrollRight 29s linear infinite !important;
+  animation-play-state: running !important;
+  will-change: transform;
+}
+.sale:hover .sale-track,
+.sale:focus-within .sale-track {
+  animation-play-state: running !important;
+}
+
+/* Discord preview: slide smoothly out from the square on hover, focus, or tap. */
+#discordFloat .discord-popover {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  transform: translate3d(-20px, -50%, 0) scale(.97) !important;
+  transform-origin: left center !important;
+  transition:
+    opacity .46s ease,
+    transform .62s cubic-bezier(.2, .8, .2, 1),
+    visibility 0s linear .62s !important;
+  will-change: opacity, transform;
+}
+#discordFloat:not(.dismissed):hover .discord-popover,
+#discordFloat:not(.dismissed):focus-within .discord-popover,
+#discordFloat.open:not(.dismissed) .discord-popover {
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+  transform: translate3d(0, -50%, 0) scale(1) !important;
+  transition:
+    opacity .46s ease,
+    transform .62s cubic-bezier(.2, .8, .2, 1),
+    visibility 0s linear 0s !important;
+}
+#discordFloat .discord-float-button {
+  transition: transform .3s ease, box-shadow .35s ease, border-radius .35s ease !important;
+}
+#discordFloat:not(.dismissed):hover .discord-float-button,
+#discordFloat:not(.dismissed):focus-within .discord-float-button,
+#discordFloat.open:not(.dismissed) .discord-float-button {
+  transform: translateX(1px) !important;
+}
+
+/* Keep the requested motion on PC and mobile, regardless of reduced-motion defaults. */
+@media (prefers-reduced-motion: reduce) {
+  #featured .featured-image img,
+  #featured .featured-image.cape-zoom-switch img,
+  .sale .sale-track {
+    animation-duration: .1s !important;
+    animation-iteration-count: infinite !important;
+  }
+}
+</style>
+
 </body>
 </html>
