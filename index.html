@@ -2897,7 +2897,6 @@ body.mc-reveal-ready .mc-footer .reveal-on-scroll.is-visible {
         </div>
         <div class="featured-bottom showcase-bottom">
           <div class="featured-dots" id="featuredDots" aria-label="Choose a featured cape"></div>
-          <span class="showcase-hint">Cape showcase · auto-changing</span>
         </div>
       </div>
 
@@ -23998,18 +23997,24 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
 </style>
 
 
-<style id="mc-store-requested-continuous-animations">
-/* Home showcase cape: continuously rotate one full 360-degree turn every 0.1 second. */
-@keyframes mcStoreCapeContinuousSpin {
-  from { transform: perspective(1000px) rotateY(0deg); }
-  to   { transform: perspective(1000px) rotateY(360deg); }
+<style id="mc-store-requested-transition-animations">
+/* Keep the cape gently floating between changes; spin 360 degrees once whenever a new cape is selected. */
+@keyframes mcStoreCapeChangeSpin {
+  0% { transform: perspective(1000px) translateY(0) rotateY(0deg) scale(.96); }
+  100% { transform: perspective(1000px) translateY(0) rotateY(360deg) scale(1); }
 }
-#featured .featured-image img,
+#featured .featured-image img {
+  animation: mcCapeUprightFloat 3.4s ease-in-out infinite !important;
+  transform-origin: 50% 50% !important;
+  transform-style: preserve-3d !important;
+  backface-visibility: visible !important;
+  will-change: transform;
+}
 #featured .featured-image.cape-zoom-switch img,
 #featured .featured-image img.cape-spin,
 #featured .featured-image img.is-spinning,
 #featured .featured-image img.spin-in {
-  animation: mcStoreCapeContinuousSpin .1s linear infinite !important;
+  animation: mcStoreCapeChangeSpin .1s linear 1 both !important;
   transform-origin: 50% 50% !important;
   transform-style: preserve-3d !important;
   backface-visibility: visible !important;
@@ -24069,14 +24074,17 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
   transform: translateX(1px) !important;
 }
 
-/* Keep the requested motion on PC and mobile, regardless of reduced-motion defaults. */
+/* Keep the selected-cape spin quick and single-shot on desktop and mobile. */
 @media (prefers-reduced-motion: reduce) {
-  #featured .featured-image img,
-  #featured .featured-image.cape-zoom-switch img {
-    animation-duration: .1s !important;
-    animation-iteration-count: infinite !important;
+  #featured .featured-image img {
+    animation: mcCapeUprightFloat 3.4s ease-in-out infinite !important;
   }
-  /* Keep the promo ticker slow even when reduced-motion is enabled. */
+  #featured .featured-image.cape-zoom-switch img,
+  #featured .featured-image img.cape-spin,
+  #featured .featured-image img.is-spinning,
+  #featured .featured-image img.spin-in {
+    animation: mcStoreCapeChangeSpin .1s linear 1 both !important;
+  }
   .sale .sale-track {
     animation-duration: 50s !important;
     animation-iteration-count: infinite !important;
