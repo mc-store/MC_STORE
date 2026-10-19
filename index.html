@@ -3460,10 +3460,14 @@ function showFeatured(index) {
   const cape = featuredCapes[featuredIndex];
 
   const featuredImage = document.getElementById("featuredImage");
-  featuredImage.src = cape.showcaseImage || cape.image;
+  const nextShowcaseImage = cape.showcaseImage || cape.image;
+  const nextShowcaseURL = new URL(nextShowcaseImage, document.baseURI).href;
   featuredImage.alt = cape.name;
 
-  // Spin the incoming cape once through 360 degrees; no zoom or scale effect.
+  // Remove the previous spin listener only once, then wait for the new image to
+  // finish loading before starting the 100 ms rotation. On desktop, the previous
+  // code could finish the very short animation before the replacement image had
+  // decoded, making the spin appear to work only on mobile.
   if (!featuredImage.dataset.spinListener) {
     featuredImage.addEventListener("animationend", event => {
       if (event.target === featuredImage && event.animationName === "mcStoreCapePureSpin") {
@@ -3472,9 +3476,34 @@ function showFeatured(index) {
     });
     featuredImage.dataset.spinListener = "true";
   }
+
   featuredImage.classList.remove("cape-spin");
-  void featuredImage.offsetWidth;
-  featuredImage.classList.add("cape-spin");
+  featuredImage.dataset.capeSpinTarget = nextShowcaseURL;
+
+  const startCapeSpinWhenReady = () => {
+    if (featuredImage.dataset.capeSpinTarget !== nextShowcaseURL ||
+        !featuredImage.complete || featuredImage.naturalWidth === 0) return;
+
+    // Force a fresh animation after the browser has painted the decoded image.
+    void featuredImage.offsetWidth;
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        if (featuredImage.dataset.capeSpinTarget === nextShowcaseURL &&
+            featuredImage.complete && featuredImage.naturalWidth > 0) {
+          featuredImage.classList.remove("cape-spin");
+          void featuredImage.offsetWidth;
+          featuredImage.classList.add("cape-spin");
+        }
+      });
+    });
+  };
+
+  if (featuredImage.src !== nextShowcaseURL || !featuredImage.complete || featuredImage.naturalWidth === 0) {
+    featuredImage.addEventListener("load", startCapeSpinWhenReady, { once: true });
+    featuredImage.src = nextShowcaseImage;
+  } else {
+    startCapeSpinWhenReady();
+  }
 
   const featuredName = document.getElementById("featuredName");
   featuredName.innerHTML = cape.id === "builder"
