@@ -15,12 +15,12 @@
 <meta property="og:title" content="MC STORE | Minecraft Cape Shop">
 <meta property="og:description" content="Discover Minecraft capes at MC STORE. Browse our collection, check availability, and contact us on Discord.">
 <meta property="og:url" content="https://mc-store.github.io/MC_STORE/">
-<meta property="og:image" content="https://mc-store.github.io/MC_STORE/media/1792194385872.png">
+<meta property="og:image" content="https://mc-store.github.io/MC_STORE/media/mcstore.png">
 <meta property="og:image:alt" content="MC STORE logo">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="MC STORE | Minecraft Cape Shop">
 <meta name="twitter:description" content="Discover Minecraft capes at MC STORE. Browse our collection, check availability, and contact us on Discord.">
-<meta name="twitter:image" content="https://mc-store.github.io/MC_STORE/media/1792194385872.png">
+<meta name="twitter:image" content="https://mc-store.github.io/MC_STORE/media/mcstore.png">
 <meta name="twitter:image:alt" content="MC STORE logo">
 
 <style>
@@ -1703,7 +1703,6 @@ nav { background: rgba(255,253,248,.94) !important; border-bottom-color: rgba(30
 .cape-name--experience { color: #53e5ff !important; }
 .cape-name--aurora { color: #53e5ff !important; }
 .cape-name--menace { color: #ff454f !important; }
-.cape-name--corrupted { color: #ff5a5f !important; }
 .cape-name--moonlight { color: #75bfff !important; }
 .cape-name--crafter { color: #d7a8ff !important; }
 .cape-name--purple-heart { color: #b995ff !important; }
@@ -1736,7 +1735,6 @@ body, body p, .hero-copy>p, .section-head p, .card-desc, .detail-info>p, .about-
 .cape-name--copper { color:#176b3b !important; }
 .cape-name--menace { color:#d92532 !important; }
 .cape-name--aurora { color:#10a9c8 !important; }
-.cape-name--corrupted { color:#c92732 !important; }
 .cape-name--experience { color:#247c43 !important; }
 .cape-name--crafter { color:#7950b5 !important; }
 .cape-name--moonlight { color:#2d6b9d !important; }
@@ -1760,7 +1758,6 @@ body, body p, .hero-copy>p, .section-head p, .card-desc, .detail-info>p, .about-
 /* Colour the cape's NAME to match its own cape artwork in cards, featured preview, and detail view. */
 .cape-name.cape-name--aurora, .featured-info .cape-name--aurora, .detail-info .cape-name--aurora { color:#12a9c8 !important; -webkit-text-fill-color:#12a9c8 !important; }
 .cape-name.cape-name--builder, .featured-info .cape-name--builder, .detail-info .cape-name--builder { color:#9a5b22 !important; -webkit-text-fill-color:#9a5b22 !important; }
-.cape-name.cape-name--corrupted, .featured-info .cape-name--corrupted, .detail-info .cape-name--corrupted { color:#c92732 !important; -webkit-text-fill-color:#c92732 !important; }
 .cape-name.cape-name--experience, .featured-info .cape-name--experience, .detail-info .cape-name--experience { color:#398447 !important; -webkit-text-fill-color:#398447 !important; }
 .cape-name.cape-name--crafter, .featured-info .cape-name--crafter, .detail-info .cape-name--crafter { color:#7950b5 !important; -webkit-text-fill-color:#7950b5 !important; }
 .cape-name.cape-name--menace, .featured-info .cape-name--menace, .detail-info .cape-name--menace { color:#d92532 !important; -webkit-text-fill-color:#d92532 !important; }
@@ -2857,7 +2854,7 @@ body.mc-reveal-ready .mc-footer .reveal-on-scroll.is-visible {
 <nav aria-label="Main navigation">
   <div class="container nav-inner">
     <a href="#home" class="brand" aria-label="MC STORE home" onclick="showHome('home');return false">
-      <img src="media/1792194385872.png" alt="MC STORE logo"
+      <img src="media/mcstore.png" alt="MC STORE logo"
            onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
       <span class="brand-fallback">MC <span class="gradient">STORE</span></span>
     </a>
@@ -2889,7 +2886,7 @@ body.mc-reveal-ready .mc-footer .reveal-on-scroll.is-visible {
   <header class="hero container" id="home">
     <div class="hero-layout cape-showcase-layout">
       <div class="hero-copy cape-showcase-copy">
-        <div class="pill"><span class="pulse"></span> <span id="featuredNumber">01 / 09</span> · CAPE SPOTLIGHT</div>
+        <div class="pill"><span class="pulse"></span> <span id="featuredNumber">01 / 08</span> · CAPE SPOTLIGHT</div>
         <span class="stock" id="featuredStock">✓ IN STOCK</span>
         <h1 id="featuredName">Aurora Cape</h1>
         <p id="featuredDescription">Explore the MC STORE cape collection.</p>
@@ -2910,7 +2907,7 @@ body.mc-reveal-ready .mc-footer .reveal-on-scroll.is-visible {
           <span class="featured-number">MC STORE</span>
         </div>
         <div class="featured-image">
-          <img id="featuredImage" src="media/aurora-front.png" alt="Aurora Cape">
+          <img id="featuredImage" src="media/aurora-cape.png" alt="Aurora Cape">
         </div>
       </div>
     </div>
@@ -2953,57 +2950,7 @@ body.mc-reveal-ready .mc-footer .reveal-on-scroll.is-visible {
     </div>
   </section>
 
-  <!-- Home-only Fitting Room: interactive 3D preview placed directly under the cape collection. -->
-  <section class="container" id="fitting-room" aria-labelledby="fittingRoomTitle">
-    <div class="fitting-room-layout">
-      <div class="fitting-room-preview-column">
-        <div class="fitting-room-stage" id="fittingRoomStage" aria-label="Interactive Minecraft skin and cape preview">
-          <div class="fitting-room-scene" aria-hidden="true"></div>
-          <canvas id="fittingRoomCanvas" aria-label="Drag the Minecraft player to rotate it"></canvas>
-          <button class="fitting-room-skin-icon" id="fittingRoomSkinButton" type="button" aria-label="Upload your Minecraft skin" title="Upload your Minecraft skin">
-            <span class="fitting-room-skin-pixel" aria-hidden="true"></span>
-          </button>
-          <input id="fittingRoomSkinInput" type="file" accept="image/png,.png" hidden>
-          <button class="fitting-room-pause" id="fittingRoomPause" type="button" aria-label="Pause animation" title="Pause animation">Ⅱ</button>
-        </div>
-        <div class="fitting-room-tabs" role="tablist" aria-label="Fitting Room preview mode">
-          <button class="fitting-room-tab" type="button" role="tab" data-fitting-mode="cape" aria-selected="false">CAPE</button>
-          <button class="fitting-room-tab active" type="button" role="tab" data-fitting-mode="player" aria-selected="true">PLAYER</button>
-          <button class="fitting-room-tab" type="button" role="tab" data-fitting-mode="elytra" aria-selected="false">ELYTRA</button>
-        </div>
-        <p class="fitting-room-drag-hint">Drag to rotate <span aria-hidden="true">·</span> Scroll to zoom</p>
-      </div>
 
-            <div class="fitting-room-info">
-        <div class="fitting-room-kicker"><span></span> LIVE 3D PREVIEW</div>
-        <h2 id="fittingRoomTitle"><span>Fitting</span> Room</h2>
-        <p class="fitting-room-subtitle">Spin the player around to preview the cape on your skin.</p>
-        <div class="fitting-room-rule"></div>
-
-        <form class="fitting-room-username-form" id="fittingRoomUsernameForm" autocomplete="off">
-          <label class="fitting-room-label" for="fittingRoomUsername">Minecraft Java username</label>
-          <div class="fitting-room-username-controls">
-            <input id="fittingRoomUsername" name="minecraftUsername" type="text" maxlength="16" minlength="3" pattern="[A-Za-z0-9_]{3,16}" placeholder="Enter your Java username" aria-label="Minecraft Java username">
-            <button id="fittingRoomLoadUsername" type="submit">Load Skin</button>
-          </div>
-          <small class="fitting-room-username-note">Public profile skin only · Never enter your password.</small>
-        </form>
-
-        <div class="fitting-room-cape-picker-head">
-          <span class="fitting-room-label">Choose a cape</span>
-          <span>Click a cape to preview it</span>
-        </div>
-        <div id="fittingRoomCapeChoices" class="fitting-room-cape-choices" role="listbox" aria-label="Choose a cape to preview"></div>
-
-        <button class="fitting-room-upload" id="fittingRoomUpload" type="button">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16V4m0 0L7 9m5-5 5 5"/><path d="M5 14v5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-5"/></svg>
-          <span><strong>Or upload a Minecraft skin</strong><small id="fittingRoomSkinName">Upload a PNG skin file</small></span>
-          <span class="fitting-room-upload-arrow" aria-hidden="true">↗</span>
-        </button>
-        <p class="fitting-room-status" id="fittingRoomStatus" role="status" aria-live="polite">Loading the 3D fitting room…</p>
-      </div>
-    </div>
-  </section>
 
 </main>
 
@@ -3221,6 +3168,8 @@ const capes = [
     stock:true,
     onSale:true,
     image:"media/aurora-front.png",
+    showcaseImage:"media/aurora-cape.png",
+    productImage:"media/auroracape3D.png",
     description:"A vibrant cape for players who want a distinctive look in their Minecraft collection.",
     label:"Popular"
   },
@@ -3231,27 +3180,19 @@ const capes = [
     stock:true,
     onSale:true,
     image:"media/builder-cape.png",
+    showcaseImage:"media/builder-cape.png",
     description:"A classic addition for Minecraft cape collectors and fans of building.",
     label:"Featured"
   },
   {
-    id:"corrupted",
-    name:"Corrupted Cape",
-    price:10,
-    stock:true,
-    onSale:true,
-    image:"media/cloakFront%20(2).webp",
-    description:"A distinctive cape design for players looking to add something different to their collection.",
-    label:"Featured"
-  },
-  {
-    id:"experience",
-    name:"Experience Cape Code",
-    price:69.99,
-    originalPrice:79.99,
-    stock:true,
-    image:"media/experience-cape.png",
-    description:"The Experience cape was the first IRL obtainable cape since Minecon 2016. The cape is only obtainable via attending an IRL Minecraft Event located in different places across the World. If you can't go, don't worry, you can buy it here!",
+    id:"copper",
+    name:"Copper Cape",
+    price:null,
+    stock:false,
+    image:"media/copper-cape.png",
+    showcaseImage:"media/copper-cape.png",
+    productImage:"media/coppercape3D.png",
+    description:"A copper-themed design for Minecraft players and collectors.",
     label:""
   },
   {
@@ -3260,43 +3201,21 @@ const capes = [
     price:null,
     stock:false,
     image:"media/crafter-cape.png",
+    showcaseImage:"media/crafter-cape.png",
+    productImage:"media/craftercape3D.png",
     description:"A crafting-inspired design for Minecraft fans and cape collectors.",
     label:""
   },
   {
-    id:"menace",
-    name:"Menace Cape",
-    price:null,
-    stock:false,
-    image:"media/menace-cape.png",
-    description:"A striking cape design in the MC STORE collection.",
-    label:""
-  },
-  {
-    id:"copper",
-    name:"Copper Cape",
-    price:null,
-    stock:false,
-    image:"media/copper-cape.png",
-    description:"A copper-themed design for Minecraft players and collectors.",
-    label:""
-  },
-  {
-    id:"moonlight",
-    name:"Moonlight Cape",
-    price:null,
-    stock:false,
-    image:"media/moonlight-cape.png",
-    description:"A moonlight-inspired design for your Minecraft cape collection.",
-    label:""
-  },
-  {
-    id:"twitch",
-    name:"Twitch Cape",
-    price:null,
-    stock:false,
-    image:"media/twitch-cape.png",
-    description:"A Twitch-themed cape design for Minecraft cape collectors.",
+    id:"experience",
+    name:"Experience Cape Code",
+    price:69.99,
+    originalPrice:79.99,
+    stock:true,
+    image:"media/experience-cape.png",
+    showcaseImage:"media/experience-cape.png",
+    productImage:"media/experiencecape3D.png",
+    description:"The Experience cape was the first IRL obtainable cape since Minecon 2016. The cape is only obtainable via attending an IRL Minecraft Event located in different places across the World. If you can't go, don't worry, you can buy it here!",
     label:""
   },
   {
@@ -3305,7 +3224,20 @@ const capes = [
     price:null,
     stock:false,
     image:"media/home-cape.png",
+    showcaseImage:"media/home-cape.png",
+    productImage:"media/homecape3D.png",
     description:"A Home cape design for Minecraft players and collectors.",
+    label:""
+  },
+  {
+    id:"moonlight",
+    name:"Moonlight Cape",
+    price:null,
+    stock:false,
+    image:"media/moonlight-cape.png",
+    showcaseImage:"media/moonlight-cape.png",
+    productImage:"media/moonlightcape3D.png",
+    description:"A moonlight-inspired design for your Minecraft cape collection.",
     label:""
   },
   {
@@ -3313,11 +3245,26 @@ const capes = [
     name:"Purple Heart Cape",
     price:null,
     stock:false,
-    image:"media/320%20(7).png",
+    image:"media/twitch-cape.png",
+    showcaseImage:"media/twitch-cape.png",
+    productImage:"media/twitchcape3D.png",
     description:"A purple-themed cape design for your collection.",
+    label:""
+  },
+  {
+    id:"menace",
+    name:"Menace Cape",
+    price:null,
+    stock:false,
+    image:"media/menace-cape.png",
+    productImage:"media/menacecape3D.png",
+    description:"A striking cape design in the MC STORE collection.",
     label:""
   }
 ];
+
+// Menace belongs in Our Products, but not in the homepage cape showcase.
+const featuredCapes = capes.filter(cape => cape.id !== "menace");
 
 document.getElementById("year").textContent = new Date().getFullYear();
 
@@ -3354,7 +3301,7 @@ function capeCard(cape) {
           <span class="card-tag ${cape.stock ? "" : "sold"} ${cape.onSale ? "sale-tag" : ""}">${tag}</span>
           ${cape.onSale && cape.stock ? `<span class="card-tag popular stock-tag">IN STOCK</span>` : (cape.label ? `<span class="card-tag popular">${escapeHTML(cape.label)}</span>` : "")}
           <img class="card-img"
-               src="${cape.image}"
+               src="${cape.productImage || cape.image}"
                alt="${escapeHTML(cape.name)}"
                loading="lazy"
                onerror="this.style.opacity='.25'">
@@ -3441,11 +3388,11 @@ document.querySelectorAll("[data-filter]").forEach(button => {
 });
 
 function showFeatured(index) {
-  featuredIndex = (index + capes.length) % capes.length;
-  const cape = capes[featuredIndex];
+  featuredIndex = (index + featuredCapes.length) % featuredCapes.length;
+  const cape = featuredCapes[featuredIndex];
 
   const featuredImage = document.getElementById("featuredImage");
-  featuredImage.src = cape.image;
+  featuredImage.src = cape.showcaseImage || cape.image;
   featuredImage.alt = cape.name;
 
   // Zoom and rotate the cape on its own whenever the Home showcase changes.
@@ -3478,11 +3425,11 @@ function showFeatured(index) {
   stock.classList.toggle("sold", !cape.stock);
 
   document.getElementById("featuredNumber").textContent =
-    `${String(featuredIndex + 1).padStart(2,"0")} / ${String(capes.length).padStart(2,"0")}`;
+    `${String(featuredIndex + 1).padStart(2,"0")} / ${String(featuredCapes.length).padStart(2,"0")}`;
 
   document.getElementById("featuredView").onclick = () => openCape(cape.id);
 
-  document.getElementById("featuredDots").innerHTML = capes.map((item,i) => `
+  document.getElementById("featuredDots").innerHTML = featuredCapes.map((item,i) => `
     <button type="button"
       class="dot ${i === featuredIndex ? "active" : ""}"
       aria-label="Show ${escapeHTML(item.name)}"
@@ -3501,7 +3448,7 @@ function showFeatured(index) {
 function restartFeaturedTimer() {
   clearInterval(featuredTimer);
   featuredTimer = setInterval(() => {
-    showFeatured((featuredIndex + 1) % capes.length);
+    showFeatured((featuredIndex + 1) % featuredCapes.length);
   }, 4500);
 }
 
@@ -4261,7 +4208,14 @@ onAuthStateChanged(auth, user => {
   max-width: none;
   padding: 24px 0 72px;
 }
-#details > .back-row { display: none; }
+#details > .back-row {
+  display: flex;
+  justify-content: flex-start;
+  margin: 0 0 22px;
+  position: relative;
+  z-index: 3;
+}
+#details > .back-row .back-btn { cursor: pointer; }
 #details .detail-card.detail-card--storefront {
   display: grid;
   grid-template-columns: minmax(0, 1.02fr) minmax(0, 1fr);
@@ -23714,13 +23668,14 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
     return `<span class="product-title-accent">${safeText(name.slice(0, firstSpace))}</span>${safeText(name.slice(firstSpace))}`;
   }
   function detailsImage(cape) {
-    return safeText(cape.image || "media/experience-cape.png");
+    return safeText(cape.showcaseImage || cape.image || "media/experience-cape.png");
   }
 
   // Replace only the product details view; the home page, filters and other sections remain intact.
   window.openCape = function(id) {
       // The original catalogue is a top-level lexical const; resolve it directly in this script scope.
-    const chosen = (typeof capes !== "undefined" ? capes : []).find(item => item.id === id);
+    const requestedId = id === "twitch" ? "purple-heart" : id;
+    const chosen = (typeof capes !== "undefined" ? capes : []).find(item => item.id === requestedId);
     document.getElementById("homePage").style.display = "none";
     document.getElementById("details").style.display = "none";
     document.getElementById("aboutPage").hidden = true;
@@ -23927,612 +23882,9 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
 
 
 
-<style id="mc-store-home-fitting-room-style">
-/* Fitting Room lives only on Home, directly below the cape collection. */
-#fitting-room.container {
-  width: min(1720px, 89%);
-  max-width: none;
-  padding: 12px 0 84px;
-  color: #24211e;
-}
-#homePage.shop-only #fitting-room { display: none !important; }
-.fitting-room-layout {
-  display: grid;
-  grid-template-columns: minmax(0, 1.02fr) minmax(0, 1fr);
-  align-items: center;
-  gap: clamp(30px, 3vw, 58px);
-}
-.fitting-room-preview-column { min-width: 0; }
-.fitting-room-stage {
-  position: relative;
-  isolation: isolate;
-  height: clamp(400px, 30vw, 574px);
-  overflow: hidden;
-  border: 1.5px solid #292622;
-  border-radius: 16px;
-  background: #81766a;
-  box-shadow: 7px 7px 0 #282522;
-}
-.fitting-room-scene {
-  position: absolute;
-  z-index: -2;
-  inset: 0;
-  overflow: hidden;
-  background:
-    linear-gradient(180deg, rgba(51,54,75,.05) 0%, rgba(69,52,38,.05) 48%, rgba(18,28,21,.22) 100%),
-    radial-gradient(ellipse at 9% 36%, #fff8a2 0 5%, #f8d86a 6%, #db874b 13%, transparent 24%),
-    linear-gradient(180deg, #777a8f 0%, #9c6d70 20%, #d27a48 38%, #9c805c 54%, #67624f 76%, #27382a 100%);
-  filter: saturate(.94);
-}
-.fitting-room-scene::before {
-  content: "";
-  position: absolute;
-  inset: 22% -5% 0;
-  opacity: .9;
-  filter: blur(7px);
-  background:
-    linear-gradient(#6d6a55, #5b513c) 0 44% / 24% 28% no-repeat,
-    linear-gradient(#8e7953, #3e3d2c) 27% 24% / 16% 52% no-repeat,
-    linear-gradient(#7f755d, #504c38) 46% 41% / 23% 38% no-repeat,
-    linear-gradient(#a65b36, #70432d) 78% 12% / 13% 38% no-repeat,
-    linear-gradient(#7c775e, #484533) 93% 44% / 19% 33% no-repeat,
-    linear-gradient(#635940, #383527) 0 78% / 100% 28% no-repeat;
-}
-.fitting-room-scene::after {
-  content: "";
-  position: absolute;
-  left: -4%; right: -3%; bottom: -3%; height: 35%;
-  filter: blur(4px);
-  background:
-    linear-gradient(180deg, #827153 0 13%, #4f4735 14% 100%) 0 0 / 31% 70% no-repeat,
-    linear-gradient(180deg, #617044 0 21%, #283b2d 22% 100%) 31% 42% / 34% 57% no-repeat,
-    linear-gradient(180deg, #95805a 0 19%, #4e4838 20% 100%) 67% 3% / 38% 90% no-repeat;
-}
-#fittingRoomCanvas {
-  position: absolute;
-  inset: 0;
-  display: block;
-  width: 100%;
-  height: 100%;
-  z-index: 1;
-  touch-action: pan-y;
-  cursor: grab;
-}
-#fittingRoomCanvas:active { cursor: grabbing; }
-.fitting-room-skin-icon {
-  position: absolute;
-  z-index: 4;
-  top: 15px; left: 15px;
-  width: 47px; height: 47px;
-  display: grid; place-items: center;
-  border: 2px solid #1f201d;
-  border-radius: 10px;
-  background: linear-gradient(180deg,#202221 0 58%,#ecebe3 59% 78%,#b9b9ab 79% 100%);
-  box-shadow: 0 2px 0 rgba(255,255,255,.18) inset;
-  cursor: pointer;
-  transition: transform .15s ease;
-}
-.fitting-room-skin-icon:hover { transform: translateY(-2px); }
-.fitting-room-skin-pixel {
-  display: block;
-  width: 29px; height: 17px;
-  background: linear-gradient(90deg,#d9e1df 0 22%,#1d2423 22% 40%,#d9e1df 40% 61%,#1d2423 61% 79%,#d9e1df 79%);
-  border-top: 5px solid #262825;
-  border-bottom: 4px solid #f5f3ed;
-}
-.fitting-room-pause {
-  position: absolute;
-  z-index: 5;
-  top: 15px; right: 15px;
-  width: 40px; height: 40px;
-  border: 1px solid rgba(255,255,255,.24);
-  border-radius: 9px;
-  background: rgba(61,35,24,.78);
-  color: #fff;
-  font-size: 17px;
-  font-weight: 900;
-  cursor: pointer;
-  backdrop-filter: blur(4px);
-}
-.fitting-room-pause:hover { background: rgba(35,30,27,.92); }
-.fitting-room-tabs {
-  width: fit-content;
-  max-width: 100%;
-  margin: 19px auto 0;
-  padding: 5px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 4px;
-  border: 2px solid #2d2925;
-  border-radius: 999px;
-  background: #fffdf7;
-  box-shadow: 3px 3px 0 #2d2925;
-}
-.fitting-room-tab {
-  min-width: 81px;
-  padding: 7px 13px;
-  border: 0;
-  border-radius: 999px;
-  background: transparent;
-  color: #5d5750;
-  font-size: 12px;
-  font-weight: 900;
-  letter-spacing: .7px;
-  cursor: pointer;
-  transition: background .16s ease, color .16s ease;
-}
-.fitting-room-tab.active { background: #12b9f6; color: #071c28; }
-.fitting-room-tab:focus-visible, .fitting-room-upload:focus-visible,
-.fitting-room-select:focus-visible, .fitting-room-skin-icon:focus-visible,
-.fitting-room-pause:focus-visible { outline: 3px solid #57299a; outline-offset: 3px; }
-.fitting-room-drag-hint {
-  margin: 14px 0 0;
-  text-align: center;
-  color: #7a7369;
-  font-size: 11px;
-  font-weight: 650;
-  letter-spacing: .2px;
-}
-.fitting-room-drag-hint span { padding: 0 6px; color: #b2a99a; }
-.fitting-room-info { min-width: 0; padding: 0; }
-.fitting-room-kicker {
-  display: flex;
-  align-items: center;
-  gap: 9px;
-  margin-bottom: 13px;
-  color: #686157;
-  font-size: 11px;
-  font-weight: 850;
-  letter-spacing: 1.35px;
-}
-.fitting-room-kicker span {
-  width: 8px; height: 8px; border-radius: 50%;
-  background: #5a9f70; box-shadow: 0 0 0 4px #5a9f701c;
-}
-.fitting-room-info h2 {
-  margin: 0 0 13px;
-  color: #272523;
-  font-size: clamp(38px, 3vw, 56px);
-  line-height: 1.08;
-  letter-spacing: -1.7px;
-  font-weight: 950;
-}
-.fitting-room-info h2 span { color: #57299a; }
-.fitting-room-subtitle {
-  max-width: 700px;
-  margin: 0;
-  color: #645d55;
-  font-size: clamp(15px, 1.12vw, 18px);
-  line-height: 1.9;
-}
-.fitting-room-rule { height: 1px; margin: 27px 0 22px; background: #e1d8ca; }
-.fitting-room-label {
-  display: block;
-  margin-bottom: 9px;
-  color: #504941;
-  font-size: 12px;
-  font-weight: 850;
-  letter-spacing: .25px;
-}
-.fitting-room-select {
-  display: block;
-  width: 100%;
-  min-height: 51px;
-  padding: 0 14px;
-  border: 1px solid #e2d8c7;
-  border-radius: 10px;
-  background: #fffdf8;
-  color: #282520;
-  font: inherit;
-  font-size: 14px;
-  font-weight: 700;
-  cursor: pointer;
-}
-.fitting-room-upload {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  gap: 13px;
-  margin-top: 15px;
-  padding: 14px 15px;
-  border: 1px solid #e2d8c7;
-  border-radius: 11px;
-  background: #fffdf8;
-  color: #292622;
-  text-align: left;
-  cursor: pointer;
-  transition: transform .15s ease, border-color .15s ease, background .15s ease;
-}
-.fitting-room-upload:hover { transform: translateY(-1px); border-color: #89cfe0; background: #fffefa; }
-.fitting-room-upload > svg { width: 23px; height: 23px; flex: 0 0 auto; color: #57299a; }
-.fitting-room-upload > span:nth-child(2) { display: grid; gap: 4px; min-width: 0; flex: 1; }
-.fitting-room-upload strong { color: #292622; font-size: 13px; font-weight: 850; }
-.fitting-room-upload small { color: #80786d; font-size: 11px; overflow-wrap: anywhere; }
-.fitting-room-upload-arrow { color: #5b2e99; font-size: 20px; font-weight: 800; }
-.fitting-room-status { min-height: 19px; margin: 14px 0 0; color: #17694a; font-size: 12px; line-height: 1.6; }
-.fitting-room-status.error { color: #a04438; }
 
-.fitting-room-username-form { margin: 0 0 19px; }
-.fitting-room-username-controls { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px; }
-.fitting-room-username-controls input {
-  width: 100%; min-width: 0; height: 43px; padding: 0 12px;
-  border: 1px solid #e2d8c7; border-radius: 9px; outline: none;
-  background: #fffdf8; color: #282520; font: inherit; font-size: 13px;
-}
-.fitting-room-username-controls input:focus { border-color: #16b9ee; box-shadow: 0 0 0 3px rgba(17,185,238,.13); }
-.fitting-room-username-controls button {
-  height: 43px; padding: 0 15px; border: 1px solid #0787b8; border-radius: 9px;
-  background: linear-gradient(180deg,#85e0ff,#20b9f3); color: #05232e;
-  font: inherit; font-size: 12px; font-weight: 850; white-space: nowrap; cursor: pointer;
-}
-.fitting-room-username-controls button:disabled { opacity: .58; cursor: wait; }
-.fitting-room-username-note { display: block; margin-top: 6px; color: #81786c; font-size: 10px; line-height: 1.5; }
-.fitting-room-cape-picker-head { display:flex; align-items:baseline; justify-content:space-between; gap:10px; margin-bottom:9px; }
-.fitting-room-cape-picker-head .fitting-room-label { margin:0; }
-.fitting-room-cape-picker-head > span { color:#81786c; font-size:10px; text-align:right; }
-.fitting-room-cape-choices {
-  display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:7px;
-  max-height:182px; overflow-y:auto; overflow-x:hidden; padding:2px 4px 5px 1px;
-  scrollbar-width:thin; scrollbar-color:#c9bda9 transparent;
-}
-.fitting-room-cape-choice {
-  min-width:0; padding:6px 5px 7px; display:flex; flex-direction:column; align-items:center; justify-content:flex-start; gap:5px;
-  border:1px solid #e2d8c7; border-radius:9px; background:#fffdf8; color:#504941; text-align:center;
-  cursor:pointer; transition:border-color .15s ease,background .15s ease,transform .15s ease,box-shadow .15s ease;
-}
-.fitting-room-cape-choice:hover { border-color:#8ad7eb; transform:translateY(-1px); }
-.fitting-room-cape-choice[aria-selected="true"] { border:2px solid #17b9ef; padding:5px 4px 6px; background:#eafaff; box-shadow:0 0 0 2px rgba(23,185,239,.12); color:#27231f; }
-.fitting-room-cape-choice img { display:block; width:100%; height:49px; object-fit:contain; border-radius:4px; }
-.fitting-room-cape-choice span { width:100%; font-size:9px; line-height:1.25; font-weight:800; overflow-wrap:anywhere; }
-.fitting-room-cape-choice:focus-visible { outline:2px solid #57299a; outline-offset:2px; }
-@media (max-width: 520px) {
-  .fitting-room-cape-choices { grid-template-columns:repeat(4,minmax(0,1fr)); max-height:202px; gap:6px; }
-  .fitting-room-cape-choice img { height:47px; }
-  .fitting-room-username-controls { grid-template-columns:minmax(0,1fr) auto; }
-  .fitting-room-username-controls button { padding:0 11px; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .fitting-room-cape-choice { transition:none; }
-}
 
-@media (max-width: 1000px) {
-  #fitting-room.container { width: min(92%, 780px); padding-top: 5px; }
-  .fitting-room-layout { grid-template-columns: minmax(0,1fr); gap: 32px; }
-  .fitting-room-stage { height: clamp(360px, 64vw, 520px); }
-  .fitting-room-info h2 { font-size: clamp(36px, 6vw, 48px); }
-  .fitting-room-subtitle { font-size: 15px; }
-}
-@media (max-width: 520px) {
-  #fitting-room.container { width: 91%; padding-bottom: 58px; }
-  .fitting-room-stage { height: 370px; border-radius: 13px; }
-  .fitting-room-skin-icon { top: 10px; left: 10px; width: 40px; height: 40px; }
-  .fitting-room-pause { top: 10px; right: 10px; width: 36px; height: 36px; }
-  .fitting-room-tab { min-width: 70px; padding: 7px 9px; font-size: 11px; }
-  .fitting-room-info h2 { font-size: 37px; }
-  .fitting-room-upload { padding: 12px; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .fitting-room-upload, .fitting-room-skin-icon { transition: none; }
-}
-</style>
 
-<script id="mc-store-home-fitting-room-behavior">
-(() => {
-  "use strict";
-  const stage = document.getElementById("fittingRoomStage");
-  const canvas = document.getElementById("fittingRoomCanvas");
-  const capeChoices = document.getElementById("fittingRoomCapeChoices");
-  const skinInput = document.getElementById("fittingRoomSkinInput");
-  const skinButton = document.getElementById("fittingRoomSkinButton");
-  const uploadButton = document.getElementById("fittingRoomUpload");
-  const skinName = document.getElementById("fittingRoomSkinName");
-  const status = document.getElementById("fittingRoomStatus");
-  const pauseButton = document.getElementById("fittingRoomPause");
-  const usernameForm = document.getElementById("fittingRoomUsernameForm");
-  const usernameInput = document.getElementById("fittingRoomUsername");
-  const usernameButton = document.getElementById("fittingRoomLoadUsername");
-  if (!stage || !canvas || !capeChoices || !skinInput || !status) return;
-
-  const defaultSkinUrl = "https://crafatar.com/skins/8667ba71-b85a-4004-af54-457a9734eed7";
-  let viewer = null;
-  let viewerLoadingPromise = null;
-  let currentCape = null;
-  let currentMode = "player";
-  let customSkinUrl = "";
-  let usernameSkinUrl = "";
-  let currentSkinName = "";
-  let resizeObserver = null;
-  let loadSequence = 0;
-  let usernameLoadSequence = 0;
-
-  function setStatus(message, isError = false) {
-    status.textContent = message;
-    status.classList.toggle("error", Boolean(isError));
-  }
-
-  function getCapes() {
-    try {
-      // Only use the actual cape products in this MC STORE collection.
-      return (typeof capes !== "undefined" ? capes : []).filter(cape => cape && cape.image && cape.id && cape.name);
-    } catch (_) { return []; }
-  }
-
-  const storeCapes = getCapes();
-  if (!storeCapes.length) {
-    setStatus("The MC STORE cape list could not be loaded. Please refresh the page.", true);
-    return;
-  }
-  const defaultCape = storeCapes.find(cape => cape.id === "experience") || storeCapes[0];
-  currentCape = defaultCape;
-
-  function updateCapeChoiceButtons() {
-    capeChoices.querySelectorAll(".fitting-room-cape-choice").forEach(button => {
-      const selected = button.dataset.capeId === (currentCape && currentCape.id);
-      button.setAttribute("aria-selected", selected ? "true" : "false");
-      button.classList.toggle("active", selected);
-    });
-  }
-
-  function renderCapeChoices() {
-    capeChoices.textContent = "";
-    storeCapes.forEach(cape => {
-      const button = document.createElement("button");
-      button.type = "button";
-      button.className = "fitting-room-cape-choice";
-      button.dataset.capeId = cape.id;
-      button.setAttribute("role", "option");
-      button.setAttribute("aria-selected", cape.id === defaultCape.id ? "true" : "false");
-      button.title = "Preview " + cape.name;
-
-      const image = document.createElement("img");
-      image.src = cape.image;
-      image.alt = "";
-      image.loading = "lazy";
-      image.onerror = () => { image.style.opacity = ".35"; };
-
-      const label = document.createElement("span");
-      label.textContent = cape.name.replace(/\s+Cape(?:\s+Code)?$/i, "");
-      button.append(image, label);
-      button.addEventListener("click", () => applyCape(cape, currentMode));
-      capeChoices.appendChild(button);
-    });
-  }
-
-  function updateModeButtons(mode) {
-    document.querySelectorAll("[data-fitting-mode]").forEach(button => {
-      const active = button.dataset.fittingMode === mode;
-      button.classList.toggle("active", active);
-      button.setAttribute("aria-selected", active ? "true" : "false");
-    });
-  }
-
-  function activeSkinUrl() {
-    return customSkinUrl || usernameSkinUrl || defaultSkinUrl;
-  }
-
-  function skinStatusName() {
-    return currentSkinName ? "Skin loaded: " + currentSkinName : "Default Minecraft skin";
-  }
-
-  function disposeViewer() {
-    if (resizeObserver) {
-      try { resizeObserver.disconnect(); } catch (_) {}
-      resizeObserver = null;
-    }
-    if (viewer) {
-      try { viewer.dispose(); } catch (_) {}
-      viewer = null;
-    }
-  }
-
-  async function applyCape(cape, mode = currentMode) {
-    if (!cape) return;
-    currentCape = cape;
-    currentMode = mode;
-    updateModeButtons(mode);
-    updateCapeChoiceButtons();
-    if (!viewer) {
-      setStatus("Loading " + cape.name + "…");
-      await initViewer();
-      if (!viewer) return;
-    }
-    if (viewerLoadingPromise) await viewerLoadingPromise;
-    if (!viewer) return;
-    const sequence = ++loadSequence;
-    try {
-      await viewer.loadCape(cape.image, {backEquipment: mode === "elytra" ? "elytra" : "cape"});
-      if (sequence !== loadSequence || !viewer) return;
-      viewer.zoom = mode === "cape" ? 1.2 : 0.92;
-      setStatus(skinStatusName() + " · " + cape.name + " selected.");
-    } catch (error) {
-      if (sequence !== loadSequence) return;
-      setStatus("This cape preview could not load. Please click another cape or refresh the page.", true);
-      console.warn("Fitting Room cape preview could not be loaded.", error);
-    }
-  }
-
-  async function initViewer() {
-    if (viewer) {
-      if (viewerLoadingPromise) await viewerLoadingPromise;
-      return;
-    }
-    if (viewerLoadingPromise) {
-      await viewerLoadingPromise;
-      return;
-    }
-    if (!window.skinview3d || typeof window.skinview3d.SkinViewer !== "function") {
-      setStatus("The 3D viewer could not start in this browser.", true);
-      return;
-    }
-    disposeViewer();
-    stage.classList.remove("fitting-room-unavailable");
-    try {
-      viewer = new window.skinview3d.SkinViewer({
-        canvas,
-        width: Math.max(320, stage.clientWidth || 780),
-        height: Math.max(320, stage.clientHeight || 560),
-        pixelRatio: Math.min(window.devicePixelRatio || 1, 2),
-        enableControls: true
-      });
-      viewer.controls.enablePan = false;
-      viewer.autoRotate = false;
-      viewer.zoom = currentMode === "cape" ? 1.2 : 0.92;
-      viewer.playerWrapper.rotation.y = Math.PI;
-      viewer.animation = new window.skinview3d.WalkingAnimation();
-
-      const activeViewer = viewer;
-      const loadingTask = (async () => {
-        const activeSkin = activeSkinUrl();
-        const results = await Promise.allSettled([
-          activeViewer.loadSkin(activeSkin, {model: "default"}),
-          activeViewer.loadCape(currentCape.image, {backEquipment: currentMode === "elytra" ? "elytra" : "cape"})
-        ]);
-        if (viewer !== activeViewer) return;
-        viewer.playerWrapper.rotation.y = Math.PI;
-        viewer.zoom = currentMode === "cape" ? 1.2 : 0.92;
-        if (results[0].status === "rejected") {
-          setStatus("Skin could not be loaded. Enter a Java username or upload a PNG skin.", true);
-        } else if (results[1].status === "rejected") {
-          setStatus("The player loaded, but this cape image could not be used as a cape texture.", true);
-        } else {
-          setStatus(skinStatusName() + " · " + currentCape.name + " selected.");
-        }
-        const resize = () => {
-          if (!viewer || viewer !== activeViewer || !stage.clientWidth) return;
-          viewer.width = stage.clientWidth;
-          viewer.height = stage.clientHeight;
-        };
-        if (window.ResizeObserver) {
-          resizeObserver = new ResizeObserver(resize);
-          resizeObserver.observe(stage);
-        } else {
-          window.addEventListener("resize", resize, {passive: true});
-        }
-        resize();
-      })();
-      viewerLoadingPromise = loadingTask;
-      try {
-        await loadingTask;
-      } finally {
-        if (viewerLoadingPromise === loadingTask) viewerLoadingPromise = null;
-      }
-    } catch (error) {
-      disposeViewer();
-      setStatus("The 3D fitting room could not start. Please try refreshing the page.", true);
-      console.warn("Fitting Room viewer failed to start.", error);
-    }
-  }
-
-  async function loadJavaUsernameSkin(event) {
-    if (event) event.preventDefault();
-    const username = String(usernameInput && usernameInput.value || "").trim();
-    if (!/^[A-Za-z0-9_]{3,16}$/.test(username)) {
-      setStatus("Enter a valid Minecraft Java username (3–16 letters, numbers, or underscores).", true);
-      usernameInput && usernameInput.focus();
-      return;
-    }
-    const sequence = ++usernameLoadSequence;
-    if (usernameButton) {
-      usernameButton.disabled = true;
-      usernameButton.textContent = "Loading…";
-    }
-    setStatus("Loading the public skin for " + username + "…");
-    try {
-      if (!viewer) await initViewer();
-      if (viewerLoadingPromise) await viewerLoadingPromise;
-      if (!viewer) throw new Error("The 3D viewer is unavailable");
-      const nextUrl = "https://mc-heads.net/skin/" + encodeURIComponent(username);
-      const activeViewer = viewer;
-      await activeViewer.loadSkin(nextUrl, {model: "default"});
-      if (sequence !== usernameLoadSequence || viewer !== activeViewer) return;
-      const oldCustomUrl = customSkinUrl;
-      customSkinUrl = "";
-      usernameSkinUrl = nextUrl;
-      currentSkinName = username;
-      if (skinName) skinName.textContent = "Java username: " + username;
-      if (oldCustomUrl && oldCustomUrl.startsWith("blob:")) URL.revokeObjectURL(oldCustomUrl);
-      setStatus("Skin loaded for " + username + " · now click a cape to preview it.");
-    } catch (error) {
-      if (sequence !== usernameLoadSequence) return;
-      setStatus("Couldn't load that Java skin. Check the username and try again, or upload a PNG skin instead.", true);
-      console.warn("Minecraft Java username skin couldn't load.", error);
-    } finally {
-      if (usernameButton && sequence === usernameLoadSequence) {
-        usernameButton.disabled = false;
-        usernameButton.textContent = "Load Skin";
-      }
-    }
-  }
-
-  capeChoices.addEventListener("keydown", event => {
-    if (event.key !== "ArrowRight" && event.key !== "ArrowLeft") return;
-    const buttons = Array.from(capeChoices.querySelectorAll(".fitting-room-cape-choice"));
-    const activeIndex = buttons.indexOf(document.activeElement);
-    if (activeIndex < 0 || !buttons.length) return;
-    event.preventDefault();
-    const direction = event.key === "ArrowRight" ? 1 : -1;
-    buttons[(activeIndex + direction + buttons.length) % buttons.length].focus();
-  });
-  document.querySelectorAll("[data-fitting-mode]").forEach(button => {
-    button.addEventListener("click", () => applyCape(currentCape, button.dataset.fittingMode));
-  });
-  const openSkinPicker = () => skinInput.click();
-  skinButton && skinButton.addEventListener("click", openSkinPicker);
-  uploadButton && uploadButton.addEventListener("click", openSkinPicker);
-  usernameForm && usernameForm.addEventListener("submit", loadJavaUsernameSkin);
-  usernameInput && usernameInput.addEventListener("keydown", event => {
-    if (event.key === "Enter") loadJavaUsernameSkin(event);
-  });
-
-  skinInput.addEventListener("change", async () => {
-    const file = skinInput.files && skinInput.files[0];
-    if (!file) return;
-    if (file.type !== "image/png" && !/\.png$/i.test(file.name)) {
-      setStatus("Please choose a Minecraft skin in PNG format.", true);
-      skinInput.value = "";
-      return;
-    }
-    const nextUrl = URL.createObjectURL(file);
-    const previousCustomUrl = customSkinUrl;
-    setStatus("Loading your skin…");
-    try {
-      if (!viewer) await initViewer();
-      if (viewerLoadingPromise) await viewerLoadingPromise;
-      if (!viewer) throw new Error("3D viewer is not available");
-      await viewer.loadSkin(nextUrl, {model: "default"});
-      const oldCustomUrl = previousCustomUrl;
-      customSkinUrl = nextUrl;
-      usernameSkinUrl = "";
-      currentSkinName = file.name;
-      if (skinName) skinName.textContent = file.name;
-      if (oldCustomUrl && oldCustomUrl.startsWith("blob:")) URL.revokeObjectURL(oldCustomUrl);
-      setStatus("Your skin is loaded · click a cape to preview it.");
-    } catch (error) {
-      URL.revokeObjectURL(nextUrl);
-      setStatus("That file could not be loaded as a Minecraft skin. Choose a valid PNG and try again.", true);
-    } finally {
-      skinInput.value = "";
-    }
-  });
-  pauseButton && pauseButton.addEventListener("click", () => {
-    if (!viewer || !viewer.animation) return;
-    viewer.animation.paused = !viewer.animation.paused;
-    pauseButton.textContent = viewer.animation.paused ? "▶" : "Ⅱ";
-    pauseButton.setAttribute("aria-label", viewer.animation.paused ? "Resume animation" : "Pause animation");
-    pauseButton.title = viewer.animation.paused ? "Resume animation" : "Pause animation";
-  });
-
-  renderCapeChoices();
-  updateModeButtons(currentMode);
-  updateCapeChoiceButtons();
-  initViewer();
-  window.addEventListener("beforeunload", () => {
-    disposeViewer();
-    if (customSkinUrl && customSkinUrl.startsWith("blob:")) URL.revokeObjectURL(customSkinUrl);
-  }, {once: true});
-})();
-</script>
 
 </body>
 </html>
