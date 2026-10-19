@@ -15,12 +15,12 @@
 <meta property="og:title" content="MC STORE | Minecraft Cape Shop">
 <meta property="og:description" content="Discover Minecraft capes at MC STORE. Browse our collection, check availability, and contact us on Discord.">
 <meta property="og:url" content="https://mc-store.github.io/MC_STORE/">
-<meta property="og:image" content="https://mc-store.github.io/MC_STORE/media/mcstore.png">
+<meta property="og:image" content="https://mc-store.github.io/MC_STORE/media/1792194385872.png">
 <meta property="og:image:alt" content="MC STORE logo">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="MC STORE | Minecraft Cape Shop">
 <meta name="twitter:description" content="Discover Minecraft capes at MC STORE. Browse our collection, check availability, and contact us on Discord.">
-<meta name="twitter:image" content="https://mc-store.github.io/MC_STORE/media/mcstore.png">
+<meta name="twitter:image" content="https://mc-store.github.io/MC_STORE/media/1792194385872.png">
 <meta name="twitter:image:alt" content="MC STORE logo">
 
 <style>
@@ -2895,50 +2895,6 @@ body.mc-reveal-ready .mc-footer .reveal-on-scroll.is-visible {
   }
 </style>
 
-
-<style id="mc-store-requested-product-view-fixes">
-  /* Product details: Back to Home at the upper left. */
-  #details > .back-row {
-    display: flex !important;
-    justify-content: flex-start;
-    align-items: center;
-    margin: 0 0 24px;
-    width: 100%;
-  }
-  #details > .back-row .back-btn { display: inline-flex; }
-  /* Product detail shows the requested cape image only; the interactive Fitting Room stays on Home. */
-  #details .cape-only-preview {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: radial-gradient(ellipse at 50% 42%, #ffffff 0%, #f4efe5 65%, #e9e1d4 100%);
-    box-shadow: 5px 5px 0 #292622;
-  }
-  #details .cape-only-preview .cape-preview-scene { display: none; }
-  #details .cape-product-image {
-    position: relative;
-    z-index: 2;
-    display: block;
-    width: min(72%, 440px);
-    height: 86%;
-    max-height: 86%;
-    object-fit: contain;
-    filter: drop-shadow(0 15px 12px rgba(0,0,0,.18));
-  }
-  #details .storefront-detail-actions {
-    grid-template-columns: minmax(0, 1fr) !important;
-    max-width: 360px;
-  }
-  #details .storefront-buy { width: 100%; }
-  #details > .recommendations { display: none !important; }
-  @media (max-width: 1000px) {
-    #details > .back-row { margin-bottom: 18px; }
-    #details .cape-only-preview { height: clamp(340px, 64vw, 520px); }
-    #details .cape-product-image { width: min(68%, 370px); }
-    #details .storefront-detail-actions { max-width: none; }
-  }
-</style>
-
 </head>
 
 <body>
@@ -2952,7 +2908,7 @@ body.mc-reveal-ready .mc-footer .reveal-on-scroll.is-visible {
 <nav aria-label="Main navigation">
   <div class="container nav-inner">
     <a href="#home" class="brand" aria-label="MC STORE home" onclick="showHome('home');return false">
-      <img src="media/mcstore.png" alt="MC STORE logo"
+      <img src="media/1792194385872.png" alt="MC STORE logo"
            onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
       <span class="brand-fallback">MC <span class="gradient">STORE</span></span>
     </a>
@@ -3040,7 +2996,7 @@ body.mc-reveal-ready .mc-footer .reveal-on-scroll.is-visible {
       </select>
     </div>
 
-    <div class="results-line" id="resultsLine">Showing 8 capes</div>
+    <div class="results-line" id="resultsLine">Showing 8 of 8 capes</div>
     <div class="products" id="products"></div>
     <div class="empty-state" id="emptyState" hidden>
       <strong>No capes found</strong>
@@ -3048,58 +3004,7 @@ body.mc-reveal-ready .mc-footer .reveal-on-scroll.is-visible {
     </div>
   </section>
 
-  <!-- Home-only Fitting Room: interactive 3D preview placed directly under the cape collection. -->
-  <section class="container" id="fitting-room" aria-labelledby="fittingRoomTitle">
-    <div class="fitting-room-layout">
-      <div class="fitting-room-preview-column">
-        <div class="fitting-room-stage" id="fittingRoomStage" aria-label="Interactive Minecraft skin and cape preview">
-          <div class="fitting-room-scene" aria-hidden="true"></div>
-          <canvas id="fittingRoomCanvas" aria-label="Drag the Minecraft player to rotate it"></canvas>
-          <button class="fitting-room-skin-icon" id="fittingRoomSkinButton" type="button" aria-label="Upload your Minecraft skin" title="Click to upload your Minecraft skin">
-            <img class="fitting-room-skin-head" id="fittingRoomSkinHead" alt="" aria-hidden="true" hidden>
-            <span class="fitting-room-skin-pixel" aria-hidden="true"></span>
-          </button>
-          <input id="fittingRoomSkinInput" type="file" accept="image/png,.png" hidden>
-          <button class="fitting-room-pause" id="fittingRoomPause" type="button" aria-label="Pause animation" title="Pause animation">Ⅱ</button>
-        </div>
-        <div class="fitting-room-tabs" role="tablist" aria-label="Fitting Room preview mode">
-          <button class="fitting-room-tab" type="button" role="tab" data-fitting-mode="cape" aria-selected="false">CAPE</button>
-          <button class="fitting-room-tab active" type="button" role="tab" data-fitting-mode="player" aria-selected="true">PLAYER</button>
-          <button class="fitting-room-tab" type="button" role="tab" data-fitting-mode="elytra" aria-selected="false">ELYTRA</button>
-        </div>
-        <p class="fitting-room-drag-hint">Drag to rotate <span aria-hidden="true">·</span> Scroll to zoom</p>
-      </div>
-
-            <div class="fitting-room-info">
-        <div class="fitting-room-kicker"><span></span> LIVE 3D PREVIEW</div>
-        <h2 id="fittingRoomTitle"><span>Fitting</span> Room</h2>
-        <p class="fitting-room-subtitle">Spin the player around to preview the cape on your skin.</p>
-        <div class="fitting-room-rule"></div>
-
-        <form class="fitting-room-username-form" id="fittingRoomUsernameForm" autocomplete="off">
-          <label class="fitting-room-label" for="fittingRoomUsername">Minecraft Java username</label>
-          <div class="fitting-room-username-controls">
-            <input id="fittingRoomUsername" name="minecraftUsername" type="text" maxlength="16" minlength="3" pattern="[A-Za-z0-9_]{3,16}" placeholder="Enter your Java username" aria-label="Minecraft Java username">
-            <button id="fittingRoomLoadUsername" type="submit">Load Skin</button>
-          </div>
-          <small class="fitting-room-username-note">Public profile skin only · Never enter your password.</small>
-        </form>
-
-        <div class="fitting-room-cape-picker-head">
-          <span class="fitting-room-label">Choose a cape</span>
-          <span>Click a cape to preview it</span>
-        </div>
-        <div id="fittingRoomCapeChoices" class="fitting-room-cape-choices" role="listbox" aria-label="Choose a cape to preview"></div>
-
-        <button class="fitting-room-upload" id="fittingRoomUpload" type="button">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16V4m0 0L7 9m5-5 5 5"/><path d="M5 14v5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-5"/></svg>
-          <span><strong>Or upload a Minecraft skin</strong><small id="fittingRoomSkinName">Upload a PNG skin file</small></span>
-          <span class="fitting-room-upload-arrow" aria-hidden="true">↗</span>
-        </button>
-        <p class="fitting-room-status" id="fittingRoomStatus" role="status" aria-live="polite">Loading the 3D fitting room…</p>
-      </div>
-    </div>
-  </section>
+  <!-- Fitting Room removed as requested. -->
 
   <!-- Helpful shopping guidance adapted for MC STORE's current Discord-based ordering flow. -->
   <section id="mc-store-benefits" class="container mc-store-benefits" aria-labelledby="mcStoreBenefitsTitle">
@@ -3110,12 +3015,6 @@ body.mc-reveal-ready .mc-footer .reveal-on-scroll.is-visible {
     </div>
 
     <div class="mc-store-benefit-grid">
-      <article class="mc-store-benefit-card">
-        <div class="mc-store-benefit-icon" aria-hidden="true">↻</div>
-        <h3>Preview before you choose</h3>
-        <p>Try a cape in the 3D Fitting Room. Load a public Minecraft Java skin or upload your own PNG, then rotate the player to check the look.</p>
-        <a href="#fitting-room" onclick="showHome('fitting-room');return false">Open Fitting Room <span aria-hidden="true">↗</span></a>
-      </article>
       <article class="mc-store-benefit-card">
         <div class="mc-store-benefit-icon" aria-hidden="true">✓</div>
         <h3>Check the listing first</h3>
@@ -3367,8 +3266,8 @@ const capes = [
     onSale:true,
     image:"media/aurora-cape.png",
     showcaseImage:"media/aurora-cape.png",
-    catalogImage:"media/auroracape3D",
-    fittingRoomIcon:"media/auroracape.gg",
+    catalogImage:"media/auroracape3D.avif",
+    fittingRoomImage:"media/auroracape.gg",
     description:"A vibrant cape for players who want a distinctive look in their Minecraft collection.",
     label:"Popular"
   },
@@ -3380,7 +3279,7 @@ const capes = [
     onSale:true,
     image:"media/builder-cape.png",
     showcaseImage:"media/builder-cape.png",
-    fittingRoomIcon:"media/buildercape.gg",
+    fittingRoomImage:"media/buildercape.gg",
     description:"A classic addition for Minecraft cape collectors and fans of building.",
     label:"Featured"
   },
@@ -3391,8 +3290,8 @@ const capes = [
     stock:false,
     image:"media/copper-cape.png",
     showcaseImage:"media/copper-cape.png",
-    catalogImage:"media/coppercape3D",
-    fittingRoomIcon:"media/coppercape.gg",
+    catalogImage:"media/coppercape3D.avif",
+    fittingRoomImage:"media/coppercape.gg",
     description:"A copper-themed design for Minecraft players and collectors.",
     label:""
   },
@@ -3403,8 +3302,8 @@ const capes = [
     stock:false,
     image:"media/crafter-cape.png",
     showcaseImage:"media/crafter-cape.png",
-    catalogImage:"media/craftercape3D",
-    fittingRoomIcon:"media/craftercape.gg",
+    catalogImage:"media/craftercape3D.avif",
+    fittingRoomImage:"media/craftercape.gg",
     description:"A crafting-inspired design for Minecraft fans and cape collectors.",
     label:""
   },
@@ -3412,12 +3311,13 @@ const capes = [
     id:"experience",
     name:"Experience Cape Code",
     price:null,
+    originalPrice:null,
     stock:false,
     onSale:false,
     image:"media/experience-cape.png",
     showcaseImage:"media/experience-cape.png",
-    catalogImage:"media/experiencecape3D",
-    fittingRoomIcon:"media/experiencecape.gg",
+    catalogImage:"media/experiencecape3D.avif",
+    fittingRoomImage:"media/experiencecape.gg",
     description:"The Experience Cape is currently unavailable. Contact MC STORE on Discord to ask about future availability.",
     label:""
   },
@@ -3428,8 +3328,8 @@ const capes = [
     stock:false,
     image:"media/home-cape.png",
     showcaseImage:"media/home-cape.png",
-    catalogImage:"media/homecape3D",
-    fittingRoomIcon:"media/homecape.gg",
+    catalogImage:"media/homecape3D.avif",
+    fittingRoomImage:"media/homecape.gg",
     description:"A Home cape design for Minecraft players and collectors.",
     label:""
   },
@@ -3440,7 +3340,8 @@ const capes = [
     stock:false,
     image:"media/moonlight-cape.png",
     showcaseImage:"media/moonlight-cape.png",
-    catalogImage:"media/moonlightcape3D",
+    catalogImage:"media/moonlightcape3D.avif",
+    fittingRoomImage:"media/moonlightcape3D",
     description:"A moonlight-inspired design for your Minecraft cape collection.",
     label:""
   },
@@ -3451,7 +3352,8 @@ const capes = [
     stock:false,
     image:"media/twitch-cape.png",
     showcaseImage:"media/twitch-cape.png",
-    catalogImage:"media/twitchcape3D",
+    catalogImage:"media/twitchcape3D.avif",
+    fittingRoomImage:"media/twitchcape3D",
     description:"A Twitch-themed cape for Minecraft players and collectors.",
     label:""
   },
@@ -3461,8 +3363,8 @@ const capes = [
     price:null,
     stock:false,
     image:"media/menacecape3D",
-    catalogImage:"media/menacecape3D",
-    fittingRoomIcon:"media/menacecape.gg",
+    catalogImage:"media/menacecape3D.avif",
+    fittingRoomImage:"media/menacecape.gg",
     description:"A striking cape design in the MC STORE collection.",
     label:""
   },
@@ -3472,12 +3374,13 @@ const capes = [
     price:null,
     stock:false,
     image:"media/purpulhurtcape.gg",
+    fittingRoomImage:"media/purpulhurtcape.gg",
     description:"A purple-heart cape design for your collection.",
     label:""
   }
 ];
 
-// The showcase and shop use eight capes; the Fitting Room uses the seven requested thumbnail choices.
+// Each section has its own intended eight-cape selection and image set.
 const featuredCapeIds = [
   "aurora", "builder", "copper", "crafter",
   "experience", "home", "moonlight", "twitch"
@@ -3488,7 +3391,7 @@ const shopCapeIds = [
 ];
 const fittingRoomCapeIds = [
   "aurora", "builder", "copper", "crafter",
-  "experience", "home", "menace"
+  "experience", "home", "menace", "purple-heart"
 ];
 const shopCapes = shopCapeIds
   .map(id => capes.find(cape => cape.id === id))
@@ -3506,35 +3409,6 @@ let featuredTimer = null;
 function formatPrice(cape) {
   if (!cape.stock || typeof cape.price !== "number") return "Unavailable";
   return "$" + (Number.isInteger(cape.price) ? cape.price.toFixed(0) : cape.price.toFixed(2));
-}
-
-// Some uploaded cape assets are named without an image extension. Try the exact
-// filename first, then common image extensions, without changing the saved names.
-function mcStoreFallbackImage(img) {
-  if (!img) return;
-  if (!img.dataset.mcStoreCandidates) {
-    const original = img.getAttribute("src") || img.src;
-    const candidates = [original];
-    const extensions = [".png", ".webp", ".jpg", ".jpeg", ".gif", ".avif"];
-    if (/\.gg$/i.test(original)) {
-      candidates.push(original + ".png", original + ".webp", original + ".jpg", original + ".jpeg");
-      const stem = original.replace(/\.gg$/i, "");
-      candidates.push(...extensions.map(ext => stem + ext));
-    } else if (!/\.(png|webp|jpe?g|gif|avif)$/i.test(original)) {
-      candidates.push(...extensions.map(ext => original + ext));
-    }
-    img.dataset.mcStoreCandidates = JSON.stringify([...new Set(candidates)]);
-    img.dataset.mcStoreCandidateIndex = "0";
-  }
-  const candidates = JSON.parse(img.dataset.mcStoreCandidates || "[]");
-  const nextIndex = Number(img.dataset.mcStoreCandidateIndex || 0) + 1;
-  if (nextIndex < candidates.length) {
-    img.dataset.mcStoreCandidateIndex = String(nextIndex);
-    img.src = candidates[nextIndex];
-  } else {
-    img.style.opacity = ".25";
-    img.onerror = null;
-  }
 }
 
 function escapeHTML(value) {
@@ -3564,7 +3438,7 @@ function capeCard(cape) {
                src="${cape.catalogImage || cape.image}"
                alt="${escapeHTML(cape.name)}"
                loading="lazy"
-               onerror="mcStoreFallbackImage(this)">
+               onerror="this.style.opacity='.25'">
         </div>
       </a>
 
@@ -3775,8 +3649,8 @@ const mcStoreFooterInfo = {
         answer: "Open the cape you are interested in and check its listed price and stock status. Use Buy Now to contact MC STORE on Discord, then confirm the final price, availability, and delivery details before placing an order."
       },
       {
-        question: "Does Buy Now take payment on this website?",
-        answer: "No. Buy Now opens the MC STORE Discord server so you can confirm availability, price, and delivery details with the team. This page does not process payment."
+        question: "Does Add to Cart place an order or charge me?",
+        answer: "No. Add to Cart saves the selected cape and quantity in this browser only. It does not send an order to MC STORE or take a payment. Contact MC STORE on Discord to confirm an order."
       },
       {
         question: "How do I preview a cape on my skin?",
@@ -3905,8 +3779,8 @@ function openCape(id) {
   document.getElementById("detailContent").innerHTML = `
     <article class="detail-card">
       <div class="detail-art">
-        <img src="${cape.catalogImage || cape.image}" alt="${escapeHTML(cape.name)}"
-             onerror="mcStoreFallbackImage(this)">
+        <img src="${cape.image}" alt="${escapeHTML(cape.name)}"
+             onerror="this.style.opacity='.25'">
       </div>
       <div class="detail-info">
         <h1 class="cape-name cape-name--${cape.id}">${escapeHTML(cape.name)}</h1>
@@ -23948,7 +23822,7 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
     return `<span class="product-title-accent">${safeText(name.slice(0, firstSpace))}</span>${safeText(name.slice(firstSpace))}`;
   }
   function detailsImage(cape) {
-    return safeText(cape.catalogImage || cape.image || "media/experience-cape.png");
+    return safeText(cape.image || "media/experience-cape.png");
   }
 
   // Replace only the product details view; the home page, filters and other sections remain intact.
@@ -23972,7 +23846,7 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
       return;
     }
     const isExperience = chosen.id === "experience";
-    const viewCape = chosen;
+    const viewCape = isExperience ? {...chosen, name:"Experience Cape Code", price:null, originalPrice:null, stock:false} : chosen;
     mcStoreActiveCape = viewCape;
     mcStoreQty = 1;
     mcStoreMode = "player";
@@ -23992,9 +23866,17 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
     document.getElementById("detailContent").innerHTML = `
       <article class="detail-card detail-card--storefront">
         <div class="storefront-preview-column">
-          <div class="storefront-preview cape-only-preview" id="capePreviewStage" aria-label="Selected Minecraft cape">
+          <div class="storefront-preview" id="capePreviewStage" aria-label="Interactive Minecraft cape preview">
             <div class="cape-preview-scene" aria-hidden="true"></div>
-            <img class="cape-product-image" id="capePreviewFallback" src="${detailsImage(viewCape)}" alt="${safeText(viewCape.name)}" onerror="mcStoreFallbackImage(this)">
+            <img class="cape-preview-fallback" id="capePreviewFallback" src="${detailsImage(viewCape)}" alt="${safeText(viewCape.name)}">
+            <canvas id="capeSkinViewer" aria-label="Rotate the Minecraft character by dragging"></canvas>
+            <div class="preview-corner-icon" aria-hidden="true"></div>
+            <button class="preview-pause" id="capePreviewPause" type="button" aria-label="Pause animation" title="Pause animation">Ⅱ</button>
+          </div>
+          <div class="preview-tabs" role="tablist" aria-label="Preview mode">
+            <button class="preview-tab" type="button" role="tab" data-preview-mode="cape" aria-selected="false">CAPE</button>
+            <button class="preview-tab active" type="button" role="tab" data-preview-mode="player" aria-selected="true">PLAYER</button>
+            <button class="preview-tab" type="button" role="tab" data-preview-mode="elytra" aria-selected="false">ELYTRA</button>
           </div>
         </div>
         <div class="detail-info">
@@ -24012,7 +23894,11 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
             <div class="storefront-stock ${available ? "" : "out-of-stock"}"><span class="storefront-stock-mark">${available ? "✓" : "×"}</span>${statusLabel}</div>
           </div>
           <div class="detail-actions storefront-detail-actions">
-            <button class="storefront-buy" id="capeBuyNow" type="button">Buy Now</button>
+            <button class="storefront-add" id="capeAddToCart" type="button" ${available ? "" : "disabled"}>
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 18a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm10 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4ZM6.2 6l.7 3h10.9l1.6-5H5.2L4.7 2H1v2h2.2l2.5 11.1A2.4 2.4 0 0 0 8 17h10v-2H8a.4.4 0 0 1-.4-.3l-.3-1.2h10.9a2 2 0 0 0 1.9-1.4L22.4 4H6.2Z"/></svg>
+              Add to Cart
+            </button>
+            <button class="storefront-buy" id="capeBuyNow" type="button" ${available ? "" : "disabled"}>Buy Now</button>
           </div>
           <div class="storefront-feedback" id="capeOrderFeedback" role="status" aria-live="polite"></div>
         </div>
@@ -24031,12 +23917,27 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
     const feedback = document.getElementById("capeOrderFeedback");
     const minus = document.getElementById("capeQtyMinus");
     const plus = document.getElementById("capeQtyPlus");
+    const add = document.getElementById("capeAddToCart");
     const buy = document.getElementById("capeBuyNow");
     if (!qtyLabel || !feedback) return;
     minus?.addEventListener("click", () => { mcStoreQty = Math.max(1, mcStoreQty - 1); qtyLabel.textContent = String(mcStoreQty); });
     plus?.addEventListener("click", () => { mcStoreQty = Math.min(99, mcStoreQty + 1); qtyLabel.textContent = String(mcStoreQty); });
+    add?.addEventListener("click", () => {
+      try {
+        let cart = JSON.parse(localStorage.getItem("mcStoreCart") || "[]");
+        if (!Array.isArray(cart)) cart = [];
+        const entry = cart.find(item => item && item.id === cape.id);
+        if (entry) entry.quantity = Math.min(99, (Number(entry.quantity) || 0) + mcStoreQty);
+        else cart.push({id:cape.id, name:cape.name, price:cape.price, quantity:mcStoreQty});
+        localStorage.setItem("mcStoreCart", JSON.stringify(cart));
+        feedback.textContent = `Added ${mcStoreQty} × ${cape.name} to your cart.`;
+        add.innerHTML = `✓ Added to Cart`;
+      } catch (_) {
+        feedback.textContent = "Your browser blocked local cart storage. Please contact MC STORE on Discord to confirm an order.";
+      }
+    });
     buy?.addEventListener("click", () => {
-      feedback.textContent = "Opening MC STORE on Discord to confirm availability and order details.";
+      feedback.textContent = "Opening MC STORE on Discord to confirm the order. Online payment checkout is not connected on this page.";
       window.open(DISCORD_URL, "_blank", "noopener,noreferrer");
     });
     document.querySelectorAll("[data-preview-mode]").forEach(button => {
@@ -24074,7 +23975,7 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
       mcStoreViewer.playerWrapper.rotation.y = Math.PI;
       mcStoreViewer.animation = new window.skinview3d.WalkingAnimation();
       const skinLoad = mcStoreViewer.loadSkin(MC_STEVE_SKIN, {model:"default"});
-      const capeLoad = mcStoreViewer.loadCape(cape.fittingRoomTexture || cape.image);
+      const capeLoad = mcStoreViewer.loadCape(cape.fittingRoomImage || cape.image);
       const results = await Promise.allSettled([skinLoad, capeLoad]);
       if (results.some(result => result.status === "rejected")) stage.classList.add("fallback-cape-only");
       if (mcStoreViewer) {
@@ -24110,7 +24011,7 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
     const stage = document.getElementById("capePreviewStage");
     if (!mcStoreViewer || !mcStoreActiveCape) return;
     try {
-      const previewCapeImage = mcStoreActiveCape.fittingRoomTexture || mcStoreActiveCape.image;
+      const previewCapeImage = mcStoreActiveCape.fittingRoomImage || mcStoreActiveCape.image;
       if (mode === "elytra") await mcStoreViewer.loadCape(previewCapeImage, {backEquipment:"elytra"});
       else await mcStoreViewer.loadCape(previewCapeImage, {backEquipment:"cape"});
       mcStoreViewer.playerWrapper.rotation.y = Math.PI;
@@ -24481,7 +24382,7 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
     setStatus("The MC STORE cape list could not be loaded. Please refresh the page.", true);
     return;
   }
-  const defaultCape = storeCapes.find(cape => cape.id === "aurora") || storeCapes[0];
+  const defaultCape = storeCapes.find(cape => cape.id === "experience") || storeCapes[0];
   currentCape = defaultCape;
 
   function updateCapeChoiceButtons() {
@@ -24504,10 +24405,10 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
       button.title = "Preview " + cape.name;
 
       const image = document.createElement("img");
-      image.src = fittingCapeIcon(cape);
+      image.src = fittingCapeImage(cape);
       image.alt = "";
       image.loading = "lazy";
-      image.onerror = () => mcStoreFallbackImage(image);
+      image.onerror = () => { image.style.opacity = ".35"; };
 
       const label = document.createElement("span");
       label.textContent = cape.name.replace(/\s+Cape(?:\s+Code)?$/i, "");
@@ -24576,12 +24477,8 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
     image.src = source;
   }
 
-  function fittingCapeIcon(cape) {
-    return cape && (cape.fittingRoomIcon || cape.image);
-  }
-
   function fittingCapeImage(cape) {
-    return cape && (cape.fittingRoomTexture || cape.image);
+    return cape && (cape.fittingRoomImage || cape.image);
   }
 
   function disposeViewer() {
@@ -24804,6 +24701,40 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
   }, {once: true});
 })();
 </script>
+
+
+<style id="mc-store-cross-device-motion-final">
+/* Keep the storefront's motion visible on desktop as well as mobile. */
+@media (prefers-reduced-motion: no-preference) {
+  .cape-showcase-copy h1, .gradient {
+    animation: mcTitleFlow 8s ease-in-out infinite !important;
+    background-size: 220% 220% !important;
+  }
+  #featured .featured-image img {
+    animation: mcCapeUprightFloat 3.4s ease-in-out infinite !important;
+  }
+  .featured, .card, .detail-card, .trust-item, .discord-banner {
+    animation: mcCardGlow 6s ease-in-out infinite !important;
+    transition: transform .32s ease, box-shadow .32s ease, border-color .32s ease !important;
+  }
+  .card:hover, .mc-store-benefit-card:hover, .trust-item:hover {
+    transform: translateY(-5px) !important;
+  }
+  .btn, .nav-link, .account-icon, .cart-top, .filter, .sort-select {
+    transition: transform .25s ease, box-shadow .25s ease, background-color .25s ease !important;
+  }
+  .btn:hover, .account-icon:hover, .cart-top:hover { transform: translateY(-2px) !important; }
+  .reveal-on-scroll { transition: opacity .65s ease, transform .65s ease !important; }
+}
+@keyframes mcStoreAmbientGlow {
+  0%,100% { box-shadow: 0 8px 26px rgba(18,185,246,.07); }
+  50% { box-shadow: 0 12px 34px rgba(18,185,246,.19); }
+}
+@media (min-width: 901px) and (prefers-reduced-motion: no-preference) {
+  #featured { animation: mcStoreAmbientGlow 6s ease-in-out infinite !important; }
+  .card { animation: mcStoreAmbientGlow 7s ease-in-out infinite !important; }
+}
+</style>
 
 </body>
 </html>
