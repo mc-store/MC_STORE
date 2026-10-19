@@ -2844,6 +2844,60 @@ body.mc-reveal-ready .mc-footer .reveal-on-scroll.is-visible {
 }
 </style>
 
+
+<style id="mc-store-fitting-room-styles">
+/* MC STORE Fitting Room */
+.fitting-room-section{padding-top:42px!important;padding-bottom:72px!important}
+.fitting-room-section .section-head{margin-bottom:24px!important}
+.fitting-room-card{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(320px,.9fr);gap:0;overflow:hidden;border:1px solid #d9e4ee;border-radius:22px;background:#fff;box-shadow:0 18px 55px rgba(11,32,53,.08)}
+.fitting-room-preview{min-width:0;padding:18px;background:linear-gradient(150deg,#071525,#0c243a);color:#f5fbff}
+.fr-viewer-heading{display:flex;align-items:center;gap:8px;flex-wrap:wrap;color:#dbf7ff;font-size:10px;font-weight:900;letter-spacing:1.35px}
+.fr-live-dot{width:7px;height:7px;flex:0 0 7px;border-radius:50%;background:#5dffb1;box-shadow:0 0 12px #5dffb188}
+.fr-player-name{margin-left:auto;max-width:55%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#82e8ff;font-size:10px;letter-spacing:.2px}
+.fr-canvas-wrap{position:relative;display:flex;align-items:center;justify-content:center;min-height:390px;margin-top:10px;overflow:hidden;border:1px solid rgba(112,209,255,.16);border-radius:16px;background:radial-gradient(ellipse at 50% 34%,rgba(20,124,195,.17),transparent 57%),linear-gradient(145deg,#0a1c2c,#071321)}
+#fittingRoomCanvas{display:block;width:100%;height:390px;max-width:530px;touch-action:pan-y;outline:none}
+.fr-canvas-placeholder{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:28px;text-align:center;color:#b9cbd9;pointer-events:none;transition:opacity .2s ease}
+.fr-canvas-placeholder[hidden]{display:none}
+.fr-placeholder-icon{display:grid;place-items:center;width:62px;height:62px;border:1px solid #64ddff37;border-radius:18px;background:#42c5ff12;color:#85eaff;font-size:27px}
+.fr-canvas-placeholder strong{color:#fff;font-size:14px}
+.fr-canvas-placeholder span{max-width:260px;font-size:11px;line-height:1.8}
+.fr-preview-foot{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-top:11px;color:#9eb3c5;font-size:10px}
+.fr-preview-foot span:last-child{color:#70e5ff}
+.fr-controls{padding:26px;min-width:0;color:#202c38}
+.fr-step-label{display:flex;align-items:center;gap:9px;margin:0 0 11px;color:#0e91b5;font-size:10px;font-weight:950;letter-spacing:1.5px}
+.fr-step-label:not(:first-child){margin-top:26px}
+.fr-label{display:block;margin:0 0 8px;color:#233241;font-size:12px;font-weight:800}
+.fr-input-row{display:flex;gap:8px;min-width:0}
+#fittingRoomUsername{width:100%;min-width:0;height:45px;padding:0 12px;border:1px solid #d7e0e8;border-radius:10px;background:#f9fbfd;color:#142330;font-size:13px;outline:none;transition:border-color .2s,box-shadow .2s}
+#fittingRoomUsername:focus,#fittingRoomCape:focus{border-color:#19afd1;box-shadow:0 0 0 3px rgba(25,175,209,.12)}
+#fittingRoomLoad{flex:0 0 auto;min-height:45px;padding:0 15px;border:1px solid #3bd5f3;border-radius:10px;background:linear-gradient(120deg,#74edff,#32b9f3);color:#052034;font-size:11px;font-weight:950;white-space:nowrap;cursor:pointer;transition:transform .2s,filter .2s}
+#fittingRoomLoad:hover{transform:translateY(-1px);filter:brightness(1.04)}
+#fittingRoomLoad:disabled{opacity:.65;cursor:wait;transform:none}
+.fr-helper{display:block;margin-top:8px;color:#7b8995;font-size:10px;line-height:1.7}
+#fittingRoomCape[hidden]{display:none!important}
+.fr-cape-picker{display:grid;grid-template-columns:repeat(auto-fill,minmax(38px,1fr));gap:4px;margin-top:8px}
+.fr-cape-choice{position:relative;display:flex;min-width:0;flex-direction:column;align-items:center;gap:2px;padding:3px 2px;border:1px solid #dce6ed;border-radius:7px;background:linear-gradient(160deg,#fff,#f5f9fc);color:#263847;cursor:pointer;text-align:center;transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease,background .18s ease}
+.fr-cape-choice:hover{transform:translateY(-2px);border-color:#67d9f1;box-shadow:0 6px 16px rgba(12,137,174,.1)}
+.fr-cape-choice[aria-pressed="true"]{border-color:#12b6d5;background:linear-gradient(160deg,#effcff,#e4f8fc);box-shadow:0 0 0 2px rgba(18,182,213,.13),inset 0 0 0 1px rgba(18,182,213,.14)}
+.fr-cape-choice img{display:block;width:20px;height:23px;max-width:100%;object-fit:contain;padding:1px;border-radius:4px;background:linear-gradient(145deg,#eaf3f8,#fff)}
+.fr-cape-choice-name{display:block;width:100%;overflow:hidden;color:#243746;font-size:6.5px;font-weight:850;line-height:1.2;text-overflow:ellipsis;white-space:nowrap}
+.fr-cape-choice-stock{font-size:5.5px;font-weight:800;letter-spacing:0;color:#17855d}
+.fr-cape-choice-stock.unavailable{color:#83919d}
+.fr-selected-cape{display:flex;align-items:center;gap:12px;margin-top:13px;padding:10px;border:1px solid #d9e9ef;border-radius:12px;background:linear-gradient(145deg,#f2fbfd,#f7fafc)}
+#fittingRoomCapeThumb{display:block;width:52px;height:58px;object-fit:contain;border-radius:8px;background:linear-gradient(145deg,#e7f2f8,#fff)}
+#homePage.shop-only #fitting-room{display:none!important}
+.fr-selected-cape-copy{display:flex;min-width:0;flex-direction:column;gap:5px}
+#fittingRoomSelectedName{color:#142331;font-size:12px;font-weight:900;overflow-wrap:anywhere}
+#fittingRoomSelectedMeta{color:#798794;font-size:10px;line-height:1.5}
+.fr-status{margin-top:14px;padding:11px 12px;border:1px solid #d7edf5;border-radius:10px;background:#f0fbff;color:#356171;font-size:11px;line-height:1.65}
+.fr-status[data-type="error"]{border-color:#f3d0d0;background:#fff5f5;color:#a23636}
+.fr-status[data-type="success"]{border-color:#ccecdc;background:#f1fff7;color:#236846}
+.fr-note{margin:13px 0 0;color:#788692;font-size:10px;line-height:1.8}
+@media(max-width:850px){.fitting-room-card{grid-template-columns:1fr}.fr-canvas-wrap{min-height:350px}#fittingRoomCanvas{height:350px}.fr-controls{padding:23px}}
+@media(max-width:480px){.fitting-room-section{padding-top:30px!important;padding-bottom:45px!important}.fitting-room-card{border-radius:17px}.fitting-room-preview{padding:12px}.fr-canvas-wrap{min-height:310px}#fittingRoomCanvas{height:310px}.fr-controls{padding:19px 15px}.fr-input-row{flex-wrap:wrap}#fittingRoomLoad{width:100%}.fr-player-name{max-width:45%}}
+@media(prefers-reduced-motion:reduce){#fittingRoomLoad,.fr-canvas-placeholder{transition:none!important}}
+</style>
+
 </head>
 
 <body>
@@ -2953,6 +3007,54 @@ body.mc-reveal-ready .mc-footer .reveal-on-scroll.is-visible {
     </div>
   </section>
 
+  <section class="section container fitting-room-section" id="fitting-room" aria-labelledby="fittingRoomTitle">
+    <div class="section-head">
+      <div>
+        <div class="kicker">PERSONALIZE YOUR LOOK</div>
+        <h2 id="fittingRoomTitle">Fitting <span class="gradient">Room</span></h2>
+        <p>Spin your Minecraft Java player around and preview any cape from the MC STORE collection on your skin.</p>
+      </div>
+    </div>
+
+    <div class="fitting-room-card">
+      <div class="fitting-room-preview">
+        <div class="fr-viewer-heading"><span class="fr-live-dot"></span> 3D PLAYER PREVIEW <span class="fr-player-name" id="fittingRoomPlayerName">PLAYER NOT LOADED</span></div>
+        <div class="fr-canvas-wrap">
+          <canvas id="fittingRoomCanvas" width="440" height="390" aria-label="Interactive 3D Minecraft player preview"></canvas>
+          <div class="fr-canvas-placeholder" id="fittingRoomPlaceholder">
+            <div class="fr-placeholder-icon" aria-hidden="true">✦</div>
+            <strong>Your Minecraft skin goes here</strong>
+            <span>Enter your Java username, then press “Load skin” to see your player wearing a selected MC STORE cape.</span>
+          </div>
+        </div>
+        <div class="fr-preview-foot"><span>Drag to rotate · Scroll to zoom</span><span>3D SKIN PREVIEW</span></div>
+      </div>
+
+      <div class="fr-controls">
+        <div class="fr-step-label">01 / PLAYER</div>
+        <label class="fr-label" for="fittingRoomUsername">Minecraft Java username</label>
+        <form class="fr-input-row" id="fittingRoomForm" novalidate>
+          <input id="fittingRoomUsername" name="minecraftUsername" type="text" placeholder="e.g. Ayoubmc_" maxlength="16" minlength="3" autocomplete="off" autocapitalize="none" spellcheck="false" aria-describedby="fittingRoomHelper">
+          <button id="fittingRoomLoad" type="submit">Load skin</button>
+        </form>
+        <small class="fr-helper" id="fittingRoomHelper">Java username only (3–16 letters, numbers, or underscores). No password needed.</small>
+
+        <div class="fr-step-label">02 / CAPE</div>
+        <div class="fr-label" id="fittingRoomCapeLabel">Choose a cape from MC STORE</div>
+        <div class="fr-cape-picker" id="fittingRoomCapeChoices" role="group" aria-labelledby="fittingRoomCapeLabel"></div>
+        <select id="fittingRoomCape" name="cape" aria-hidden="true" tabindex="-1" hidden></select>
+        <div class="fr-selected-cape">
+          <img id="fittingRoomCapeThumb" src="media/aurora-front.png" alt="Selected cape preview">
+          <div class="fr-selected-cape-copy">
+            <strong id="fittingRoomSelectedName">Aurora Cape</strong>
+            <small id="fittingRoomSelectedMeta">MC STORE collection</small>
+          </div>
+        </div>
+        <div class="fr-status" id="fittingRoomStatus" role="status" aria-live="polite">Choose a cape and enter your Minecraft Java username to begin.</div>
+        <p class="fr-note">This is a visual preview only. Selecting a cape here does not add it to your Minecraft account or change your skin.</p>
+      </div>
+    </div>
+  </section>
 
 
 </main>
@@ -4048,7 +4150,7 @@ onAuthStateChanged(auth, user => {
   const selectors = [
     '.cape-showcase-copy', '#featured', '#shop .section-head', '#shop .shop-tools',
     '#shop .card', '.detail-card', '.recommendations', '#aboutPage .about-panel',
-    '#endorsementsPage .about-panel', '.endorsement-card',
+    '#endorsementsPage .about-panel', '.endorsement-card', '.fitting-room-section', '#fitting-room .fitting-room-card',
     'footer.mc-footer', '.mc-footer .mc-footer-grid', '.mc-footer .mc-footer-brand',
     '.mc-footer .mc-footer-column', '.mc-footer .mc-footer-bottom'
   ];
@@ -4128,6 +4230,235 @@ onAuthStateChanged(auth, user => {
   animation: mcCapeAngledSpin .3s linear both !important;
 }
 </style>
+
+
+<script src="https://cdn.jsdelivr.net/npm/skinview3d@3.0.0/bundles/skinview3d.bundle.js"></script>
+<script id="mc-store-fitting-room-script">
+(() => {
+  const form = document.getElementById("fittingRoomForm");
+  const usernameInput = document.getElementById("fittingRoomUsername");
+  const loadButton = document.getElementById("fittingRoomLoad");
+  const capeSelect = document.getElementById("fittingRoomCape");
+  const capeChoices = document.getElementById("fittingRoomCapeChoices");
+  const statusBox = document.getElementById("fittingRoomStatus");
+  const canvas = document.getElementById("fittingRoomCanvas");
+  const placeholder = document.getElementById("fittingRoomPlaceholder");
+  const playerName = document.getElementById("fittingRoomPlayerName");
+  const selectedCapeName = document.getElementById("fittingRoomSelectedName");
+  const selectedCapeMeta = document.getElementById("fittingRoomSelectedMeta");
+  const capeThumb = document.getElementById("fittingRoomCapeThumb");
+
+  let viewer = null;
+  let loadedUsername = "";
+  let capeLoadToken = 0;
+
+  function setStatus(message, type = "info") {
+    statusBox.textContent = message;
+    statusBox.dataset.type = type;
+  }
+
+  function safeImageUrl(path) {
+    return new URL(path, document.baseURI).href;
+  }
+
+  function getSelectedCape() {
+    return capes.find(cape => cape.id === capeSelect.value) || capes[0];
+  }
+
+  function populateCapes() {
+    capeSelect.innerHTML = capes.map(cape => {
+      const suffix = cape.stock ? "" : " (currently unavailable)";
+      return `<option value="${escapeHTML(cape.id)}">${escapeHTML(cape.name + suffix)}</option>`;
+    }).join("");
+
+    // Render a compact, clickable picture tile for every cape sold/listed by MC STORE.
+    capeChoices.innerHTML = capes.map(cape => `
+      <button class="fr-cape-choice" type="button" data-cape-id="${escapeHTML(cape.id)}"
+        aria-pressed="false" aria-label="Preview ${escapeHTML(cape.name)}${cape.stock ? '' : ', currently unavailable'}"
+        title="Preview ${escapeHTML(cape.name)}">
+        <img src="${escapeHTML(cape.image)}" alt="" loading="lazy">
+        <span class="fr-cape-choice-name">${escapeHTML(cape.name.replace(/ Cape$/i, ''))}</span>
+        <span class="fr-cape-choice-stock${cape.stock ? '' : ' unavailable'}">${cape.stock ? 'IN STOCK' : 'UNAVAILABLE'}</span>
+      </button>`).join("");
+
+    if (capes.some(cape => cape.id === "aurora")) capeSelect.value = "aurora";
+    updateCapeSummary();
+  }
+
+  function updateCapeSummary() {
+    const cape = getSelectedCape();
+    if (!cape) return;
+    capeThumb.src = cape.image;
+    capeThumb.alt = cape.name;
+    selectedCapeName.textContent = cape.name;
+    selectedCapeMeta.textContent = cape.stock
+      ? `MC STORE · ${formatPrice(cape)}`
+      : "MC STORE · Currently unavailable";
+    capeChoices.querySelectorAll(".fr-cape-choice").forEach(button => {
+      const selected = button.dataset.capeId === cape.id;
+      button.setAttribute("aria-pressed", String(selected));
+    });
+  }
+
+  function makeCapeTexture(image) {
+    // Store cape artwork is a product image, not a Minecraft UV texture.
+    // Fit its visible artwork into the front/back panels of a standard 64×32 cape atlas.
+    const work = document.createElement("canvas");
+    const maxSide = 512;
+    const ratio = Math.min(1, maxSide / Math.max(image.naturalWidth, image.naturalHeight));
+    work.width = Math.max(1, Math.round(image.naturalWidth * ratio));
+    work.height = Math.max(1, Math.round(image.naturalHeight * ratio));
+    const wctx = work.getContext("2d", { willReadFrequently: true });
+    wctx.clearRect(0, 0, work.width, work.height);
+    wctx.drawImage(image, 0, 0, work.width, work.height);
+
+    let sx = 0, sy = 0, sw = work.width, sh = work.height;
+    try {
+      const pixels = wctx.getImageData(0, 0, work.width, work.height).data;
+      let minX = work.width, minY = work.height, maxX = -1, maxY = -1;
+      for (let y = 0; y < work.height; y++) {
+        for (let x = 0; x < work.width; x++) {
+          const alpha = pixels[(y * work.width + x) * 4 + 3];
+          if (alpha > 18) {
+            if (x < minX) minX = x;
+            if (x > maxX) maxX = x;
+            if (y < minY) minY = y;
+            if (y > maxY) maxY = y;
+          }
+        }
+      }
+      if (maxX >= minX && maxY >= minY) {
+        sx = minX; sy = minY; sw = maxX - minX + 1; sh = maxY - minY + 1;
+      }
+    } catch (error) {
+      // If alpha sampling is unavailable, use the full product image instead.
+    }
+
+    const atlas = document.createElement("canvas");
+    atlas.width = 64;
+    atlas.height = 32;
+    const ctx = atlas.getContext("2d");
+    ctx.clearRect(0, 0, atlas.width, atlas.height);
+    ctx.imageSmoothingEnabled = false; // retain the familiar Minecraft pixel texture style
+    // Cape UV map used by Minecraft: front x=1..10 and back x=12..21, y=1..16.
+    ctx.drawImage(work, sx, sy, sw, sh, 1, 1, 10, 16);
+    ctx.drawImage(work, sx, sy, sw, sh, 12, 1, 10, 16);
+    // Fill the narrow side strips from the edge pixels to prevent transparent flashes while rotating.
+    ctx.drawImage(work, sx, sy, Math.max(1, sw * 0.04), sh, 0, 1, 1, 16);
+    ctx.drawImage(work, sx + sw - Math.max(1, sw * 0.04), sy, Math.max(1, sw * 0.04), sh, 11, 1, 1, 16);
+    // Extend top/bottom edge colors across the corresponding UV strips.
+    ctx.drawImage(atlas, 1, 1, 10, 1, 1, 0, 10, 1);
+    ctx.drawImage(atlas, 1, 16, 10, 1, 11, 0, 10, 1);
+    return atlas.toDataURL("image/png");
+  }
+
+  function loadProductCape(cape) {
+    const thisToken = ++capeLoadToken;
+    const image = new Image();
+    image.decoding = "async";
+    image.onload = async () => {
+      if (thisToken !== capeLoadToken) return;
+      if (!viewer) {
+        setStatus(`${cape.name} selected. Enter your Java username and load your skin to see the cape in 3D.`);
+        return;
+      }
+      try {
+        const textureUrl = makeCapeTexture(image);
+        await viewer.loadCape(textureUrl);
+        if (thisToken === capeLoadToken) {
+          setStatus(`${cape.name} is now shown on ${loadedUsername}'s 3D preview. Drag the player to inspect the cape from different angles.`, "success");
+        }
+      } catch (error) {
+        if (thisToken === capeLoadToken) setStatus(`Could not apply ${cape.name} to the preview. Check that its image exists in the media folder.`, "error");
+      }
+    };
+    image.onerror = () => {
+      if (thisToken === capeLoadToken) setStatus(`Could not load the ${cape.name} image. Make sure the MC STORE media folder is uploaded with index.html.`, "error");
+    };
+    image.src = safeImageUrl(cape.image);
+  }
+
+  function createViewer() {
+    if (viewer) return viewer;
+    if (!window.skinview3d || !window.skinview3d.SkinViewer) {
+      throw new Error("The 3D viewer library could not load. Check your internet connection and refresh the page.");
+    }
+    const width = Math.max(280, Math.round(canvas.parentElement.clientWidth));
+    viewer = new skinview3d.SkinViewer({
+      canvas,
+      width,
+      height: 390,
+      skin: "https://mc-heads.net/skin/MHF_Steve"
+    });
+    viewer.background = 0x0a1c2c;
+    viewer.zoom = 0.86;
+    viewer.autoRotate = true;
+    viewer.autoRotateSpeed = 0.45;
+    if (viewer.controls) {
+      viewer.controls.enableRotate = true;
+      viewer.controls.enableZoom = true;
+    }
+    if (viewer.cameraLight) viewer.cameraLight.intensity = 0.75;
+    if (viewer.globalLight) viewer.globalLight.intensity = 2.2;
+    window.addEventListener("resize", () => {
+      if (!viewer) return;
+      const newWidth = Math.max(280, Math.round(canvas.parentElement.clientWidth));
+      viewer.width = newWidth;
+      viewer.height = window.innerWidth <= 850 ? 350 : 390;
+    }, { passive: true });
+    return viewer;
+  }
+
+  async function loadPlayerSkin(event) {
+    event.preventDefault();
+    const username = usernameInput.value.trim();
+    if (!/^[A-Za-z0-9_]{3,16}$/.test(username)) {
+      setStatus("Enter a valid Java username: 3–16 letters, numbers, or underscores.", "error");
+      usernameInput.focus();
+      return;
+    }
+    loadButton.disabled = true;
+    loadButton.textContent = "Loading…";
+    setStatus(`Loading ${username}'s Minecraft skin…`);
+    try {
+      const skinViewer = createViewer();
+      await skinViewer.loadSkin(`https://mc-heads.net/skin/${encodeURIComponent(username)}`);
+      loadedUsername = username;
+      playerName.textContent = username.toUpperCase();
+      playerName.title = username;
+      placeholder.hidden = true;
+      skinViewer.nameTag = username;
+      loadProductCape(getSelectedCape());
+    } catch (error) {
+      setStatus(`Could not load a Java skin for “${username}”. Check the username and your connection, then try again.`, "error");
+      if (!loadedUsername) placeholder.hidden = false;
+    } finally {
+      loadButton.disabled = false;
+      loadButton.textContent = "Load skin";
+    }
+  }
+
+  form.addEventListener("submit", loadPlayerSkin);
+  capeChoices.addEventListener("click", event => {
+    const choice = event.target.closest(".fr-cape-choice");
+    if (!choice || !capeChoices.contains(choice)) return;
+    const capeId = choice.dataset.capeId;
+    if (!capes.some(cape => cape.id === capeId)) return;
+    capeSelect.value = capeId;
+    capeSelect.dispatchEvent(new Event("change", { bubbles: true }));
+  });
+  capeSelect.addEventListener("change", () => {
+    updateCapeSummary();
+    if (viewer && loadedUsername) loadProductCape(getSelectedCape());
+    else setStatus(`${getSelectedCape().name} selected. Load your Java skin to preview it on your player.`);
+  });
+  capeThumb.addEventListener("error", () => { capeThumb.style.visibility = "hidden"; });
+  capeThumb.addEventListener("load", () => { capeThumb.style.visibility = "visible"; });
+
+  if (Array.isArray(capes) && capes.length) populateCapes();
+  else setStatus("Cape list could not be loaded from MC STORE.", "error");
+})();
+</script>
 
 </body>
 </html>
