@@ -3464,32 +3464,48 @@ function showFeatured(index) {
   const nextShowcaseURL = new URL(nextShowcaseImage, document.baseURI).href;
   featuredImage.alt = cape.name;
 
-  // Remove the previous spin listener only once, then wait for the new image to
-  // finish loading before starting the 100 ms rotation. On desktop, the previous
-  // code could finish the very short animation before the replacement image had
-  // decoded, making the spin appear to work only on mobile.
-  if (!featuredImage.dataset.spinListener) {
-    featuredImage.addEventListener("animationend", event => {
-      if (event.target === featuredImage && event.animationName === "mcStoreCapePureSpin") {
-        featuredImage.classList.remove("cape-spin");
-      }
-    });
-    featuredImage.dataset.spinListener = "true";
+  // Animate the whole showcase stage with the Web Animations API. This avoids
+  // desktop CSS animation overrides (including reduced-motion rules) and keeps
+  // the 360-degree spin consistent on mouse/keyboard desktops and touch devices.
+  const featuredStage = document.querySelector("#featured .featured-image");
+  if (featuredStage && featuredStage._mcCapeSpinAnimation) {
+    featuredStage._mcCapeSpinAnimation.cancel();
+    featuredStage._mcCapeSpinAnimation = null;
   }
-
-  featuredImage.classList.remove("cape-spin");
+  featuredImage.classList.remove("cape-spin", "is-spinning", "spin-in");
   featuredImage.dataset.capeSpinTarget = nextShowcaseURL;
 
   const startCapeSpinWhenReady = () => {
     if (featuredImage.dataset.capeSpinTarget !== nextShowcaseURL ||
         !featuredImage.complete || featuredImage.naturalWidth === 0) return;
 
-    // Force a fresh animation after the browser has painted the decoded image.
-    void featuredImage.offsetWidth;
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
-        if (featuredImage.dataset.capeSpinTarget === nextShowcaseURL &&
-            featuredImage.complete && featuredImage.naturalWidth > 0) {
+        if (featuredImage.dataset.capeSpinTarget !== nextShowcaseURL ||
+            !featuredImage.complete || featuredImage.naturalWidth === 0) return;
+
+        if (featuredStage && typeof featuredStage.animate === "function") {
+          if (featuredStage._mcCapeSpinAnimation) {
+            featuredStage._mcCapeSpinAnimation.cancel();
+          }
+          featuredStage.style.transformOrigin = "50% 50%";
+          featuredStage.style.transformStyle = "preserve-3d";
+          featuredStage.style.backfaceVisibility = "visible";
+          const spin = featuredStage.animate(
+            [
+              { transform: "perspective(1100px) rotateY(0deg)" },
+              { transform: "perspective(1100px) rotateY(360deg)" }
+            ],
+            { duration: 100, easing: "linear", iterations: 1, fill: "none" }
+          );
+          featuredStage._mcCapeSpinAnimation = spin;
+          spin.onfinish = () => {
+            if (featuredStage._mcCapeSpinAnimation === spin) {
+              featuredStage._mcCapeSpinAnimation = null;
+            }
+          };
+        } else {
+          // CSS fallback for older browsers without Element.animate().
           featuredImage.classList.remove("cape-spin");
           void featuredImage.offsetWidth;
           featuredImage.classList.add("cape-spin");
