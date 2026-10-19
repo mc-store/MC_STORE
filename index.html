@@ -2678,6 +2678,71 @@ footer.mc-footer {
 }
 </style>
 
+
+<style id="mc-store-footer-contrast-and-desktop-motion">
+/* Footer: true black surface with crisp white text throughout. */
+footer.mc-footer,
+footer.mc-footer .mc-footer-container,
+footer.mc-footer .mc-footer-grid,
+footer.mc-footer .mc-footer-brand,
+footer.mc-footer .mc-footer-column,
+footer.mc-footer .mc-footer-bottom {
+  background:#050505 !important;
+  color:#fff !important;
+}
+footer.mc-footer { border-top:1px solid #262626 !important; }
+.mc-footer .mc-footer-logo-fallback {
+  display:inline-block !important;
+  color:#fff !important;
+  -webkit-text-fill-color:#fff !important;
+  opacity:1 !important;
+  visibility:visible !important;
+  transform:none !important;
+  text-shadow:0 0 12px #ffffff18 !important;
+}
+.mc-footer .mc-footer-brand p,
+.mc-footer .mc-footer-column h3,
+.mc-footer .mc-footer-column a,
+.mc-footer .mc-footer-column a span,
+.mc-footer .mc-footer-bottom,
+.mc-footer .mc-footer-bottom a,
+.mc-footer .mc-socials a { color:#fff !important; }
+.mc-footer .mc-footer-column a:hover,
+.mc-footer .mc-footer-column a:hover span,
+.mc-footer .mc-footer-bottom a:hover,
+.mc-footer .mc-socials a:hover { color:#55dfff !important; }
+
+/* Include the real footer elements in the same scroll-reveal system on desktop and mobile. */
+body.mc-reveal-ready .mc-footer .reveal-on-scroll:not(.is-visible) {
+  opacity:0 !important;
+  transform:translateY(18px) !important;
+}
+body.mc-reveal-ready .mc-footer .reveal-on-scroll.is-visible {
+  opacity:1 !important;
+  transform:translateY(0) !important;
+  transition:opacity .58s ease,transform .58s cubic-bezier(.2,.75,.25,1) !important;
+}
+.mc-footer .mc-footer-brand.is-visible { transition-delay:.03s !important; }
+.mc-footer .mc-footer-column:nth-of-type(1).is-visible { transition-delay:.08s !important; }
+.mc-footer .mc-footer-column:nth-of-type(2).is-visible { transition-delay:.14s !important; }
+.mc-footer .mc-footer-column:nth-of-type(3).is-visible { transition-delay:.20s !important; }
+.mc-footer .mc-footer-bottom.is-visible { transition-delay:.24s !important; }
+
+/* Desktop pointer interactions: retain smooth effects on larger screens too. */
+@media (min-width:901px) and (hover:hover) and (pointer:fine) {
+  .card .card-img { transition:transform .34s cubic-bezier(.2,.75,.25,1),filter .34s ease !important; }
+  .card:hover .card-img { transform:translateY(-5px) scale(1.055) rotate(-1deg) !important; }
+  .btn, .nav-link, .filter, .view-arrow { transition:transform .22s ease,box-shadow .22s ease,color .22s ease,background .22s ease,border-color .22s ease !important; }
+  .mc-footer .mc-footer-column a:hover { transform:translateX(3px) !important; }
+}
+@media (prefers-reduced-motion:reduce) {
+  body.mc-reveal-ready .mc-footer .reveal-on-scroll:not(.is-visible),
+  body.mc-reveal-ready .mc-footer .reveal-on-scroll.is-visible {
+    opacity:1 !important; transform:none !important; transition:none !important;
+  }
+}
+</style>
+
 </head>
 
 <body>
@@ -3858,7 +3923,9 @@ onAuthStateChanged(auth, user => {
   const selectors = [
     '.cape-showcase-copy', '#featured', '#shop .section-head', '#shop .shop-tools',
     '#shop .card', '.detail-card', '.recommendations', '#aboutPage .about-panel',
-    '#endorsementsPage .about-panel', '.endorsement-card', 'footer .footer-inner'
+    '#endorsementsPage .about-panel', '.endorsement-card',
+    'footer.mc-footer', '.mc-footer .mc-footer-grid', '.mc-footer .mc-footer-brand',
+    '.mc-footer .mc-footer-column', '.mc-footer .mc-footer-bottom'
   ];
   const collect = root => {
     const found = [];
