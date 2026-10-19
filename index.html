@@ -4103,7 +4103,7 @@ onAuthStateChanged(auth, user => {
 </script>
 
 <style id="mc-store-cape-angled-3d-fix">
-/* Slight side angle like the reference image, without tipping the cape lengthwise. */
+/* Nearly upright cape with a very subtle side-facing 3D angle. */
 #featured .featured-image { perspective: 1100px; }
 #featured .featured-image img {
   transform-style: preserve-3d;
@@ -4112,22 +4112,58 @@ onAuthStateChanged(auth, user => {
   animation: mcCapeAngledFloat 3.4s ease-in-out infinite !important;
 }
 @keyframes mcCapeAngledFloat {
-  0%,100% { transform: perspective(1100px) translateY(0) rotateX(0deg) rotateY(-7deg) rotateZ(-3deg) scale(1); }
-  50% { transform: perspective(1100px) translateY(-6px) rotateX(0deg) rotateY(-7deg) rotateZ(-3deg) scale(1.012); }
+  0%,100% { transform: perspective(1100px) translateY(0) rotateX(0deg) rotateY(0deg) rotateZ(0deg) scale(1); }
+  50% { transform: perspective(1100px) translateY(-6px) rotateX(0deg) rotateY(0deg) rotateZ(0deg) scale(1.012); }
 }
 @keyframes mcCapeAngledSpin {
-  0% { opacity:.4; transform: perspective(1100px) translateY(4px) rotateX(0deg) rotateZ(-3deg) rotateY(-7deg) scale(.88); }
-  25% { opacity:1; transform: perspective(1100px) translateY(0) rotateX(0deg) rotateZ(-3deg) rotateY(83deg) scale(.98); }
-  50% { opacity:1; transform: perspective(1100px) translateY(-2px) rotateX(0deg) rotateZ(-3deg) rotateY(173deg) scale(1.035); }
-  75% { opacity:1; transform: perspective(1100px) translateY(0) rotateX(0deg) rotateZ(-3deg) rotateY(263deg) scale(1.015); }
-  100% { opacity:1; transform: perspective(1100px) translateY(0) rotateX(0deg) rotateZ(-3deg) rotateY(353deg) scale(1); }
+  0% { opacity:.4; transform: perspective(1100px) translateY(2px) rotateX(0deg) rotateZ(0deg) rotateY(0deg) scale(.92); }
+  25% { opacity:1; transform: perspective(1100px) translateY(0) rotateX(0deg) rotateZ(0deg) rotateY(90deg) scale(.98); }
+  50% { opacity:1; transform: perspective(1100px) translateY(-1px) rotateX(0deg) rotateZ(0deg) rotateY(180deg) scale(1.02); }
+  75% { opacity:1; transform: perspective(1100px) translateY(0) rotateX(0deg) rotateZ(0deg) rotateY(270deg) scale(1.01); }
+  100% { opacity:1; transform: perspective(1100px) translateY(0) rotateX(0deg) rotateZ(0deg) rotateY(360deg) scale(1); }
 }
 #featured .featured-image img.cape-spin,
 #featured .featured-image img.is-spinning,
 #featured .featured-image img.spin-in {
-  animation: mcCapeAngledSpin .5s linear both !important;
+  animation: mcCapeAngledSpin .3s linear both !important;
 }
 </style>
 
 </body>
 </html>
+
+<style id="mc-store-upright-cape-final-fix">
+/* Keep the featured cape upright: no roll/side lean. Preserve depth with shadow and Y-axis spin. */
+#featured .featured-image { perspective: 1100px !important; }
+#featured .featured-image img {
+  transform-origin: 50% 50% !important;
+  transform-style: preserve-3d !important;
+  backface-visibility: visible !important;
+  animation: mcCapeUprightFloat 3.4s ease-in-out infinite !important;
+  filter: drop-shadow(5px 2px 0 rgba(0,0,0,.10)) drop-shadow(12px 15px 14px rgba(0,0,0,.18)) !important;
+}
+@keyframes mcCapeUprightFloat {
+  0%, 100% { transform: perspective(1100px) translateY(0) rotateX(0deg) rotateY(0deg) rotateZ(0deg) scale(1); }
+  50% { transform: perspective(1100px) translateY(-6px) rotateX(0deg) rotateY(0deg) rotateZ(0deg) scale(1.012); }
+}
+@keyframes mcCapeUprightSpin {
+  0% { opacity: .55; transform: perspective(1100px) translateY(2px) rotateX(0deg) rotateZ(0deg) rotateY(0deg) scale(.92); }
+  25% { opacity: 1; transform: perspective(1100px) translateY(0) rotateX(0deg) rotateZ(0deg) rotateY(90deg) scale(.98); }
+  50% { opacity: 1; transform: perspective(1100px) translateY(-1px) rotateX(0deg) rotateZ(0deg) rotateY(180deg) scale(1.02); }
+  75% { opacity: 1; transform: perspective(1100px) translateY(0) rotateX(0deg) rotateZ(0deg) rotateY(270deg) scale(1.01); }
+  100% { opacity: 1; transform: perspective(1100px) translateY(0) rotateX(0deg) rotateZ(0deg) rotateY(360deg) scale(1); }
+}
+#featured .featured-image.cape-zoom-switch img,
+#featured .featured-image img.cape-spin,
+#featured .featured-image img.is-spinning,
+#featured .featured-image img.spin-in {
+  animation: mcCapeUprightSpin .3s linear both !important;
+}
+@media (prefers-reduced-motion: reduce) {
+  #featured .featured-image img,
+  #featured .featured-image.cape-zoom-switch img {
+    animation: none !important;
+    transform: perspective(1100px) rotateX(0deg) rotateY(0deg) rotateZ(0deg) !important;
+  }
+}
+</style>
