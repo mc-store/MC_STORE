@@ -2517,7 +2517,7 @@ footer.mc-footer {
 }
 #featured .featured-image.cape-zoom-switch {
   transform-origin: center center !important;
-  animation: mcCapeSwapZoom .68s cubic-bezier(.2,.72,.24,1) both !important;
+  animation: mcCapeSwapZoom .5s cubic-bezier(.2,.72,.24,1) both !important;
 }
 @media (prefers-reduced-motion: reduce) {
   #featured .featured-image.cape-zoom-switch { animation: none !important; }
@@ -2745,13 +2745,15 @@ body.mc-reveal-ready .mc-footer .reveal-on-scroll.is-visible {
 
 
 <style id="mc-store-cape-tilt-spin-final">
-/* Match the reference: lean sideways in the page plane, not along the cape's length. */
+/* Cape preview: slight sideways lean plus shallow Y rotation for a 3D, card-like angle.
+   No rotateX is used, so the cape is not tipped lengthwise. */
 @keyframes mcCapeFloatTiltFinal {
-  0%, 100% { transform: perspective(1100px) translateY(0) rotateZ(-5deg) scale(1); }
-  50% { transform: perspective(1100px) translateY(-8px) rotateZ(-5deg) scale(1.012); }
+  0%, 100% { transform: perspective(1000px) translateY(0) rotateY(-12deg) rotateZ(-3deg) scale(1); }
+  50% { transform: perspective(1000px) translateY(-7px) rotateY(-12deg) rotateZ(-3deg) scale(1.012); }
 }
 #featured .featured-image {
-  perspective: 1100px !important;
+  perspective: 1000px !important;
+  perspective-origin: 50% 48% !important;
   overflow: visible !important;
   background: transparent !important;
 }
@@ -2760,23 +2762,28 @@ body.mc-reveal-ready .mc-footer .reveal-on-scroll.is-visible {
   transform-style: preserve-3d !important;
   backface-visibility: visible !important;
   animation: mcCapeFloatTiltFinal 3.4s ease-in-out infinite !important;
+  filter: drop-shadow(5px 2px 0 rgba(0,0,0,.10)) drop-shadow(12px 15px 14px rgba(0,0,0,.18)) !important;
   will-change: transform;
 }
-/* On each cape change, spin as a 3D object around its vertical axis; keep the sideways lean. */
+/* Each new cape makes one fast, continuous 360-degree spin around its vertical axis.
+   Linear timing avoids easing pauses; final angle 348deg equals the resting -12deg lean. */
 @keyframes mcCapeSwap360 {
-  0% { opacity: .35; transform: perspective(1100px) translateY(9px) scale(.76) rotateY(0deg) rotateZ(-5deg); }
-  22% { opacity: 1; transform: perspective(1100px) translateY(0) scale(.96) rotateY(75deg) rotateZ(-5deg); }
-  50% { opacity: 1; transform: perspective(1100px) translateY(-3px) scale(1.045) rotateY(180deg) rotateZ(-5deg); }
-  78% { opacity: 1; transform: perspective(1100px) translateY(0) scale(1.02) rotateY(285deg) rotateZ(-5deg); }
-  100% { opacity: 1; transform: perspective(1100px) translateY(0) scale(1) rotateY(360deg) rotateZ(-5deg); }
+  0%   { opacity: .4; transform: perspective(1000px) translateY(5px) scale(.86) rotateY(-12deg) rotateZ(-3deg); }
+  25%  { opacity: 1; transform: perspective(1000px) translateY(0) scale(.98) rotateY(78deg) rotateZ(-3deg); }
+  50%  { opacity: 1; transform: perspective(1000px) translateY(-2px) scale(1.035) rotateY(168deg) rotateZ(-3deg); }
+  75%  { opacity: 1; transform: perspective(1000px) translateY(0) scale(1.015) rotateY(258deg) rotateZ(-3deg); }
+  100% { opacity: 1; transform: perspective(1000px) translateY(0) scale(1) rotateY(348deg) rotateZ(-3deg); }
 }
 #featured .featured-image.cape-zoom-switch img {
-  animation: mcCapeSwap360 .68s cubic-bezier(.18,.76,.22,1) both !important;
+  animation: mcCapeSwap360 .5s linear both !important;
   transform-origin: 50% 50% !important;
 }
 @media (prefers-reduced-motion: reduce) {
   #featured .featured-image img,
-  #featured .featured-image.cape-zoom-switch img { animation: none !important; transform: rotateZ(-5deg) !important; }
+  #featured .featured-image.cape-zoom-switch img {
+    animation: none !important;
+    transform: perspective(1000px) rotateY(-12deg) rotateZ(-3deg) !important;
+  }
 }
 </style>
 
@@ -3339,7 +3346,7 @@ function showFeatured(index) {
   if (featuredFrame) {
     if (!featuredFrame.dataset.zoomListener) {
       featuredFrame.addEventListener("animationend", event => {
-        if (event.animationName === "mcCapeSwap360") {
+        if (event.target === featuredFrame && event.animationName === "mcCapeSwapZoom") {
           featuredFrame.classList.remove("cape-zoom-switch");
         }
       });
