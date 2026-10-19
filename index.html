@@ -3516,12 +3516,9 @@ function restartFeaturedTimer() {
   }, 4500);
 }
 
-document.getElementById("featured").addEventListener("mouseenter", () => {
-  clearInterval(featuredTimer);
-});
-document.getElementById("featured").addEventListener("mouseleave", restartFeaturedTimer);
-document.getElementById("featured").addEventListener("focusin", () => clearInterval(featuredTimer));
-document.getElementById("featured").addEventListener("focusout", restartFeaturedTimer);
+// Keep the cape showcase rotating on desktop too. Previously mouseenter/focusin
+// stopped the timer on PCs, where the pointer normally rests over the showcase.
+// The carousel can still be changed manually with its dots or View Cape button.
 
 function renderRecommendations(currentCape) {
   let others = productCapes.filter(cape => cape.id !== currentCape.id);
@@ -23829,7 +23826,10 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
       const height = Math.max(320, stage.clientHeight || 560);
       mcStoreViewer = new window.skinview3d.SkinViewer({canvas, width, height, pixelRatio: Math.min(window.devicePixelRatio || 1, 2), enableControls: false});
       mcStoreViewer.controls.enablePan = false;
-      mcStoreViewer.autoRotate = false;
+      // Rotate the cape model gently on every device, including desktop PC.
+      // The player skin remains hidden, so only the cape itself is visible.
+      mcStoreViewer.autoRotate = true;
+      mcStoreViewer.autoRotateSpeed = 0.62;
       mcStoreViewer.zoom = 0.92;
       mcStoreViewer.playerWrapper.rotation.y = Math.PI;
       // Show the cape by itself: do not load or display the default Steve skin.
@@ -23941,6 +23941,36 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
 .cape-name-accent--moonlight { color:#2d6b9d !important; -webkit-text-fill-color:#2d6b9d !important; }
 .cape-name-accent--purple-heart { color:#7145a5 !important; -webkit-text-fill-color:#7145a5 !important; }
 
+</style>
+
+
+<style id="mc-store-desktop-cape-animation-fix">
+/* Make the showcase spin visible on PCs, including systems that request reduced motion. */
+@keyframes mcCapeSwapZoom {
+  0% { opacity: .45; transform: scale(.84); }
+  58% { opacity: 1; transform: scale(1.035); }
+  100% { opacity: 1; transform: scale(1); }
+}
+@keyframes mcStoreCapePcSpin {
+  0% { opacity: .45; transform: perspective(1000px) scale(.82) rotateY(0deg) rotateZ(-2deg); }
+  22% { opacity: 1; transform: perspective(1000px) scale(.98) rotateY(78deg) rotateZ(1deg); }
+  50% { opacity: 1; transform: perspective(1000px) scale(1.045) rotateY(180deg) rotateZ(0deg); }
+  78% { opacity: 1; transform: perspective(1000px) scale(1.02) rotateY(282deg) rotateZ(-1deg); }
+  100% { opacity: 1; transform: perspective(1000px) scale(1) rotateY(360deg) rotateZ(0deg); }
+}
+#featured .featured-image.cape-zoom-switch {
+  animation: mcCapeSwapZoom 1.08s cubic-bezier(.2,.72,.24,1) both !important;
+}
+#featured .featured-image.cape-zoom-switch img {
+  animation: mcStoreCapePcSpin 1s cubic-bezier(.2,.75,.2,1) both !important;
+  transform-origin: 50% 50% !important;
+  transform-style: preserve-3d !important;
+  backface-visibility: visible !important;
+}
+/* Keep the gentle idle float active on the featured cape between rotations. */
+#featured .featured-image img {
+  animation: mcCapeUprightFloat 3.4s ease-in-out infinite !important;
+}
 </style>
 
 </body>
