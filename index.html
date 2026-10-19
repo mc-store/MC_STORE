@@ -3169,7 +3169,7 @@ const capes = [
     onSale:true,
     image:"media/aurora-front.png",
     showcaseImage:"media/aurora-cape.png",
-    productImage:"media/auroracape3D.png",
+    productImage:"./auroracape3D",
     description:"A vibrant cape for players who want a distinctive look in their Minecraft collection.",
     label:"Popular"
   },
@@ -3191,7 +3191,7 @@ const capes = [
     stock:false,
     image:"media/copper-cape.png",
     showcaseImage:"media/copper-cape.png",
-    productImage:"media/coppercape3D.png",
+    productImage:"./coppercape3D",
     description:"A copper-themed design for Minecraft players and collectors.",
     label:""
   },
@@ -3202,7 +3202,7 @@ const capes = [
     stock:false,
     image:"media/crafter-cape.png",
     showcaseImage:"media/crafter-cape.png",
-    productImage:"media/craftercape3D.png",
+    productImage:"./craftercape3D",
     description:"A crafting-inspired design for Minecraft fans and cape collectors.",
     label:""
   },
@@ -3214,7 +3214,7 @@ const capes = [
     stock:true,
     image:"media/experience-cape.png",
     showcaseImage:"media/experience-cape.png",
-    productImage:"media/experiencecape3D.png",
+    productImage:"./experiencecape3D",
     description:"The Experience cape was the first IRL obtainable cape since Minecon 2016. The cape is only obtainable via attending an IRL Minecraft Event located in different places across the World. If you can't go, don't worry, you can buy it here!",
     label:""
   },
@@ -3225,7 +3225,7 @@ const capes = [
     stock:false,
     image:"media/home-cape.png",
     showcaseImage:"media/home-cape.png",
-    productImage:"media/homecape3D.png",
+    productImage:"./homecape3D",
     description:"A Home cape design for Minecraft players and collectors.",
     label:""
   },
@@ -3236,7 +3236,7 @@ const capes = [
     stock:false,
     image:"media/moonlight-cape.png",
     showcaseImage:"media/moonlight-cape.png",
-    productImage:"media/moonlightcape3D.png",
+    productImage:"./moonlightcape3D",
     description:"A moonlight-inspired design for your Minecraft cape collection.",
     label:""
   },
@@ -3247,7 +3247,7 @@ const capes = [
     stock:false,
     image:"media/twitch-cape.png",
     showcaseImage:"media/twitch-cape.png",
-    productImage:"media/twitchcape3D.png",
+    productImage:"./twitchcape3D",
     description:"A purple-themed cape design for your collection.",
     label:""
   },
@@ -3257,7 +3257,7 @@ const capes = [
     price:null,
     stock:false,
     image:"media/menace-cape.png",
-    productImage:"media/menacecape3D.png",
+    productImage:"./menacecape3D",
     description:"A striking cape design in the MC STORE collection.",
     label:""
   }
@@ -3289,6 +3289,54 @@ function escapeHTML(value) {
   })[character]);
 }
 
+// Load each product's dedicated 3D render first. Repositories sometimes keep images
+// in the root, media, images, or assets folder and may use upper-case extensions.
+// If a 3D render cannot be found, show that cape's existing showcase artwork instead
+// of leaving the coloured card empty.
+function handleCapeCardImageError(img) {
+  // Try the exact 3D render name first, then common repository folders/extensions,
+  // and finally the standard showcase image. This prevents broken-image alt text
+  // appearing over the coloured card art when an asset is stored in a different folder.
+  if (!img.dataset.mcImageCandidates) {
+    const stripPathAndExtension = value => {
+      const clean = String(value || "").split(/[?#]/)[0].replace(/^\.\//, "");
+      const file = clean.split("/").pop() || "";
+      return file.replace(/\.[^.]*$/, "");
+    };
+    const primary = stripPathAndExtension(img.dataset.imageFile || img.dataset.originalSrc || img.src);
+    const fallback = stripPathAndExtension(img.dataset.fallbackImage || "");
+    const stems = [...new Set([primary, fallback].filter(Boolean))];
+    const folders = ["", "./", "media/", "images/", "assets/", "Media/", "Images/", "Assets/",
+      "media/capes/", "images/capes/", "assets/capes/"];
+    const extensions = [".png", ".PNG", ".webp", ".WEBP", ".jpg", ".JPG", ".jpeg", ".JPEG",
+      ".avif", ".AVIF", ".gif", ".GIF", ".bmp", ".BMP", ""];
+    const current = String(img.getAttribute("src") || "").replace(/^\.\//, "");
+    const candidates = [];
+    for (const stem of stems) {
+      for (const folder of folders) {
+        for (const extension of extensions) {
+          const candidate = folder + stem + extension;
+          if (candidate && candidate !== current && !candidates.includes(candidate)) candidates.push(candidate);
+        }
+      }
+    }
+    img.dataset.mcImageCandidates = JSON.stringify(candidates);
+    img.dataset.mcImageCandidateIndex = "0";
+  }
+
+  let candidates = [];
+  try { candidates = JSON.parse(img.dataset.mcImageCandidates || "[]"); } catch (_) {}
+  const index = Number(img.dataset.mcImageCandidateIndex || 0);
+  if (index < candidates.length) {
+    img.dataset.mcImageCandidateIndex = String(index + 1);
+    img.src = candidates[index];
+    return;
+  }
+
+  // If assets are absent entirely, suppress the browser's broken-image icon/text.
+  img.hidden = true;
+  img.removeAttribute("alt");
+}
 function capeTitleMarkup(cape, title = cape.name) {
   // Keep "Cape" (and any trailing wording such as "Code") black; colour only the cape name.
   const capeSuffix = title.indexOf(" Cape");
@@ -3312,10 +3360,14 @@ function capeCard(cape) {
           <span class="card-tag ${cape.stock ? "" : "sold"} ${cape.onSale ? "sale-tag" : ""}">${tag}</span>
           ${cape.onSale && cape.stock ? `<span class="card-tag popular stock-tag">IN STOCK</span>` : (cape.label ? `<span class="card-tag popular">${escapeHTML(cape.label)}</span>` : "")}
           <img class="card-img"
-               src="${cape.productImage || cape.image}"
+               src="${escapeHTML(cape.productImage || cape.image)}"
+               data-original-src="${escapeHTML(cape.productImage || cape.image)}"
+               data-image-file="${escapeHTML((cape.productImage || cape.image).split('/').pop())}"
+               data-fallback-image="${escapeHTML(cape.showcaseImage || cape.image)}"
+               data-fallback-alt="${escapeHTML(cape.name)}"
                alt="${escapeHTML(cape.name)}"
                loading="lazy"
-               onerror="this.style.opacity='.25'">
+               onerror="handleCapeCardImageError(this)">
         </div>
       </a>
 
