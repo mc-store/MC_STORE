@@ -2745,10 +2745,10 @@ body.mc-reveal-ready .mc-footer .reveal-on-scroll.is-visible {
 
 
 <style id="mc-store-cape-tilt-spin-final">
-/* Match the Home cape presentation: subtle sideways tilt while floating. */
+/* Match the reference: lean sideways in the page plane, not along the cape's length. */
 @keyframes mcCapeFloatTiltFinal {
-  0%, 100% { transform: perspective(1100px) translateY(0) rotateY(-7deg) rotateZ(-5deg) scale(1); }
-  50% { transform: perspective(1100px) translateY(-8px) rotateY(-7deg) rotateZ(-5deg) scale(1.012); }
+  0%, 100% { transform: perspective(1100px) translateY(0) rotateZ(-5deg) scale(1); }
+  50% { transform: perspective(1100px) translateY(-8px) rotateZ(-5deg) scale(1.012); }
 }
 #featured .featured-image {
   perspective: 1100px !important;
@@ -2762,13 +2762,13 @@ body.mc-reveal-ready .mc-footer .reveal-on-scroll.is-visible {
   animation: mcCapeFloatTiltFinal 3.4s ease-in-out infinite !important;
   will-change: transform;
 }
-/* On every new cape: a quick full 360-degree turn, finishing at the same tilt. */
+/* On each cape change, spin around the width axis; preserve the slight sideways lean. */
 @keyframes mcCapeSwap360 {
-  0% { opacity: .35; transform: perspective(1100px) translateY(9px) scale(.76) rotateY(-7deg) rotateZ(-5deg); }
-  22% { opacity: 1; transform: perspective(1100px) translateY(0) scale(.96) rotateY(73deg) rotateZ(-4deg); }
-  50% { opacity: 1; transform: perspective(1100px) translateY(-3px) scale(1.045) rotateY(173deg) rotateZ(-5deg); }
-  78% { opacity: 1; transform: perspective(1100px) translateY(0) scale(1.02) rotateY(273deg) rotateZ(-6deg); }
-  100% { opacity: 1; transform: perspective(1100px) translateY(0) scale(1) rotateY(353deg) rotateZ(-5deg); }
+  0% { opacity: .35; transform: perspective(1100px) translateY(9px) scale(.76) rotateX(0deg) rotateZ(-5deg); }
+  22% { opacity: 1; transform: perspective(1100px) translateY(0) scale(.96) rotateX(75deg) rotateZ(-5deg); }
+  50% { opacity: 1; transform: perspective(1100px) translateY(-3px) scale(1.045) rotateX(180deg) rotateZ(-5deg); }
+  78% { opacity: 1; transform: perspective(1100px) translateY(0) scale(1.02) rotateX(285deg) rotateZ(-5deg); }
+  100% { opacity: 1; transform: perspective(1100px) translateY(0) scale(1) rotateX(360deg) rotateZ(-5deg); }
 }
 #featured .featured-image.cape-zoom-switch img {
   animation: mcCapeSwap360 .78s cubic-bezier(.18,.76,.22,1) both !important;
