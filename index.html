@@ -3004,17 +3004,7 @@ body.mc-reveal-ready .mc-footer .reveal-on-scroll.is-visible {
     </div>
   </section>
 
-  <!-- Fitting Room: small cape thumbnails only (no player/elytra dressing room). -->
-  <section id="cape-fitting-gallery" class="section container cape-picker-section" aria-labelledby="capeFittingTitle">
-    <div class="section-head">
-      <div>
-        <div class="kicker">FITTING ROOM</div>
-        <h2 id="capeFittingTitle">Choose a <span class="gradient">Cape</span></h2>
-        <p>Browse the cape previews below and select one to see its details.</p>
-      </div>
-    </div>
-    <div id="fittingRoomCapeGallery" class="fitting-room-thumbnails" aria-label="Cape thumbnails"></div>
-  </section>
+  <!-- Fitting Room removed as requested. -->
 
   <!-- Helpful shopping guidance adapted for MC STORE's current Discord-based ordering flow. -->
   <section id="mc-store-benefits" class="container mc-store-benefits" aria-labelledby="mcStoreBenefitsTitle">
@@ -3372,7 +3362,7 @@ const capes = [
     name:"Menace Cape",
     price:null,
     stock:false,
-    image:"media/menacecape3D.avif",
+    image:"media/menacecape3D",
     catalogImage:"media/menacecape3D.avif",
     fittingRoomImage:"media/menacecape.gg",
     description:"A striking cape design in the MC STORE collection.",
@@ -3403,29 +3393,6 @@ const fittingRoomCapeIds = [
   "aurora", "builder", "copper", "crafter",
   "experience", "home", "menace", "purple-heart"
 ];
-
-function renderFittingRoomThumbnails() {
-  const gallery = document.getElementById("fittingRoomCapeGallery");
-  if (!gallery) return;
-  gallery.innerHTML = fittingRoomCapeIds
-    .map(id => capes.find(cape => cape.id === id))
-    .filter(Boolean)
-    .map(cape => {
-      const thumbnail = cape.fittingRoomImage || cape.image;
-      return `
-        <a class="fitting-room-thumb" href="#cape/${encodeURIComponent(cape.id)}"
-           aria-label="View ${escapeHTML(cape.name)} details"
-           onclick="openCape('${cape.id}');return false">
-          <span class="fitting-room-thumb-art">
-            <img src="${escapeHTML(thumbnail)}" alt="${escapeHTML(cape.name)} preview"
-                 loading="lazy" onerror="this.onerror=null;this.src='${escapeHTML(cape.image)}'">
-          </span>
-          <span class="fitting-room-thumb-name cape-name cape-name--${escapeHTML(cape.id)}">${escapeHTML(cape.name.replace(/\s+Cape(?:\s+Code)?$/i, ""))}</span>
-        </a>`;
-    }).join("");
-}
-renderFittingRoomThumbnails();
-
 const shopCapes = shopCapeIds
   .map(id => capes.find(cape => cape.id === id))
   .filter(Boolean);
@@ -3687,7 +3654,7 @@ const mcStoreFooterInfo = {
       },
       {
         question: "How do I preview a cape on my skin?",
-        answer: "Open the Fitting Room on the Home page to browse the small cape previews. Select a cape to open its details and check availability."
+        answer: "Open the Fitting Room on the Home page. Enter your public Minecraft Java username or upload a PNG skin, then click one of the small cape previews. Drag the player to rotate it and use the preview tabs to change the view."
       },
       {
         question: "Do I need to give the website my Minecraft password?",
@@ -23899,8 +23866,17 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
     document.getElementById("detailContent").innerHTML = `
       <article class="detail-card detail-card--storefront">
         <div class="storefront-preview-column">
-          <div class="storefront-preview static-cape-preview" aria-label="Cape image preview">
-            <img class="static-cape-image" src="${detailsImage(viewCape)}" alt="${safeText(viewCape.name)}" loading="eager">
+          <div class="storefront-preview" id="capePreviewStage" aria-label="Interactive Minecraft cape preview">
+            <div class="cape-preview-scene" aria-hidden="true"></div>
+            <img class="cape-preview-fallback" id="capePreviewFallback" src="${detailsImage(viewCape)}" alt="${safeText(viewCape.name)}">
+            <canvas id="capeSkinViewer" aria-label="Rotate the Minecraft character by dragging"></canvas>
+            <div class="preview-corner-icon" aria-hidden="true"></div>
+            <button class="preview-pause" id="capePreviewPause" type="button" aria-label="Pause animation" title="Pause animation">Ⅱ</button>
+          </div>
+          <div class="preview-tabs" role="tablist" aria-label="Preview mode">
+            <button class="preview-tab" type="button" role="tab" data-preview-mode="cape" aria-selected="false">CAPE</button>
+            <button class="preview-tab active" type="button" role="tab" data-preview-mode="player" aria-selected="true">PLAYER</button>
+            <button class="preview-tab" type="button" role="tab" data-preview-mode="elytra" aria-selected="false">ELYTRA</button>
           </div>
         </div>
         <div class="detail-info">
@@ -23933,6 +23909,7 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
     safeReplaceState("#cape/" + encodeURIComponent(viewCape.id));
     window.scrollTo({top:0, behavior:"smooth"});
     wireProductControls(viewCape);
+    init3DPreview(viewCape);
   };
 
   function wireProductControls(cape) {
@@ -23962,6 +23939,19 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
     buy?.addEventListener("click", () => {
       feedback.textContent = "Opening MC STORE on Discord to confirm the order. Online payment checkout is not connected on this page.";
       window.open(DISCORD_URL, "_blank", "noopener,noreferrer");
+    });
+    document.querySelectorAll("[data-preview-mode]").forEach(button => {
+      button.addEventListener("click", () => switchPreviewMode(button.dataset.previewMode));
+    });
+    document.getElementById("capePreviewPause")?.addEventListener("click", event => {
+      if (!mcStoreViewer) return;
+      const button = event.currentTarget;
+      const animation = mcStoreViewer.animation;
+      if (!animation) return;
+      animation.paused = !animation.paused;
+      button.textContent = animation.paused ? "▶" : "Ⅱ";
+      button.setAttribute("aria-label", animation.paused ? "Resume animation" : "Pause animation");
+      button.title = animation.paused ? "Resume animation" : "Pause animation";
     });
   }
 
@@ -24744,98 +24734,6 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
   #featured { animation: mcStoreAmbientGlow 6s ease-in-out infinite !important; }
   .card { animation: mcStoreAmbientGlow 7s ease-in-out infinite !important; }
 }
-</style>
-
-
-<style id="mc-store-cape-thumbnails-and-static-preview">
-  .cape-picker-section { padding-top: 20px; }
-  .fitting-room-thumbnails {
-    display: grid;
-    grid-template-columns: repeat(8, minmax(0, 1fr));
-    gap: 12px;
-  }
-  .fitting-room-thumb {
-    min-width: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 9px;
-    padding: 12px 9px 13px;
-    border: 1px solid rgba(83, 199, 255, .24);
-    border-radius: 15px;
-    background: linear-gradient(150deg, rgba(13, 43, 74, .86), rgba(5, 19, 39, .92));
-    box-shadow: inset 0 1px 0 rgba(215, 247, 255, .04);
-    transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease;
-  }
-  .fitting-room-thumb:hover {
-    transform: translateY(-4px);
-    border-color: rgba(83, 229, 255, .72);
-    box-shadow: 0 12px 28px rgba(0, 99, 255, .17);
-  }
-  .fitting-room-thumb-art {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 69px;
-    border-radius: 9px;
-    background: radial-gradient(ellipse at center, rgba(47, 183, 255, .17), transparent 72%);
-  }
-  .fitting-room-thumb-art img {
-    display: block;
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    filter: drop-shadow(0 5px 8px rgba(0,0,0,.4));
-  }
-  .fitting-room-thumb-name {
-    display: block;
-    width: 100%;
-    min-height: 2.4em;
-    text-align: center;
-    font-size: 11px;
-    line-height: 1.25;
-    font-weight: 850;
-    overflow-wrap: anywhere;
-  }
-  #details .storefront-preview.static-cape-preview {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    isolation: isolate;
-    background:
-      radial-gradient(ellipse at 50% 44%, rgba(40, 176, 255, .25), transparent 61%),
-      linear-gradient(145deg, #102d4f, #06152c 72%);
-    border: 1px solid rgba(83, 199, 255, .3);
-    border-radius: 18px;
-    box-shadow: 0 18px 45px rgba(0,0,0,.24), inset 0 1px 0 rgba(204,244,255,.05);
-  }
-  #details .static-cape-image {
-    display: block;
-    width: 84%;
-    height: 84%;
-    max-width: 520px;
-    max-height: 470px;
-    object-fit: contain;
-    filter: drop-shadow(0 18px 22px rgba(0,0,0,.5)) drop-shadow(0 0 16px rgba(38,174,255,.13));
-    animation: mcStaticCapeFloat 3.8s ease-in-out infinite;
-  }
-  @keyframes mcStaticCapeFloat {
-    0%,100% { transform: translateY(0); }
-    50% { transform: translateY(-7px); }
-  }
-  @media (max-width: 1000px) {
-    .fitting-room-thumbnails { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-  }
-  @media (max-width: 520px) {
-    .fitting-room-thumbnails { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
-    .fitting-room-thumb { padding: 10px 8px 11px; }
-    .fitting-room-thumb-art { height: 74px; }
-    #details .static-cape-image { width: 86%; height: 82%; }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .fitting-room-thumb, #details .static-cape-image { animation: none !important; transition: none !important; }
-  }
 </style>
 
 </body>
