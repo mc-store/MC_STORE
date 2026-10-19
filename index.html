@@ -2762,16 +2762,16 @@ body.mc-reveal-ready .mc-footer .reveal-on-scroll.is-visible {
   animation: mcCapeFloatTiltFinal 3.4s ease-in-out infinite !important;
   will-change: transform;
 }
-/* On each cape change, spin around the width axis; preserve the slight sideways lean. */
+/* On each cape change, spin as a 3D object around its vertical axis; keep the sideways lean. */
 @keyframes mcCapeSwap360 {
-  0% { opacity: .35; transform: perspective(1100px) translateY(9px) scale(.76) rotateX(0deg) rotateZ(-5deg); }
-  22% { opacity: 1; transform: perspective(1100px) translateY(0) scale(.96) rotateX(75deg) rotateZ(-5deg); }
-  50% { opacity: 1; transform: perspective(1100px) translateY(-3px) scale(1.045) rotateX(180deg) rotateZ(-5deg); }
-  78% { opacity: 1; transform: perspective(1100px) translateY(0) scale(1.02) rotateX(285deg) rotateZ(-5deg); }
-  100% { opacity: 1; transform: perspective(1100px) translateY(0) scale(1) rotateX(360deg) rotateZ(-5deg); }
+  0% { opacity: .35; transform: perspective(1100px) translateY(9px) scale(.76) rotateY(0deg) rotateZ(-5deg); }
+  22% { opacity: 1; transform: perspective(1100px) translateY(0) scale(.96) rotateY(75deg) rotateZ(-5deg); }
+  50% { opacity: 1; transform: perspective(1100px) translateY(-3px) scale(1.045) rotateY(180deg) rotateZ(-5deg); }
+  78% { opacity: 1; transform: perspective(1100px) translateY(0) scale(1.02) rotateY(285deg) rotateZ(-5deg); }
+  100% { opacity: 1; transform: perspective(1100px) translateY(0) scale(1) rotateY(360deg) rotateZ(-5deg); }
 }
 #featured .featured-image.cape-zoom-switch img {
-  animation: mcCapeSwap360 .78s cubic-bezier(.18,.76,.22,1) both !important;
+  animation: mcCapeSwap360 .68s cubic-bezier(.18,.76,.22,1) both !important;
   transform-origin: 50% 50% !important;
 }
 @media (prefers-reduced-motion: reduce) {
