@@ -24150,5 +24150,40 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
 }
 </style>
 
+
+
+<style id="mc-store-fast-product-entry-animation">
+/* Fast, clean entrance whenever a cape detail page opens: slide in only, no zoom. */
+@keyframes mcCapeDetailPreviewEnter {
+  from { opacity: 0; transform: translate3d(-16px, 0, 0); }
+  to   { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+@keyframes mcCapeDetailInfoEnter {
+  from { opacity: 0; transform: translate3d(16px, 8px, 0); }
+  to   { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+@keyframes mcCapeDetailBackEnter {
+  from { opacity: 0; transform: translate3d(-10px, 0, 0); }
+  to   { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+#details > .back-row .back-btn {
+  animation: mcCapeDetailBackEnter .22s cubic-bezier(.2,.8,.2,1) both !important;
+}
+#details .detail-card.detail-card--storefront .storefront-preview-column {
+  animation: mcCapeDetailPreviewEnter .30s cubic-bezier(.2,.8,.2,1) both !important;
+  will-change: transform, opacity;
+}
+#details .detail-card.detail-card--storefront .detail-info {
+  animation: mcCapeDetailInfoEnter .30s cubic-bezier(.2,.8,.2,1) .035s both !important;
+  will-change: transform, opacity;
+}
+@media (prefers-reduced-motion: reduce) {
+  #details > .back-row .back-btn,
+  #details .detail-card.detail-card--storefront .storefront-preview-column,
+  #details .detail-card.detail-card--storefront .detail-info {
+    animation-duration: .30s !important;
+  }
+}
+</style>
 </body>
 </html>
