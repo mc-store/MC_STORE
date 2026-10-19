@@ -4169,19 +4169,20 @@ onAuthStateChanged(auth, user => {
 </style>
 
 
-<style id="mc-store-cape-half-turn-final-fix">
-/* When a new featured cape appears, make one fast 180-degree turn and stop on the opposite side. */
+<style id="mc-store-cape-full-spin-final-fix">
+/* Each newly selected featured cape completes one full 360-degree spin in 0.1 seconds. */
 @keyframes mcCapeUprightSpin {
   0% { opacity:.55; transform:perspective(1100px) translateY(2px) rotateX(0deg) rotateZ(0deg) rotateY(0deg) scale(.92); }
-  35% { opacity:1; transform:perspective(1100px) translateY(0) rotateX(0deg) rotateZ(0deg) rotateY(70deg) scale(.99); }
-  70% { opacity:1; transform:perspective(1100px) translateY(-1px) rotateX(0deg) rotateZ(0deg) rotateY(145deg) scale(1.02); }
-  100% { opacity:1; transform:perspective(1100px) translateY(0) rotateX(0deg) rotateZ(0deg) rotateY(180deg) scale(1); }
+  25% { opacity:1; transform:perspective(1100px) translateY(0) rotateX(0deg) rotateZ(0deg) rotateY(90deg) scale(.99); }
+  50% { opacity:1; transform:perspective(1100px) translateY(-1px) rotateX(0deg) rotateZ(0deg) rotateY(180deg) scale(1.02); }
+  75% { opacity:1; transform:perspective(1100px) translateY(0) rotateX(0deg) rotateZ(0deg) rotateY(270deg) scale(1.01); }
+  100% { opacity:1; transform:perspective(1100px) translateY(0) rotateX(0deg) rotateZ(0deg) rotateY(360deg) scale(1); }
 }
 #featured .featured-image.cape-zoom-switch img,
 #featured .featured-image img.cape-spin,
 #featured .featured-image img.is-spinning,
 #featured .featured-image img.spin-in {
-  animation:mcCapeUprightSpin .3s linear both !important;
+  animation:mcCapeUprightSpin .1s linear both !important;
   transform-origin:50% 50% !important;
 }
 </style>
