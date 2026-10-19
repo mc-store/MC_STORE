@@ -2780,6 +2780,24 @@ body.mc-reveal-ready .mc-footer .reveal-on-scroll.is-visible {
 }
 </style>
 
+
+<style id="mc-store-discord-close-final">
+/* Highest-priority close state: X stays closed until the launcher is used again. */
+#discordFloat.dismissed .discord-popover,
+#discordFloat.dismissed:hover .discord-popover,
+#discordFloat.dismissed:focus-within .discord-popover,
+#discordFloat.dismissed.open .discord-popover {
+  opacity:0 !important; visibility:hidden !important; pointer-events:none !important;
+  transform:translate(-11px,-50%) scale(.985) !important;
+}
+#discordFloat .discord-close {
+  position:absolute !important; z-index:999 !important; cursor:pointer !important;
+  pointer-events:auto !important; touch-action:manipulation !important;
+}
+@media (prefers-reduced-motion:reduce) {
+  #discordFloat .discord-popover { transition:none !important; }
+}
+</style>
 </head>
 
 <body>
@@ -3003,7 +3021,7 @@ body.mc-reveal-ready .mc-footer .reveal-on-scroll.is-visible {
            onerror="this.style.display='none'">
       <div class="discord-server-name" id="discordServerName">Cape Community</div>
       <div class="discord-status-line"><span class="discord-live"></span><strong id="discordMembers">—</strong> Members <span class="discord-separator">·</span> <span id="discordOnline">—</span> Online</div>
-      <div class="discord-connection" id="discordConnection">Est. Jul 2026</div>
+      <div class="discord-connection" id="discordConnection">Loading Discord details…</div>
       <p class="discord-description" id="discordDescription">A friendly community to talk about all things Minecraft capes.</p>
       <a class="discord-join" href="https://discord.gg/G75MSAVe2k" target="_blank" rel="noopener noreferrer">Join Server</a>
     </div>
@@ -3594,46 +3612,68 @@ function handleRoute() {
 
 window.addEventListener("hashchange", handleRoute);
 
-/* Discord preview */
+/* Discord preview: live server details, with a reliable close/reopen state. */
 const discordFloat = document.getElementById("discordFloat");
 const discordFloatButton = document.getElementById("discordFloatButton");
+const discordClose = document.getElementById("discordClose");
+let discordDismissedByUser = false;
 
-discordFloatButton.addEventListener("click", () => {
-  // A direct click should always be able to reopen a card dismissed with X.
+function closeDiscordPreview({dismiss = false} = {}) {
+  discordFloat.classList.remove("open");
+  if (dismiss) {
+    discordDismissedByUser = true;
+    discordFloat.classList.add("dismissed");
+  }
+  discordFloatButton.setAttribute("aria-expanded", "false");
+}
+
+function reopenDiscordPreview() {
+  discordDismissedByUser = false;
   discordFloat.classList.remove("dismissed");
+}
+
+discordFloatButton.addEventListener("click", event => {
+  event.preventDefault();
+  event.stopPropagation();
+  reopenDiscordPreview();
   const isOpen = discordFloat.classList.toggle("open");
   discordFloatButton.setAttribute("aria-expanded", String(isOpen));
 });
 
-const discordClose = document.getElementById("discordClose");
+// Stop the X click before it can be treated as a click elsewhere on the page.
+discordClose.addEventListener("pointerdown", event => {
+  event.stopPropagation();
+});
 discordClose.addEventListener("click", event => {
   event.preventDefault();
   event.stopPropagation();
-  discordFloat.classList.remove("open");
-  discordFloat.classList.add("dismissed");
-  discordFloatButton.setAttribute("aria-expanded", "false");
+  closeDiscordPreview({dismiss: true});
 });
 
-// Re-enable hover preview when the pointer leaves the widget or returns to its icon.
+// Keep the X dismissal in effect after the card collapses under the pointer.
+// Moving back to the Discord launcher (or clicking it) explicitly re-enables it.
 discordFloat.addEventListener("mouseleave", () => {
-  discordFloat.classList.remove("dismissed");
+  if (!discordDismissedByUser) {
+    discordFloat.classList.remove("dismissed");
+  }
 });
-discordFloatButton.addEventListener("mouseenter", () => {
-  discordFloat.classList.remove("dismissed");
+discordFloatButton.addEventListener("pointerenter", () => {
+  if (discordDismissedByUser) reopenDiscordPreview();
+});
+discordFloatButton.addEventListener("focus", () => {
+  if (discordDismissedByUser) reopenDiscordPreview();
 });
 
 document.addEventListener("keydown", event => {
-  if (event.key === "Escape" && discordFloat.classList.contains("open")) {
-    discordFloat.classList.remove("open");
-    discordFloat.classList.add("dismissed");
-    discordFloatButton.setAttribute("aria-expanded", "false");
+  if (event.key === "Escape" && (discordFloat.classList.contains("open") || discordFloat.matches(":hover"))) {
+    event.preventDefault();
+    closeDiscordPreview({dismiss: true});
   }
 });
 
 document.addEventListener("click", event => {
   if (!discordFloat.contains(event.target)) {
-    discordFloat.classList.remove("open");
-    discordFloatButton.setAttribute("aria-expanded", "false");
+    closeDiscordPreview();
   }
 });
 
@@ -3675,10 +3715,12 @@ async function refreshDiscordInfo() {
       icon.style.display = "block";
     }
 
-    connection.textContent = "Est. Jul 2026";
+    connection.textContent = data.guild && Array.isArray(data.guild.features) && data.guild.features.includes("COMMUNITY")
+      ? "Discord community"
+      : "Discord server";
   } catch (error) {
     document.getElementById("discordMembers").textContent = "—";
-    connection.textContent = "Minecraft cape community";
+    connection.textContent = "Live Discord details unavailable";
     console.info("Discord preview could not be loaded.", error);
   }
 }
