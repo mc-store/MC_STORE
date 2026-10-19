@@ -1547,7 +1547,7 @@ nav{background:rgba(4,13,29,.9)!important;border:0!important;border-bottom:1px s
 .featured{animation:mcCardGlow 6s ease-in-out infinite!important}
 .featured-image,.card-art,.detail-art{background:radial-gradient(ellipse at center,#219fff2d,transparent 64%),linear-gradient(145deg,#102b4a,#061326)!important}
 .featured-image img{filter:drop-shadow(0 15px 20px #0008) drop-shadow(0 0 18px #28bfff24)!important;animation:floatCape 3.3s ease-in-out infinite,mcCapeGlow 5s ease-in-out infinite!important;transition:transform .35s!important}
-.showcase-art:hover .featured-image img{transform:translateY(-5px) scale(1.055)!important}
+/* Removed the hover zoom so the cape spin is visible on desktop. */
 .featured-info h2,.card h3,.detail-info h1,.trust-item h3,.discord-server-name,.auth-box h2{color:#f3fbff!important}
 .featured-price,.card-price,.detail-price,.showcase-price{color:#a8f2ff!important;text-shadow:0 0 20px #38bfff20!important}
 .featured-price small,.card-price small,.card-desc,.detail-info>p,.detail-note,.trust-item p,.discord-banner p,.footer-note,.footer-links a,.copyright,.showcase-price small{color:#a9c1d8!important}
@@ -3180,6 +3180,7 @@ const capes = [
     onSale:true,
     image:"media/builder-cape.png",
     showcaseImage:"media/builder-cape.png",
+    productImage:"./capes%203D/buildercape3D",
     description:"A classic addition for Minecraft cape collectors and fans of building.",
     label:"Featured"
   },
@@ -3263,9 +3264,12 @@ const capes = [
   }
 ];
 
-// The homepage showcase uses the original cape artwork; Our Products uses the separate 3D renders.
-// Builder stays in the homepage showcase only, while Menace appears in Our Products.
-const productCapes = capes.filter(cape => cape.id !== "builder");
+// The homepage showcase uses original artwork; Our Products uses dedicated 3D renders.
+// Keep the product order requested for the store, with Builder included and Menace before Moonlight.
+const productOrder = ["aurora", "builder", "copper", "crafter", "experience", "home", "menace", "moonlight", "purple-heart"];
+const productCapes = productOrder
+  .map(id => capes.find(cape => cape.id === id))
+  .filter(Boolean);
 const featuredCapes = capes.filter(cape => cape.id !== "menace");
 
 document.getElementById("year").textContent = new Date().getFullYear();
@@ -3459,21 +3463,18 @@ function showFeatured(index) {
   featuredImage.src = cape.showcaseImage || cape.image;
   featuredImage.alt = cape.name;
 
-  // Zoom and rotate the cape on its own whenever the Home showcase changes.
-  const featuredFrame = featuredImage.closest(".featured-image");
-  if (featuredFrame) {
-    if (!featuredFrame.dataset.zoomListener) {
-      featuredFrame.addEventListener("animationend", event => {
-        if (event.target === featuredFrame && event.animationName === "mcCapeSwapZoom") {
-          featuredFrame.classList.remove("cape-zoom-switch");
-        }
-      });
-      featuredFrame.dataset.zoomListener = "true";
-    }
-    featuredFrame.classList.remove("cape-zoom-switch");
-    void featuredFrame.offsetWidth;
-    featuredFrame.classList.add("cape-zoom-switch");
+  // Spin the incoming cape once through 360 degrees; no zoom or scale effect.
+  if (!featuredImage.dataset.spinListener) {
+    featuredImage.addEventListener("animationend", event => {
+      if (event.target === featuredImage && event.animationName === "mcStoreCapePureSpin") {
+        featuredImage.classList.remove("cape-spin");
+      }
+    });
+    featuredImage.dataset.spinListener = "true";
   }
+  featuredImage.classList.remove("cape-spin");
+  void featuredImage.offsetWidth;
+  featuredImage.classList.add("cape-spin");
 
   const featuredName = document.getElementById("featuredName");
   featuredName.innerHTML = cape.id === "builder"
@@ -24089,6 +24090,34 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
     animation-duration: 50s !important;
     animation-iteration-count: infinite !important;
   }
+}
+</style>
+
+
+
+<style id="mc-store-pure-cape-spin-no-zoom">
+/* Pure 360-degree turn on each cape change: no zoom, scale, fade, or frame animation. */
+@keyframes mcStoreCapePureSpin {
+  from { transform: perspective(1100px) rotateX(0deg) rotateZ(0deg) rotateY(0deg); }
+  to   { transform: perspective(1100px) rotateX(0deg) rotateZ(0deg) rotateY(360deg); }
+}
+#featured .featured-image.cape-zoom-switch { animation: none !important; }
+#featured .featured-image img {
+  transform-origin: 50% 50% !important;
+  transform-style: preserve-3d !important;
+  backface-visibility: visible !important;
+  transition: none !important;
+}
+#featured .featured-image img.cape-spin {
+  animation: mcStoreCapePureSpin .1s linear 1 both !important;
+  transform-origin: 50% 50% !important;
+  transform-style: preserve-3d !important;
+  backface-visibility: visible !important;
+  will-change: transform;
+}
+/* Use the same brief spin on desktop and mobile, including reduced-motion setups. */
+@media (prefers-reduced-motion: reduce) {
+  #featured .featured-image img.cape-spin { animation: mcStoreCapePureSpin .1s linear 1 both !important; }
 }
 </style>
 
