@@ -2805,6 +2805,45 @@ body.mc-reveal-ready .mc-footer .reveal-on-scroll.is-visible {
   #discordFloat .discord-popover { transition:none !important; }
 }
 </style>
+
+<style id="mc-store-sideways-cape-tilt-fix">
+/* Sideways presentation only: a small Y-axis perspective gives depth,
+   while rotateZ creates the visible side lean. No rotateX/lengthwise tilt. */
+@keyframes mcCapeFloatTiltFinal {
+  0%, 100% {
+    transform: perspective(1100px) translateY(0) rotateY(-5deg) rotateZ(-7deg) scale(1);
+  }
+  50% {
+    transform: perspective(1100px) translateY(-6px) rotateY(-5deg) rotateZ(-7deg) scale(1.012);
+  }
+}
+#featured .featured-image img {
+  transform-origin: 50% 50% !important;
+  transform-style: preserve-3d !important;
+  animation: mcCapeFloatTiltFinal 3.4s ease-in-out infinite !important;
+  filter: drop-shadow(5px 2px 0 rgba(0,0,0,.10)) drop-shadow(12px 15px 14px rgba(0,0,0,.18)) !important;
+}
+/* A new cape makes one direct, fast 360-degree spin, retaining the sideways lean. */
+@keyframes mcCapeSwap360 {
+  0%   { opacity:.4; transform:perspective(1100px) translateY(4px) scale(.86) rotateZ(-7deg) rotateY(0deg); }
+  25%  { opacity:1; transform:perspective(1100px) translateY(0) scale(.98) rotateZ(-7deg) rotateY(90deg); }
+  50%  { opacity:1; transform:perspective(1100px) translateY(-2px) scale(1.035) rotateZ(-7deg) rotateY(180deg); }
+  75%  { opacity:1; transform:perspective(1100px) translateY(0) scale(1.015) rotateZ(-7deg) rotateY(270deg); }
+  100% { opacity:1; transform:perspective(1100px) translateY(0) scale(1) rotateZ(-7deg) rotateY(360deg); }
+}
+#featured .featured-image.cape-zoom-switch img {
+  animation:mcCapeSwap360 .5s linear both !important;
+  transform-origin:50% 50% !important;
+}
+@media (prefers-reduced-motion: reduce) {
+  #featured .featured-image img,
+  #featured .featured-image.cape-zoom-switch img {
+    animation:none !important;
+    transform:perspective(1100px) rotateY(-5deg) rotateZ(-7deg) !important;
+  }
+}
+</style>
+
 </head>
 
 <body>
@@ -4062,5 +4101,33 @@ onAuthStateChanged(auth, user => {
   const mcFooterYear = document.getElementById("year");
   if (mcFooterYear) mcFooterYear.textContent = String(new Date().getFullYear());
 </script>
+
+<style id="mc-store-cape-angled-3d-fix">
+/* Slight side angle like the reference image, without tipping the cape lengthwise. */
+#featured .featured-image { perspective: 1100px; }
+#featured .featured-image img {
+  transform-style: preserve-3d;
+  backface-visibility: visible;
+  filter: drop-shadow(10px 14px 10px rgba(0,0,0,.20));
+  animation: mcCapeAngledFloat 3.4s ease-in-out infinite !important;
+}
+@keyframes mcCapeAngledFloat {
+  0%,100% { transform: perspective(1100px) translateY(0) rotateX(0deg) rotateY(-7deg) rotateZ(-3deg) scale(1); }
+  50% { transform: perspective(1100px) translateY(-6px) rotateX(0deg) rotateY(-7deg) rotateZ(-3deg) scale(1.012); }
+}
+@keyframes mcCapeAngledSpin {
+  0% { opacity:.4; transform: perspective(1100px) translateY(4px) rotateX(0deg) rotateZ(-3deg) rotateY(-7deg) scale(.88); }
+  25% { opacity:1; transform: perspective(1100px) translateY(0) rotateX(0deg) rotateZ(-3deg) rotateY(83deg) scale(.98); }
+  50% { opacity:1; transform: perspective(1100px) translateY(-2px) rotateX(0deg) rotateZ(-3deg) rotateY(173deg) scale(1.035); }
+  75% { opacity:1; transform: perspective(1100px) translateY(0) rotateX(0deg) rotateZ(-3deg) rotateY(263deg) scale(1.015); }
+  100% { opacity:1; transform: perspective(1100px) translateY(0) rotateX(0deg) rotateZ(-3deg) rotateY(353deg) scale(1); }
+}
+#featured .featured-image img.cape-spin,
+#featured .featured-image img.is-spinning,
+#featured .featured-image img.spin-in {
+  animation: mcCapeAngledSpin .5s linear both !important;
+}
+</style>
+
 </body>
 </html>
