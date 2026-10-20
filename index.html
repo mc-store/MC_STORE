@@ -3306,6 +3306,9 @@ document.getElementById("year").textContent = new Date().getFullYear();
 let currentFilter = "all";
 let featuredIndex = 0;
 let featuredTimer = null;
+// Each showcase change gets its own token so a slow image-recovery request for an older cape
+// can never replace or hide the cape that is currently being shown.
+let featuredImageRequestToken = 0;
 
 function formatPrice(cape) {
   if (!cape.stock || typeof cape.price !== "number") return "Unavailable";
@@ -3658,18 +3661,98 @@ document.querySelectorAll("[data-filter]").forEach(button => {
   });
 });
 
+async function recoverFeaturedCapeImage(img, cape, requestToken) {
+  if (!img || requestToken !== featuredImageRequestToken) return;
+
+  let failed = [];
+  try { failed = JSON.parse(img.dataset.mcFeaturedFailedUrls || "[]"); } catch (_) {}
+  const currentUrl = String(img.currentSrc || img.src || "").split("?")[0];
+  if (currentUrl && !failed.includes(currentUrl)) failed.push(currentUrl);
+  img.dataset.mcFeaturedFailedUrls = JSON.stringify(failed);
+
+  const filename = mcStoreAssetBasename(cape.showcaseImage || cape.image || "");
+  let discoveredUrl = null;
+  try {
+    const resolved = await findMcStoreNestedAsset([filename], failed);
+    if (resolved && resolved.url) discoveredUrl = resolved.url;
+  } catch (_) {}
+  if (requestToken !== featuredImageRequestToken) return;
+
+  const dot = filename.lastIndexOf(".");
+  const stem = dot > 0 ? filename.slice(0, dot) : filename;
+  const names = [...new Set([
+    filename, stem + ".png", stem + ".PNG", stem + ".webp", stem + ".WEBP",
+    stem + ".jpg", stem + ".JPG", stem + ".jpeg", stem + ".JPEG"
+  ].filter(Boolean))];
+  const folders = [
+    "media/", "", "Media/", "images/", "Images/", "assets/", "Assets/",
+    "capes/", "Capes/", "capes images/", "Capes Images/", "cape images/",
+    "Cape Images/", "media/capes/", "images/capes/", "assets/capes/",
+    "public/images/", "static/images/", "capes 3D/"
+  ];
+  const candidates = [];
+  if (discoveredUrl && !failed.includes(discoveredUrl.split("?")[0])) candidates.push(discoveredUrl);
+  for (const folder of folders) {
+    for (const name of names) {
+      try {
+        const folderPath = folder.split("/").filter(Boolean).map(encodeURIComponent).join("/");
+        const encodedName = name.split("/").map(encodeURIComponent).join("/");
+        const relative = (folderPath ? folderPath + "/" : "") + encodedName;
+        const url = new URL(relative, mcStoreNestedAssetBaseUrl()).href;
+        if (!failed.includes(url.split("?")[0]) && !candidates.includes(url)) candidates.push(url);
+      } catch (_) {}
+    }
+  }
+
+  const probes = await Promise.all(candidates.slice(0, 140).map(url => new Promise(resolve => {
+    const test = new Image();
+    test.onload = () => resolve(url);
+    test.onerror = () => resolve(null);
+    test.src = url;
+  })));
+  if (requestToken !== featuredImageRequestToken) return;
+
+  const found = probes.find(Boolean);
+  if (found) {
+    img.hidden = false;
+    img.removeAttribute("hidden");
+    img.style.removeProperty("display");
+    img.src = found;
+    img.dataset.mcFeaturedResolvedUrl = found;
+  } else {
+    // It is hidden only for this cape. showFeatured() always unhides/reset state on the next swap.
+    img.hidden = true;
+  }
+}
+
 function showFeatured(index) {
   featuredIndex = (index + featuredCapes.length) % featuredCapes.length;
   const cape = featuredCapes[featuredIndex];
+  const requestToken = ++featuredImageRequestToken;
 
   const featuredImage = document.getElementById("featuredImage");
   const nextShowcaseImage = cape.showcaseImage || cape.image;
   const nextShowcaseURL = new URL(nextShowcaseImage, document.baseURI).href;
+
+  // IMPORTANT: a previous missing image must never leave the shared showcase <img> hidden.
+  featuredImage.hidden = false;
+  featuredImage.removeAttribute("hidden");
+  featuredImage.style.removeProperty("display");
+  featuredImage.dataset.mcFeaturedRequestToken = String(requestToken);
+  featuredImage.dataset.mcFeaturedFailedUrls = "[]";
+  featuredImage.dataset.mcFeaturedResolvedUrl = "";
+  // Reset the product-card resolver state as the same <img> is reused for all nine capes.
+  featuredImage.dataset.mcHandlingImageError = "0";
+  featuredImage.dataset.mcRepoLookupDone = "0";
+  featuredImage.dataset.mcFailedAssetUrls = "[]";
   featuredImage.alt = cape.name;
   featuredImage.dataset.imageFile = String(nextShowcaseImage).split("/").pop();
   featuredImage.dataset.originalSrc = nextShowcaseImage;
   featuredImage.dataset.fallbackImage = cape.image || "";
-  featuredImage.onerror = function () { handleCapeCardImageError(this); };
+  featuredImage.onerror = function () {
+    if (requestToken !== featuredImageRequestToken) return;
+    recoverFeaturedCapeImage(this, cape, requestToken);
+  };
 
   // Every artwork swap restarts the fast 360-degree spin from the same upright position.
   featuredImage.classList.remove("cape-spin", "is-spinning", "spin-in", "mc-store-spin-now");
@@ -3678,10 +3761,11 @@ function showFeatured(index) {
   if (currentShowcaseURL !== nextShowcaseURL || !featuredImage.complete || featuredImage.naturalWidth === 0) {
     featuredImage.src = nextShowcaseImage;
   }
-  // Force a reflow so the 0.1-second spin plays for every cape change, even on repeat images.
   void featuredImage.offsetWidth;
   featuredImage.classList.add("mc-store-spin-now");
-  window.setTimeout(() => featuredImage.classList.remove("mc-store-spin-now"), 125);
+  window.setTimeout(() => {
+    if (requestToken === featuredImageRequestToken) featuredImage.classList.remove("mc-store-spin-now");
+  }, 125);
 
   const featuredName = document.getElementById("featuredName");
   featuredName.innerHTML = cape.id === "builder"
