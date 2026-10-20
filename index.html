@@ -2886,7 +2886,7 @@ body.mc-reveal-ready .mc-footer .reveal-on-scroll.is-visible {
   <header class="hero container" id="home">
     <div class="hero-layout cape-showcase-layout">
       <div class="hero-copy cape-showcase-copy">
-        <div class="pill"><span class="pulse"></span> <span id="featuredNumber">01 / 08</span> · CAPE SPOTLIGHT</div>
+        <div class="pill"><span class="pulse"></span> <span id="featuredNumber">01 / 09</span> · CAPE SPOTLIGHT</div>
         <span class="stock" id="featuredStock">✓ IN STOCK</span>
         <h1 id="featuredName">Aurora Cape</h1>
         <p id="featuredDescription">Explore the MC STORE cape collection.</p>
@@ -2906,7 +2906,7 @@ body.mc-reveal-ready .mc-footer .reveal-on-scroll.is-visible {
           <span class="featured-number">MC STORE</span>
         </div>
         <div class="featured-image">
-          <img id="featuredImage" src="media/aurora-cape.png" alt="Aurora Cape" data-image-file="aurora-cape.png" data-original-src="media/aurora-cape.png" data-fallback-image="media/aurora-front.png" onerror="handleCapeCardImageError(this)">
+          <img id="featuredImage" src="media/aurora-cape.png" alt="Aurora Cape" data-image-file="aurora-cape.png" data-original-src="media/aurora-cape.png" data-fallback-image="media/aurora-cape.png" onerror="handleCapeCardImageError(this)">
         </div>
       </div>
     </div>
@@ -3170,9 +3170,9 @@ const capes = [
     price:6,
     stock:true,
     onSale:true,
-    image:"media/aurora-front.png",
+    image:"media/aurora-cape.png",
     showcaseImage:"media/aurora-cape.png",
-    productImage:"./capes%203D/auroracape3D",
+    productImage:"./capes%203D/auroracape3D.png",
     description:"A vibrant cape for players who want a distinctive look in their Minecraft collection.",
     label:"Popular"
   },
@@ -3185,7 +3185,7 @@ const capes = [
     onSale:true,
     image:"media/builder-cape.png",
     showcaseImage:"media/builder-cape.png",
-    productImage:"./capes%203D/buildercape3D",
+    productImage:"./capes%203D/buildercape3D.png",
     description:"A classic addition for Minecraft cape collectors and fans of building.",
     label:"Featured"
   },
@@ -3197,7 +3197,7 @@ const capes = [
     stock:false,
     image:"media/copper-cape.png",
     showcaseImage:"media/copper-cape.png",
-    productImage:"./capes%203D/coppercape3D",
+    productImage:"./capes%203D/coppercape3D.png",
     description:"A copper-themed design for Minecraft players and collectors.",
     label:""
   },
@@ -3209,7 +3209,7 @@ const capes = [
     stock:false,
     image:"media/crafter-cape.png",
     showcaseImage:"media/crafter-cape.png",
-    productImage:"./capes%203D/craftercape3D",
+    productImage:"./capes%203D/craftercape3D.png",
     description:"A crafting-inspired design for Minecraft fans and cape collectors.",
     label:""
   },
@@ -3222,7 +3222,7 @@ const capes = [
     stock:true,
     image:"media/experience-cape.png",
     showcaseImage:"media/experience-cape.png",
-    productImage:"./capes%203D/experiencecape3D",
+    productImage:"./capes%203D/experiencecape3D.png",
     description:"The Experience cape was the first IRL obtainable cape since Minecon 2016. The cape is only obtainable via attending an IRL Minecraft Event located in different places across the World. If you can't go, don't worry, you can buy it here!",
     label:""
   },
@@ -3234,7 +3234,7 @@ const capes = [
     stock:false,
     image:"media/home-cape.png",
     showcaseImage:"media/home-cape.png",
-    productImage:"./capes%203D/homecape3D",
+    productImage:"./capes%203D/homecape3D.png",
     description:"A Home cape design for Minecraft players and collectors.",
     label:""
   },
@@ -3246,7 +3246,7 @@ const capes = [
     stock:false,
     image:"media/moonlight-cape.png",
     showcaseImage:"media/moonlight-cape.png",
-    productImage:"./capes%203D/moonlightcape3D",
+    productImage:"./capes%203D/moonlightcape3D.png",
     description:"A moonlight-inspired design for your Minecraft cape collection.",
     label:""
   },
@@ -3258,7 +3258,7 @@ const capes = [
     stock:false,
     image:"media/twitch-cape.png",
     showcaseImage:"media/twitch-cape.png",
-    productImage:"./capes%203D/twitchcape3D",
+    productImage:"./capes%203D/twitchcape3D.png",
     description:"A purple-themed cape design for your collection.",
     label:""
   },
@@ -3270,7 +3270,7 @@ const capes = [
     stock:false,
     image:"media/menace-cape.png",
     detailImage:"media/menace-cape.png",
-    productImage:"./capes%203D/menacecape3D",
+    productImage:"./capes%203D/menacecape3D.png",
     description:"A striking cape design in the MC STORE collection.",
     label:""
   }
@@ -3282,7 +3282,7 @@ const productOrder = ["aurora", "builder", "copper", "crafter", "experience", "h
 const productCapes = productOrder
   .map(id => capes.find(cape => cape.id === id))
   .filter(Boolean);
-const featuredCapes = capes.filter(cape => cape.id !== "menace");
+const featuredCapes = productCapes.slice(); // Show all nine cape artworks in the homepage spotlight.
 
 document.getElementById("year").textContent = new Date().getFullYear();
 
@@ -3322,12 +3322,21 @@ function handleCapeCardImageError(img) {
     const primary = stripPathAndExtension(img.dataset.imageFile || img.dataset.originalSrc || img.src);
     const fallback = stripPathAndExtension(img.dataset.fallbackImage || "");
     const stems = [...new Set([primary, fallback].filter(Boolean))];
-    const folders = [
-      "capes 3D/", "./capes 3D/", "capes%203D/", "./capes%203D/", "capes3D/", "Capes 3D/", "Capes3D/", "capes-3D/", "capes_3D/", "3D/", "3d/",
-      "", "./", "media/", "Media/", "images/", "Images/", "assets/", "Assets/",
-      "capes/", "Capes/", "media/capes/", "images/capes/", "assets/capes/",
-      "capes images/", "cape images/", "Capes Images/", "product images/", "Product Images/", "capes png/", "capes PNG/", "images/capes 3D/", "assets/capes 3D/"
+    const productFolders = [
+      "capes 3D/", "./capes 3D/", "capes%203D/", "./capes%203D/", "capes3D/", "Capes 3D/", "Capes3D/", "capes-3D/", "capes_3D/", "3D/", "3d/"
     ];
+    const artworkFolders = [
+      "", "./", "media/", "Media/", "images/", "Images/", "assets/", "Assets/",
+      "capes images/", "Capes Images/", "cape images/", "Cape Images/", "capes image/", "Capes Image/",
+      "cape-images/", "capes-images/", "Capes-Images/", "capes_images/", "Capes_Images/",
+      "capes png/", "Capes PNG/", "Capes Png/", "capes-png/", "capes_png/", "png/", "PNG/",
+      "capes/", "Capes/", "media/capes/", "Media/Capes/", "images/capes/", "Images/Capes/", "assets/capes/",
+      "capes 2D/", "Capes 2D/", "capes2D/", "capes-2D/", "capes_2D/", "2D/", "2d/",
+      "product images/", "Product Images/", "products/", "Products/", "media/images/", "assets/images/",
+      "images/capes 3D/", "assets/capes 3D/"
+    ];
+    // Search the likely category for the 3D render first; if it is absent, try all artwork folders.
+    const folders = /cape3d$/i.test(primary) ? [...productFolders, ...artworkFolders] : [...artworkFolders, ...productFolders];
     const extensions = [".png", ".PNG", ".webp", ".WEBP", ".jpg", ".JPG", ".jpeg", ".JPEG",
       ".avif", ".AVIF", ".gif", ".GIF", ".bmp", ".BMP", ""];
     const current = String(img.getAttribute("src") || "").replace(/^\.\//, "");
@@ -23856,10 +23865,11 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
   // The texture files may be grouped in different GitHub Pages folders. Probe
   // common category names and extensions while keeping the user's exact file stems.
   const capeTextureFolders = [
-    "texture pack/", "Texture Pack/", "texture-pack/", "texture_pack/", "textures pack/", "textures-pack/",
-    "capes texture pack/", "Capes Texture Pack/", "cape texture pack/", "Cape Texture Pack/",
-    "capes textures/", "Capes Textures/", "cape textures/", "Cape Textures/", "capes texture/", "cape texture/",
-    "textures/", "Textures/", "texture/", "Texture/", "capes 3D/", "capes%203D/",
+    "texture pack/", "Texture Pack/", "TEXTURE PACK/", "texture-pack/", "Texture-Pack/", "texture_pack/", "Texture_Pack/",
+    "textures pack/", "Textures Pack/", "textures-pack/", "Textures-Pack/", "textures_pack/",
+    "capes texture pack/", "Capes Texture Pack/", "Cape Texture Pack/", "cape texture pack/", "CAPE TEXTURE PACK/",
+    "capes textures/", "Capes Textures/", "cape textures/", "Cape Textures/", "capes texture/", "Capes Texture/", "cape texture/", "Cape Texture/",
+    "textures/", "Textures/", "texture/", "Texture/", "capes 3D/", "Capes 3D/", "capes%203D/",
     "media/textures/", "media/texture pack/", "assets/textures/", "images/textures/", "media/", "images/", "assets/", ""
   ];
   const capeTextureExtensions = [".png", ".PNG", ".webp", ".WEBP", ".jpg", ".JPG", ".jpeg", ".JPEG", ""];
@@ -24003,12 +24013,15 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
       mcStoreViewer.controls.enablePan = false;
       mcStoreViewer.controls.enableRotate = true;
       mcStoreViewer.controls.enableZoom = true;
-      // Rotate the cape model gently on every device, including desktop PC.
-      // The player skin remains hidden, so only the cape itself is visible.
-      mcStoreViewer.autoRotate = true;
-      mcStoreViewer.autoRotateSpeed = 0.62;
+      // Lock the camera elevation so dragging only turns the cape left/right.
+      mcStoreViewer.controls.minPolarAngle = Math.PI / 2;
+      mcStoreViewer.controls.maxPolarAngle = Math.PI / 2;
+      mcStoreViewer.controls.rotateSpeed = 0.9;
       mcStoreViewer.controls.enableDamping = true;
-      mcStoreViewer.zoom = 0.92;
+      // Keep the cape still until the visitor drags it, and make the model a little larger.
+      mcStoreViewer.autoRotate = false;
+      mcStoreViewer.controls.autoRotate = false;
+      mcStoreViewer.zoom = 1.15;
       mcStoreViewer.playerWrapper.rotation.y = Math.PI;
       // Show the cape by itself: do not load or display the default Steve skin.
       mcStoreViewer.animation = null;
@@ -24125,7 +24138,8 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
 #details .preview-tabs { display: none !important; }
 #details .storefront-stock-row { margin-top: 44px; }
 #details .storefront-stock-row .storefront-stock { padding-left: 0; border-left: 0; }
-#details #capeSkinViewer { cursor: default !important; }
+#details #capeSkinViewer { cursor: grab !important; }
+#details #capeSkinViewer:active { cursor: grabbing !important; }
 .cape-name-accent--aurora { color:#10a9c8 !important; -webkit-text-fill-color:#10a9c8 !important; }
 .cape-name-accent--builder { color:#9a5b22 !important; -webkit-text-fill-color:#9a5b22 !important; }
 .cape-name-accent--copper { color:#27834b !important; -webkit-text-fill-color:#27834b !important; }
@@ -25838,6 +25852,49 @@ nav .nav-links .nav-link:focus-visible .mc-nav-letter {
   else start();
 })();
 </script>
+
+
+<style id="mc-store-2026-10-20-home-art-horizontal-3d-nav-blue">
+/* Use blue navigation labels, matching the bright cyan-blue reference navbar. */
+nav .nav-links .nav-link,
+nav .nav-links .nav-link:visited {
+  color: #176db4 !important;
+  -webkit-text-fill-color: #176db4 !important;
+}
+nav .nav-links .nav-link:hover,
+nav .nav-links .nav-link:focus-visible {
+  color: #075b99 !important;
+  -webkit-text-fill-color: #075b99 !important;
+  background: #e7f8ff !important;
+  border-color: #a8e8f7 !important;
+  box-shadow: 0 3px 10px rgba(32, 151, 217, .12) !important;
+}
+nav .nav-links .nav-link.active,
+nav .nav-links .nav-link[href="#home"].active {
+  color: #064f84 !important;
+  -webkit-text-fill-color: #064f84 !important;
+  background: linear-gradient(180deg, #8ce6ff 0%, #36c8f5 100%) !important;
+  border-color: #178cb8 !important;
+  box-shadow: 0 3px 0 #1179a1 !important;
+}
+
+/* Slightly enlarge the interactive 3D cape stage while preserving the existing layout. */
+#details .storefront-preview {
+  height: clamp(440px, 34vw, 610px) !important;
+}
+#details .cape-preview-fallback {
+  width: min(68%, 390px) !important;
+  max-height: 88% !important;
+}
+#details #capeSkinViewer { cursor: grab !important; }
+#details #capeSkinViewer:active { cursor: grabbing !important; }
+@media (max-width: 1000px) {
+  #details .storefront-preview { height: clamp(420px, 68vw, 570px) !important; }
+}
+@media (max-width: 520px) {
+  #details .storefront-preview { height: 410px !important; }
+}
+</style>
 
 </body>
 </html>
