@@ -2906,7 +2906,7 @@ body.mc-reveal-ready .mc-footer .reveal-on-scroll.is-visible {
           <span class="featured-number">MC STORE</span>
         </div>
         <div class="featured-image">
-          <img id="featuredImage" src="media/aurora-cape.png" alt="Aurora Cape">
+          <img id="featuredImage" src="media/aurora-cape.png" alt="Aurora Cape" data-image-file="aurora-cape.png" data-original-src="media/aurora-cape.png" data-fallback-image="media/aurora-front.png" onerror="handleCapeCardImageError(this)">
         </div>
       </div>
     </div>
@@ -3166,6 +3166,7 @@ const capes = [
   {
     id:"aurora",
     name:"Aurora Cape",
+    textureStem:"auroracapetexture",
     price:6,
     stock:true,
     onSale:true,
@@ -3178,6 +3179,7 @@ const capes = [
   {
     id:"builder",
     name:"Builder Cape",
+    textureStem:"buildercapetexture",
     price:9,
     stock:true,
     onSale:true,
@@ -3190,6 +3192,7 @@ const capes = [
   {
     id:"copper",
     name:"Copper Cape",
+    textureStem:"coppercapetexture",
     price:null,
     stock:false,
     image:"media/copper-cape.png",
@@ -3201,6 +3204,7 @@ const capes = [
   {
     id:"crafter",
     name:"Crafter Cape",
+    textureStem:"craftercapetexture",
     price:null,
     stock:false,
     image:"media/crafter-cape.png",
@@ -3212,6 +3216,7 @@ const capes = [
   {
     id:"experience",
     name:"Experience Cape Code",
+    textureStem:"experiencecapetexture",
     price:69.99,
     originalPrice:79.99,
     stock:true,
@@ -3224,6 +3229,7 @@ const capes = [
   {
     id:"home",
     name:"Home Cape",
+    textureStem:"homecapetexture",
     price:null,
     stock:false,
     image:"media/home-cape.png",
@@ -3235,6 +3241,7 @@ const capes = [
   {
     id:"moonlight",
     name:"Moonlight Cape",
+    textureStem:"moonlightcapetexture",
     price:null,
     stock:false,
     image:"media/moonlight-cape.png",
@@ -3245,7 +3252,8 @@ const capes = [
   },
   {
     id:"purple-heart",
-    name:"Purple Heart Cape",
+    name:"Twitch Cape",
+    textureStem:"twitchcapetexture",
     price:null,
     stock:false,
     image:"media/twitch-cape.png",
@@ -3257,6 +3265,7 @@ const capes = [
   {
     id:"menace",
     name:"Menace Cape",
+    textureStem:"menacecapetexture",
     price:null,
     stock:false,
     image:"media/menace-cape.png",
@@ -3313,9 +3322,12 @@ function handleCapeCardImageError(img) {
     const primary = stripPathAndExtension(img.dataset.imageFile || img.dataset.originalSrc || img.src);
     const fallback = stripPathAndExtension(img.dataset.fallbackImage || "");
     const stems = [...new Set([primary, fallback].filter(Boolean))];
-    const folders = ["capes%203D/", "./capes%203D/", "capes 3D/", "./capes 3D/",
-      "", "./", "media/", "images/", "assets/", "Media/", "Images/", "Assets/",
-      "media/capes/", "images/capes/", "assets/capes/"];
+    const folders = [
+      "capes 3D/", "./capes 3D/", "capes%203D/", "./capes%203D/", "capes3D/", "Capes 3D/", "Capes3D/", "capes-3D/", "capes_3D/", "3D/", "3d/",
+      "", "./", "media/", "Media/", "images/", "Images/", "assets/", "Assets/",
+      "capes/", "Capes/", "media/capes/", "images/capes/", "assets/capes/",
+      "capes images/", "cape images/", "Capes Images/", "product images/", "Product Images/", "capes png/", "capes PNG/", "images/capes 3D/", "assets/capes 3D/"
+    ];
     const extensions = [".png", ".PNG", ".webp", ".WEBP", ".jpg", ".JPG", ".jpeg", ".JPEG",
       ".avif", ".AVIF", ".gif", ".GIF", ".bmp", ".BMP", ""];
     const current = String(img.getAttribute("src") || "").replace(/^\.\//, "");
@@ -3473,6 +3485,10 @@ function showFeatured(index) {
   const nextShowcaseImage = cape.showcaseImage || cape.image;
   const nextShowcaseURL = new URL(nextShowcaseImage, document.baseURI).href;
   featuredImage.alt = cape.name;
+  featuredImage.dataset.imageFile = String(nextShowcaseImage).split("/").pop();
+  featuredImage.dataset.originalSrc = nextShowcaseImage;
+  featuredImage.dataset.fallbackImage = cape.image || "";
+  featuredImage.onerror = function () { handleCapeCardImageError(this); };
 
   // Animate the whole showcase stage with the Web Animations API. This avoids
   // desktop CSS animation overrides (including reduced-motion rules) and keeps
@@ -4428,8 +4444,16 @@ onAuthStateChanged(auth, user => {
   z-index: 1;
   touch-action: pan-y;
   cursor: grab;
+  user-select: none;
 }
 #details #capeSkinViewer:active { cursor: grabbing; }
+#details .cape-rotate-hint {
+  position:absolute; z-index:4; left:50%; bottom:13px; transform:translateX(-50%);
+  padding:9px 13px; border:1px solid rgba(255,255,255,.34); border-radius:999px;
+  background:rgba(3,18,31,.72); color:#eafaff; font-size:10px; font-weight:900;
+  letter-spacing:1.25px; white-space:nowrap; pointer-events:none; backdrop-filter:blur(8px);
+  box-shadow:0 5px 18px rgba(0,0,0,.18);
+}
 #details .cape-preview-fallback {
   display: none;
   position: absolute;
@@ -23829,6 +23853,37 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
     const rest = name.slice(splitAt);
     return `<span class="cape-name-accent cape-name-accent--${cape.id}">${safeText(accent)}</span><span class="cape-name-base">${safeText(rest)}</span>`;
   }
+  // The texture files may be grouped in different GitHub Pages folders. Probe
+  // common category names and extensions while keeping the user's exact file stems.
+  const capeTextureFolders = [
+    "texture pack/", "Texture Pack/", "texture-pack/", "texture_pack/", "textures pack/", "textures-pack/",
+    "capes texture pack/", "Capes Texture Pack/", "cape texture pack/", "Cape Texture Pack/",
+    "capes textures/", "Capes Textures/", "cape textures/", "Cape Textures/", "capes texture/", "cape texture/",
+    "textures/", "Textures/", "texture/", "Texture/", "capes 3D/", "capes%203D/",
+    "media/textures/", "media/texture pack/", "assets/textures/", "images/textures/", "media/", "images/", "assets/", ""
+  ];
+  const capeTextureExtensions = [".png", ".PNG", ".webp", ".WEBP", ".jpg", ".JPG", ".jpeg", ".JPEG", ""];
+
+  function probeImage(url) {
+    return new Promise(resolve => {
+      const image = new Image();
+      image.onload = () => resolve(url);
+      image.onerror = () => resolve(null);
+      image.src = url;
+    });
+  }
+
+  async function findCapeTexture(stem) {
+    if (!stem) return null;
+    for (const folder of capeTextureFolders) {
+      const urls = capeTextureExtensions.map(extension => folder + stem + extension);
+      const results = await Promise.all(urls.map(probeImage));
+      const found = results.find(Boolean);
+      if (found) return found;
+    }
+    return null;
+  }
+
   function detailsImage(cape) {
     // Menace uses its dedicated artwork on the opened product page.
     return safeText(cape.detailImage || cape.showcaseImage || cape.image || "media/experience-cape.png");
@@ -23876,7 +23931,11 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
         <div class="storefront-preview-column">
           <div class="storefront-preview" id="capePreviewStage" aria-label="Interactive Minecraft cape preview">
             <div class="cape-preview-scene" aria-hidden="true"></div>
-            <img class="cape-preview-fallback" id="capePreviewFallback" src="${detailsImage(viewCape)}" alt="${safeText(viewCape.name)}">
+            <img class="cape-preview-fallback" id="capePreviewFallback" src="${detailsImage(viewCape)}" alt="${safeText(viewCape.name)}"
+              data-image-file="${safeText((viewCape.detailImage || viewCape.showcaseImage || viewCape.image || "media/experience-cape.png").split("/").pop())}"
+              data-original-src="${detailsImage(viewCape)}" data-fallback-image="${safeText(viewCape.image || viewCape.showcaseImage || "")}"
+              onerror="handleCapeCardImageError(this)">
+            <div class="cape-rotate-hint" aria-hidden="true">↔ DRAG TO ROTATE</div>
             <canvas id="capeSkinViewer" aria-label="Minecraft cape preview"></canvas>
           </div>
         </div>
@@ -23928,26 +23987,7 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
     }
     stage.classList.add("preview-loading");
 
-    // Menace has its own flat artwork. Show that exact image in the detail preview
-    // instead of trying to map the artwork onto the 3D cape viewer.
-    if (cape.id === "menace") {
-      closeCurrentViewer();
-      const fallbackImage = document.getElementById("capePreviewFallback");
-      if (fallbackImage) {
-        fallbackImage.src = "media/menace-cape.png";
-        fallbackImage.onerror = function () {
-          if (this.dataset.remoteFallbackTried) {
-            this.style.display = "none";
-            return;
-          }
-          this.dataset.remoteFallbackTried = "1";
-          this.src = "https://mc-store.github.io/MC_STORE/media/menace-cape.png";
-        };
-      }
-      stage.classList.remove("preview-loading");
-      stage.classList.add("fallback-cape-only");
-      return;
-    }
+    // All capes, including Menace, now use the interactive 3D cape viewer.
 
     if (!window.skinview3d || typeof window.skinview3d.SkinViewer !== "function") {
       stage.classList.remove("preview-loading");
@@ -23958,12 +23998,16 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
       closeCurrentViewer();
       const width = Math.max(320, stage.clientWidth || 780);
       const height = Math.max(320, stage.clientHeight || 560);
-      mcStoreViewer = new window.skinview3d.SkinViewer({canvas, width, height, pixelRatio: Math.min(window.devicePixelRatio || 1, 2), enableControls: false});
+      mcStoreViewer = new window.skinview3d.SkinViewer({canvas, width, height, pixelRatio: Math.min(window.devicePixelRatio || 1, 2), enableControls: true});
+      mcStoreViewer.controls.enabled = true;
       mcStoreViewer.controls.enablePan = false;
+      mcStoreViewer.controls.enableRotate = true;
+      mcStoreViewer.controls.enableZoom = true;
       // Rotate the cape model gently on every device, including desktop PC.
       // The player skin remains hidden, so only the cape itself is visible.
       mcStoreViewer.autoRotate = true;
       mcStoreViewer.autoRotateSpeed = 0.62;
+      mcStoreViewer.controls.enableDamping = true;
       mcStoreViewer.zoom = 0.92;
       mcStoreViewer.playerWrapper.rotation.y = Math.PI;
       // Show the cape by itself: do not load or display the default Steve skin.
@@ -23971,7 +24015,12 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
       if (mcStoreViewer.playerObject && mcStoreViewer.playerObject.skin) {
         mcStoreViewer.playerObject.skin.visible = false;
       }
-      const capeLoad = mcStoreViewer.loadCape(cape.image);
+      // Use each cape's Minecraft texture file for the actual 3D cloth mesh.
+      // If no texture is found in the common asset folders, try the existing art
+      // image as a graceful backup so the preview still has something to show.
+      let textureUrl = await findCapeTexture(cape.textureStem);
+      if (!textureUrl) textureUrl = cape.image || cape.showcaseImage;
+      const capeLoad = mcStoreViewer.loadCape(textureUrl);
       const results = await Promise.allSettled([capeLoad]);
       const capeLoadFailed = results.some(result => result.status === "rejected");
       if (capeLoadFailed) {
