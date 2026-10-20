@@ -24010,6 +24010,9 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
   "use strict";
   let mcStoreViewer = null;
   let mcStoreActiveCape = null;
+  let mcStorePreviewMode = "cape";
+  let mcStorePlayerUsername = "";
+  let mcStorePlayerSkinLoaded = false;
 
   function safeText(value) {
     return String(value).replace(/[&<>"']/g, ch => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"})[ch]);
@@ -24118,6 +24121,9 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
     const isExperience = chosen.id === "experience";
     const viewCape = isExperience ? {...chosen, name:"Experience Cape Code", price:69.99, originalPrice:79.99, stock:true} : chosen;
     mcStoreActiveCape = viewCape;
+    mcStorePreviewMode = "cape";
+    mcStorePlayerUsername = "";
+    mcStorePlayerSkinLoaded = false;
     document.body.classList.add("mc-product-view");
     document.getElementById("details").style.display = "block";
     document.title = viewCape.name + " | MC STORE";
@@ -24141,7 +24147,21 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
               data-original-src="${detailsImage(viewCape)}" data-fallback-image="${safeText(viewCape.image || viewCape.showcaseImage || "")}"
               onerror="handleCapeCardImageError(this)">
             <div class="cape-rotate-hint" aria-hidden="true">DRAG TO ROTATE</div>
-            <canvas id="capeSkinViewer" aria-label="Minecraft cape preview"></canvas>
+            <div class="preview-mode-message" id="previewModeMessage" hidden>Load a Java username to preview the player.</div>
+            <canvas id="capeSkinViewer" aria-label="Interactive Minecraft cape and player preview"></canvas>
+          </div>
+          <div class="preview-tabs" role="tablist" aria-label="Minecraft preview mode">
+            <button class="preview-tab active" type="button" role="tab" aria-selected="true" data-preview-mode="cape">CAPE</button>
+            <button class="preview-tab" type="button" role="tab" aria-selected="false" data-preview-mode="player">PLAYER</button>
+            <button class="preview-tab" type="button" role="tab" aria-selected="false" data-preview-mode="elytra">ELYTRA</button>
+          </div>
+          <div class="preview-player-controls">
+            <label for="capePlayerUsername">MINECRAFT JAVA USERNAME</label>
+            <div class="preview-player-input-row">
+              <input id="capePlayerUsername" type="text" maxlength="16" autocomplete="off" spellcheck="false" autocapitalize="none" placeholder="Enter Java username" aria-describedby="capePlayerStatus">
+              <button id="capeLoadPlayer" type="button">Load Skin</button>
+            </div>
+            <p id="capePlayerStatus" role="status" aria-live="polite">Enter a Java username, then select Player or Elytra.</p>
           </div>
         </div>
         <div class="detail-info">
@@ -24165,6 +24185,8 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
     safeReplaceState("#cape/" + encodeURIComponent(viewCape.id));
     jumpToTopImmediately();
     wireProductControls(viewCape);
+    wirePreviewControls();
+    setPreviewMode("cape");
     init3DPreview(viewCape);
   };
 
@@ -24175,6 +24197,97 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
     buy?.addEventListener("click", () => {
       feedback.textContent = "Opening MC STORE on Discord to confirm the order. Online payment checkout is not connected on this page.";
       window.open(DISCORD_URL, "_blank", "noopener,noreferrer");
+    });
+  }
+
+  function setPreviewMode(mode) {
+    if (!["cape", "player", "elytra"].includes(mode)) mode = "cape";
+    mcStorePreviewMode = mode;
+    const stage = document.getElementById("capePreviewStage");
+    const message = document.getElementById("previewModeMessage");
+    const hint = stage && stage.querySelector(".cape-rotate-hint");
+    document.querySelectorAll("#details .preview-tab[data-preview-mode]").forEach(button => {
+      const active = button.dataset.previewMode === mode;
+      button.classList.toggle("active", active);
+      button.setAttribute("aria-selected", active ? "true" : "false");
+    });
+    if (stage) {
+      stage.classList.toggle("mode-cape", mode === "cape");
+      stage.classList.toggle("mode-player", mode === "player");
+      stage.classList.toggle("mode-elytra", mode === "elytra");
+      stage.classList.toggle("has-player-skin", mcStorePlayerSkinLoaded);
+      const previewColumn = stage.closest(".storefront-preview-column");
+      if (previewColumn) previewColumn.classList.toggle("show-player-controls", mode !== "cape");
+    }
+    const needsSkin = mode !== "cape";
+    if (message) {
+      message.hidden = !needsSkin || mcStorePlayerSkinLoaded;
+      message.textContent = mode === "elytra"
+        ? "Load a Java username below to see the player from behind with Elytra."
+        : "Load a Java username below to preview the player skin.";
+    }
+    if (hint) hint.textContent = mode === "cape" ? "DRAG TO ROTATE" : "DRAG TO TURN PLAYER";
+    if (!mcStoreViewer || !mcStoreViewer.playerObject) return;
+    const player = mcStoreViewer.playerObject;
+    mcStoreViewer.animation = null;
+    if (mode === "cape") {
+      player.skin.visible = false;
+      player.backEquipment = "cape";
+      mcStoreViewer.playerWrapper.rotation.y = Math.PI;
+      mcStoreViewer.zoom = 1.55;
+    } else if (mode === "player") {
+      player.skin.visible = mcStorePlayerSkinLoaded;
+      player.backEquipment = mcStorePlayerSkinLoaded ? "cape" : null;
+      mcStoreViewer.playerWrapper.rotation.y = 0;
+      mcStoreViewer.zoom = 0.76;
+    } else {
+      player.skin.visible = mcStorePlayerSkinLoaded;
+      player.backEquipment = mcStorePlayerSkinLoaded ? "elytra" : null;
+      mcStoreViewer.playerWrapper.rotation.y = Math.PI;
+      mcStoreViewer.zoom = 0.76;
+    }
+  }
+
+  async function loadPreviewPlayerSkin() {
+    const input = document.getElementById("capePlayerUsername");
+    const status = document.getElementById("capePlayerStatus");
+    const button = document.getElementById("capeLoadPlayer");
+    const username = String(input && input.value || "").trim();
+    if (!/^[A-Za-z0-9_]{1,16}$/.test(username)) {
+      if (status) { status.textContent = "Enter a valid Java username (1–16 letters, numbers, or underscores)."; status.classList.add("error"); }
+      input?.focus();
+      return;
+    }
+    if (!mcStoreViewer) {
+      if (status) { status.textContent = "The 3D preview is still loading. Try again in a moment."; status.classList.add("error"); }
+      return;
+    }
+    const viewer = mcStoreViewer;
+    if (button) button.disabled = true;
+    if (status) { status.textContent = `Loading Java skin for ${username}…`; status.classList.remove("error", "success"); }
+    try {
+      await viewer.loadSkin(`https://minotar.net/skin/${encodeURIComponent(username)}`);
+      if (viewer !== mcStoreViewer) return;
+      mcStorePlayerUsername = username;
+      mcStorePlayerSkinLoaded = true;
+      if (status) { status.textContent = `Skin loaded for ${username}. Choose Player or Elytra to preview it.`; status.classList.remove("error"); status.classList.add("success"); }
+      setPreviewMode("player");
+    } catch (error) {
+      if (viewer !== mcStoreViewer) return;
+      if (status) { status.textContent = "Could not load that skin. Check the Java username and your internet connection."; status.classList.remove("success"); status.classList.add("error"); }
+      console.warn("Minecraft Java skin could not be loaded.", error);
+    } finally {
+      if (button && viewer === mcStoreViewer) button.disabled = false;
+    }
+  }
+
+  function wirePreviewControls() {
+    document.querySelectorAll("#details .preview-tab[data-preview-mode]").forEach(button => {
+      button.addEventListener("click", () => setPreviewMode(button.dataset.previewMode));
+    });
+    document.getElementById("capeLoadPlayer")?.addEventListener("click", loadPreviewPlayerSkin);
+    document.getElementById("capePlayerUsername")?.addEventListener("keydown", event => {
+      if (event.key === "Enter") { event.preventDefault(); loadPreviewPlayerSkin(); }
     });
   }
 
@@ -24251,14 +24364,17 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
           const deltaX = event.clientX - pointerState.lastX;
           pointerState.lastX = event.clientX;
           pointerState.lastY = event.clientY;
-          // Rotate the cape mesh around its own center; do not rotate the viewer,
-          // camera, or model wrapper, so the cape stays anchored in one place.
-          const capeMesh = mcStoreViewer && mcStoreViewer.playerObject &&
-            mcStoreViewer.playerObject.cape && mcStoreViewer.playerObject.cape.cape;
-          if (capeMesh) {
-            capeMesh.rotation.y += deltaX * 0.012;
-            capeMesh.rotation.x = 0;
-            capeMesh.rotation.z = 0;
+          if (mcStoreViewer && mcStoreViewer.playerObject) {
+            if (mcStorePreviewMode === "cape") {
+              const capeMesh = mcStoreViewer.playerObject.cape && mcStoreViewer.playerObject.cape.cape;
+              if (capeMesh) {
+                capeMesh.rotation.y += deltaX * 0.012;
+                capeMesh.rotation.x = 0;
+                capeMesh.rotation.z = 0;
+              }
+            } else {
+              mcStoreViewer.playerWrapper.rotation.y += deltaX * 0.012;
+            }
           }
           if (event.pointerType === "mouse" && event.cancelable) event.preventDefault();
         };
@@ -24281,10 +24397,11 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
           canvas.removeEventListener("lostpointercapture", onPointerUp);
         };
       }
-      // Show the cape by itself: do not load or display the default Steve skin.
+      // Start on the standalone cape; the Java skin is loaded when a username is entered.
       mcStoreViewer.animation = null;
       if (mcStoreViewer.playerObject && mcStoreViewer.playerObject.skin) {
         mcStoreViewer.playerObject.skin.visible = false;
+        mcStoreViewer.playerObject.backEquipment = "cape";
       }
       // Use each cape's Minecraft texture file for the actual 3D cloth mesh.
       // If no texture is found in the common asset folders, try the existing art
@@ -24306,10 +24423,7 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
         }));
       }
       if (mcStoreViewer) {
-        if (mcStoreViewer.playerObject && mcStoreViewer.playerObject.skin) {
-          mcStoreViewer.playerObject.skin.visible = false;
-        }
-        mcStoreViewer.playerWrapper.rotation.y = Math.PI;
+        setPreviewMode(mcStorePreviewMode);
         const resize = () => {
           if (!mcStoreViewer || !document.getElementById("capeSkinViewer")) return;
           const activeStage = document.getElementById("capePreviewStage");
@@ -27946,5 +28060,38 @@ nav .nav-links .nav-link[href="#home"].active {
     #homePage .cape-showcase-copy .mc-showcase-info-enter { animation-duration: .62s !important; }
   }
 </style>
+
+<style id="mc-store-cape-player-elytra-final">
+  #details .detail-info h1 .cape-name-accent { color:#a7501b !important; }
+  #details .detail-info h1 .cape-name-base { color:#22201d !important; }
+  #details .preview-tabs { display:flex !important; width:fit-content; max-width:100%; margin:18px auto 0 !important; padding:4px !important; gap:4px !important; border:2px solid #2d2925 !important; border-radius:999px !important; background:#fffdf7 !important; box-shadow:3px 3px 0 #2d2925 !important; }
+  #details .preview-tab { min-width:74px !important; padding:8px 13px !important; border:0 !important; border-radius:999px !important; background:transparent !important; color:#5d5750 !important; font-size:11px !important; font-weight:900 !important; letter-spacing:.7px !important; line-height:1.1 !important; box-shadow:none !important; }
+  #details .preview-tab.active { background:linear-gradient(180deg,#80e0ff 0%,#16baf8 90%) !important; color:#071c28 !important; }
+  #details .preview-player-controls { display:none; width:min(100%,560px); margin:17px auto 0; padding:14px 15px 12px; border:1px solid #e1d7c8; border-radius:13px; background:rgba(255,253,247,.83); box-shadow:0 4px 12px rgba(63,49,29,.05); }
+  #details .storefront-preview-column.show-player-controls .preview-player-controls { display:block; }
+  #details .preview-player-controls label { display:block; margin-bottom:8px; color:#695f53; font-size:9px; font-weight:900; letter-spacing:1.2px; }
+  #details .preview-player-input-row { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:8px; }
+  #details #capePlayerUsername { width:100%; min-width:0; min-height:42px; padding:10px 12px; border:1px solid #ddd2c0; border-radius:9px; outline:none; background:#fffefa; color:#29251f; font-size:12px; box-shadow:inset 0 1px 2px rgba(52,40,24,.04); }
+  #details #capePlayerUsername::placeholder { color:#a49a8d; }
+  #details #capePlayerUsername:focus { border-color:#25bdf4; box-shadow:0 0 0 3px rgba(37,189,244,.13); }
+  #details #capeLoadPlayer { min-height:42px; padding:10px 14px; border:1px solid #151d20; border-radius:9px; background:linear-gradient(180deg,#80e0ff 0%,#16baf8 90%); color:#071d27; font-size:11px; font-weight:900; box-shadow:2px 3px 0 #171d1e; cursor:pointer; transition:transform .18s ease,filter .18s ease; }
+  #details #capeLoadPlayer:hover { filter:brightness(1.04); transform:translateY(-1px); }
+  #details #capeLoadPlayer:disabled { opacity:.62; cursor:wait; transform:none; }
+  #details #capePlayerStatus { margin:8px 0 0; color:#756c60; font-size:10px; line-height:1.6; overflow-wrap:anywhere; }
+  #details #capePlayerStatus.success { color:#23694b; }
+  #details #capePlayerStatus.error { color:#a34035; }
+  #details .preview-mode-message { position:absolute; z-index:5; left:50%; top:50%; width:min(82%,340px); padding:15px 17px; transform:translate(-50%,-50%); border:1px solid rgba(255,255,255,.38); border-radius:12px; background:rgba(30,24,19,.78); color:#fffaf1; text-align:center; font-size:12px; font-weight:800; line-height:1.65; box-shadow:0 10px 28px rgba(0,0,0,.18); backdrop-filter:blur(8px); pointer-events:none; }
+  #details .preview-mode-message[hidden] { display:none !important; }
+  #details .storefront-preview.mode-player #capeSkinViewer, #details .storefront-preview.mode-elytra #capeSkinViewer { cursor:grab !important; }
+  #details .storefront-preview.mode-player #capeSkinViewer:active, #details .storefront-preview.mode-elytra #capeSkinViewer:active { cursor:grabbing !important; }
+  @media(max-width:520px) {
+    #details .preview-tabs { margin-top:15px !important; }
+    #details .preview-tab { min-width:66px !important; padding:8px 10px !important; font-size:10px !important; }
+    #details .preview-player-controls { margin-top:14px; padding:12px; }
+    #details #capeLoadPlayer { padding:9px 10px; font-size:10px; }
+  }
+  @media(prefers-reduced-motion:reduce) { #details #capeLoadPlayer { transition:none !important; } }
+</style>
+
 </body>
 </html>
