@@ -2886,17 +2886,12 @@ body.mc-reveal-ready .mc-footer .reveal-on-scroll.is-visible {
   <header class="hero container" id="home">
     <div class="hero-layout cape-showcase-layout">
       <div class="hero-copy cape-showcase-copy">
-        <div class="pill"><span class="pulse"></span> <span id="featuredNumber">01 / 09</span> · CAPE SPOTLIGHT</div>
-        <span class="stock" id="featuredStock">✓ IN STOCK</span>
         <h1 id="featuredName">Aurora Cape</h1>
         <p id="featuredDescription">Explore the MC STORE cape collection.</p>
         <div class="showcase-price" id="featuredPrice">$6<small>Listed price</small></div>
         <div class="hero-actions">
           <button class="btn" id="featuredView" type="button">View Cape ↗</button>
           <a href="#shop" class="btn btn-outline" onclick="showHome('shop');return false">View All Capes ↓</a>
-        </div>
-        <div class="featured-bottom showcase-bottom">
-          <div class="featured-dots" id="featuredDots" aria-label="Choose a featured cape"></div>
         </div>
       </div>
 
@@ -2935,12 +2930,6 @@ body.mc-reveal-ready .mc-footer .reveal-on-scroll.is-visible {
         <button type="button" class="filter" data-filter="unavailable">Unavailable</button>
       </div>
 
-      <select class="sort-select" id="sortSelect" aria-label="Sort capes">
-        <option value="default">Featured first</option>
-        <option value="price-asc">Price: Low to High</option>
-        <option value="price-desc">Price: High to Low</option>
-        <option value="name">Name: A–Z</option>
-      </select>
     </div>
 
     <div class="results-line" id="resultsLine">Showing 9 capes</div>
@@ -3640,23 +3629,7 @@ function renderProducts() {
     return matchesQuery && matchesFilter;
   });
 
-  const sort = document.getElementById("sortSelect").value;
-
-  if (sort === "price-asc") {
-    list.sort((a,b) => {
-      if (a.price === null) return 1;
-      if (b.price === null) return -1;
-      return a.price - b.price;
-    });
-  } else if (sort === "price-desc") {
-    list.sort((a,b) => {
-      if (a.price === null) return 1;
-      if (b.price === null) return -1;
-      return b.price - a.price;
-    });
-  } else if (sort === "name") {
-    list.sort((a,b) => a.name.localeCompare(b.name));
-  }
+  // Keep capes in the fixed productCapes catalog order; there is no manual sorting control.
 
   const homePage = document.getElementById("homePage");
   const detailsPage = document.getElementById("details");
@@ -3672,7 +3645,6 @@ function renderProducts() {
 }
 
 document.getElementById("searchInput").addEventListener("input", renderProducts);
-document.getElementById("sortSelect").addEventListener("change", renderProducts);
 
 document.querySelectorAll("[data-filter]").forEach(button => {
   button.addEventListener("click", () => {
@@ -3720,19 +3692,12 @@ function showFeatured(index) {
   document.getElementById("featuredPrice").innerHTML =
     `${formatPrice(cape)}<small>${cape.stock ? "Listed price" : "Currently unavailable"}</small>`;
 
-  const stock = document.getElementById("featuredStock");
-  stock.textContent = cape.stock ? "✓ IN STOCK" : "✕ NOT IN STOCK";
-  stock.classList.toggle("sold", !cape.stock);
-
-  // Bring each cape's details in smoothly whenever the featured cape changes.
+  // Animate the featured cape details without exposing manual slide controls.
   const showcaseInfo = [
-    document.querySelector(".cape-showcase-copy .pill"),
     featuredName,
     document.getElementById("featuredDescription"),
     document.getElementById("featuredPrice"),
-    stock,
-    document.querySelector(".cape-showcase-copy .hero-actions"),
-    document.getElementById("featuredDots")
+    document.querySelector(".cape-showcase-copy .hero-actions")
   ].filter(Boolean);
   showcaseInfo.forEach((element, order) => {
     element.classList.remove("mc-showcase-info-enter");
@@ -3741,30 +3706,13 @@ function showFeatured(index) {
     element.classList.add("mc-showcase-info-enter");
   });
 
-  document.getElementById("featuredNumber").textContent =
-    `${String(featuredIndex + 1).padStart(2,"0")} / ${String(featuredCapes.length).padStart(2,"0")}`;
-
   document.getElementById("featuredView").onclick = () => openCape(cape.id);
 
-  document.getElementById("featuredDots").innerHTML = featuredCapes.map((item,i) => `
-    <button type="button"
-      class="dot ${i === featuredIndex ? "active" : ""}"
-      aria-label="Show ${escapeHTML(item.name)}"
-      title="${escapeHTML(item.name)}"
-      data-feature-index="${i}"></button>
-  `).join("");
-
+  // Keep the hidden artwork preloader in sync; the visible cape advances automatically.
   document.querySelectorAll("#mcShowcaseGallery .mc-showcase-cape-tile").forEach((tile, i) => {
     const active = i === featuredIndex;
     tile.classList.toggle("active", active);
     tile.setAttribute("aria-pressed", String(active));
-  });
-
-  document.querySelectorAll("#featuredDots [data-feature-index]").forEach(button => {
-    button.addEventListener("click", () => {
-      showFeatured(Number(button.dataset.featureIndex));
-      restartFeaturedTimer();
-    });
   });
 }
 
