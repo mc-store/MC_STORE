@@ -3400,10 +3400,10 @@ async function findMcStoreNestedAsset(values, excludedUrls = []) {
   return { indexAvailable: true, url: null };
 }
 
-// Load each product's dedicated 3D render first. Repositories sometimes keep images
-// in the root, media, images, or assets folder and may use upper-case extensions.
-// If a 3D render cannot be found, show that cape's existing showcase artwork instead
-// of leaving the coloured card empty.
+// Resolve cape artwork by filename, not by assuming a single folder. The known PNGs may be
+// committed in the repository root, media/, images/, assets/, or a nested cape-art folder.
+// If the GitHub tree lookup does not find a path, continue probing likely folders instead of
+// hiding the image prematurely. If a dedicated product render is unavailable, use its artwork.
 async function handleCapeCardImageError(img) {
   if (!img || img.dataset.mcHandlingImageError === "1") return;
   img.dataset.mcHandlingImageError = "1";
@@ -3430,12 +3430,10 @@ async function handleCapeCardImageError(img) {
       return;
     }
     if (resolved.indexAvailable) {
-      // The repository index loaded successfully, but none of the intended image files is
-      // committed under these names. Don't fire hundreds of futile path guesses.
-      img.hidden = true;
-      img.removeAttribute("alt");
-      img.dataset.mcHandlingImageError = "0";
-      return;
+      // A successful GitHub tree lookup is not enough to conclude that the image is missing.
+      // The tree may be stale, incomplete, or affected by API limits. Keep trying the direct
+      // root/media/images paths below before hiding the artwork.
+      img.dataset.mcRepoIndexChecked = "1";
     }
   }
 
@@ -26019,72 +26017,6 @@ nav .nav-links .nav-link[href="#home"].active {
   #details .storefront-preview { height: 410px !important; }
 }
 </style>
-
-<script>
-(() => {
-  const capeFiles = {
-    aurora: "aurora-cape.png",
-    builder: "builder-cape.png",
-    copper: "copper-cape.png",
-    crafter: "crafter-cape.png",
-    experience: "experience-cape.png",
-    home: "home-cape.png",
-    menace: "menace-cape.png",
-    moonlight: "moonlight-cape.png",
-    twitch: "twitch-cape.png"
-  };
-
-  function fixCapeImages() {
-    document.querySelectorAll("img").forEach(img => {
-      if (img.dataset.capeFix === "done") return;
-
-      const source = img.getAttribute("src") || "";
-      const name = source.split("/").pop().split("?")[0]
-        .toLowerCase();
-
-      const entry = Object.entries(capeFiles).find(
-        ([id, file]) =>
-          name === file.toLowerCase() ||
-          name.includes(id + "-cape")
-      );
-
-      if (!entry) return;
-
-      img.dataset.capeFix = "done";
-      const file = entry[1];
-
-      const paths = [
-        "media/" + file,
-        file,
-        "./media/" + file,
-        "./" + file
-      ];
-
-      let attempt = 0;
-
-      function tryNext() {
-        if (attempt >= paths.length) {
-          console.error("Cape image not found:", file);
-          return;
-        }
-
-        img.src = paths[attempt++];
-      }
-
-      img.addEventListener("error", tryNext);
-      tryNext();
-    });
-  }
-
-  fixCapeImages();
-
-  document.addEventListener("click", () => {
-    setTimeout(fixCapeImages, 100);
-  });
-
-  document.addEventListener("DOMContentLoaded", fixCapeImages);
-})();
-</script>
 
 </body>
 </html>
