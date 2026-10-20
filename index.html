@@ -3584,10 +3584,10 @@ function showFeatured(index) {
 
 function restartFeaturedTimer() {
   clearInterval(featuredTimer);
-  // Change the featured cape every four seconds on both desktop and mobile.
+  // Change the featured cape every two seconds on both desktop and mobile.
   featuredTimer = setInterval(() => {
     showFeatured((featuredIndex + 1) % featuredCapes.length);
-  }, 4000);
+  }, 2000);
 }
 
 // Keep the cape showcase rotating on desktop too. Previously mouseenter/focusin
@@ -25252,7 +25252,543 @@ nav .nav-link.active .mc-nav-label {
   }
   #shop .shop-tools .search-wrap input { min-height: 45px !important; }
 }
+
+/* MC STORE navigation: rounded sky-blue tab inspired by the reference image */
+nav .nav-links {
+  align-items: center;
+  gap: 30px;
+}
+nav .nav-link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 46px;
+  padding: 0 19px;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  color: #f2fbff;
+  background: transparent;
+  box-shadow: none;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1;
+  isolation: isolate;
+  overflow: hidden;
+  transform: translateY(0);
+  transition:
+    color .24s ease,
+    background .28s ease,
+    border-color .28s ease,
+    box-shadow .28s ease,
+    transform .28s cubic-bezier(.2,.8,.2,1);
+}
+nav .nav-link::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  opacity: 0;
+  background: linear-gradient(180deg, #8beaff 0%, #4bcdf7 58%, #28b9ed 100%);
+  transform: scale(.82);
+  transition: opacity .24s ease, transform .32s cubic-bezier(.2,.8,.2,1);
+}
+nav .nav-link:hover {
+  color: #071522;
+  border-color: #152b39;
+  background: transparent;
+  box-shadow: none;
+  transform: translateY(-2px);
+}
+nav .nav-link:hover::before {
+  opacity: .72;
+  transform: scale(1);
+}
+nav .nav-link.active,
+nav .nav-link[aria-current="page"] {
+  color: #071522;
+  border-color: #142c3b;
+  background: transparent;
+  box-shadow: 0 4px 0 #142c3b, inset 0 1px 0 rgba(255,255,255,.55);
+  transform: translateY(-1px);
+}
+nav .nav-link.active::before,
+nav .nav-link[aria-current="page"]::before {
+  opacity: 1;
+  transform: scale(1);
+}
+nav .nav-link:active {
+  transform: translateY(2px) scale(.97);
+  box-shadow: 0 1px 0 #142c3b;
+}
+nav .nav-link:focus-visible {
+  outline: 2px solid #63dfff;
+  outline-offset: 4px;
+}
+@media (max-width: 900px) {
+  nav .nav-links { gap: 8px; }
+  nav .nav-link { min-height: 42px; padding: 0 14px; }
+}
+@media (max-width: 620px) {
+  nav .nav-links { gap: 4px; }
+  nav .nav-link { min-height: 36px; padding: 0 9px; font-size: 11px; }
+}
+/* Text micro-interaction: the label itself responds, not just the blue pill. */
+nav .nav-link {
+  text-shadow: 0 0 0 rgba(30, 154, 198, 0);
+  letter-spacing: 0;
+  transition:
+    color .24s ease,
+    background .28s ease,
+    border-color .28s ease,
+    box-shadow .28s ease,
+    transform .28s cubic-bezier(.2,.8,.2,1),
+    text-shadow .28s ease,
+    letter-spacing .28s ease;
+}
+nav .nav-link:hover {
+  text-shadow: 0 0 9px rgba(255,255,255,.72), 0 1px 0 rgba(255,255,255,.45);
+  letter-spacing: .22px;
+  animation: navLabelPop .36s ease-out both;
+}
+nav .nav-link.active,
+nav .nav-link[aria-current="page"] {
+  text-shadow: 0 1px 0 rgba(255,255,255,.32);
+}
+@keyframes navLabelPop {
+  0% { letter-spacing: 0; filter: brightness(1); }
+  45% { letter-spacing: .35px; filter: brightness(1.12); }
+  100% { letter-spacing: .22px; filter: brightness(1); }
+}
+@media (prefers-reduced-motion: reduce) {
+  nav .nav-link, nav .nav-link::before { transition: none !important; animation: none !important; }
+}
+
 </style>
+
+
+
+<!-- Final cross-device animation repair: nav text + every featured-cape text update -->
+<style id="mc-store-cross-device-text-animation-fix">
+  /* Restore the complete reference-style pill after older legacy rules hid its pseudo-element. */
+  nav .nav-links .nav-link {
+    border-radius: 999px !important;
+    background: transparent !important;
+    border: 1px solid transparent !important;
+    box-shadow: none !important;
+    overflow: visible !important;
+    color: #302f2a !important;
+  }
+  nav .nav-links .nav-link:hover,
+  nav .nav-links .nav-link:focus-visible {
+    background: linear-gradient(180deg, #8beaff 0%, #4bcdf7 58%, #28b9ed 100%) !important;
+    border-color: #142c3b !important;
+    box-shadow: 0 4px 0 #142c3b, inset 0 1px 0 rgba(255,255,255,.55) !important;
+    transform: translateY(-1px) !important;
+  }
+  nav .nav-links .nav-link.active,
+  nav .nav-links .nav-link[aria-current="page"] {
+    background: linear-gradient(180deg, #8beaff 0%, #4bcdf7 58%, #28b9ed 100%) !important;
+    border-color: #142c3b !important;
+    box-shadow: 0 4px 0 #142c3b, inset 0 1px 0 rgba(255,255,255,.55) !important;
+    transform: translateY(-1px) !important;
+  }
+  nav .nav-links .nav-link:active {
+    transform: translateY(2px) scale(.97) !important;
+    box-shadow: 0 1px 0 #142c3b !important;
+  }
+  nav .nav-links .nav-link .mc-nav-label,
+  nav .nav-links .nav-link:hover .mc-nav-label,
+  nav .nav-links .nav-link:focus-visible .mc-nav-label,
+  nav .nav-links .nav-link.active .mc-nav-label,
+  nav .nav-links .nav-link[aria-current="page"] .mc-nav-label {
+    color: #071522 !important;
+    -webkit-text-fill-color: #071522 !important;
+  }
+
+  /* Animate each navigation character itself, not only the blue pill. */
+  nav .nav-links .nav-link .mc-nav-label {
+    display: inline-block !important;
+    position: relative !important;
+    white-space: pre !important;
+    overflow: visible !important;
+    animation: none !important;
+  }
+  nav .nav-links .nav-link .mc-nav-letter {
+    display: inline-block !important;
+    position: relative !important;
+    white-space: pre !important;
+    transform-origin: 50% 100%;
+    will-change: transform, opacity, filter;
+    backface-visibility: hidden;
+  }
+  nav .nav-links .nav-link.mc-nav-text-enter .mc-nav-letter {
+    animation: mcStoreNavLetterEnter .43s cubic-bezier(.16,.8,.25,1) both !important;
+    animation-delay: var(--mc-nav-letter-delay, 0ms) !important;
+  }
+  nav .nav-links .nav-link.mc-nav-text-leave .mc-nav-letter {
+    animation: mcStoreNavLetterLeave .18s ease-out both !important;
+    animation-delay: var(--mc-nav-letter-leave-delay, 0ms) !important;
+  }
+  @keyframes mcStoreNavLetterEnter {
+    0% { opacity: .12; transform: translate3d(0, 11px, 0) rotateX(24deg); filter: blur(2px); }
+    68% { opacity: 1; transform: translate3d(0, -1px, 0) rotateX(0); filter: blur(0); }
+    100% { opacity: 1; transform: translate3d(0, 0, 0) rotateX(0); filter: blur(0); }
+  }
+  @keyframes mcStoreNavLetterLeave {
+    0% { opacity: 1; transform: translate3d(0, -1px, 0); filter: blur(0); }
+    100% { opacity: 1; transform: translate3d(0, 0, 0); filter: blur(0); }
+  }
+  nav .nav-links .nav-link:hover .mc-nav-label,
+  nav .nav-links .nav-link:focus-visible .mc-nav-label {
+    color: #071522 !important;
+    -webkit-text-fill-color: #071522 !important;
+  }
+  nav .nav-links .nav-link.active .mc-nav-label,
+  nav .nav-links .nav-link[aria-current="page"] .mc-nav-label {
+    color: #071522 !important;
+    -webkit-text-fill-color: #071522 !important;
+  }
+
+  /* Make the changing cape's name, description, price and status visibly enter together. */
+  #homePage .cape-showcase-copy .pill,
+  #homePage .cape-showcase-copy #featuredName,
+  #homePage .cape-showcase-copy #featuredDescription,
+  #homePage .cape-showcase-copy #featuredPrice,
+  #homePage .cape-showcase-copy #featuredStock,
+  #homePage .cape-showcase-copy .hero-actions,
+  #homePage .cape-showcase-copy #featuredDots {
+    transform-origin: left center;
+  }
+  @keyframes mcStoreCapeTextEnterDesktop {
+    0% { opacity: .08; transform: translate3d(0, 20px, 0); filter: blur(2px); }
+    70% { opacity: 1; transform: translate3d(0, -2px, 0); filter: blur(0); }
+    100% { opacity: 1; transform: translate3d(0, 0, 0); filter: blur(0); }
+  }
+  @media (min-width: 621px) {
+    #homePage .cape-showcase-copy .mc-showcase-info-enter {
+      animation: none !important;
+    }
+  }
+  @media (max-width: 620px) {
+    #homePage .cape-showcase-copy .mc-showcase-info-enter {
+      animation-duration: .43s !important;
+    }
+  }
+</style>
+
+<script id="mc-store-cross-device-text-animation-fix-script">
+(() => {
+  const navLinks = Array.from(document.querySelectorAll('nav .nav-links .nav-link'));
+  const navTimers = new WeakMap();
+  const escapeHTML = (value) => String(value).replace(/[&<>"']/g, (ch) => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+  })[ch]);
+
+  function prepareNavLink(link) {
+    if (!link) return;
+    let label = link.querySelector(':scope > .mc-nav-label');
+    if (!label) {
+      label = document.createElement('span');
+      label.className = 'mc-nav-label';
+      while (link.firstChild) label.appendChild(link.firstChild);
+      link.appendChild(label);
+    }
+    if (label.dataset.mcLettersReady === '1') return;
+    const text = label.textContent || '';
+    label.innerHTML = Array.from(text).map((character, index) =>
+      `<span class="mc-nav-letter" aria-hidden="true" style="--mc-nav-letter-delay:${Math.min(index, 18) * 22}ms;--mc-nav-letter-leave-delay:${Math.min(index, 8) * 5}ms">${escapeHTML(character)}</span>`
+    ).join('');
+    label.dataset.mcLettersReady = '1';
+    if (!link.hasAttribute('aria-label')) link.setAttribute('aria-label', text.trim());
+  }
+
+  function animateNavText(link, mode) {
+    if (!link) return;
+    prepareNavLink(link);
+    const oldTimer = navTimers.get(link);
+    if (oldTimer) clearTimeout(oldTimer);
+    link.classList.remove('mc-nav-text-enter', 'mc-nav-text-leave');
+    void link.offsetWidth;
+    link.classList.add(mode === 'leave' ? 'mc-nav-text-leave' : 'mc-nav-text-enter');
+    const timer = setTimeout(() => {
+      link.classList.remove('mc-nav-text-enter', 'mc-nav-text-leave');
+      navTimers.delete(link);
+    }, mode === 'leave' ? 240 : 760);
+    navTimers.set(link, timer);
+  }
+
+  navLinks.forEach((link, index) => {
+    prepareNavLink(link);
+    link.addEventListener('pointerenter', () => animateNavText(link, 'enter'));
+    link.addEventListener('pointerleave', () => animateNavText(link, 'leave'));
+    link.addEventListener('focus', () => animateNavText(link, 'enter'));
+    link.addEventListener('blur', () => animateNavText(link, 'leave'));
+    link.addEventListener('click', () => animateNavText(link, 'enter'));
+    // On desktop and mobile, let the navigation arrive gently on initial page load too.
+    setTimeout(() => animateNavText(link, 'enter'), 90 + index * 75);
+  });
+
+  // The site's normal carousel updates #featuredName on each cape change.
+  // Observe that update, then animate the complete text group with Web Animations API.
+  // This bypasses conflicting CSS/reduced-motion overrides and works on desktop + touch.
+  const featuredName = document.getElementById('featuredName');
+  const featuredDescription = document.getElementById('featuredDescription');
+  if (featuredName && featuredDescription && typeof MutationObserver !== 'undefined') {
+    let scheduled = false;
+    let lastSignature = '';
+    const infoSelectors = [
+      '.cape-showcase-copy .pill',
+      '#featuredName',
+      '#featuredDescription',
+      '#featuredPrice',
+      '#featuredStock',
+      '.cape-showcase-copy .hero-actions',
+      '#featuredDots'
+    ];
+
+    function animateCapeInfo() {
+      scheduled = false;
+      const signature = [
+        featuredName.textContent,
+        featuredDescription.textContent,
+        document.getElementById('featuredPrice')?.textContent,
+        document.getElementById('featuredStock')?.textContent
+      ].join('|');
+      if (signature === lastSignature) return;
+      lastSignature = signature;
+
+      infoSelectors.forEach((selector, order) => {
+        const element = document.querySelector(selector);
+        if (!element || element.closest('#homePage')?.hidden) return;
+        element.classList.remove('mc-showcase-info-enter');
+        if (element._mcStoreCapeTextAnimation) {
+          try { element._mcStoreCapeTextAnimation.cancel(); } catch (_) {}
+        }
+        if (typeof element.animate === 'function') {
+          element._mcStoreCapeTextAnimation = element.animate([
+            { opacity: .08, transform: 'translate3d(0, 20px, 0)', filter: 'blur(2px)' },
+            { opacity: 1, transform: 'translate3d(0, -2px, 0)', filter: 'blur(0)' , offset: .7 },
+            { opacity: 1, transform: 'translate3d(0, 0, 0)', filter: 'blur(0)' }
+          ], {
+            duration: 520,
+            delay: order * 42,
+            easing: 'cubic-bezier(.16,.8,.25,1)',
+            fill: 'both'
+          });
+        } else {
+          element.classList.add('mc-showcase-info-enter');
+        }
+      });
+    }
+
+    const scheduleCapeText = () => {
+      if (scheduled) return;
+      scheduled = true;
+      requestAnimationFrame(animateCapeInfo);
+    };
+    const observer = new MutationObserver(scheduleCapeText);
+    [featuredName, featuredDescription, document.getElementById('featuredPrice'), document.getElementById('featuredStock')]
+      .filter(Boolean)
+      .forEach((element) => observer.observe(element, { childList: true, subtree: true, characterData: true }));
+
+    // Animate the initially displayed cape as well, then re-run whenever the carousel advances.
+    scheduleCapeText();
+  }
+})();
+</script>
+
+
+<style id="mc-store-user-request-cape-size-and-2s-carousel">
+/* Slightly larger cape preview in the main showcase on desktop and mobile. */
+#featured .featured-image img,
+#featured .showcase-art .featured-image img {
+  width: 96% !important;
+  height: 97% !important;
+  max-height: 460px !important;
+  object-fit: contain !important;
+}
+
+/* Slightly enlarge cape artwork in the Shop / Our Products cards. */
+#shop .card-img {
+  width: 84% !important;
+  height: calc(100% - 10px) !important;
+  max-height: 235px !important;
+  object-fit: contain !important;
+}
+@media (max-width: 900px) {
+  #featured .featured-image img,
+  #featured .showcase-art .featured-image img {
+    width: 97% !important;
+    height: 96% !important;
+    max-height: 430px !important;
+  }
+}
+@media (max-width: 620px) {
+  #shop .card-img {
+    width: 88% !important;
+    height: calc(100% - 8px) !important;
+    max-height: none !important;
+  }
+  #featured .featured-image img,
+  #featured .showcase-art .featured-image img {
+    width: 97% !important;
+    height: 95% !important;
+    max-height: 250px !important;
+  }
+}
+</style>
+
+
+<style id="mc-store-final-desktop-mobile-motion">
+/* Final interaction polish: animated nav lettering + scroll-in reveals on every device. */
+nav .nav-links .nav-link {
+  position: relative !important;
+  overflow: hidden;
+  isolation: isolate;
+  transform: translateZ(0);
+  transition: color .24s ease, background .28s ease, border-color .28s ease,
+              box-shadow .28s ease, transform .28s cubic-bezier(.2,.8,.2,1) !important;
+}
+nav .nav-links .nav-link::after {
+  content: "";
+  position: absolute;
+  left: 18%; right: 82%; bottom: 4px;
+  height: 2px; border-radius: 99px;
+  opacity: 0;
+  background: linear-gradient(90deg,#8bf3ff,#3288ff);
+  box-shadow: 0 0 10px rgba(83,229,255,.55);
+  transition: left .32s ease, right .32s ease, opacity .22s ease;
+  pointer-events: none;
+}
+nav .nav-links .nav-link:hover::after,
+nav .nav-links .nav-link:focus-visible::after,
+nav .nav-links .nav-link.active::after,
+nav .nav-links .nav-link[aria-current="page"]::after { left: 18%; right: 18%; opacity: 1; }
+nav .nav-links .nav-link:hover,
+nav .nav-links .nav-link:focus-visible {
+  transform: translateY(-2px) scale(1.035) !important;
+  color: #f4fdff !important;
+  border-color: rgba(83,229,255,.48) !important;
+  background: linear-gradient(135deg,rgba(44,158,255,.24),rgba(65,222,255,.13)) !important;
+  box-shadow: 0 7px 20px rgba(26,139,255,.17), inset 0 1px 0 rgba(255,255,255,.09) !important;
+}
+nav .nav-links .nav-link:active { transform: translateY(1px) scale(.97) !important; }
+nav .nav-links .nav-link .mc-nav-letter {
+  display: inline-block;
+  transform-origin: 50% 80%;
+  transition: color .2s ease;
+  will-change: transform, opacity, filter;
+}
+nav .nav-links .nav-link:hover .mc-nav-letter,
+nav .nav-links .nav-link:focus-visible .mc-nav-letter {
+  color: #d8faff;
+  animation: mcNavLetterHover .42s cubic-bezier(.2,.8,.25,1) both;
+  animation-delay: var(--mc-nav-letter-delay, 0ms);
+}
+@keyframes mcNavLetterHover {
+  0% { transform: translateY(5px) rotate(3deg); opacity: .35; filter: blur(2px); }
+  70% { transform: translateY(-2px) rotate(-1deg); opacity: 1; filter: blur(0); }
+  100% { transform: translateY(0) rotate(0); opacity: 1; filter: blur(0); }
+}
+/* Scroll reveals are activated by JS only when the element is actually on screen. */
+.mc-scroll-reveal {
+  opacity: 0;
+  transform: translate3d(0,24px,0) scale(.99);
+  filter: blur(3px);
+  transition: opacity .68s cubic-bezier(.2,.75,.25,1),
+              transform .68s cubic-bezier(.2,.75,.25,1),
+              filter .68s ease;
+  transition-delay: var(--mc-reveal-delay, 0ms);
+  will-change: opacity, transform, filter;
+}
+.mc-scroll-reveal.mc-scroll-visible {
+  opacity: 1;
+  transform: translate3d(0,0,0) scale(1);
+  filter: blur(0);
+}
+/* Keep normal hover animations responsive while content enters. */
+.mc-scroll-reveal .card, .mc-scroll-reveal .trust-item { backface-visibility: hidden; }
+@media (max-width: 620px) {
+  .mc-scroll-reveal { transform: translate3d(0,17px,0) scale(.995); transition-duration: .5s; filter: blur(2px); }
+  nav .nav-links .nav-link:hover, nav .nav-links .nav-link:focus-visible { transform: translateY(-1px) scale(1.015) !important; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .mc-scroll-reveal, .mc-scroll-reveal.mc-scroll-visible { opacity: 1 !important; transform: none !important; filter: none !important; transition: none !important; }
+  nav .nav-links .nav-link, nav .nav-links .nav-link::after,
+  nav .nav-links .nav-link .mc-nav-letter { animation: none !important; transition: none !important; }
+}
+</style>
+<script id="mc-store-final-desktop-mobile-motion-script">
+(() => {
+  const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const revealSelector = [
+    '#homePage .hero-copy', '#homePage .featured', '#homePage .section-head',
+    '#homePage .shop-tools', '#homePage .results-line', '#homePage .products > *',
+    '#homePage .trust-item', '#homePage .discord-banner', '#homePage footer',
+    '#aboutPage > *', '#endorsementsPage > *', '#footerInfoPage > *',
+    '#details .detail-card', '#details .recommendations', '#not-found'
+  ].join(',');
+  const seen = new WeakSet();
+  let observer = null;
+
+  function revealVisiblePage() {
+    const elements = Array.from(document.querySelectorAll(revealSelector)).filter(el => {
+      if (el.closest('[hidden]')) return false;
+      if (el.dataset.mcRevealReady === '1') return false;
+      return true;
+    });
+    elements.forEach((el, index) => {
+      el.dataset.mcRevealReady = '1';
+      if (reduceMotion || !('IntersectionObserver' in window)) {
+        el.classList.add('mc-scroll-visible');
+        return;
+      }
+      el.classList.add('mc-scroll-reveal');
+      // A short stagger adds a rendered, progressive feel without delaying the page.
+      el.style.setProperty('--mc-reveal-delay', `${Math.min(index % 6, 5) * 55}ms`);
+      if (observer) observer.observe(el);
+    });
+    // When a SPA navigation unhides another page, make its elements eligible too.
+    document.querySelectorAll(revealSelector).forEach(el => {
+      if (el.dataset.mcRevealReady === '1' && !el.closest('[hidden]') && !el.classList.contains('mc-scroll-visible')) {
+        if (reduceMotion || !('IntersectionObserver' in window)) el.classList.add('mc-scroll-visible');
+        else if (observer) observer.observe(el);
+      }
+    });
+  }
+
+  if ('IntersectionObserver' in window && !reduceMotion) {
+    observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('mc-scroll-visible');
+        observer.unobserve(entry.target);
+        seen.add(entry.target);
+      });
+    }, { root: null, rootMargin: '0px 0px -7% 0px', threshold: 0.08 });
+  }
+
+  const start = () => {
+    revealVisiblePage();
+    // Navigation switches sections without a full reload, so re-check after clicks.
+    document.querySelectorAll('nav .nav-links a, .back-btn, [data-page]').forEach(link => {
+      if (link.dataset.mcRevealClickBound === '1') return;
+      link.dataset.mcRevealClickBound = '1';
+      link.addEventListener('click', () => setTimeout(revealVisiblePage, 80));
+    });
+    // Some sections are revealed by existing app logic; watch those visibility changes.
+    const pageObserver = new MutationObserver(() => revealVisiblePage());
+    ['homePage','aboutPage','endorsementsPage','footerInfoPage','details','not-found'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) pageObserver.observe(el, { attributes: true, attributeFilter: ['hidden','style','class'] });
+    });
+  };
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start, { once: true });
+  else start();
+})();
+</script>
 
 </body>
 </html>
