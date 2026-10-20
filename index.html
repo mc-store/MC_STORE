@@ -2846,8 +2846,8 @@ body.mc-reveal-ready .mc-footer .reveal-on-scroll.is-visible {
 <body>
 <div class="sale" aria-label="MC STORE promotions">
   <div class="sale-track">
-    <div class="sale-group"><span>⚡ SPOOKY SALE</span><b>PRICE DROP</b><span>✦ SPECIAL OFFER</span><b>MC STORE</b><span>⚡ SPOOKY SALE</span><b>PRICE DROP</b><span>✦ SPECIAL OFFER</span><b>MC STORE</b></div>
-    <div class="sale-group" aria-hidden="true"><span>⚡ SPOOKY SALE</span><b>PRICE DROP</b><span>✦ SPECIAL OFFER</span><b>MC STORE</b><span>⚡ SPOOKY SALE</span><b>PRICE DROP</b><span>✦ SPECIAL OFFER</span><b>MC STORE</b></div>
+    <div class="sale-group"><b>MC STORE</b><span>⚡ SPOOKY SALE</span><b>PRICE DROP</b><span>✦ SPECIAL OFFER</span><b>MC STORE</b><span>⚡ SPOOKY SALE</span><b>PRICE DROP</b><span>✦ SPECIAL OFFER</span></div>
+    <div class="sale-group" aria-hidden="true"><b>MC STORE</b><span>⚡ SPOOKY SALE</span><b>PRICE DROP</b><span>✦ SPECIAL OFFER</span><b>MC STORE</b><span>⚡ SPOOKY SALE</span><b>PRICE DROP</b><span>✦ SPECIAL OFFER</span></div>
   </div>
 </div>
 
@@ -3243,7 +3243,7 @@ const capes = [
   },
   {
     id:"purple-heart",
-    name:"Twitch Cape",
+    name:"Purple Heart Cape",
     textureStem:"twitchcapetexture",
     price:null,
     stock:false,
@@ -3805,7 +3805,7 @@ function restartFeaturedTimer() {
   // Automatically feature the next cape every three seconds on desktop and mobile.
   featuredTimer = setInterval(() => {
     showFeatured((featuredIndex + 1) % featuredCapes.length);
-  }, 3000);
+  }, 5000);
 }
 
 function renderRecommendations(currentCape) {
@@ -27459,7 +27459,7 @@ nav .nav-links .nav-link[href="#home"].active {
         stage.appendChild(outgoing);
         const removeOutgoing = () => { if (outgoing.isConnected) outgoing.remove(); };
         outgoing.addEventListener("animationend", removeOutgoing, { once: true });
-        setTimeout(removeOutgoing, 720);
+        setTimeout(removeOutgoing, 140);
       }
     }
 
@@ -27491,13 +27491,13 @@ nav .nav-links .nav-link[href="#home"].active {
       image.classList.add("mc-store-spin-now");
       setTimeout(() => {
         if (token === activeShowcaseToken) image.classList.remove("mc-store-spin-now");
-      }, 640);
+      }, 140);
     }
 
     paintShowcaseText(cape);
     copy.forEach((el, order) => {
       el.classList.remove("mc-showcase-info-out", "mc-showcase-info-enter");
-      el.style.setProperty("--mc-showcase-delay", `${order * 42}ms`);
+      el.style.setProperty("--mc-showcase-delay", `${order * 58}ms`);
       void el.offsetWidth;
       el.classList.add("mc-showcase-info-enter");
     });
@@ -27507,7 +27507,7 @@ nav .nav-links .nav-link[href="#home"].active {
   window.showFeatured = stableShowFeatured;
   window.restartFeaturedTimer = function () {
     if (typeof featuredTimer !== "undefined" && featuredTimer) clearInterval(featuredTimer);
-    featuredTimer = setInterval(() => stableShowFeatured((featuredIndex + 1) % featuredCapes.length), 3000);
+    featuredTimer = setInterval(() => stableShowFeatured((featuredIndex + 1) % featuredCapes.length), 5000);
   };
   try { showFeatured = stableShowFeatured; } catch (_) {}
   try { restartFeaturedTimer = window.restartFeaturedTimer; } catch (_) {}
@@ -27699,5 +27699,252 @@ nav .nav-links .nav-link[href="#home"].active {
   }
 </style>
 
+
+
+<style id="mc-store-purple-heart-final-polish">
+  /* The promo pattern is painted on the stationary bar; only its lettering scrolls. */
+  .sale {
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 130 !important;
+    isolation: isolate !important;
+    height: 36px !important;
+    min-height: 36px !important;
+    overflow: hidden !important;
+    padding: 0 !important;
+    border: 0 !important;
+    border-bottom: 1px solid #b96b29 !important;
+    background: repeating-linear-gradient(128deg,
+      #ff8428 0 68px,
+      #f47420 68px 112px,
+      #252422 112px 182px,
+      #302e2b 182px 224px) !important;
+    background-attachment: scroll !important;
+    animation: mcStorePromoDropIn .72s cubic-bezier(.18,.8,.25,1) both !important;
+  }
+  .sale-track {
+    position: relative !important;
+    z-index: 1 !important;
+    display: flex !important;
+    width: max-content !important;
+    height: 36px !important;
+    animation: mcStoreTextOnlyMarquee 25s linear infinite !important;
+    will-change: transform;
+  }
+  .sale-group {
+    display: flex !important;
+    align-items: center !important;
+    flex: 0 0 auto !important;
+    height: 36px !important;
+    background: transparent !important;
+  }
+  .sale .sale-group span,
+  .sale .sale-group b {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    height: 36px !important;
+    padding: 0 clamp(15px, 1.7vw, 29px) !important;
+    background: transparent !important;
+    clip-path: none !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    color: #fffaf0 !important;
+    font-family: "Arial Rounded MT Bold", "Trebuchet MS", system-ui, sans-serif !important;
+    font-size: 12px !important;
+    font-weight: 1000 !important;
+    font-style: italic !important;
+    letter-spacing: .85px !important;
+    line-height: 1 !important;
+    text-transform: uppercase !important;
+    white-space: nowrap !important;
+    text-shadow: 0 2px 1px rgba(24,17,10,.72), 0 0 7px rgba(0,0,0,.25) !important;
+    -webkit-text-stroke: .2px rgba(35,20,9,.45);
+  }
+  .sale .sale-group b { color: #fff0cf !important; }
+  @keyframes mcStoreTextOnlyMarquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+  @keyframes mcStorePromoDropIn {
+    from { opacity: 0; transform: translateY(-100%); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Pin the navigation underneath the promo ticker and keep the links still on hover. */
+  nav {
+    position: sticky !important;
+    top: 36px !important;
+    z-index: 120 !important;
+  }
+  nav .nav-links .nav-link,
+  nav .nav-links .nav-link:hover,
+  nav .nav-links .nav-link:focus,
+  nav .nav-links .nav-link:focus-visible,
+  nav .nav-links .nav-link:active {
+    transform: none !important;
+    transition: color .18s ease, background-color .18s ease, border-color .18s ease !important;
+    animation: none !important;
+  }
+  nav .cart-top {
+    color: #052534 !important;
+    background: linear-gradient(180deg, #7ce8ff 0%, #32c4f1 100%) !important;
+    border: 1px solid #168cb5 !important;
+    box-shadow: 0 3px 0 #11769c, 0 6px 13px rgba(15,140,185,.18) !important;
+  }
+  nav .cart-top svg { stroke: #052534 !important; }
+  nav .cart-top:hover { transform: translateY(-1px) !important; }
+
+  /* Bigger cape artwork while preserving contain-mode and the same center point. */
+  #featured.showcase-art {
+    min-height: clamp(470px, 43vw, 590px) !important;
+  }
+  #featured .featured-image,
+  #featured .featured-image[hidden] {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 100% !important;
+    height: clamp(440px, 43vw, 570px) !important;
+    max-height: 570px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: visible !important;
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+  }
+  #featured .featured-image img:not(.mc-showcase-cape-outgoing) {
+    display: block !important;
+    position: relative !important;
+    top: 0 !important;
+    left: auto !important;
+    width: min(100%, 560px) !important;
+    height: 100% !important;
+    max-width: 560px !important;
+    max-height: 560px !important;
+    margin: 0 auto !important;
+    object-fit: contain !important;
+    object-position: center !important;
+    transform-origin: 50% 50% !important;
+    animation: none !important;
+    filter: drop-shadow(0 17px 17px rgba(42,34,20,.22)) !important;
+    will-change: transform, opacity !important;
+  }
+  /* Both the old and new artwork rotate around their own center in one 100ms turn. */
+  #featured .featured-image img.mc-showcase-cape-outgoing {
+    animation: mcStoreCapeOutgoingSpin .1s linear both !important;
+    transform-origin: 50% 50% !important;
+  }
+  #featured .featured-image img.mc-store-spin-now {
+    animation: mcStoreCapeIncomingSpin .1s linear both !important;
+    transform-origin: 50% 50% !important;
+  }
+  @keyframes mcStoreCapeOutgoingSpin {
+    0% { opacity: 1; transform: translateX(-50%) rotateY(0deg) scale(1); filter: blur(0); }
+    100% { opacity: 0; transform: translateX(-50%) rotateY(360deg) scale(.94); filter: blur(0); }
+  }
+  @keyframes mcStoreCapeIncomingSpin {
+    0% { opacity: .25; transform: rotateY(0deg) scale(.97); filter: blur(.2px); }
+    100% { opacity: 1; transform: rotateY(360deg) scale(1); filter: blur(0); }
+  }
+
+  /* Let the incoming title, description and price settle a little more slowly. */
+  @keyframes mcStoreShowcaseTextEnterFinal {
+    from { opacity: 0; transform: translateY(13px); filter: blur(1.5px); }
+    to { opacity: 1; transform: translateY(0); filter: blur(0); }
+  }
+  .mc-showcase-info-enter {
+    animation: mcStoreShowcaseTextEnterFinal .62s cubic-bezier(.18,.8,.25,1) both !important;
+    animation-delay: var(--mc-showcase-delay, 0ms) !important;
+  }
+
+  /* The two Showcase actions look like raised, tactile 3D buttons. */
+  #featuredView,
+  .cape-showcase-copy .hero-actions .btn-outline {
+    min-height: 45px !important;
+    padding: 12px 21px !important;
+    border-radius: 11px !important;
+    font-size: 13px !important;
+    font-weight: 1000 !important;
+    letter-spacing: .1px !important;
+    transition: transform .16s ease, box-shadow .16s ease, filter .16s ease !important;
+  }
+  #featuredView {
+    color: #062432 !important;
+    background: linear-gradient(180deg,#70e3ff,#20b6e9) !important;
+    border: 1px solid #168bb5 !important;
+    box-shadow: 0 4px 0 #14799e, 0 7px 13px rgba(10,129,171,.17) !important;
+  }
+  .cape-showcase-copy .hero-actions .btn-outline {
+    color: #2b2924 !important;
+    background: linear-gradient(180deg,#fffdf7,#eee7d8) !important;
+    border: 1px solid #d0c6b4 !important;
+    box-shadow: 0 4px 0 #c8bdab, 0 7px 13px rgba(48,39,24,.08) !important;
+  }
+  #featuredView:hover,
+  .cape-showcase-copy .hero-actions .btn-outline:hover {
+    transform: translateY(-2px) !important;
+    filter: brightness(1.025) !important;
+  }
+  #featuredView:active,
+  .cape-showcase-copy .hero-actions .btn-outline:active {
+    transform: translateY(2px) !important;
+    box-shadow: 0 1px 0 #14799e !important;
+  }
+
+  /* Make the product thumbnails visibly larger without cropping the cape artwork. */
+  #shop .card-art { height: 268px !important; }
+  #shop .card-img { width: 86% !important; height: 222px !important; object-fit: contain !important; }
+  #details .recommendations .card-art { height: 200px !important; }
+  #details .recommendations .card-img { width: 86% !important; height: 166px !important; object-fit: contain !important; }
+
+  @media (max-width: 900px) {
+    .sale, .sale-track, .sale-group, .sale .sale-group span, .sale .sale-group b { height: 34px !important; min-height: 34px !important; }
+    nav { top: 34px !important; }
+    .sale .sale-group span, .sale .sale-group b { padding-left: 17px !important; padding-right: 17px !important; font-size: 11px !important; }
+    #featured.showcase-art { min-height: 420px !important; }
+    #featured .featured-image, #featured .featured-image[hidden] { height: clamp(400px, 65vw, 510px) !important; max-height: 510px !important; }
+    #featured .featured-image img:not(.mc-showcase-cape-outgoing) { width: min(100%, 500px) !important; max-height: 500px !important; }
+    #shop .card-art { height: 230px !important; }
+    #shop .card-img { height: 190px !important; }
+  }
+  @media (max-width: 620px) {
+    .sale, .sale-track, .sale-group, .sale .sale-group span, .sale .sale-group b { height: 32px !important; min-height: 32px !important; }
+    nav { top: 32px !important; }
+    .sale .sale-group span, .sale .sale-group b { padding-left: 13px !important; padding-right: 13px !important; font-size: 10px !important; letter-spacing: .5px !important; }
+    #featured.showcase-art { min-height: 330px !important; }
+    #featured .featured-image, #featured .featured-image[hidden] { height: clamp(330px, 86vw, 400px) !important; max-height: 400px !important; }
+    #featured .featured-image img:not(.mc-showcase-cape-outgoing) { width: min(100%, 375px) !important; max-height: 395px !important; }
+    .cape-showcase-copy .hero-actions { gap: 10px !important; flex-wrap: wrap !important; }
+    #featuredView, .cape-showcase-copy .hero-actions .btn-outline { min-height: 43px !important; padding: 11px 15px !important; font-size: 12px !important; }
+    #shop .card-art { height: 192px !important; }
+    #shop .card-img { width: 92% !important; height: 164px !important; }
+    #details .recommendations .card-art { height: 152px !important; }
+    #details .recommendations .card-img { height: 125px !important; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .sale { animation: none !important; }
+    .sale-track { animation-duration: 70s !important; }
+    .mc-showcase-info-enter { animation-duration: .01ms !important; }
+    #featured .featured-image img.mc-store-spin-now,
+    #featured .featured-image img.mc-showcase-cape-outgoing { animation: none !important; }
+  }
+</style>
+
+
+<style id="mc-store-showcase-text-speed-final">
+  #homePage .cape-showcase-copy .mc-showcase-info-enter,
+  #homePage .cape-showcase-copy .hero-actions.mc-showcase-info-enter {
+    animation-name: mcStoreShowcaseTextEnterFinal !important;
+    animation-duration: .62s !important;
+    animation-timing-function: cubic-bezier(.18,.8,.25,1) !important;
+    animation-fill-mode: both !important;
+    animation-delay: var(--mc-showcase-delay, 0ms) !important;
+  }
+  @media (max-width: 620px) {
+    #homePage .cape-showcase-copy .mc-showcase-info-enter { animation-duration: .62s !important; }
+  }
+</style>
 </body>
 </html>
