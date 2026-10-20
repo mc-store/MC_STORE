@@ -4405,8 +4405,6 @@ onAuthStateChanged(auth, user => {
 }
 #details .storefront-preview.fallback-cape-only #capeSkinViewer { display: none; }
 #details .storefront-preview.fallback-cape-only .cape-preview-fallback { display: block; }
-/* The already-cached cape artwork appears instantly while its 3D texture loads. */
-#details .storefront-preview.preview-loading .cape-preview-fallback { display: block !important; }
 #details .preview-corner-icon {
   position: absolute;
   z-index: 4;
@@ -23753,21 +23751,6 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
   function safeText(value) {
     return String(value).replace(/[&<>"']/g, ch => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"})[ch]);
   }
-  function jumpToTopImmediately() {
-    // Opening a product from lower on the page should show it at once,
-    // rather than waiting for the global smooth-scroll animation to finish.
-    const html = document.documentElement;
-    const body = document.body;
-    const previousHtmlBehavior = html.style.scrollBehavior;
-    const previousBodyBehavior = body.style.scrollBehavior;
-    html.style.scrollBehavior = "auto";
-    body.style.scrollBehavior = "auto";
-    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
-    requestAnimationFrame(() => {
-      html.style.scrollBehavior = previousHtmlBehavior;
-      body.style.scrollBehavior = previousBodyBehavior;
-    });
-  }
   function money(value) {
     if (typeof value !== "number" || !Number.isFinite(value)) return "Unavailable";
     return "$" + (Number.isInteger(value) ? value.toFixed(0) : value.toFixed(2));
@@ -23861,7 +23844,7 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
 
     if (typeof renderRecommendations === "function") renderRecommendations(viewCape);
     safeReplaceState("#cape/" + encodeURIComponent(viewCape.id));
-    jumpToTopImmediately();
+    window.scrollTo({top:0, behavior:"smooth"});
     wireProductControls(viewCape);
     init3DPreview(viewCape);
   };
@@ -23881,14 +23864,6 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
     const canvas = document.getElementById("capeSkinViewer");
     if (!stage || !canvas) return;
     stage.classList.remove("fallback-cape-only");
-    // Immediately show the cape artwork while the 3D texture is loading. This
-    // avoids the blank pause (notably on Aurora) before SkinViewer finishes loading.
-    const previewFallback = document.getElementById("capePreviewFallback");
-    if (previewFallback) {
-      previewFallback.src = detailsImage(cape);
-      previewFallback.alt = cape.name;
-    }
-    stage.classList.add("preview-loading");
 
     // Menace has its own flat artwork. Show that exact image in the detail preview
     // instead of trying to map the artwork onto the 3D cape viewer.
@@ -23906,13 +23881,11 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
           this.src = "https://mc-store.github.io/MC_STORE/media/menace-cape.png";
         };
       }
-      stage.classList.remove("preview-loading");
       stage.classList.add("fallback-cape-only");
       return;
     }
 
     if (!window.skinview3d || typeof window.skinview3d.SkinViewer !== "function") {
-      stage.classList.remove("preview-loading");
       stage.classList.add("fallback-cape-only");
       return;
     }
@@ -23935,18 +23908,7 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
       }
       const capeLoad = mcStoreViewer.loadCape(cape.image);
       const results = await Promise.allSettled([capeLoad]);
-      const capeLoadFailed = results.some(result => result.status === "rejected");
-      if (capeLoadFailed) {
-        stage.classList.remove("preview-loading");
-        stage.classList.add("fallback-cape-only");
-      } else {
-        // Let SkinViewer paint the first loaded frame before removing the instant fallback.
-        requestAnimationFrame(() => requestAnimationFrame(() => {
-          if (document.getElementById("capePreviewStage") === stage) {
-            stage.classList.remove("preview-loading");
-          }
-        }));
-      }
+      if (results.some(result => result.status === "rejected")) stage.classList.add("fallback-cape-only");
       if (mcStoreViewer) {
         if (mcStoreViewer.playerObject && mcStoreViewer.playerObject.skin) {
           mcStoreViewer.playerObject.skin.visible = false;
@@ -23967,7 +23929,6 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
         resize();
       }
     } catch (error) {
-      stage.classList.remove("preview-loading");
       stage.classList.add("fallback-cape-only");
       closeCurrentViewer();
       console.warn("3D cape preview couldn't start; showing the existing cape image instead.", error);
@@ -24240,214 +24201,5 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
   }
 }
 </style>
-
-<style id="mc-store-user-final-navigation-shop-about-polish">
-/* Keep Home blue when it is the selected page, even after the pointer leaves. */
-nav .nav-link,
-nav .nav-link::after {
-  transition:
-    color .28s cubic-bezier(.2,.75,.25,1),
-    background-color .28s ease,
-    background .28s ease,
-    border-color .28s ease,
-    box-shadow .28s ease,
-    transform .28s cubic-bezier(.2,.75,.25,1) !important;
-}
-nav .nav-link {
-  position: relative !important;
-  overflow: hidden;
-  will-change: transform;
-}
-nav .nav-link::after {
-  content: "";
-  position: absolute;
-  left: 12px;
-  right: 12px;
-  bottom: 4px;
-  height: 2px;
-  border-radius: 2px;
-  background: #078dbd;
-  transform: scaleX(0);
-  transform-origin: left center;
-  pointer-events: none;
-  transition: transform .3s cubic-bezier(.2,.75,.25,1) !important;
-}
-nav .nav-link:hover,
-nav .nav-link:focus-visible {
-  color: #087da6 !important;
-  transform: translateY(-2px) !important;
-}
-nav .nav-link:hover::after,
-nav .nav-link:focus-visible::after,
-nav .nav-link.active::after {
-  transform: scaleX(1);
-}
-nav .nav-link[href="#home"],
-nav .nav-link[href="#home"]:hover,
-nav .nav-link[href="#home"]:focus-visible,
-nav .nav-link[href="#home"].active {
-  color: #078dbd !important;
-  -webkit-text-fill-color: #078dbd !important;
-}
-nav .nav-link[href="#home"].active {
-  background: #e7f8fd !important;
-  border-color: #bde9f3 !important;
-  box-shadow: 0 2px 8px rgba(7,141,189,.10) !important;
-}
-
-/* Clear, aligned controls for the cape catalogue. */
-#shop .shop-tools {
-  display: grid !important;
-  grid-template-columns: minmax(210px,.9fr) minmax(330px,1.45fr) minmax(170px,.7fr) !important;
-  align-items: center !important;
-  justify-content: initial !important;
-  column-gap: 14px !important;
-  row-gap: 12px !important;
-  margin: 0 0 18px !important;
-}
-#shop .shop-tools .search-wrap {
-  grid-column: 1;
-  grid-row: 1;
-  width: 100% !important;
-  min-width: 0 !important;
-  max-width: none !important;
-}
-#shop .shop-tools .search-wrap input {
-  min-height: 44px !important;
-  border-radius: 11px !important;
-  font-size: 12px !important;
-}
-#shop .shop-tools .filters {
-  grid-column: 2;
-  grid-row: 1;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: flex-start !important;
-  flex-wrap: wrap !important;
-  gap: 8px !important;
-  row-gap: 8px !important;
-  min-width: 0 !important;
-  width: 100% !important;
-}
-#shop .shop-tools .filter {
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  flex: 0 0 auto !important;
-  min-height: 41px !important;
-  padding: 10px 13px !important;
-  border: 1px solid #d9d5cb !important;
-  border-radius: 11px !important;
-  background: #fffefa !important;
-  color: #393630 !important;
-  font: 650 11px/1.25 Inter, Arial, sans-serif !important;
-  letter-spacing: .01em !important;
-  white-space: nowrap !important;
-  box-shadow: 0 1px 2px rgba(38,32,22,.035) !important;
-  transition: color .24s ease, background .24s ease, border-color .24s ease, box-shadow .24s ease, transform .24s ease !important;
-}
-#shop .shop-tools .filter:hover,
-#shop .shop-tools .filter:focus-visible {
-  color: #087da6 !important;
-  border-color: #8edbed !important;
-  background: #f0fbff !important;
-  box-shadow: 0 3px 10px rgba(29,154,196,.10) !important;
-  transform: translateY(-1px) !important;
-}
-#shop .shop-tools .filter.active {
-  color: #063143 !important;
-  background: linear-gradient(180deg,#c7f5ff,#8be2f5) !important;
-  border-color: #64cfe8 !important;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,.7), 0 2px 5px rgba(29,154,196,.10) !important;
-  transform: none !important;
-}
-#shop .shop-tools .sort-select {
-  grid-column: 3;
-  grid-row: 1;
-  width: 100% !important;
-  min-width: 0 !important;
-  min-height: 43px !important;
-  padding: 10px 34px 10px 13px !important;
-  border: 1px solid #d9d5cb !important;
-  border-radius: 11px !important;
-  background-color: #fffefa !important;
-  color: #282520 !important;
-  font: 600 11px/1.3 Inter, Arial, sans-serif !important;
-  box-shadow: 0 1px 2px rgba(38,32,22,.035) !important;
-  cursor: pointer !important;
-}
-#shop .shop-tools .sort-select:focus-visible {
-  outline: 2px solid #62cfe8 !important;
-  outline-offset: 2px !important;
-}
-#shop .shop-tools .sort-select option {
-  color: #24211e !important;
-  background: #fffefa !important;
-}
-#shop .results-line {
-  display: block !important;
-  margin: 0 0 18px !important;
-  padding: 10px 1px 12px !important;
-  color: #686258 !important;
-  border-bottom: 1px solid #e9e3d8 !important;
-  font: 600 11px/1.5 Inter, Arial, sans-serif !important;
-  letter-spacing: .025em !important;
-}
-
-/* About Us: remove the white card/box so the copy sits directly on the page. */
-#aboutPage .about-panel {
-  margin: 0 !important;
-  padding: 0 !important;
-  border: 0 !important;
-  border-radius: 0 !important;
-  background: transparent !important;
-  box-shadow: none !important;
-  outline: 0 !important;
-}
-#aboutPage .about-panel::before,
-#aboutPage .about-panel::after {
-  content: none !important;
-  display: none !important;
-}
-#aboutPage .about-panel h1 { margin-top: 12px !important; }
-#aboutPage .about-panel .about-lead,
-#aboutPage .about-panel p {
-  max-width: 850px;
-}
-
-@media (max-width: 1100px) {
-  #shop .shop-tools {
-    grid-template-columns: minmax(0,1fr) minmax(190px,.55fr) !important;
-    column-gap: 12px !important;
-  }
-  #shop .shop-tools .search-wrap { grid-column: 1; grid-row: 1; }
-  #shop .shop-tools .sort-select { grid-column: 2; grid-row: 1; }
-  #shop .shop-tools .filters { grid-column: 1 / -1; grid-row: 2; }
-}
-@media (max-width: 680px) {
-  nav .nav-link { transform: none !important; }
-  #shop .shop-tools {
-    grid-template-columns: minmax(0,1fr) !important;
-    column-gap: 0 !important;
-    row-gap: 11px !important;
-  }
-  #shop .shop-tools .search-wrap,
-  #shop .shop-tools .filters,
-  #shop .shop-tools .sort-select {
-    grid-column: 1 !important;
-    width: 100% !important;
-  }
-  #shop .shop-tools .search-wrap { grid-row: 1 !important; }
-  #shop .shop-tools .filters { grid-row: 2 !important; gap: 7px !important; }
-  #shop .shop-tools .filter { min-height: 39px !important; padding: 9px 11px !important; font-size: 10px !important; }
-  #shop .shop-tools .sort-select { grid-row: 3 !important; }
-}
-@media (prefers-reduced-motion: reduce) {
-  nav .nav-link,
-  nav .nav-link::after,
-  #shop .shop-tools .filter { transition-duration: .01ms !important; }
-}
-</style>
-
 </body>
 </html>
