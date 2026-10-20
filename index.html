@@ -2908,6 +2908,7 @@ body.mc-reveal-ready .mc-footer .reveal-on-scroll.is-visible {
         <div class="featured-image">
           <img id="featuredImage" src="media/aurora-cape.png" alt="Aurora Cape" data-image-file="aurora-cape.png" data-original-src="media/aurora-cape.png" data-fallback-image="media/aurora-cape.png" onerror="handleCapeCardImageError(this)">
         </div>
+        <div class="mc-cape-showcase-thumbnails" id="mcCapeShowcaseThumbnails" aria-label="All cape pictures in the showcase"></div>
       </div>
     </div>
   </header>
@@ -3616,61 +3617,17 @@ function showFeatured(index) {
   featuredImage.dataset.fallbackImage = cape.image || "";
   featuredImage.onerror = function () { handleCapeCardImageError(this); };
 
-  // Animate the whole showcase stage with the Web Animations API. This avoids
-  // desktop CSS animation overrides (including reduced-motion rules) and keeps
-  // the 360-degree spin consistent on mouse/keyboard desktops and touch devices.
+  // Switch the artwork without spinning, tilting, or scaling it.
   const featuredStage = document.querySelector("#featured .featured-image");
   if (featuredStage && featuredStage._mcCapeSpinAnimation) {
-    featuredStage._mcCapeSpinAnimation.cancel();
+    try { featuredStage._mcCapeSpinAnimation.cancel(); } catch (_) {}
     featuredStage._mcCapeSpinAnimation = null;
   }
   featuredImage.classList.remove("cape-spin", "is-spinning", "spin-in");
   featuredImage.dataset.capeSpinTarget = nextShowcaseURL;
-
-  const startCapeSpinWhenReady = () => {
-    if (featuredImage.dataset.capeSpinTarget !== nextShowcaseURL ||
-        !featuredImage.complete || featuredImage.naturalWidth === 0) return;
-
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        if (featuredImage.dataset.capeSpinTarget !== nextShowcaseURL ||
-            !featuredImage.complete || featuredImage.naturalWidth === 0) return;
-
-        if (featuredStage && typeof featuredStage.animate === "function") {
-          if (featuredStage._mcCapeSpinAnimation) {
-            featuredStage._mcCapeSpinAnimation.cancel();
-          }
-          featuredStage.style.transformOrigin = "50% 50%";
-          featuredStage.style.transformStyle = "preserve-3d";
-          featuredStage.style.backfaceVisibility = "visible";
-          const spin = featuredStage.animate(
-            [
-              { transform: "perspective(1100px) rotateY(0deg)" },
-              { transform: "perspective(1100px) rotateY(360deg)" }
-            ],
-            { duration: 100, easing: "linear", iterations: 1, fill: "none" }
-          );
-          featuredStage._mcCapeSpinAnimation = spin;
-          spin.onfinish = () => {
-            if (featuredStage._mcCapeSpinAnimation === spin) {
-              featuredStage._mcCapeSpinAnimation = null;
-            }
-          };
-        } else {
-          // CSS fallback for older browsers without Element.animate().
-          featuredImage.classList.remove("cape-spin");
-          void featuredImage.offsetWidth;
-          featuredImage.classList.add("cape-spin");
-        }
-      });
-    });
-  };
-
-  if (featuredImage.src !== nextShowcaseURL || !featuredImage.complete || featuredImage.naturalWidth === 0) {
-    featuredImage.addEventListener("load", startCapeSpinWhenReady, { once: true });
+  const currentShowcaseURL = new URL(featuredImage.currentSrc || featuredImage.src, document.baseURI).href;
+  if (currentShowcaseURL !== nextShowcaseURL || !featuredImage.complete || featuredImage.naturalWidth === 0) {
     featuredImage.src = nextShowcaseImage;
-  } else {
-    startCapeSpinWhenReady();
   }
 
   const featuredName = document.getElementById("featuredName");
@@ -3722,6 +3679,9 @@ function showFeatured(index) {
       restartFeaturedTimer();
     });
   });
+  document.querySelectorAll("[data-showcase-thumb]").forEach(button => {
+    button.classList.toggle("active", Number(button.dataset.showcaseThumb) === featuredIndex);
+  });
 }
 
 function restartFeaturedTimer() {
@@ -3730,6 +3690,33 @@ function restartFeaturedTimer() {
   featuredTimer = setInterval(() => {
     showFeatured((featuredIndex + 1) % featuredCapes.length);
   }, 2000);
+}
+
+// Show all nine cape artworks together beneath the main spotlight image.
+function renderShowcaseThumbnails() {
+  const container = document.getElementById("mcCapeShowcaseThumbnails");
+  if (!container) return;
+  container.innerHTML = featuredCapes.map((cape, index) => {
+    const image = cape.showcaseImage || cape.image || "";
+    const filename = String(image).split("/").pop();
+    return `
+      <button class="mc-cape-showcase-thumb${index === featuredIndex ? " active" : ""}"
+        type="button" data-showcase-thumb="${index}"
+        aria-label="Show ${escapeHTML(cape.name)} in the showcase"
+        title="${escapeHTML(cape.name)}">
+        <img src="${escapeHTML(image)}" alt="${escapeHTML(cape.name)}"
+          data-original-src="${escapeHTML(image)}"
+          data-image-file="${escapeHTML(filename)}"
+          data-fallback-image="${escapeHTML(cape.image || image)}"
+          loading="lazy" onerror="handleCapeCardImageError(this)">
+      </button>`;
+  }).join("");
+  container.querySelectorAll("[data-showcase-thumb]").forEach(button => {
+    button.addEventListener("click", () => {
+      showFeatured(Number(button.dataset.showcaseThumb));
+      restartFeaturedTimer();
+    });
+  });
 }
 
 // Keep the cape showcase rotating on desktop too. Previously mouseenter/focusin
@@ -4076,7 +4063,8 @@ async function refreshDiscordInfo() {
 
 /* Initial rendering */
 renderProducts();
-showFeatured(1);
+renderShowcaseThumbnails();
+showFeatured(0);
 restartFeaturedTimer();
 refreshDiscordInfo();
 
@@ -24134,10 +24122,13 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
       mcStoreViewer.controls.enabled = true;
       mcStoreViewer.controls.enablePan = false;
       mcStoreViewer.controls.enableRotate = true;
-      mcStoreViewer.controls.enableZoom = true;
+      mcStoreViewer.controls.enableZoom = false; // Mouse-wheel scrolling must not zoom the cape.
       // Lock the camera elevation so dragging only turns the cape left/right.
       mcStoreViewer.controls.minPolarAngle = Math.PI / 2;
       mcStoreViewer.controls.maxPolarAngle = Math.PI / 2;
+      // Keep the cape upright: users may turn it horizontally, but cannot tilt the view up/down.
+      mcStoreViewer.playerWrapper.rotation.x = 0;
+      mcStoreViewer.playerWrapper.rotation.z = 0;
       mcStoreViewer.controls.rotateSpeed = 0.9;
       mcStoreViewer.controls.enableDamping = true;
       // Keep the cape still until the visitor drags it, and make the model a little larger.
@@ -26015,6 +26006,88 @@ nav .nav-links .nav-link[href="#home"].active {
 }
 @media (max-width: 520px) {
   #details .storefront-preview { height: 410px !important; }
+}
+</style>
+
+
+
+<style id="mc-store-user-request-final-showcase-fix">
+/* No zoom on cape images when hovering; keep all artwork perfectly upright. */
+#shop .card-img,
+#shop .card:hover .card-img,
+#details .recommendations .card-img,
+#details .recommendations .card:hover .card-img {
+  transform: none !important;
+  transition: none !important;
+}
+#featured .featured-image,
+#featured .featured-image.cape-zoom-switch {
+  transform: none !important;
+  animation: none !important;
+  perspective: none !important;
+}
+#featured .featured-image img,
+#featured .featured-image img.cape-spin,
+#featured .featured-image img.is-spinning,
+#featured .featured-image img.spin-in,
+#featured .featured-image.cape-zoom-switch img {
+  transform: translateY(0) rotateX(0deg) rotateY(0deg) rotateZ(0deg) scale(1) !important;
+  animation: mcStoreCapeStillFloat 3.4s ease-in-out infinite !important;
+  transform-origin: 50% 50% !important;
+  transform-style: flat !important;
+  transition: none !important;
+}
+@keyframes mcStoreCapeStillFloat {
+  0%, 100% { transform: translateY(0) rotateX(0deg) rotateY(0deg) rotateZ(0deg) scale(1); }
+  50% { transform: translateY(-5px) rotateX(0deg) rotateY(0deg) rotateZ(0deg) scale(1); }
+}
+/* Nine clickable images beneath the spotlight, one for each cape. */
+.mc-cape-showcase-thumbnails {
+  display: grid;
+  grid-template-columns: repeat(9, minmax(0, 1fr));
+  gap: 6px;
+  margin-top: 8px;
+  padding-top: 11px;
+  border-top: 1px solid rgba(82, 209, 255, .18);
+}
+.mc-cape-showcase-thumb {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  height: 63px;
+  padding: 4px;
+  overflow: hidden;
+  border: 1px solid rgba(82, 187, 255, .2);
+  border-radius: 9px;
+  background: linear-gradient(145deg, rgba(18, 49, 80, .82), rgba(5, 20, 39, .9));
+  cursor: pointer;
+  transition: border-color .18s ease, background .18s ease, box-shadow .18s ease;
+}
+.mc-cape-showcase-thumb img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transform: none !important;
+  animation: none !important;
+  transition: none !important;
+}
+.mc-cape-showcase-thumb:hover,
+.mc-cape-showcase-thumb.active {
+  border-color: #63e8ff;
+  background: linear-gradient(145deg, rgba(17, 119, 187, .43), rgba(7, 44, 76, .95));
+  box-shadow: 0 0 0 1px rgba(83, 229, 255, .25), 0 0 16px rgba(39, 166, 255, .16);
+}
+#details .storefront-preview #capeSkinViewer {
+  touch-action: pan-y;
+}
+@media (max-width: 900px) {
+  .mc-cape-showcase-thumb { height: 58px; }
+}
+@media (max-width: 620px) {
+  .mc-cape-showcase-thumbnails { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 7px; }
+  .mc-cape-showcase-thumb { height: 62px; }
 }
 </style>
 
