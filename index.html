@@ -2943,6 +2943,9 @@ body.mc-reveal-ready .mc-footer .reveal-on-scroll.is-visible {
 
     <div class="results-line" id="resultsLine">Showing 9 capes</div>
     <div class="products" id="products"></div>
+    <div class="home-explore-cta" id="homeExploreCta">
+      <a href="#shop" class="home-explore-btn" onclick="showHome('shop');return false">EXPLORE ALL CAPES <span aria-hidden="true">›</span></a>
+    </div>
     <div class="empty-state" id="emptyState" hidden>
       <strong>No capes found</strong>
       Try another search or change your filters.
@@ -3434,10 +3437,17 @@ function renderProducts() {
     list.sort((a,b) => a.name.localeCompare(b.name));
   }
 
-  document.getElementById("products").innerHTML = list.map(capeCard).join("");
-  document.getElementById("resultsLine").textContent =
-    `Showing ${list.length} of ${productCapes.length} capes`;
-  document.getElementById("emptyState").hidden = list.length !== 0;
+  const homePage = document.getElementById("homePage");
+  const detailsPage = document.getElementById("details");
+  const isHomePreview = homePage && !homePage.classList.contains("shop-only") &&
+    homePage.style.display !== "none" && detailsPage &&
+    (detailsPage.style.display === "none" || getComputedStyle(detailsPage).display === "none");
+  const visibleList = isHomePreview ? list.slice(0, 6) : list;
+  document.getElementById("products").innerHTML = visibleList.map(capeCard).join("");
+  document.getElementById("resultsLine").textContent = isHomePreview
+    ? `Showing ${visibleList.length} featured capes`
+    : `Showing ${list.length} of ${productCapes.length} capes`;
+  document.getElementById("emptyState").hidden = visibleList.length !== 0;
 }
 
 document.getElementById("searchInput").addEventListener("input", renderProducts);
@@ -3534,6 +3544,23 @@ function showFeatured(index) {
   stock.textContent = cape.stock ? "✓ IN STOCK" : "✕ NOT IN STOCK";
   stock.classList.toggle("sold", !cape.stock);
 
+  // Bring each cape's details in smoothly whenever the featured cape changes.
+  const showcaseInfo = [
+    document.querySelector(".cape-showcase-copy .pill"),
+    featuredName,
+    document.getElementById("featuredDescription"),
+    document.getElementById("featuredPrice"),
+    stock,
+    document.querySelector(".cape-showcase-copy .hero-actions"),
+    document.getElementById("featuredDots")
+  ].filter(Boolean);
+  showcaseInfo.forEach((element, order) => {
+    element.classList.remove("mc-showcase-info-enter");
+    element.style.setProperty("--mc-showcase-delay", `${order * 35}ms`);
+    void element.offsetWidth;
+    element.classList.add("mc-showcase-info-enter");
+  });
+
   document.getElementById("featuredNumber").textContent =
     `${String(featuredIndex + 1).padStart(2,"0")} / ${String(featuredCapes.length).padStart(2,"0")}`;
 
@@ -3577,6 +3604,16 @@ function renderRecommendations(currentCape) {
 function showHome(sectionId = "home") {
   document.getElementById("homePage").style.display = "block";
   document.getElementById("homePage").classList.toggle("shop-only", sectionId === "shop");
+  if (sectionId === "home") {
+    const searchInput = document.getElementById("searchInput");
+    const sortSelect = document.getElementById("sortSelect");
+    if (searchInput) searchInput.value = "";
+    if (sortSelect) sortSelect.value = "default";
+    currentFilter = "all";
+    document.querySelectorAll("[data-filter]").forEach(button => {
+      button.classList.toggle("active", button.dataset.filter === "all");
+    });
+  }
   document.getElementById("details").style.display = "none";
   document.getElementById("aboutPage").hidden = true;
   document.getElementById("endorsementsPage").hidden = true;
@@ -3595,6 +3632,7 @@ function showHome(sectionId = "home") {
     'a[href="#home"]'
   );
   if (navLink) navLink.classList.add("active");
+  if (typeof renderProducts === "function") renderProducts();
 
   const target = sectionId === "home"
     ? document.getElementById("home")
@@ -4405,6 +4443,8 @@ onAuthStateChanged(auth, user => {
 }
 #details .storefront-preview.fallback-cape-only #capeSkinViewer { display: none; }
 #details .storefront-preview.fallback-cape-only .cape-preview-fallback { display: block; }
+/* The already-cached cape artwork appears instantly while its 3D texture loads. */
+#details .storefront-preview.preview-loading .cape-preview-fallback { display: block !important; }
 #details .preview-corner-icon {
   position: absolute;
   z-index: 4;
@@ -23751,6 +23791,21 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
   function safeText(value) {
     return String(value).replace(/[&<>"']/g, ch => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"})[ch]);
   }
+  function jumpToTopImmediately() {
+    // Opening a product from lower on the page should show it at once,
+    // rather than waiting for the global smooth-scroll animation to finish.
+    const html = document.documentElement;
+    const body = document.body;
+    const previousHtmlBehavior = html.style.scrollBehavior;
+    const previousBodyBehavior = body.style.scrollBehavior;
+    html.style.scrollBehavior = "auto";
+    body.style.scrollBehavior = "auto";
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+    requestAnimationFrame(() => {
+      html.style.scrollBehavior = previousHtmlBehavior;
+      body.style.scrollBehavior = previousBodyBehavior;
+    });
+  }
   function money(value) {
     if (typeof value !== "number" || !Number.isFinite(value)) return "Unavailable";
     return "$" + (Number.isInteger(value) ? value.toFixed(0) : value.toFixed(2));
@@ -23844,7 +23899,7 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
 
     if (typeof renderRecommendations === "function") renderRecommendations(viewCape);
     safeReplaceState("#cape/" + encodeURIComponent(viewCape.id));
-    window.scrollTo({top:0, behavior:"smooth"});
+    jumpToTopImmediately();
     wireProductControls(viewCape);
     init3DPreview(viewCape);
   };
@@ -23864,6 +23919,14 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
     const canvas = document.getElementById("capeSkinViewer");
     if (!stage || !canvas) return;
     stage.classList.remove("fallback-cape-only");
+    // Immediately show the cape artwork while the 3D texture is loading. This
+    // avoids the blank pause (notably on Aurora) before SkinViewer finishes loading.
+    const previewFallback = document.getElementById("capePreviewFallback");
+    if (previewFallback) {
+      previewFallback.src = detailsImage(cape);
+      previewFallback.alt = cape.name;
+    }
+    stage.classList.add("preview-loading");
 
     // Menace has its own flat artwork. Show that exact image in the detail preview
     // instead of trying to map the artwork onto the 3D cape viewer.
@@ -23881,11 +23944,13 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
           this.src = "https://mc-store.github.io/MC_STORE/media/menace-cape.png";
         };
       }
+      stage.classList.remove("preview-loading");
       stage.classList.add("fallback-cape-only");
       return;
     }
 
     if (!window.skinview3d || typeof window.skinview3d.SkinViewer !== "function") {
+      stage.classList.remove("preview-loading");
       stage.classList.add("fallback-cape-only");
       return;
     }
@@ -23908,7 +23973,18 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
       }
       const capeLoad = mcStoreViewer.loadCape(cape.image);
       const results = await Promise.allSettled([capeLoad]);
-      if (results.some(result => result.status === "rejected")) stage.classList.add("fallback-cape-only");
+      const capeLoadFailed = results.some(result => result.status === "rejected");
+      if (capeLoadFailed) {
+        stage.classList.remove("preview-loading");
+        stage.classList.add("fallback-cape-only");
+      } else {
+        // Let SkinViewer paint the first loaded frame before removing the instant fallback.
+        requestAnimationFrame(() => requestAnimationFrame(() => {
+          if (document.getElementById("capePreviewStage") === stage) {
+            stage.classList.remove("preview-loading");
+          }
+        }));
+      }
       if (mcStoreViewer) {
         if (mcStoreViewer.playerObject && mcStoreViewer.playerObject.skin) {
           mcStoreViewer.playerObject.skin.visible = false;
@@ -23929,6 +24005,7 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
         resize();
       }
     } catch (error) {
+      stage.classList.remove("preview-loading");
       stage.classList.add("fallback-cape-only");
       closeCurrentViewer();
       console.warn("3D cape preview couldn't start; showing the existing cape image instead.", error);
@@ -24201,5 +24278,981 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
   }
 }
 </style>
+
+<style id="mc-store-user-final-navigation-shop-about-polish">
+/* Keep Home blue when it is the selected page, even after the pointer leaves. */
+nav .nav-link,
+nav .nav-link::after {
+  transition:
+    color .28s cubic-bezier(.2,.75,.25,1),
+    background-color .28s ease,
+    background .28s ease,
+    border-color .28s ease,
+    box-shadow .28s ease,
+    transform .28s cubic-bezier(.2,.75,.25,1) !important;
+}
+nav .nav-link {
+  position: relative !important;
+  overflow: hidden;
+  will-change: transform;
+}
+nav .nav-link::after {
+  content: "";
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  bottom: 4px;
+  height: 2px;
+  border-radius: 2px;
+  background: #078dbd;
+  transform: scaleX(0);
+  transform-origin: left center;
+  pointer-events: none;
+  transition: transform .3s cubic-bezier(.2,.75,.25,1) !important;
+}
+nav .nav-link:hover,
+nav .nav-link:focus-visible {
+  color: #087da6 !important;
+  transform: translateY(-2px) !important;
+}
+nav .nav-link:hover::after,
+nav .nav-link:focus-visible::after,
+nav .nav-link.active::after {
+  transform: scaleX(1);
+}
+nav .nav-link[href="#home"],
+nav .nav-link[href="#home"]:hover,
+nav .nav-link[href="#home"]:focus-visible,
+nav .nav-link[href="#home"].active {
+  color: #078dbd !important;
+  -webkit-text-fill-color: #078dbd !important;
+}
+nav .nav-link[href="#home"].active {
+  background: #e7f8fd !important;
+  border-color: #bde9f3 !important;
+  box-shadow: 0 2px 8px rgba(7,141,189,.10) !important;
+}
+
+/* Clear, aligned controls for the cape catalogue. */
+#shop .shop-tools {
+  display: grid !important;
+  grid-template-columns: minmax(210px,.9fr) minmax(330px,1.45fr) minmax(170px,.7fr) !important;
+  align-items: center !important;
+  justify-content: initial !important;
+  column-gap: 14px !important;
+  row-gap: 12px !important;
+  margin: 0 0 18px !important;
+}
+#shop .shop-tools .search-wrap {
+  grid-column: 1;
+  grid-row: 1;
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: none !important;
+}
+#shop .shop-tools .search-wrap input {
+  min-height: 44px !important;
+  border-radius: 11px !important;
+  font-size: 12px !important;
+}
+#shop .shop-tools .filters {
+  grid-column: 2;
+  grid-row: 1;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  flex-wrap: wrap !important;
+  gap: 8px !important;
+  row-gap: 8px !important;
+  min-width: 0 !important;
+  width: 100% !important;
+}
+#shop .shop-tools .filter {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex: 0 0 auto !important;
+  min-height: 41px !important;
+  padding: 10px 13px !important;
+  border: 1px solid #d9d5cb !important;
+  border-radius: 11px !important;
+  background: #fffefa !important;
+  color: #393630 !important;
+  font: 650 11px/1.25 Inter, Arial, sans-serif !important;
+  letter-spacing: .01em !important;
+  white-space: nowrap !important;
+  box-shadow: 0 1px 2px rgba(38,32,22,.035) !important;
+  transition: color .24s ease, background .24s ease, border-color .24s ease, box-shadow .24s ease, transform .24s ease !important;
+}
+#shop .shop-tools .filter:hover,
+#shop .shop-tools .filter:focus-visible {
+  color: #087da6 !important;
+  border-color: #8edbed !important;
+  background: #f0fbff !important;
+  box-shadow: 0 3px 10px rgba(29,154,196,.10) !important;
+  transform: translateY(-1px) !important;
+}
+#shop .shop-tools .filter.active {
+  color: #063143 !important;
+  background: linear-gradient(180deg,#c7f5ff,#8be2f5) !important;
+  border-color: #64cfe8 !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.7), 0 2px 5px rgba(29,154,196,.10) !important;
+  transform: none !important;
+}
+#shop .shop-tools .sort-select {
+  grid-column: 3;
+  grid-row: 1;
+  width: 100% !important;
+  min-width: 0 !important;
+  min-height: 43px !important;
+  padding: 10px 34px 10px 13px !important;
+  border: 1px solid #d9d5cb !important;
+  border-radius: 11px !important;
+  background-color: #fffefa !important;
+  color: #282520 !important;
+  font: 600 11px/1.3 Inter, Arial, sans-serif !important;
+  box-shadow: 0 1px 2px rgba(38,32,22,.035) !important;
+  cursor: pointer !important;
+}
+#shop .shop-tools .sort-select:focus-visible {
+  outline: 2px solid #62cfe8 !important;
+  outline-offset: 2px !important;
+}
+#shop .shop-tools .sort-select option {
+  color: #24211e !important;
+  background: #fffefa !important;
+}
+#shop .results-line {
+  display: block !important;
+  margin: 0 0 18px !important;
+  padding: 10px 1px 12px !important;
+  color: #686258 !important;
+  border-bottom: 1px solid #e9e3d8 !important;
+  font: 600 11px/1.5 Inter, Arial, sans-serif !important;
+  letter-spacing: .025em !important;
+}
+
+/* About Us: remove the white card/box so the copy sits directly on the page. */
+#aboutPage .about-panel {
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  outline: 0 !important;
+}
+#aboutPage .about-panel::before,
+#aboutPage .about-panel::after {
+  content: none !important;
+  display: none !important;
+}
+#aboutPage .about-panel h1 { margin-top: 12px !important; }
+#aboutPage .about-panel .about-lead,
+#aboutPage .about-panel p {
+  max-width: 850px;
+}
+
+@media (max-width: 1100px) {
+  #shop .shop-tools {
+    grid-template-columns: minmax(0,1fr) minmax(190px,.55fr) !important;
+    column-gap: 12px !important;
+  }
+  #shop .shop-tools .search-wrap { grid-column: 1; grid-row: 1; }
+  #shop .shop-tools .sort-select { grid-column: 2; grid-row: 1; }
+  #shop .shop-tools .filters { grid-column: 1 / -1; grid-row: 2; }
+}
+@media (max-width: 680px) {
+  nav .nav-link { transform: none !important; }
+  #shop .shop-tools {
+    grid-template-columns: minmax(0,1fr) !important;
+    column-gap: 0 !important;
+    row-gap: 11px !important;
+  }
+  #shop .shop-tools .search-wrap,
+  #shop .shop-tools .filters,
+  #shop .shop-tools .sort-select {
+    grid-column: 1 !important;
+    width: 100% !important;
+  }
+  #shop .shop-tools .search-wrap { grid-row: 1 !important; }
+  #shop .shop-tools .filters { grid-row: 2 !important; gap: 7px !important; }
+  #shop .shop-tools .filter { min-height: 39px !important; padding: 9px 11px !important; font-size: 10px !important; }
+  #shop .shop-tools .sort-select { grid-row: 3 !important; }
+}
+@media (prefers-reduced-motion: reduce) {
+  nav .nav-link,
+  nav .nav-link::after,
+  #shop .shop-tools .filter { transition-duration: .01ms !important; }
+}
+</style>
+
+
+
+<style id="mc-store-home-showcase-products-layout">
+/* Home always shows the rotating cape showcase first, followed by the product catalogue. */
+#homePage:not(.shop-only) > #home.hero,
+#homePage:not(.shop-only) .hero#home {
+  display: block !important;
+  width: min(1320px, 92%) !important;
+  margin-inline: auto !important;
+  padding-top: clamp(38px, 5vw, 68px) !important;
+  padding-bottom: clamp(34px, 4vw, 54px) !important;
+}
+#homePage:not(.shop-only) > #shop,
+#homePage > #shop.section {
+  display: block !important;
+  width: min(1510px, 92%) !important;
+  margin: 0 auto !important;
+  padding: 24px 0 64px !important;
+  scroll-margin-top: 100px !important;
+}
+/* Keep the reference-style catalogue directly below the showcase on Home. */
+#shop .section-head {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+  margin: 0 0 25px !important;
+}
+#shop .section-head > div {
+  width: 100% !important;
+  max-width: 760px !important;
+  margin-inline: auto !important;
+}
+#shop .section-head .kicker {
+  color: #168fb7 !important;
+  font-size: 10px !important;
+  letter-spacing: 2.2px !important;
+}
+#shop .section-head h2 {
+  margin-top: 8px !important;
+  font-size: clamp(32px, 4vw, 48px) !important;
+  line-height: 1.08 !important;
+  letter-spacing: -1.4px !important;
+  color: #24221e !important;
+}
+#shop .section-head h2 .gradient {
+  background: none !important;
+  color: #24221e !important;
+  -webkit-text-fill-color: #24221e !important;
+  animation: none !important;
+}
+#shop .section-head p {
+  margin-top: 10px !important;
+  color: #69645c !important;
+  font-size: 12px !important;
+  line-height: 1.75 !important;
+}
+#shop .shop-tools { display: grid !important; }
+#shop .results-line { display: block !important; }
+#shop .products {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 18px !important;
+  align-items: stretch !important;
+}
+#shop .card {
+  min-width: 0 !important;
+  overflow: hidden !important;
+  border: 1px solid #d8d0c1 !important;
+  border-radius: 13px !important;
+  background: #fffefa !important;
+  color: #28251f !important;
+  box-shadow: 0 2px 4px rgba(49, 41, 29, .12) !important;
+  transition: transform .22s ease, border-color .22s ease, box-shadow .22s ease !important;
+}
+#shop .card:hover {
+  transform: translateY(-4px) !important;
+  border-color: #8acddd !important;
+  box-shadow: 0 10px 22px rgba(49, 41, 29, .15) !important;
+}
+#shop .card-art {
+  height: clamp(175px, 16vw, 238px) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  overflow: hidden !important;
+  background: #e7e0d3 !important;
+}
+#shop .card-img {
+  width: 78% !important;
+  height: calc(100% - 22px) !important;
+  max-height: 220px !important;
+  object-fit: contain !important;
+  filter: drop-shadow(0 9px 10px rgba(0,0,0,.24)) !important;
+  transition: filter .24s ease !important;
+}
+#shop .card:hover .card-img {
+  transform: none !important;
+  filter: drop-shadow(0 12px 12px rgba(0,0,0,.28)) !important;
+}
+#shop .card-body {
+  display: flex !important;
+  flex: 1 1 auto !important;
+  flex-direction: column !important;
+  padding: 15px !important;
+  background: #fffefa !important;
+}
+#shop .card h3 {
+  color: #24221e !important;
+  font-size: 17px !important;
+  line-height: 1.4 !important;
+}
+#shop .card-desc {
+  color: #69645c !important;
+  font-size: 12px !important;
+  line-height: 1.65 !important;
+  min-height: 40px !important;
+}
+#shop .card-bottom {
+  margin-top: auto !important;
+  padding-top: 12px !important;
+  border-top: 1px solid #e8e1d5 !important;
+}
+#shop .card-price { color: #25221e !important; font-size: 19px !important; }
+#shop .card-price small { color: #797268 !important; }
+#shop .card-tag.sale-tag { background: #f27b25 !important; color: #fff !important; }
+#shop .card-tag.popular.stock-tag { background: #fffefa !important; color: #282620 !important; }
+
+/* The Shop navigation still opens a focused catalogue view without the Home showcase. */
+#homePage.shop-only > #home.hero { display: none !important; }
+@media (max-width: 900px) {
+  #homePage:not(.shop-only) > #home.hero { width: 92% !important; }
+  #shop .products { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 14px !important; }
+  #shop .card-art { height: clamp(160px, 25vw, 210px) !important; }
+}
+@media (max-width: 620px) {
+  #homePage:not(.shop-only) > #home.hero { padding-top: 30px !important; padding-bottom: 28px !important; }
+  #homePage:not(.shop-only) > #shop { width: 92% !important; padding-top: 20px !important; }
+  #shop .section-head { margin-bottom: 18px !important; }
+  #shop .section-head h2 { font-size: clamp(29px, 8vw, 38px) !important; }
+  #shop .products { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 11px !important; }
+  #shop .card-art { height: 150px !important; }
+  #shop .card-img { width: 82% !important; height: calc(100% - 14px) !important; }
+  #shop .card-body { padding: 10px !important; }
+  #shop .card h3 { font-size: 13px !important; }
+  #shop .card-desc { font-size: 10px !important; line-height: 1.55 !important; min-height: 44px !important; }
+  #shop .card-price { font-size: 15px !important; }
+}
+@media (max-width: 390px) {
+  #shop .products { grid-template-columns: 1fr !important; }
+  #shop .card-art { height: 205px !important; }
+  #shop .card h3 { font-size: 15px !important; }
+  #shop .card-desc { min-height: 0 !important; }
+}
+</style>
+
+
+
+<style id="mc-store-final-home-six-capes-and-animations">
+/* Navigation: remove the underline completely; use a soft pill transition instead. */
+nav .nav-link,
+nav .nav-link:hover,
+nav .nav-link:focus-visible,
+nav .nav-link.active {
+  text-decoration: none !important;
+  border-bottom: 0 !important;
+  transition: color .32s ease, background .32s ease, border-color .32s ease,
+    box-shadow .32s ease, transform .32s cubic-bezier(.2,.75,.25,1) !important;
+}
+nav .nav-link::after { content: none !important; display: none !important; }
+nav .nav-link:hover,
+nav .nav-link:focus-visible {
+  color: #087da6 !important;
+  background: #e7f8fd !important;
+  border-color: #bde9f3 !important;
+  box-shadow: 0 4px 12px rgba(7,141,189,.10) !important;
+  transform: translateY(-2px) !important;
+}
+nav .nav-link.active {
+  color: #062432 !important;
+  -webkit-text-fill-color: #062432 !important;
+  background: linear-gradient(180deg,#62dcff,#28b9ef) !important;
+  border: 1px solid #238ab2 !important;
+  box-shadow: 0 3px 0 #147da2 !important;
+}
+nav .nav-link[href="#home"].active { color:#062432 !important; -webkit-text-fill-color:#062432 !important; }
+
+/* Home preview: display exactly six product cards, then a clear CTA to the full Shop. */
+#homePage:not(.shop-only) #shop .shop-tools,
+#homePage:not(.shop-only) #shop #resultsLine { display: none !important; }
+#homePage:not(.shop-only) #shop #products > .card:nth-child(n+7) { display: none !important; }
+#homePage:not(.shop-only) #homeExploreCta { display: flex !important; }
+#homePage.shop-only #homeExploreCta { display: none !important; }
+.home-explore-cta {
+  display: none;
+  justify-content: center;
+  align-items: center;
+  margin: 42px auto 0;
+  padding: 0 0 2px;
+  animation: mcExploreEnter .45s cubic-bezier(.2,.75,.25,1) both;
+}
+.home-explore-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 13px;
+  min-height: 49px;
+  padding: 0 30px;
+  border: 1px solid #24231f;
+  border-radius: 8px;
+  background: #302e2a;
+  color: #fffdfa !important;
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: .4px;
+  box-shadow: 0 3px 0 #181714;
+  text-decoration: none !important;
+  transition: background .25s ease, transform .25s ease, box-shadow .25s ease;
+}
+.home-explore-btn span { font-size: 24px; line-height: .7; transition: transform .25s ease; }
+.home-explore-btn:hover,
+.home-explore-btn:focus-visible {
+  background: #1f78a0;
+  color: #fff !important;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 0 #164c63;
+}
+.home-explore-btn:hover span,
+.home-explore-btn:focus-visible span { transform: translateX(4px); }
+@keyframes mcExploreEnter {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Detail text gently enters whenever the auto-changing showcase presents a new cape. */
+@keyframes mcShowcaseInfoEnter {
+  from { opacity: 0; transform: translateY(10px); filter: blur(1px); }
+  to { opacity: 1; transform: translateY(0); filter: blur(0); }
+}
+.mc-showcase-info-enter {
+  animation: mcShowcaseInfoEnter .42s cubic-bezier(.2,.75,.25,1) both !important;
+  animation-delay: var(--mc-showcase-delay, 0ms) !important;
+  will-change: opacity, transform;
+}
+
+/* Soft content entrance when changing Home/Shop/section and when cards scroll into view. */
+@keyframes mcSectionContentEnter {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+#homePage:not(.shop-only) #home.hero,
+#homePage.shop-only #shop,
+#aboutPage:not([hidden]) .about-panel,
+#endorsementsPage:not([hidden]) .endorsements-page {
+  animation: mcSectionContentEnter .38s cubic-bezier(.2,.75,.25,1) both;
+}
+#shop .card {
+  transition: transform .28s ease, border-color .28s ease, box-shadow .28s ease !important;
+}
+#shop .card:hover,
+#shop .card:focus-within {
+  transform: translateY(-4px) !important;
+}
+#shop .card .card-body { transition: background-color .25s ease, color .25s ease; }
+#shop .card .card-desc,
+#shop .card .card-bottom {
+  transition: opacity .3s ease, transform .3s ease;
+}
+#shop .card:hover .card-desc,
+#shop .card:focus-within .card-desc,
+#shop .card:hover .card-bottom,
+#shop .card:focus-within .card-bottom {
+  animation: mcCardInfoEnter .34s cubic-bezier(.2,.75,.25,1) both;
+}
+@keyframes mcCardInfoEnter {
+  from { opacity: .55; transform: translateY(5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@media (hover: none) {
+  /* Touchscreens get the same soft arrival without requiring a mouse hover. */
+  #shop .card .card-desc,
+  #shop .card .card-bottom { animation: mcCardInfoEnter .42s ease both; }
+}
+@media (max-width: 620px) {
+  .home-explore-cta { margin-top: 27px; }
+  .home-explore-btn { min-height: 46px; padding-inline: 22px; font-size: 11px; }
+  #homePage:not(.shop-only) #shop .products { grid-template-columns: repeat(2,minmax(0,1fr)) !important; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .mc-showcase-info-enter,
+  #homePage:not(.shop-only) #home.hero,
+  #homePage.shop-only #shop,
+  #aboutPage:not([hidden]) .about-panel,
+  #endorsementsPage:not([hidden]) .endorsements-page,
+  .home-explore-cta,
+  #shop .card .card-desc,
+  #shop .card .card-bottom { animation-duration: .01ms !important; }
+}
+</style>
+
+<style id="mc-store-final-nav-about-and-hover-polish">
+/* Remove every line/underline treatment from the main navigation. */
+nav .nav-link,
+nav .nav-link:hover,
+nav .nav-link:focus,
+nav .nav-link:focus-visible,
+nav .nav-link:active,
+nav .nav-link.active {
+  text-decoration: none !important;
+  text-decoration-line: none !important;
+  border-bottom: 0 !important;
+  background-image: none !important;
+}
+nav .nav-link::before,
+nav .nav-link::after,
+nav .nav-link:hover::before,
+nav .nav-link:hover::after,
+nav .nav-link.active::before,
+nav .nav-link.active::after {
+  content: none !important;
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+  background: none !important;
+  box-shadow: none !important;
+}
+nav .nav-link .mc-nav-label {
+  display: inline-block;
+  position: relative;
+  will-change: transform, opacity;
+  text-decoration: none !important;
+}
+@keyframes mcNavLabelRise {
+  from { opacity: .45; transform: translateY(9px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes mcNavLabelSettle {
+  from { opacity: 1; transform: translateY(0); }
+  to   { opacity: .9; transform: translateY(4px); }
+}
+nav .nav-link .mc-nav-label.mc-nav-enter {
+  animation: mcNavLabelRise .30s cubic-bezier(.18,.78,.22,1) both !important;
+}
+nav .nav-link .mc-nav-label.mc-nav-exit {
+  animation: mcNavLabelSettle .20s ease-out both !important;
+}
+
+/* About Us: clean, centered and easy to read without the old panel box. */
+#aboutPage {
+  width: min(1080px, 92%) !important;
+  margin-inline: auto !important;
+  padding: clamp(25px, 4vw, 54px) 0 clamp(42px, 6vw, 76px) !important;
+  text-align: center !important;
+}
+#aboutPage .back-row { display: flex; justify-content: flex-start; }
+#aboutPage .about-panel {
+  width: 100% !important;
+  max-width: 950px !important;
+  margin: 0 auto !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  text-align: center !important;
+}
+#aboutPage .about-panel > .kicker { text-align: center !important; margin-inline: auto !important; }
+#aboutPage .about-panel h1 {
+  text-align: center !important;
+  width: 100% !important;
+  margin: 15px auto 14px !important;
+  letter-spacing: -.035em !important;
+}
+#aboutPage .about-panel .about-lead {
+  width: min(100%, 780px) !important;
+  max-width: 780px !important;
+  margin: 0 auto 27px !important;
+  text-align: center !important;
+  line-height: 1.9 !important;
+}
+#aboutPage .about-copy {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+  gap: 15px !important;
+  width: min(100%, 810px) !important;
+  margin: 0 auto 28px !important;
+  text-align: center !important;
+}
+#aboutPage .about-copy p {
+  margin: 0 auto !important;
+  max-width: 810px !important;
+  text-align: center !important;
+  font-size: clamp(13px, 1.25vw, 15px) !important;
+  line-height: 1.95 !important;
+  text-wrap: pretty;
+}
+#aboutPage .about-actions {
+  width: 100% !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  gap: 12px !important;
+  flex-wrap: wrap !important;
+}
+
+/* As each featured cape changes, its name and description rise from below. */
+@keyframes mcStoreShowcaseTextRise {
+  from { opacity: 0; transform: translateY(19px); filter: blur(1.2px); }
+  to   { opacity: 1; transform: translateY(0); filter: blur(0); }
+}
+.mc-showcase-info-enter {
+  animation: mcStoreShowcaseTextRise .43s cubic-bezier(.18,.78,.22,1) both !important;
+  animation-delay: var(--mc-showcase-delay, 0ms) !important;
+  will-change: transform, opacity;
+}
+
+/* Card copy comes up smoothly on enter and settles gently on pointer leave. */
+@keyframes mcStoreCardCopyRise {
+  from { opacity: .35; transform: translateY(13px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes mcStoreCardCopySettle {
+  from { opacity: 1; transform: translateY(-2px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+#shop .card .card-body h3,
+#shop .card .card-body .card-desc,
+#shop .card .card-body .card-price,
+#shop .card .card-body .card-bottom {
+  will-change: transform, opacity;
+}
+#shop .card.mc-card-text-enter .card-body h3 {
+  animation: mcStoreCardCopyRise .31s cubic-bezier(.18,.78,.22,1) both !important;
+}
+#shop .card.mc-card-text-enter .card-body .card-desc {
+  animation: mcStoreCardCopyRise .34s cubic-bezier(.18,.78,.22,1) 35ms both !important;
+}
+#shop .card.mc-card-text-enter .card-body .card-bottom {
+  animation: mcStoreCardCopyRise .36s cubic-bezier(.18,.78,.22,1) 70ms both !important;
+}
+#shop .card.mc-card-text-exit .card-body h3 {
+  animation: mcStoreCardCopySettle .20s ease-out both !important;
+}
+#shop .card.mc-card-text-exit .card-body .card-desc {
+  animation: mcStoreCardCopySettle .22s ease-out 20ms both !important;
+}
+#shop .card.mc-card-text-exit .card-body .card-bottom {
+  animation: mcStoreCardCopySettle .24s ease-out 35ms both !important;
+}
+#shop .shop-tools .filter,
+#shop .shop-tools .sort-select,
+#shop .results-line {
+  /* Keep the requested labels and their current clean filter/sort styling. */
+  text-decoration: none !important;
+}
+@media (max-width: 620px) {
+  #aboutPage .about-copy { gap: 13px !important; }
+  #aboutPage .about-panel h1 { font-size: clamp(31px, 8vw, 43px) !important; }
+  #aboutPage .about-actions .btn { width: 100%; max-width: 340px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  nav .nav-link .mc-nav-label,
+  .mc-showcase-info-enter,
+  #shop .card.mc-card-text-enter .card-body h3,
+  #shop .card.mc-card-text-enter .card-body .card-desc,
+  #shop .card.mc-card-text-enter .card-body .card-bottom,
+  #shop .card.mc-card-text-exit .card-body h3,
+  #shop .card.mc-card-text-exit .card-body .card-desc,
+  #shop .card.mc-card-text-exit .card-body .card-bottom {
+    animation-duration: .01ms !important;
+    animation-delay: 0ms !important;
+  }
+}
+</style>
+
+<script id="mc-store-final-nav-and-card-animation-fix">
+(() => {
+  const navLinks = Array.from(document.querySelectorAll('nav .nav-links .nav-link'));
+  const navTimers = new WeakMap();
+
+  function animateNavLabel(link, direction) {
+    if (!link) return;
+    let label = link.querySelector(':scope > .mc-nav-label');
+    if (!label) {
+      label = document.createElement('span');
+      label.className = 'mc-nav-label';
+      while (link.firstChild) label.appendChild(link.firstChild);
+      link.appendChild(label);
+    }
+    const previousTimer = navTimers.get(label);
+    if (previousTimer) window.clearTimeout(previousTimer);
+    label.classList.remove('mc-nav-enter', 'mc-nav-exit');
+    void label.offsetWidth;
+    label.classList.add(direction === 'exit' ? 'mc-nav-exit' : 'mc-nav-enter');
+    const timer = window.setTimeout(() => {
+      label.classList.remove('mc-nav-enter', 'mc-nav-exit');
+      navTimers.delete(label);
+    }, direction === 'exit' ? 260 : 380);
+    navTimers.set(label, timer);
+  }
+
+  navLinks.forEach((link) => {
+    // Preserve the link's existing text and navigation behavior, but animate the text itself.
+    animateNavLabel(link, 'enter');
+    link.addEventListener('pointerenter', () => animateNavLabel(link, 'enter'));
+    link.addEventListener('pointerleave', () => animateNavLabel(link, 'exit'));
+    link.addEventListener('pointerdown', () => animateNavLabel(link, 'enter'), { passive: true });
+    link.addEventListener('focus', () => animateNavLabel(link, 'enter'));
+    link.addEventListener('blur', () => animateNavLabel(link, 'exit'));
+    link.addEventListener('click', () => animateNavLabel(link, 'enter'));
+  });
+
+  function playCardCopyAnimation(card, direction) {
+    if (!card) return;
+    if (card._mcCopyAnimationTimer) window.clearTimeout(card._mcCopyAnimationTimer);
+    card.classList.remove('mc-card-text-enter', 'mc-card-text-exit');
+    void card.offsetWidth;
+    card.classList.add(direction === 'exit' ? 'mc-card-text-exit' : 'mc-card-text-enter');
+    card._mcCopyAnimationTimer = window.setTimeout(() => {
+      card.classList.remove('mc-card-text-enter', 'mc-card-text-exit');
+      card._mcCopyAnimationTimer = null;
+    }, direction === 'exit' ? 320 : 520);
+  }
+
+  const productsRoot = document.getElementById('products');
+  if (!productsRoot) return;
+
+  productsRoot.addEventListener('pointerover', (event) => {
+    const card = event.target.closest('#products .card');
+    if (!card) return;
+    if (event.relatedTarget && card.contains(event.relatedTarget)) return;
+    playCardCopyAnimation(card, 'enter');
+  });
+
+  productsRoot.addEventListener('pointerout', (event) => {
+    const card = event.target.closest('#products .card');
+    if (!card) return;
+    if (event.relatedTarget && card.contains(event.relatedTarget)) return;
+    playCardCopyAnimation(card, 'exit');
+  });
+
+  productsRoot.addEventListener('focusin', (event) => {
+    const card = event.target.closest('#products .card');
+    if (card) playCardCopyAnimation(card, 'enter');
+  });
+
+  productsRoot.addEventListener('focusout', (event) => {
+    const card = event.target.closest('#products .card');
+    if (!card || (event.relatedTarget && card.contains(event.relatedTarget))) return;
+    playCardCopyAnimation(card, 'exit');
+  });
+
+  // Touch users receive the same animation on tap, before the product opens.
+  productsRoot.addEventListener('pointerdown', (event) => {
+    const card = event.target.closest('#products .card');
+    if (card) playCardCopyAnimation(card, 'enter');
+  }, { passive: true });
+
+  // Re-trigger the copy entrance as cards scroll into view, on both mobile and desktop.
+  if ('IntersectionObserver' in window) {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        const card = entry.target;
+        if (!entry.isIntersecting || card.dataset.mcCopyObservedOnce === '1') return;
+        card.dataset.mcCopyObservedOnce = '1';
+        playCardCopyAnimation(card, 'enter');
+        observer.unobserve(card);
+      });
+    }, { threshold: 0.16 });
+
+    const observeCards = (root) => {
+      root.querySelectorAll('#products .card').forEach((card) => {
+        if (card.dataset.mcCopyObserverAttached === '1') return;
+        card.dataset.mcCopyObserverAttached = '1';
+        observer.observe(card);
+      });
+    };
+    observeCards(document);
+    const mutationWatcher = new MutationObserver(() => observeCards(productsRoot));
+    mutationWatcher.observe(productsRoot, { childList: true, subtree: true });
+  }
+})();
+</script>
+
+
+
+<style id="mc-store-filter-search-final-polish">
+/* Keep the navigation's familiar blue text on interaction; no underline. */
+nav .nav-link,
+nav .nav-link .mc-nav-label {
+  text-decoration: none !important;
+  text-decoration-line: none !important;
+}
+nav .nav-link:hover,
+nav .nav-link:focus-visible,
+nav .nav-link .mc-nav-label.mc-nav-enter,
+nav .nav-link .mc-nav-label.mc-nav-exit {
+  color: #087da6 !important;
+  -webkit-text-fill-color: #087da6 !important;
+}
+nav .nav-link.active .mc-nav-label {
+  color: #063143 !important;
+  -webkit-text-fill-color: #063143 !important;
+}
+
+/* Filter/search bar: match the reference screenshot's warm, clean pill style. */
+#shop .shop-tools {
+  display: grid !important;
+  grid-template-columns: minmax(350px, 1.35fr) minmax(175px, .7fr) minmax(255px, 1fr) !important;
+  align-items: center !important;
+  gap: 12px 14px !important;
+  padding: 17px 20px !important;
+  margin: 0 0 18px !important;
+  border: 1px solid #e2d8c7 !important;
+  border-radius: 16px !important;
+  background: #fffdf8 !important;
+  box-shadow: 0 2px 0 rgba(61,49,31,.12) !important;
+}
+#shop .shop-tools .filters {
+  grid-column: 1 !important;
+  grid-row: 1 !important;
+  display: flex !important;
+  flex-wrap: wrap !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 8px !important;
+  min-width: 0 !important;
+  width: 100% !important;
+}
+#shop .shop-tools .filter {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex: 0 0 auto !important;
+  min-height: 44px !important;
+  padding: 12px 18px !important;
+  border: 1px solid #d4c7b0 !important;
+  border-radius: 999px !important;
+  background: #f7f3e9 !important;
+  color: #292722 !important;
+  font: 600 13px/1.2 Inter, Arial, sans-serif !important;
+  letter-spacing: 0 !important;
+  white-space: nowrap !important;
+  text-decoration: none !important;
+  box-shadow: none !important;
+  transform: none !important;
+  transition: color .22s ease, background .22s ease, border-color .22s ease, box-shadow .22s ease !important;
+}
+#shop .shop-tools .filter.active {
+  background: #34312d !important;
+  color: #fffdfa !important;
+  border-color: #34312d !important;
+  box-shadow: none !important;
+}
+#shop .shop-tools .filter:not(.active):hover,
+#shop .shop-tools .filter:not(.active):focus-visible {
+  background: #e8f8fc !important;
+  border-color: #8fcfe0 !important;
+  color: #087da6 !important;
+  box-shadow: 0 2px 7px rgba(8,125,166,.08) !important;
+}
+#shop .shop-tools .sort-select {
+  grid-column: 2 !important;
+  grid-row: 1 !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  min-height: 44px !important;
+  padding: 11px 32px 11px 14px !important;
+  border: 1px solid #d4c7b0 !important;
+  border-radius: 999px !important;
+  background-color: #f7f3e9 !important;
+  color: #292722 !important;
+  font: 600 13px/1.25 Inter, Arial, sans-serif !important;
+  box-shadow: none !important;
+}
+#shop .shop-tools .sort-select:focus-visible {
+  outline: 2px solid #8fcfe0 !important;
+  outline-offset: 2px !important;
+}
+#shop .shop-tools .sort-select option {
+  color: #292722 !important;
+  background: #fffdf8 !important;
+}
+#shop .shop-tools .search-wrap {
+  grid-column: 3 !important;
+  grid-row: 1 !important;
+  position: relative !important;
+  display: block !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  margin: 0 !important;
+}
+#shop .shop-tools .search-wrap input {
+  display: block !important;
+  width: 100% !important;
+  min-height: 49px !important;
+  padding: 13px 16px 13px 44px !important;
+  border: 1px solid #d1c2a8 !important;
+  border-radius: 10px !important;
+  background: #f7f3e9 !important;
+  color: #292722 !important;
+  font: 400 13px/1.35 Inter, Arial, sans-serif !important;
+  box-shadow: none !important;
+  outline: none !important;
+  transition: border-color .2s ease, box-shadow .2s ease, background .2s ease !important;
+}
+#shop .shop-tools .search-wrap input::placeholder {
+  color: #8a8378 !important;
+  opacity: 1 !important;
+}
+#shop .shop-tools .search-wrap input:focus {
+  border-color: #8fcfe0 !important;
+  background: #fffefa !important;
+  box-shadow: 0 0 0 3px rgba(8,125,166,.09) !important;
+}
+#shop .shop-tools .search-icon {
+  left: 14px !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  color: #918a7f !important;
+  font-size: 19px !important;
+  line-height: 1 !important;
+  pointer-events: none !important;
+}
+#shop .results-line {
+  color: #087da6 !important;
+  text-decoration: none !important;
+}
+
+@media (max-width: 1050px) {
+  #shop .shop-tools {
+    grid-template-columns: minmax(0, 1fr) minmax(190px, .65fr) !important;
+  }
+  #shop .shop-tools .filters { grid-column: 1 / -1 !important; grid-row: 2 !important; }
+  #shop .shop-tools .sort-select { grid-column: 1 !important; grid-row: 1 !important; }
+  #shop .shop-tools .search-wrap { grid-column: 2 !important; grid-row: 1 !important; }
+}
+@media (max-width: 620px) {
+  #shop .shop-tools {
+    grid-template-columns: minmax(0, 1fr) !important;
+    padding: 14px !important;
+    gap: 10px !important;
+    border-radius: 14px !important;
+  }
+  #shop .shop-tools .filters {
+    grid-column: 1 !important;
+    grid-row: 2 !important;
+    gap: 7px !important;
+  }
+  #shop .shop-tools .filter {
+    min-height: 40px !important;
+    padding: 10px 13px !important;
+    font-size: 12px !important;
+  }
+  #shop .shop-tools .sort-select {
+    grid-column: 1 !important;
+    grid-row: 3 !important;
+    min-height: 43px !important;
+    width: 100% !important;
+  }
+  #shop .shop-tools .search-wrap {
+    grid-column: 1 !important;
+    grid-row: 1 !important;
+  }
+  #shop .shop-tools .search-wrap input { min-height: 45px !important; }
+}
+</style>
+
 </body>
 </html>
