@@ -26020,5 +26020,71 @@ nav .nav-links .nav-link[href="#home"].active {
 }
 </style>
 
+<script>
+(() => {
+  const capeFiles = {
+    aurora: "aurora-cape.png",
+    builder: "builder-cape.png",
+    copper: "copper-cape.png",
+    crafter: "crafter-cape.png",
+    experience: "experience-cape.png",
+    home: "home-cape.png",
+    menace: "menace-cape.png",
+    moonlight: "moonlight-cape.png",
+    twitch: "twitch-cape.png"
+  };
+
+  function fixCapeImages() {
+    document.querySelectorAll("img").forEach(img => {
+      if (img.dataset.capeFix === "done") return;
+
+      const source = img.getAttribute("src") || "";
+      const name = source.split("/").pop().split("?")[0]
+        .toLowerCase();
+
+      const entry = Object.entries(capeFiles).find(
+        ([id, file]) =>
+          name === file.toLowerCase() ||
+          name.includes(id + "-cape")
+      );
+
+      if (!entry) return;
+
+      img.dataset.capeFix = "done";
+      const file = entry[1];
+
+      const paths = [
+        "media/" + file,
+        file,
+        "./media/" + file,
+        "./" + file
+      ];
+
+      let attempt = 0;
+
+      function tryNext() {
+        if (attempt >= paths.length) {
+          console.error("Cape image not found:", file);
+          return;
+        }
+
+        img.src = paths[attempt++];
+      }
+
+      img.addEventListener("error", tryNext);
+      tryNext();
+    });
+  }
+
+  fixCapeImages();
+
+  document.addEventListener("click", () => {
+    setTimeout(fixCapeImages, 100);
+  });
+
+  document.addEventListener("DOMContentLoaded", fixCapeImages);
+})();
+</script>
+
 </body>
 </html>
