@@ -2905,7 +2905,9 @@ body.mc-reveal-ready .mc-footer .reveal-on-scroll.is-visible {
           <span class="featured-label">✦ FEATURED CAPE</span>
           <span class="featured-number">MC STORE</span>
         </div>
-        <div class="featured-image">
+        <!-- Keep the nine source images available for reliable loading, but show one large cape at a time. -->
+        <div class="mc-showcase-gallery" id="mcShowcaseGallery" aria-label="Cape artwork preload area"></div>
+        <div class="featured-image" aria-label="Featured cape artwork">
           <img id="featuredImage" src="media/aurora-cape.png" alt="Aurora Cape" data-image-file="aurora-cape.png" data-original-src="media/aurora-cape.png" data-fallback-image="media/aurora-cape.png" onerror="handleCapeCardImageError(this)">
         </div>
       </div>
@@ -3284,6 +3286,32 @@ const productCapes = productOrder
   .filter(Boolean);
 const featuredCapes = productCapes.slice(); // Show all nine cape artworks in the homepage spotlight.
 
+// Fill the large homepage showcase with all nine cape images. The filenames are
+// kept exactly as supplied; path recovery checks the repository tree and common folders.
+function renderMcShowcaseGallery() {
+  const gallery = document.getElementById("mcShowcaseGallery");
+  if (!gallery) return;
+  gallery.innerHTML = featuredCapes.map((cape, index) => {
+    const imagePath = cape.showcaseImage || cape.image;
+    const filename = String(imagePath || "").split("/").pop();
+    const shortName = String(cape.name).replace(/ Cape Code$/, "").replace(/ Cape$/, "");
+    return `
+      <button class="mc-showcase-cape-tile${index === 0 ? " active" : ""}"
+        type="button" data-feature-index="${index}" aria-pressed="${index === 0 ? "true" : "false"}"
+        aria-label="Show ${escapeHTML(cape.name)} details" title="${escapeHTML(cape.name)}"
+        onclick="showFeatured(${index});restartFeaturedTimer();return false">
+        <span class="mc-showcase-cape-art">
+          <img src="${escapeHTML(imagePath)}" data-image-file="${escapeHTML(filename)}"
+            data-original-src="${escapeHTML(imagePath)}" data-fallback-image="${escapeHTML(cape.image || imagePath)}"
+            alt="${escapeHTML(cape.name)}" loading="eager" decoding="async"
+            onerror="mcStoreShowcaseImageError(this)">
+          <span class="mc-showcase-missing-label" aria-hidden="true">Image unavailable</span>
+        </span>
+        <span class="mc-showcase-cape-name">${escapeHTML(shortName)}</span>
+      </button>`;
+  }).join("");
+}
+
 document.getElementById("year").textContent = new Date().getFullYear();
 
 let currentFilter = "all";
@@ -3483,6 +3511,61 @@ async function handleCapeCardImageError(img) {
   img.dataset.mcHandlingImageError = "0";
 }
 
+// Reliable fallback for images shown in the new top showcase. If images are in a
+// different folder, the GitHub repository tree can identify the exact committed path.
+async function mcStoreShowcaseImageError(img) {
+  if (!img || img.dataset.mcStoreShowcaseBusy === "1") return;
+  img.dataset.mcStoreShowcaseBusy = "1";
+  let failed = [];
+  try { failed = JSON.parse(img.dataset.mcStoreShowcaseFailed || "[]"); } catch (_) {}
+  const current = String(img.currentSrc || img.src || "").split("?")[0];
+  if (current && !failed.includes(current)) failed.push(current);
+  img.dataset.mcStoreShowcaseFailed = JSON.stringify(failed);
+
+  const filename = mcStoreAssetBasename(img.dataset.imageFile || img.dataset.originalSrc || img.src);
+  let found = null;
+  try {
+    const resolved = await findMcStoreNestedAsset([filename], failed);
+    if (resolved && resolved.url) found = resolved.url;
+  } catch (_) {}
+
+  if (!found && filename) {
+    const dot = filename.lastIndexOf(".");
+    const stem = dot > 0 ? filename.slice(0, dot) : filename;
+    const originalExt = dot > 0 ? filename.slice(dot) : ".png";
+    const fileNames = [...new Set([filename, stem + ".png", stem + ".PNG", stem + ".webp", stem + ".WEBP", stem + ".jpg", stem + ".jpeg"])];
+    const folders = ["media/", "", "Media/", "images/", "Images/", "assets/", "Assets/", "capes/", "Capes/", "capes images/", "Capes Images/", "public/images/", "static/images/", "capes 3D/"];
+    const candidates = [];
+    for (const folder of folders) {
+      for (const name of fileNames) {
+        try {
+          const folderPath = folder.split("/").filter(Boolean).map(encodeURIComponent).join("/");
+          const relative = (folderPath ? folderPath + "/" : "") + name.split("/").map(encodeURIComponent).join("/");
+          const url = new URL(relative, mcStoreNestedAssetBaseUrl()).href;
+          if (!failed.includes(url) && !candidates.includes(url)) candidates.push(url);
+        } catch (_) {}
+      }
+    }
+    const probes = await Promise.all(candidates.map(url => new Promise(resolve => {
+      const test = new Image();
+      test.onload = () => resolve(url);
+      test.onerror = () => resolve(null);
+      test.src = url;
+    })));
+    found = probes.find(Boolean) || null;
+  }
+
+  img.dataset.mcStoreShowcaseBusy = "0";
+  if (found) {
+    img.src = found;
+    return;
+  }
+  // Avoid showing a browser's broken-image icon; the tile displays a clear fallback label.
+  img.hidden = true;
+  const art = img.closest(".mc-showcase-cape-art");
+  if (art) art.classList.add("is-missing");
+}
+
 function capeTitleMarkup(cape, title = cape.name) {
   // Keep "Cape" (and any trailing wording such as "Code") black; colour only the cape name.
   const capeSuffix = title.indexOf(" Cape");
@@ -3616,18 +3699,17 @@ function showFeatured(index) {
   featuredImage.dataset.fallbackImage = cape.image || "";
   featuredImage.onerror = function () { handleCapeCardImageError(this); };
 
-  // Switch the artwork without spinning, tilting, or scaling it.
-  const featuredStage = document.querySelector("#featured .featured-image");
-  if (featuredStage && featuredStage._mcCapeSpinAnimation) {
-    try { featuredStage._mcCapeSpinAnimation.cancel(); } catch (_) {}
-    featuredStage._mcCapeSpinAnimation = null;
-  }
-  featuredImage.classList.remove("cape-spin", "is-spinning", "spin-in");
+  // Every artwork swap restarts the fast 360-degree spin from the same upright position.
+  featuredImage.classList.remove("cape-spin", "is-spinning", "spin-in", "mc-store-spin-now");
   featuredImage.dataset.capeSpinTarget = nextShowcaseURL;
   const currentShowcaseURL = new URL(featuredImage.currentSrc || featuredImage.src, document.baseURI).href;
   if (currentShowcaseURL !== nextShowcaseURL || !featuredImage.complete || featuredImage.naturalWidth === 0) {
     featuredImage.src = nextShowcaseImage;
   }
+  // Force a reflow so the 0.1-second spin plays for every cape change, even on repeat images.
+  void featuredImage.offsetWidth;
+  featuredImage.classList.add("mc-store-spin-now");
+  window.setTimeout(() => featuredImage.classList.remove("mc-store-spin-now"), 125);
 
   const featuredName = document.getElementById("featuredName");
   featuredName.innerHTML = cape.id === "builder"
@@ -3672,7 +3754,13 @@ function showFeatured(index) {
       data-feature-index="${i}"></button>
   `).join("");
 
-  document.querySelectorAll("[data-feature-index]").forEach(button => {
+  document.querySelectorAll("#mcShowcaseGallery .mc-showcase-cape-tile").forEach((tile, i) => {
+    const active = i === featuredIndex;
+    tile.classList.toggle("active", active);
+    tile.setAttribute("aria-pressed", String(active));
+  });
+
+  document.querySelectorAll("#featuredDots [data-feature-index]").forEach(button => {
     button.addEventListener("click", () => {
       showFeatured(Number(button.dataset.featureIndex));
       restartFeaturedTimer();
@@ -3682,10 +3770,10 @@ function showFeatured(index) {
 
 function restartFeaturedTimer() {
   clearInterval(featuredTimer);
-  // Change the featured cape every two seconds on both desktop and mobile.
+  // Automatically feature the next cape every three seconds on desktop and mobile.
   featuredTimer = setInterval(() => {
     showFeatured((featuredIndex + 1) % featuredCapes.length);
-  }, 2000);
+  }, 3000);
 }
 
 function renderRecommendations(currentCape) {
@@ -4027,6 +4115,7 @@ async function refreshDiscordInfo() {
 }
 
 /* Initial rendering */
+renderMcShowcaseGallery();
 renderProducts();
 showFeatured(0);
 restartFeaturedTimer();
@@ -24019,7 +24108,7 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
               data-image-file="${safeText((viewCape.detailImage || viewCape.showcaseImage || viewCape.image || "media/experience-cape.png").split("/").pop())}"
               data-original-src="${detailsImage(viewCape)}" data-fallback-image="${safeText(viewCape.image || viewCape.showcaseImage || "")}"
               onerror="handleCapeCardImageError(this)">
-            <div class="cape-rotate-hint" aria-hidden="true">↔ DRAG TO ROTATE</div>
+            <div class="cape-rotate-hint" aria-hidden="true">DRAG TO ROTATE</div>
             <canvas id="capeSkinViewer" aria-label="Minecraft cape preview"></canvas>
           </div>
         </div>
@@ -24095,7 +24184,7 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
       mcStoreViewer.playerWrapper.rotation.z = 0;
       mcStoreViewer.controls.rotateSpeed = 0.9;
       mcStoreViewer.controls.enableDamping = true;
-      // Keep the cape still until the visitor drags it, and make the model a little larger.
+      // Keep the 3D cape still by default. Visitors can rotate it manually by dragging.
       mcStoreViewer.autoRotate = false;
       mcStoreViewer.controls.autoRotate = false;
       mcStoreViewer.zoom = 1.55;
@@ -26084,6 +26173,504 @@ nav .nav-links .nav-link[href="#home"].active {
   #details .cape-preview-fallback { width: 92% !important; max-height: 93% !important; }
 }
 </style>
+
+
+
+<style id="mc-store-top-showcase-nine-capes">
+/* Large 3 x 3 gallery placed in the blank right-hand area of the Home showcase. */
+#featured { justify-content: flex-start !important; gap: 12px !important; min-height: 500px !important; }
+#featured .mc-showcase-gallery {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  align-content: center !important;
+  gap: clamp(8px, 1.15vw, 14px) !important;
+  width: 100% !important;
+  margin: 18px 0 6px !important;
+  padding: 4px !important;
+}
+#featured .mc-showcase-cape-tile {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 6px !important;
+  min-width: 0 !important;
+  min-height: 132px !important;
+  padding: 9px 8px 8px !important;
+  overflow: hidden !important;
+  border: 1px solid #ded4c4 !important;
+  border-radius: 15px !important;
+  background: rgba(255, 252, 246, .83) !important;
+  box-shadow: 0 5px 15px rgba(64, 48, 27, .06) !important;
+  color: #34302a !important;
+  cursor: pointer !important;
+  text-align: center !important;
+  transition: border-color .2s ease, background .2s ease, box-shadow .2s ease !important;
+}
+#featured .mc-showcase-cape-tile:hover,
+#featured .mc-showcase-cape-tile.active {
+  border-color: #20b7d7 !important;
+  background: #f1fcff !important;
+  box-shadow: 0 0 0 2px rgba(32, 183, 215, .12), 0 8px 20px rgba(33, 152, 180, .11) !important;
+}
+#featured .mc-showcase-cape-art {
+  position: relative !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 100% !important;
+  height: 92px !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+  background: transparent !important;
+}
+#featured .mc-showcase-cape-art img {
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  max-width: 100% !important;
+  max-height: 92px !important;
+  object-fit: contain !important;
+  object-position: center !important;
+  transform: none !important;
+  animation: none !important;
+  transition: none !important;
+  filter: drop-shadow(0 5px 6px rgba(0,0,0,.16)) !important;
+}
+#featured .mc-showcase-cape-art.is-missing::before {
+  content: "✦";
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 54px;
+  height: 65px;
+  border: 1px dashed #c5b9a7;
+  border-radius: 7px;
+  color: #b5a58e;
+  font-size: 24px;
+}
+#featured .mc-showcase-missing-label { display: none; }
+#featured .mc-showcase-cape-art.is-missing .mc-showcase-missing-label {
+  display: block !important;
+  position: absolute !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  color: #8a7560 !important;
+  font-size: 8px !important;
+}
+#featured .mc-showcase-cape-name {
+  display: block !important;
+  width: 100% !important;
+  color: #38332d !important;
+  font-size: clamp(9px, .9vw, 11px) !important;
+  line-height: 1.25 !important;
+  font-weight: 850 !important;
+  overflow-wrap: anywhere !important;
+}
+#featured .featured-image[hidden] { display: none !important; }
+@media (max-width: 900px) {
+  #featured { min-height: 450px !important; }
+  #featured .mc-showcase-gallery { gap: 10px !important; margin-top: 8px !important; }
+  #featured .mc-showcase-cape-tile { min-height: 126px !important; }
+  #featured .mc-showcase-cape-art { height: 87px !important; }
+}
+@media (max-width: 620px) {
+  #featured { min-height: 390px !important; }
+  #featured .mc-showcase-gallery { gap: 7px !important; padding: 1px !important; }
+  #featured .mc-showcase-cape-tile { min-height: 101px !important; gap: 4px !important; padding: 6px 4px !important; border-radius: 10px !important; }
+  #featured .mc-showcase-cape-art { height: 65px !important; }
+  #featured .mc-showcase-cape-art img { max-height: 65px !important; }
+  #featured .mc-showcase-cape-name { font-size: 9px !important; }
+}
+@media (prefers-reduced-motion: reduce) {
+  #featured .mc-showcase-cape-tile { transition: none !important; }
+}
+</style>
+
+
+
+<style id="mc-store-large-right-cape-showcase-final">
+/* Match the reference layout: cape artwork is large, floating and on the upper-right side. */
+#featured.showcase-art {
+  min-width: 0 !important;
+  min-height: clamp(430px, 42vw, 560px) !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0 !important;
+  overflow: visible !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  animation: none !important;
+}
+#featured .featured-top { display: none !important; }
+/* The grid is only kept in the DOM as an image preloader; it is not displayed. */
+#featured .mc-showcase-gallery { display: none !important; }
+#featured .featured-image,
+#featured .featured-image[hidden] {
+  display: flex !important;
+  visibility: visible !important;
+  position: relative !important;
+  inset: auto !important;
+  width: 100% !important;
+  height: clamp(430px, 42vw, 560px) !important;
+  min-height: 0 !important;
+  max-height: 560px !important;
+  flex: 0 1 auto !important;
+  align-items: center !important;
+  justify-content: center !important;
+  margin: -18px 0 0 !important;
+  padding: 0 !important;
+  overflow: visible !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  perspective: 1100px !important;
+}
+#featured .featured-image::before,
+#featured .featured-image::after { content: none !important; display: none !important; }
+#featured .featured-image img {
+  display: block !important;
+  visibility: visible !important;
+  position: relative !important;
+  top: -10px !important;
+  left: auto !important;
+  right: auto !important;
+  width: min(100%, 560px) !important;
+  height: 100% !important;
+  max-width: 560px !important;
+  max-height: 540px !important;
+  margin: 0 auto !important;
+  padding: 0 !important;
+  object-fit: contain !important;
+  object-position: center center !important;
+  transform-origin: 50% 50% !important;
+  transform-style: preserve-3d !important;
+  backface-visibility: visible !important;
+  filter: drop-shadow(8px 16px 18px rgba(0,0,0,.2)) !important;
+  animation: mcStoreCapeIdleFloat 3.3s ease-in-out infinite !important;
+  will-change: transform !important;
+}
+@keyframes mcStoreCapeIdleFloat {
+  0%, 100% { transform: perspective(1100px) translateY(0) rotateY(0deg) rotateZ(0deg) scale(1); }
+  50% { transform: perspective(1100px) translateY(-8px) rotateY(0deg) rotateZ(0deg) scale(1.01); }
+}
+@keyframes mcStoreCapeFast360 {
+  0% { opacity: .82; transform: perspective(1100px) translateY(-5px) rotateY(0deg) rotateZ(0deg) scale(.96); }
+  100% { opacity: 1; transform: perspective(1100px) translateY(-5px) rotateY(360deg) rotateZ(0deg) scale(1); }
+}
+#featured .featured-image img.mc-store-spin-now {
+  animation: mcStoreCapeFast360 .1s linear 1 both !important;
+}
+/* Avoid clipping the large artwork on tablet/phone while keeping the cape prominent. */
+@media (max-width: 900px) {
+  #featured.showcase-art { min-height: 340px !important; width: min(640px, 100%) !important; margin: 0 auto !important; }
+  #featured .featured-image,
+  #featured .featured-image[hidden] { height: clamp(300px, 65vw, 430px) !important; max-height: 430px !important; margin-top: -8px !important; }
+  #featured .featured-image img { width: min(100%, 440px) !important; max-height: 420px !important; top: 0 !important; }
+}
+@media (max-width: 620px) {
+  #featured.showcase-art { min-height: 280px !important; }
+  #featured .featured-image,
+  #featured .featured-image[hidden] { height: clamp(250px, 74vw, 330px) !important; max-height: 330px !important; }
+  #featured .featured-image img { width: min(100%, 340px) !important; max-height: 320px !important; }
+}
+</style>
+
+
+
+<style id="mc-store-full-site-motion-v2">
+  :root {
+    --mc-motion-ease: cubic-bezier(.2,.75,.25,1);
+  }
+
+  /* A soft moving light layer gives the whole store a little depth without blocking clicks. */
+  body::after {
+    content: "";
+    position: fixed;
+    inset: -18%;
+    z-index: -1;
+    pointer-events: none;
+    opacity: .30;
+    background:
+      radial-gradient(ellipse at 18% 24%, rgba(45,190,255,.12), transparent 30%),
+      radial-gradient(ellipse at 83% 37%, rgba(255,127,62,.08), transparent 28%),
+      radial-gradient(ellipse at 48% 82%, rgba(62,125,255,.11), transparent 34%);
+    filter: blur(24px);
+    animation: mcAmbientDrift 19s ease-in-out infinite alternate;
+  }
+  @keyframes mcAmbientDrift {
+    from { transform: translate3d(-1.2%, -1%, 0) scale(1); }
+    to { transform: translate3d(1.2%, 1%, 0) scale(1.055); }
+  }
+
+  /* Entrance animations are applied as sections/cards enter the viewport, on desktop and mobile. */
+  .mc-motion-enter {
+    opacity: 0;
+    translate: 0 17px;
+    scale: .987;
+    filter: blur(1.5px);
+    transition:
+      opacity .55s var(--mc-motion-ease),
+      translate .60s var(--mc-motion-ease),
+      scale .60s var(--mc-motion-ease),
+      filter .55s var(--mc-motion-ease);
+    transition-delay: var(--mc-motion-delay, 0ms);
+    will-change: opacity, translate;
+  }
+  .mc-motion-enter.mc-motion-ready {
+    opacity: 1;
+    translate: 0 0;
+    scale: 1;
+    filter: none;
+  }
+
+  /* Give the navigation and store actions a little responsive feedback. */
+  nav {
+    animation: mcNavDrop .62s var(--mc-motion-ease) both;
+  }
+  @keyframes mcNavDrop {
+    from { opacity: 0; translate: 0 -10px; }
+    to { opacity: 1; translate: 0 0; }
+  }
+  nav .nav-links .nav-link,
+  nav .brand,
+  .btn, .filter, .view-arrow, .back-btn,
+  .storefront-buy, .dot, .discord-join {
+    transition-timing-function: var(--mc-motion-ease) !important;
+  }
+  nav .nav-links .nav-link:hover,
+  nav .nav-links .nav-link:focus-visible {
+    transform: translateY(-2px) !important;
+  }
+  .btn:active, .filter:active, .view-arrow:active,
+  .storefront-buy:active, .discord-join:active {
+    transform: scale(.975) !important;
+  }
+
+  /* Animated edge-lighting rather than extra zoom on the cape images. */
+  #shop .card, #details .recommendations .card,
+  .trust-item, .discord-banner, .detail-card {
+    transition:
+      border-color .28s ease,
+      box-shadow .32s ease,
+      background-color .28s ease;
+  }
+  #shop .card:hover, #details .recommendations .card:hover {
+    border-color: rgba(51,198,255,.82) !important;
+    box-shadow: 0 18px 42px rgba(0,0,0,.22), 0 0 25px rgba(36,169,255,.14) !important;
+  }
+  .trust-item:hover, .discord-banner:hover {
+    border-color: rgba(88,205,255,.62) !important;
+    box-shadow: 0 15px 36px rgba(20,114,216,.13) !important;
+  }
+  .card-tag, .stock { transition: filter .25s ease, box-shadow .25s ease; }
+  .card:hover .card-tag, .card:hover .stock { filter: brightness(1.08); }
+
+  /* Smoothly introduce the actual 3D cape canvas after the artwork fallback. */
+  #details .storefront-preview {
+    animation: mcPreviewStageIn .68s var(--mc-motion-ease) both;
+    transform-origin: center;
+  }
+  #details .storefront-preview.preview-loading .cape-preview-fallback {
+    animation: mcPreviewFallbackIn .35s ease-out both;
+  }
+  #details .storefront-preview:not(.preview-loading):not(.fallback-cape-only) #capeSkinViewer {
+    animation: mcCanvasIn .45s var(--mc-motion-ease) both;
+  }
+  #details .cape-rotate-hint {
+    animation: mcHintPulse 3.2s ease-in-out infinite;
+  }
+  @keyframes mcPreviewStageIn {
+    from { opacity: 0; transform: translateY(14px) scale(.985); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+  @keyframes mcPreviewFallbackIn {
+    from { opacity: 0; transform: translate(-50%, -47%) scale(.96); }
+    to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  }
+  @keyframes mcCanvasIn {
+    from { opacity: .15; }
+    to { opacity: 1; }
+  }
+  @keyframes mcHintPulse {
+    0%, 100% { opacity: .76; }
+    50% { opacity: 1; }
+  }
+
+  body.mc-open-cape-now #details .detail-card {
+    animation: mcDetailCardIn .48s var(--mc-motion-ease) both;
+  }
+  @keyframes mcDetailCardIn {
+    from { opacity: 0; translate: 0 15px; scale: .99; }
+    to { opacity: 1; translate: 0 0; scale: 1; }
+  }
+
+  /* Keep touch interaction immediate and prevent accidental browser double-tap zoom on controls. */
+  #featured .featured-image, #featuredImage { cursor: pointer; touch-action: manipulation; }
+  #featuredImage:focus-visible {
+    outline: 3px solid #32bde8;
+    outline-offset: 5px;
+    border-radius: 12px;
+  }
+  #details #capeSkinViewer { touch-action: pan-y; }
+
+  @media (hover: hover) and (pointer: fine) {
+    #featured .featured-image img { transition: filter .24s ease !important; }
+    #featured .featured-image:hover img {
+      filter: drop-shadow(9px 19px 24px rgba(0,0,0,.23)) brightness(1.035) !important;
+    }
+    .brand img { transition: filter .3s ease, transform .3s ease; }
+    .brand:hover img { filter: drop-shadow(0 0 17px rgba(37,181,255,.31)); transform: translateY(-1px); }
+  }
+
+  @media (max-width: 620px) {
+    body::after { opacity: .20; filter: blur(16px); }
+    .mc-motion-enter { translate: 0 11px; filter: none; }
+    nav { animation-duration: .45s; }
+    #details .cape-rotate-hint { font-size: 9px; letter-spacing: .7px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    body::after, nav, #details .storefront-preview,
+    #details .storefront-preview.preview-loading .cape-preview-fallback,
+    #details .storefront-preview:not(.preview-loading):not(.fallback-cape-only) #capeSkinViewer,
+    #details .cape-rotate-hint,
+    body.mc-open-cape-now #details .detail-card {
+      animation: none !important;
+    }
+    .mc-motion-enter, .mc-motion-enter.mc-motion-ready {
+      opacity: 1 !important; translate: none !important; scale: 1 !important;
+      filter: none !important; transition: none !important;
+    }
+  }
+</style>
+
+<script id="mc-store-full-site-motion-and-direct-3d-v2">
+(() => {
+  "use strict";
+  const doc = document;
+  const reduceMotion = !!(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+  const targets = [
+    ".section-head", ".shop-tools", ".results-line", "#homePage .card",
+    ".trust-item", ".discord-banner", "#aboutPage > *", "#endorsementsPage > *",
+    "#footerInfoPage > *", "#details .detail-card", "#details .recommendations",
+    "#not-found", "footer .footer-inner", "#homePage .home-explore-cta"
+  ].join(",");
+  const registered = new WeakSet();
+  let motionObserver = null;
+
+  function setupMotion(root) {
+    if (!root || !root.querySelectorAll) return;
+    const candidates = [];
+    if (root.matches && root.matches(targets)) candidates.push(root);
+    candidates.push(...root.querySelectorAll(targets));
+    let order = 0;
+    candidates.forEach(el => {
+      if (registered.has(el) || el.closest("[hidden]")) return;
+      registered.add(el);
+      el.classList.add("mc-motion-enter");
+      el.style.setProperty("--mc-motion-delay", `${Math.min(order % 5, 4) * 42}ms`);
+      order++;
+      if (reduceMotion || !motionObserver) {
+        el.classList.add("mc-motion-ready");
+      } else {
+        motionObserver.observe(el);
+      }
+    });
+  }
+
+  if ("IntersectionObserver" in window && !reduceMotion) {
+    motionObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add("mc-motion-ready");
+        motionObserver.unobserve(entry.target);
+      });
+    }, { root: null, rootMargin: "0px 0px -4% 0px", threshold: 0.04 });
+  }
+
+  // Every route that opens a cape goes straight to the interactive 3D preview.
+  // Keep the existing catalogue / pricing / ordering logic and only add the entrance motion.
+  if (typeof window.openCape === "function" && !window.openCape.__mcMotionWrapped) {
+    const originalOpenCape = window.openCape;
+    const wrappedOpenCape = function(id) {
+      doc.body.classList.remove("mc-open-cape-now");
+      void doc.body.offsetWidth;
+      const result = originalOpenCape.apply(this, arguments);
+      doc.body.classList.add("mc-open-cape-now");
+      window.setTimeout(() => setupMotion(doc.getElementById("details") || doc), 20);
+      return result;
+    };
+    wrappedOpenCape.__mcMotionWrapped = true;
+    window.openCape = wrappedOpenCape;
+  }
+
+  // Clicking the large cape in the top showcase opens its corresponding 3D detail view.
+  function bindFeaturedCape() {
+    const image = doc.getElementById("featuredImage");
+    if (!image || image.dataset.mcDirect3DBound === "1") return;
+    image.dataset.mcDirect3DBound = "1";
+    image.setAttribute("role", "button");
+    image.setAttribute("tabindex", "0");
+    image.setAttribute("aria-label", "Open this cape in the interactive 3D preview");
+    const openCurrentCape = () => {
+      const button = doc.getElementById("featuredView");
+      if (button) button.click();
+    };
+    image.addEventListener("click", openCurrentCape);
+    image.addEventListener("keydown", event => {
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        openCurrentCape();
+      }
+    });
+    const wrapper = image.closest(".featured-image");
+    if (wrapper) wrapper.setAttribute("title", "Click to open the 3D cape preview");
+    // Keep the accessibility label synchronized as the automatic spotlight changes capes.
+    if ("MutationObserver" in window) {
+      const labelObserver = new MutationObserver(() => {
+        image.setAttribute("aria-label", `Open ${image.alt || "this cape"} in the interactive 3D preview`);
+      });
+      labelObserver.observe(image, { attributes: true, attributeFilter: ["alt"] });
+    }
+  }
+
+  const start = () => {
+    setupMotion(doc);
+    bindFeaturedCape();
+    const contentRoot = doc.getElementById("homePage") || doc.body;
+    if ("MutationObserver" in window) {
+      const dynamicObserver = new MutationObserver(mutations => {
+        mutations.forEach(mutation => mutation.addedNodes.forEach(node => {
+          if (node.nodeType === 1) setupMotion(node);
+        }));
+      });
+      dynamicObserver.observe(contentRoot, { childList: true, subtree: true });
+      const detailRoot = doc.getElementById("details");
+      if (detailRoot) dynamicObserver.observe(detailRoot, { childList: true, subtree: true });
+    }
+    doc.addEventListener("click", () => {
+      window.setTimeout(() => {
+        setupMotion(doc.getElementById("aboutPage"));
+        setupMotion(doc.getElementById("endorsementsPage"));
+        setupMotion(doc.getElementById("footerInfoPage"));
+        setupMotion(doc.getElementById("details"));
+      }, 90);
+    }, true);
+    window.addEventListener("hashchange", () => window.setTimeout(() => setupMotion(doc), 50));
+  };
+
+  if (doc.readyState === "loading") doc.addEventListener("DOMContentLoaded", start, { once: true });
+  else start();
+})();
+</script>
 
 </body>
 </html>
