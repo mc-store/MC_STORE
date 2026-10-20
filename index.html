@@ -2906,7 +2906,7 @@ body.mc-reveal-ready .mc-footer .reveal-on-scroll.is-visible {
           <span class="featured-number">MC STORE</span>
         </div>
         <div class="featured-image">
-          <img id="featuredImage" src="media/aurora-cape.png" alt="Aurora Cape" data-image-file="aurora-cape.png" data-original-src="media/aurora-cape.png" data-fallback-image="media/aurora-cape.png" loading="eager" decoding="async" fetchpriority="high" onerror="handleCapeCardImageError(this)">
+          <img id="featuredImage" src="media/aurora-cape.png" alt="Aurora Cape" data-image-file="aurora-cape.png" data-original-src="media/aurora-cape.png" data-fallback-image="media/aurora-cape.png" onerror="handleCapeCardImageError(this)">
         </div>
       </div>
     </div>
@@ -3172,7 +3172,7 @@ const capes = [
     onSale:true,
     image:"media/aurora-cape.png",
     showcaseImage:"media/aurora-cape.png",
-    productImage:"./capes%203D/auroracape3D.png",
+    productImage:"media/aurora-cape.png",
     description:"A vibrant cape for players who want a distinctive look in their Minecraft collection.",
     label:"Popular"
   },
@@ -3185,7 +3185,7 @@ const capes = [
     onSale:true,
     image:"media/builder-cape.png",
     showcaseImage:"media/builder-cape.png",
-    productImage:"./capes%203D/buildercape3D.png",
+    productImage:"media/builder-cape.png",
     description:"A classic addition for Minecraft cape collectors and fans of building.",
     label:"Featured"
   },
@@ -3197,7 +3197,7 @@ const capes = [
     stock:false,
     image:"media/copper-cape.png",
     showcaseImage:"media/copper-cape.png",
-    productImage:"./capes%203D/coppercape3D.png",
+    productImage:"media/copper-cape.png",
     description:"A copper-themed design for Minecraft players and collectors.",
     label:""
   },
@@ -3209,7 +3209,7 @@ const capes = [
     stock:false,
     image:"media/crafter-cape.png",
     showcaseImage:"media/crafter-cape.png",
-    productImage:"./capes%203D/craftercape3D.png",
+    productImage:"media/crafter-cape.png",
     description:"A crafting-inspired design for Minecraft fans and cape collectors.",
     label:""
   },
@@ -3222,7 +3222,7 @@ const capes = [
     stock:true,
     image:"media/experience-cape.png",
     showcaseImage:"media/experience-cape.png",
-    productImage:"./capes%203D/experiencecape3D.png",
+    productImage:"media/experience-cape.png",
     description:"The Experience cape was the first IRL obtainable cape since Minecon 2016. The cape is only obtainable via attending an IRL Minecraft Event located in different places across the World. If you can't go, don't worry, you can buy it here!",
     label:""
   },
@@ -3234,7 +3234,7 @@ const capes = [
     stock:false,
     image:"media/home-cape.png",
     showcaseImage:"media/home-cape.png",
-    productImage:"./capes%203D/homecape3D.png",
+    productImage:"media/home-cape.png",
     description:"A Home cape design for Minecraft players and collectors.",
     label:""
   },
@@ -3246,7 +3246,7 @@ const capes = [
     stock:false,
     image:"media/moonlight-cape.png",
     showcaseImage:"media/moonlight-cape.png",
-    productImage:"./capes%203D/moonlightcape3D.png",
+    productImage:"media/moonlight-cape.png",
     description:"A moonlight-inspired design for your Minecraft cape collection.",
     label:""
   },
@@ -3258,7 +3258,7 @@ const capes = [
     stock:false,
     image:"media/twitch-cape.png",
     showcaseImage:"media/twitch-cape.png",
-    productImage:"./capes%203D/twitchcape3D.png",
+    productImage:"media/twitch-cape.png",
     description:"A purple-themed cape design for your collection.",
     label:""
   },
@@ -3270,7 +3270,7 @@ const capes = [
     stock:false,
     image:"media/menace-cape.png",
     detailImage:"media/menace-cape.png",
-    productImage:"./capes%203D/menacecape3D.png",
+    productImage:"media/menace-cape.png",
     description:"A striking cape design in the MC STORE collection.",
     label:""
   }
@@ -3305,58 +3305,186 @@ function escapeHTML(value) {
   })[character]);
 }
 
-// Fast artwork fallback: try the exact filename in likely image categories first.
-// The previous implementation tried every extension in every folder for the 3D file
-// before it even tried the requested *-cape.png artwork, which delayed the images.
-const mcCapeArtworkFolders = [
-  "Capes Images/", "capes images/", "Cape Images/", "cape images/",
-  "Capes-Images/", "capes-images/", "Capes_Images/", "capes_images/",
-  "Capes PNG/", "capes png/", "capes/", "Capes/", "Images/", "images/",
-  "assets/", "Assets/", "", "./", "media/", "Media/",
-  "media/Capes Images/", "media/capes images/", "media/Cape Images/", "media/cape images/",
-  "media/Capes-Images/", "media/capes-images/", "media/Capes_Images/", "media/capes_images/",
-  "media/capes/", "media/images/", "images/capes/", "Images/Capes/",
-  "assets/capes/", "assets/images/", "Product Images/", "product images/",
-  "capes 2D/", "Capes 2D/", "capes2D/", "2D/", "2d/",
-  "capes 3D/", "Capes 3D/", "capes%203D/"
-];
+/*
+ * Resolve image assets even when the files live several folders below the repository root.
+ * GitHub Pages does not expose folder listings, so the public GitHub tree API is used once,
+ * only when a normal image URL fails. All capes share the same cached index.
+ */
+const mcStoreNestedAssetIndexApi = "https://api.github.com/repos/mc-store/MC_STORE";
+let mcStoreNestedAssetIndexPromise = null;
 
-function handleCapeCardImageError(img) {
-  const rawFile = img.dataset.imageFile || img.dataset.originalSrc || img.currentSrc || img.src || "";
-  const clean = String(rawFile).split(/[?#]/)[0].replace(/^\.\//, "");
-  const fileName = clean.split("/").pop() || "";
-  if (!fileName) {
-    img.hidden = true;
-    img.removeAttribute("alt");
-    return;
+function mcStoreNestedAssetBaseUrl() {
+  try {
+    const canonical = document.querySelector('link[rel="canonical"]');
+    return new URL(".", canonical && canonical.href ? canonical.href : window.location.href).href;
+  } catch (_) {
+    return window.location.href;
   }
+}
 
-  // Rebuild the list when a carousel image changes from one cape to another.
-  if (img.dataset.mcImageFor !== fileName) {
-    img.dataset.mcImageFor = fileName;
-    const current = String(img.getAttribute("src") || "").replace(/^\.\//, "");
-    const candidates = [];
-    for (const folder of mcCapeArtworkFolders) {
-      const candidate = folder + fileName;
-      if (candidate !== current && !candidates.includes(candidate)) candidates.push(candidate);
+function mcStoreNestedAssetUrl(repoPath) {
+  const safePath = String(repoPath || "").split("/").map(part => encodeURIComponent(part)).join("/");
+  return new URL(safePath, mcStoreNestedAssetBaseUrl()).href;
+}
+
+function mcStoreNestedAssetIndex() {
+  if (!mcStoreNestedAssetIndexPromise) {
+    mcStoreNestedAssetIndexPromise = (async () => {
+      try {
+        const headers = { "Accept": "application/vnd.github+json" };
+        const repoResponse = await fetch(mcStoreNestedAssetIndexApi, { headers, cache: "force-cache" });
+        if (!repoResponse.ok) return null;
+        const repo = await repoResponse.json();
+        const branch = repo.default_branch || "main";
+        const treeUrl = mcStoreNestedAssetIndexApi + "/git/trees/" + encodeURIComponent(branch) + "?recursive=1";
+        const treeResponse = await fetch(treeUrl, { headers, cache: "force-cache" });
+        if (!treeResponse.ok) return null;
+        const treeData = await treeResponse.json();
+        if (!Array.isArray(treeData.tree)) return null;
+
+        const byName = new Map();
+        for (const node of treeData.tree) {
+          if (!node || node.type !== "blob" || !node.path) continue;
+          const basename = node.path.split("/").pop().toLowerCase();
+          if (!byName.has(basename)) byName.set(basename, []);
+          byName.get(basename).push(node.path);
+        }
+        // Prefer shorter paths when the same named image appears more than once.
+        for (const paths of byName.values()) {
+          paths.sort((a, b) => a.split("/").length - b.split("/").length || a.localeCompare(b));
+        }
+        return { byName, paths: treeData.tree.filter(node => node && node.type === "blob").map(node => node.path) };
+      } catch (_) {
+        // A private repository, API rate limit, or offline browser falls back to normal paths.
+        return null;
+      }
+    })();
+  }
+  return mcStoreNestedAssetIndexPromise;
+}
+
+function mcStoreAssetBasename(value) {
+  let clean = String(value || "").split(/[?#]/)[0].replace(/\\/g, "/");
+  clean = clean.split("/").pop() || "";
+  try { clean = decodeURIComponent(clean); } catch (_) {}
+  return clean;
+}
+
+function mcStoreAssetFilenameOptions(values) {
+  const extensions = [".png", ".webp", ".jpg", ".jpeg", ".avif", ".gif", ".bmp"];
+  const options = [];
+  for (const value of values || []) {
+    const basename = mcStoreAssetBasename(value);
+    if (!basename) continue;
+    if (!options.includes(basename)) options.push(basename);
+    if (!/\.[a-z0-9]{2,5}$/i.test(basename)) {
+      for (const extension of extensions) {
+        if (!options.includes(basename + extension)) options.push(basename + extension);
+      }
     }
-    img.dataset.mcImageCandidates = JSON.stringify(candidates);
-    img.dataset.mcImageCandidateIndex = "0";
+  }
+  return options;
+}
+
+async function findMcStoreNestedAsset(values, excludedUrls = []) {
+  const index = await mcStoreNestedAssetIndex();
+  if (!index) return { indexAvailable: false, url: null };
+  const excluded = new Set((excludedUrls || []).map(url => String(url || "").split("?")[0]));
+  for (const filename of mcStoreAssetFilenameOptions(values)) {
+    const matches = index.byName.get(filename.toLowerCase()) || [];
+    for (const path of matches) {
+      const url = mcStoreNestedAssetUrl(path);
+      if (!excluded.has(url.split("?")[0])) return { indexAvailable: true, url, path };
+    }
+  }
+  return { indexAvailable: true, url: null };
+}
+
+// Load each product's dedicated 3D render first. Repositories sometimes keep images
+// in the root, media, images, or assets folder and may use upper-case extensions.
+// If a 3D render cannot be found, show that cape's existing showcase artwork instead
+// of leaving the coloured card empty.
+async function handleCapeCardImageError(img) {
+  if (!img || img.dataset.mcHandlingImageError === "1") return;
+  img.dataset.mcHandlingImageError = "1";
+
+  let failed = [];
+  try { failed = JSON.parse(img.dataset.mcFailedAssetUrls || "[]"); } catch (_) {}
+  const currentUrl = String(img.currentSrc || img.src || "").split("?")[0];
+  if (currentUrl && !failed.includes(currentUrl)) failed.push(currentUrl);
+  img.dataset.mcFailedAssetUrls = JSON.stringify(failed);
+
+  const sourceName = img.dataset.imageFile || img.dataset.originalSrc || img.src || "";
+  const fallbackName = img.dataset.fallbackImage || "";
+  const nameCandidates = [sourceName, fallbackName];
+
+  // First check the repository's real file tree. That discovers the exact path even if
+  // a user put the PNGs in a folder nested inside another folder (with case-sensitive names).
+  if (img.dataset.mcRepoLookupDone !== "1") {
+    img.dataset.mcRepoLookupDone = "1";
+    const resolved = await findMcStoreNestedAsset(nameCandidates, failed);
+    if (resolved.url) {
+      img.dataset.mcHandlingImageError = "0";
+      img.dataset.mcRepoResolvedPath = resolved.path;
+      img.src = resolved.url;
+      return;
+    }
+    if (resolved.indexAvailable) {
+      // The repository index loaded successfully, but none of the intended image files is
+      // committed under these names. Don't fire hundreds of futile path guesses.
+      img.hidden = true;
+      img.removeAttribute("alt");
+      img.dataset.mcHandlingImageError = "0";
+      return;
+    }
   }
 
-  let candidates = [];
-  try { candidates = JSON.parse(img.dataset.mcImageCandidates || "[]"); } catch (_) {}
-  const index = Number(img.dataset.mcImageCandidateIndex || 0);
-  if (index < candidates.length) {
-    img.dataset.mcImageCandidateIndex = String(index + 1);
-    img.src = candidates[index];
+  // Offline/API-unavailable fallback: check a short list of common root and nested folders
+  // together, so the display isn't delayed by serial 404 attempts.
+  const primary = mcStoreAssetBasename(sourceName).replace(/\.[^.]*$/, "");
+  const fallback = mcStoreAssetBasename(fallbackName).replace(/\.[^.]*$/, "");
+  const productFolders = ["capes 3D/", "Capes 3D/", "capes3D/", "capes-3D/", "3D/", "3d/"];
+  const artworkFolders = [
+    "", "media/", "Media/", "images/", "Images/", "assets/", "Assets/", "capes images/", "Capes Images/",
+    "cape images/", "Cape Images/", "capes image/", "Capes Image/", "capes-images/", "Capes-Images/",
+    "capes/", "Capes/", "media/capes/", "images/capes/", "assets/capes/", "media/images/", "assets/images/",
+    "media/capes images/", "media/Capes Images/", "assets/capes images/", "assets/Capes Images/",
+    "images/capes images/", "images/Capes Images/", "images/capes 3D/", "assets/capes 3D/", "public/images/", "static/images/"
+  ];
+  const prefer3d = /cape3d$/i.test(primary);
+  const folders = prefer3d ? [...productFolders, ...artworkFolders] : [...artworkFolders, ...productFolders];
+  const names = [...new Set([primary, fallback].filter(Boolean))];
+  const extensions = [".png", ".PNG", ".webp", ".WEBP", ".jpg", ".JPG", ".jpeg", ".JPEG", ""];
+  const candidates = [];
+  for (const name of names) {
+    for (const folder of folders) {
+      for (const extension of extensions) {
+        const candidate = folder + name + extension;
+        try {
+          const url = new URL(candidate, mcStoreNestedAssetBaseUrl()).href;
+          if (!failed.includes(url) && !candidates.includes(url)) candidates.push(url);
+        } catch (_) {}
+      }
+    }
+  }
+  const probed = await Promise.all(candidates.slice(0, 120).map(url => new Promise(resolve => {
+    const test = new Image();
+    test.onload = () => resolve(url);
+    test.onerror = () => resolve(null);
+    test.src = url;
+  })));
+  const found = probed.find(Boolean);
+  if (found) {
+    img.dataset.mcHandlingImageError = "0";
+    img.src = found;
     return;
   }
 
-  // No missing-image icon or alt text over the card if the asset really is absent.
   img.hidden = true;
   img.removeAttribute("alt");
+  img.dataset.mcHandlingImageError = "0";
 }
+
 function capeTitleMarkup(cape, title = cape.name) {
   // Keep "Cape" (and any trailing wording such as "Code") black; colour only the cape name.
   const capeSuffix = title.indexOf(" Cape");
@@ -3380,13 +3508,13 @@ function capeCard(cape) {
           <span class="card-tag ${cape.stock ? "" : "sold"} ${cape.onSale ? "sale-tag" : ""}">${tag}</span>
           ${cape.onSale && cape.stock ? `<span class="card-tag popular stock-tag">IN STOCK</span>` : (cape.label ? `<span class="card-tag popular">${escapeHTML(cape.label)}</span>` : "")}
           <img class="card-img"
-               src="${escapeHTML(cape.showcaseImage || cape.image)}"
-               data-original-src="${escapeHTML(cape.showcaseImage || cape.image)}"
-               data-image-file="${escapeHTML((cape.showcaseImage || cape.image).split('/').pop())}"
+               src="${escapeHTML(cape.productImage || cape.image)}"
+               data-original-src="${escapeHTML(cape.productImage || cape.image)}"
+               data-image-file="${escapeHTML((cape.productImage || cape.image).split('/').pop())}"
                data-fallback-image="${escapeHTML(cape.showcaseImage || cape.image)}"
                data-fallback-alt="${escapeHTML(cape.name)}"
                alt="${escapeHTML(cape.name)}"
-               loading="eager" decoding="async" fetchpriority="auto"
+               loading="lazy"
                onerror="handleCapeCardImageError(this)">
         </div>
       </a>
@@ -3454,7 +3582,7 @@ function renderProducts() {
   const isHomePreview = homePage && !homePage.classList.contains("shop-only") &&
     homePage.style.display !== "none" && detailsPage &&
     (detailsPage.style.display === "none" || getComputedStyle(detailsPage).display === "none");
-  const visibleList = list; // Show all nine cape artworks on Home and Shop.
+  const visibleList = isHomePreview ? list.slice(0, productCapes.length) : list;
   document.getElementById("products").innerHTML = visibleList.map(capeCard).join("");
   document.getElementById("resultsLine").textContent = isHomePreview
     ? `Showing ${visibleList.length} featured capes`
@@ -3485,11 +3613,6 @@ function showFeatured(index) {
   const nextShowcaseImage = cape.showcaseImage || cape.image;
   const nextShowcaseURL = new URL(nextShowcaseImage, document.baseURI).href;
   featuredImage.alt = cape.name;
-  featuredImage.hidden = false;
-  // Reset the previous cape's error fallback so the next image can resolve independently.
-  delete featuredImage.dataset.mcImageFor;
-  delete featuredImage.dataset.mcImageCandidates;
-  delete featuredImage.dataset.mcImageCandidateIndex;
   featuredImage.dataset.imageFile = String(nextShowcaseImage).split("/").pop();
   featuredImage.dataset.originalSrc = nextShowcaseImage;
   featuredImage.dataset.fallbackImage = cape.image || "";
@@ -23858,17 +23981,17 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
     const rest = name.slice(splitAt);
     return `<span class="cape-name-accent cape-name-accent--${cape.id}">${safeText(accent)}</span><span class="cape-name-base">${safeText(rest)}</span>`;
   }
-  // Search the exact texture names quickly. The first wave checks PNGs in common
-  // texture-pack folders in parallel; alternate extensions are checked only if needed.
+  // The texture files may be grouped in different GitHub Pages folders. Probe
+  // common category names and extensions while keeping the user's exact file stems.
   const capeTextureFolders = [
-    "texture pack/", "Texture Pack/", "capes texture pack/", "Capes Texture Pack/",
-    "Cape Texture Pack/", "cape texture pack/", "Textures Pack/", "textures pack/",
-    "capes textures/", "Capes Textures/", "cape textures/", "Cape Textures/",
-    "textures/", "Textures/", "texture/", "Texture/", "capes 3D/", "Capes 3D/",
-    "media/textures/", "media/texture pack/", "assets/textures/", "images/textures/",
-    "media/", "images/", "assets/", ""
+    "texture pack/", "Texture Pack/", "TEXTURE PACK/", "texture-pack/", "Texture-Pack/", "texture_pack/", "Texture_Pack/",
+    "textures pack/", "Textures Pack/", "textures-pack/", "Textures-Pack/", "textures_pack/",
+    "capes texture pack/", "Capes Texture Pack/", "Cape Texture Pack/", "cape texture pack/", "CAPE TEXTURE PACK/",
+    "capes textures/", "Capes Textures/", "cape textures/", "Cape Textures/", "capes texture/", "Capes Texture/", "cape texture/", "Cape Texture/",
+    "textures/", "Textures/", "texture/", "Texture/", "capes 3D/", "Capes 3D/", "capes%203D/",
+    "media/textures/", "media/texture pack/", "assets/textures/", "images/textures/", "media/", "images/", "assets/", ""
   ];
-  const capeTextureCache = new Map();
+  const capeTextureExtensions = [".png", ".PNG", ".webp", ".WEBP", ".jpg", ".JPG", ".jpeg", ".JPEG", ""];
 
   function probeImage(url) {
     return new Promise(resolve => {
@@ -23879,43 +24002,20 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
     });
   }
 
-  async function probeImageGroup(urls) {
-    // The first successfully loaded texture wins; all candidate requests are parallel.
-    return new Promise(resolve => {
-      let remaining = urls.length;
-      let settled = false;
-      if (!remaining) return resolve(null);
-      const finish = value => {
-        if (settled) return;
-        settled = true;
-        resolve(value);
-      };
-      for (const url of urls) {
-        const image = new Image();
-        image.onload = () => finish(url);
-        image.onerror = () => {
-          remaining -= 1;
-          if (remaining === 0) finish(null);
-        };
-        image.src = url;
-      }
-    });
-  }
-
   async function findCapeTexture(stem) {
     if (!stem) return null;
-    if (capeTextureCache.has(stem)) return capeTextureCache.get(stem);
-    const uniqueFolders = [...new Set(capeTextureFolders)];
-    const pngs = uniqueFolders.map(folder => folder + stem + ".png");
-    let found = await probeImageGroup(pngs);
-    if (!found) {
-      const alternatives = [".webp", ".jpg", ".jpeg"].flatMap(ext =>
-        uniqueFolders.map(folder => folder + stem + ext)
-      );
-      found = await probeImageGroup(alternatives);
+    // Search all committed repository paths first, including arbitrarily nested folders.
+    const repoResult = await findMcStoreNestedAsset(capeTextureExtensions.map(extension => stem + extension));
+    if (repoResult.indexAvailable) return repoResult.url || null;
+    // If the GitHub API is unavailable (for example due to rate limiting), use the
+    // existing direct-path checks as a fallback.
+    for (const folder of capeTextureFolders) {
+      const urls = capeTextureExtensions.map(extension => folder + stem + extension);
+      const results = await Promise.all(urls.map(probeImage));
+      const found = results.find(Boolean);
+      if (found) return found;
     }
-    capeTextureCache.set(stem, found);
-    return found;
+    return null;
   }
 
   function detailsImage(cape) {
@@ -24041,11 +24141,11 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
       mcStoreViewer.controls.minPolarAngle = Math.PI / 2;
       mcStoreViewer.controls.maxPolarAngle = Math.PI / 2;
       mcStoreViewer.controls.rotateSpeed = 0.9;
-      mcStoreViewer.controls.enableDamping = false; // Stop immediately when the mouse is released.
+      mcStoreViewer.controls.enableDamping = true;
       // Keep the cape still until the visitor drags it, and make the model a little larger.
       mcStoreViewer.autoRotate = false;
       mcStoreViewer.controls.autoRotate = false;
-      mcStoreViewer.zoom = 1.38; // A little closer so the cape is easier to see.
+      mcStoreViewer.zoom = 1.15;
       mcStoreViewer.playerWrapper.rotation.y = Math.PI;
       // Show the cape by itself: do not load or display the default Steve skin.
       mcStoreViewer.animation = null;
@@ -25917,45 +26017,6 @@ nav .nav-links .nav-link[href="#home"].active {
 }
 @media (max-width: 520px) {
   #details .storefront-preview { height: 410px !important; }
-}
-</style>
-
-
-
-<style id="mc-store-fast-cape-images-and-viewer-fix">
-/* Cape art must be visible immediately: no stagger, blur, fade-in, or lazy loading delay. */
-#homePage #shop .products > *,
-#homePage #shop .products > .mc-scroll-reveal,
-#homePage #shop .products > .mc-scroll-reveal.mc-scroll-visible {
-  opacity: 1 !important;
-  visibility: visible !important;
-  transform: none !important;
-  filter: none !important;
-  transition: none !important;
-  transition-delay: 0ms !important;
-  animation: none !important;
-}
-#homePage #shop .card-img {
-  opacity: 1 !important;
-  visibility: visible !important;
-  animation: none !important;
-  transition: filter .18s ease !important;
-}
-/* Larger cape artwork on the product page; the 3D model itself is zoomed slightly closer. */
-#details .storefront-preview {
-  height: clamp(460px, 37vw, 630px) !important;
-}
-#details .cape-preview-fallback {
-  width: min(76%, 440px) !important;
-  max-height: 92% !important;
-}
-#details #capeSkinViewer { touch-action: pan-y !important; }
-@media (max-width: 1000px) {
-  #details .storefront-preview { height: clamp(430px, 68vw, 590px) !important; }
-}
-@media (max-width: 520px) {
-  #details .storefront-preview { height: 430px !important; }
-  #details .cape-preview-fallback { width: min(82%, 390px) !important; }
 }
 </style>
 
