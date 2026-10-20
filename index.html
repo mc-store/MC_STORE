@@ -2908,7 +2908,6 @@ body.mc-reveal-ready .mc-footer .reveal-on-scroll.is-visible {
         <div class="featured-image">
           <img id="featuredImage" src="media/aurora-cape.png" alt="Aurora Cape" data-image-file="aurora-cape.png" data-original-src="media/aurora-cape.png" data-fallback-image="media/aurora-cape.png" onerror="handleCapeCardImageError(this)">
         </div>
-        <div class="mc-cape-showcase-thumbnails" id="mcCapeShowcaseThumbnails" aria-label="All cape pictures in the showcase"></div>
       </div>
     </div>
   </header>
@@ -3679,9 +3678,6 @@ function showFeatured(index) {
       restartFeaturedTimer();
     });
   });
-  document.querySelectorAll("[data-showcase-thumb]").forEach(button => {
-    button.classList.toggle("active", Number(button.dataset.showcaseThumb) === featuredIndex);
-  });
 }
 
 function restartFeaturedTimer() {
@@ -3691,37 +3687,6 @@ function restartFeaturedTimer() {
     showFeatured((featuredIndex + 1) % featuredCapes.length);
   }, 2000);
 }
-
-// Show all nine cape artworks together beneath the main spotlight image.
-function renderShowcaseThumbnails() {
-  const container = document.getElementById("mcCapeShowcaseThumbnails");
-  if (!container) return;
-  container.innerHTML = featuredCapes.map((cape, index) => {
-    const image = cape.showcaseImage || cape.image || "";
-    const filename = String(image).split("/").pop();
-    return `
-      <button class="mc-cape-showcase-thumb${index === featuredIndex ? " active" : ""}"
-        type="button" data-showcase-thumb="${index}"
-        aria-label="Show ${escapeHTML(cape.name)} in the showcase"
-        title="${escapeHTML(cape.name)}">
-        <img src="${escapeHTML(image)}" alt="${escapeHTML(cape.name)}"
-          data-original-src="${escapeHTML(image)}"
-          data-image-file="${escapeHTML(filename)}"
-          data-fallback-image="${escapeHTML(cape.image || image)}"
-          loading="lazy" onerror="handleCapeCardImageError(this)">
-      </button>`;
-  }).join("");
-  container.querySelectorAll("[data-showcase-thumb]").forEach(button => {
-    button.addEventListener("click", () => {
-      showFeatured(Number(button.dataset.showcaseThumb));
-      restartFeaturedTimer();
-    });
-  });
-}
-
-// Keep the cape showcase rotating on desktop too. Previously mouseenter/focusin
-// stopped the timer on PCs, where the pointer normally rests over the showcase.
-// The carousel can still be changed manually with its dots or View Cape button.
 
 function renderRecommendations(currentCape) {
   let others = productCapes.filter(cape => cape.id !== currentCape.id);
@@ -4063,7 +4028,6 @@ async function refreshDiscordInfo() {
 
 /* Initial rendering */
 renderProducts();
-renderShowcaseThumbnails();
 showFeatured(0);
 restartFeaturedTimer();
 refreshDiscordInfo();
@@ -24134,7 +24098,7 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
       // Keep the cape still until the visitor drags it, and make the model a little larger.
       mcStoreViewer.autoRotate = false;
       mcStoreViewer.controls.autoRotate = false;
-      mcStoreViewer.zoom = 1.15;
+      mcStoreViewer.zoom = 1.55;
       mcStoreViewer.playerWrapper.rotation.y = Math.PI;
       // Show the cape by itself: do not load or display the default Steve skin.
       mcStoreViewer.animation = null;
@@ -26088,6 +26052,36 @@ nav .nav-links .nav-link[href="#home"].active {
 @media (max-width: 620px) {
   .mc-cape-showcase-thumbnails { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 7px; }
   .mc-cape-showcase-thumb { height: 62px; }
+}
+</style>
+
+
+
+
+<style id="mc-store-final-cape-size-and-showcase-cleanup">
+/* Keep the nine cape images in the large rotating homepage spotlight only; no miniature strip. */
+#mcCapeShowcaseThumbnails, .mc-cape-showcase-thumbnails { display: none !important; }
+
+/* Make the selected cape much larger on its detail page. */
+#details .storefront-preview {
+  height: clamp(500px, 42vw, 720px) !important;
+  min-height: 500px !important;
+}
+#details .cape-preview-fallback {
+  width: min(88%, 540px) !important;
+  max-height: 94% !important;
+}
+#details #capeSkinViewer {
+  width: 100% !important;
+  height: 100% !important;
+}
+@media (max-width: 1000px) {
+  #details .storefront-preview { height: clamp(480px, 70vw, 640px) !important; min-height: 480px !important; }
+  #details .cape-preview-fallback { width: min(90%, 520px) !important; max-height: 94% !important; }
+}
+@media (max-width: 520px) {
+  #details .storefront-preview { height: 470px !important; min-height: 470px !important; }
+  #details .cape-preview-fallback { width: 92% !important; max-height: 93% !important; }
 }
 </style>
 
