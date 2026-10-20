@@ -3310,45 +3310,69 @@ function escapeHTML(value) {
 // If a 3D render cannot be found, show that cape's existing showcase artwork instead
 // of leaving the coloured card empty.
 function handleCapeCardImageError(img) {
-  // Try the exact 3D render name first, then common repository folders/extensions,
-  // and finally the standard showcase image. This prevents broken-image alt text
-  // appearing over the coloured card art when an asset is stored in a different folder.
+  // Do not spend hundreds of failed requests looking for a 3D render before
+  // trying the original 2D cape artwork. The catalogue cards should use the
+  // *-cape.png files; the 3D texture viewer is opened on the details page.
+  const fileName = value => {
+    const clean = String(value || "").split(/[?#]/)[0].replace(/^\.\//, "");
+    return clean.split("/").pop() || "";
+  };
+  const stemAndExt = value => {
+    const file = fileName(value);
+    const match = file.match(/^(.*?)(\.[^.]+)?$/);
+    return { stem: (match && match[1]) || "", ext: (match && match[2]) || ".png" };
+  };
+
+  // Initialize one short, ordered list per image. Prefer the fallback artwork
+  // name (e.g. aurora-cape.png) and its new category folder, then other common
+  // folders; only at the end try a matching 3D render name.
   if (!img.dataset.mcImageCandidates) {
-    const stripPathAndExtension = value => {
-      const clean = String(value || "").split(/[?#]/)[0].replace(/^\.\//, "");
-      const file = clean.split("/").pop() || "";
-      return file.replace(/\.[^.]*$/, "");
-    };
-    const primary = stripPathAndExtension(img.dataset.imageFile || img.dataset.originalSrc || img.src);
-    const fallback = stripPathAndExtension(img.dataset.fallbackImage || "");
-    const stems = [...new Set([primary, fallback].filter(Boolean))];
-    const productFolders = [
-      "capes 3D/", "./capes 3D/", "capes%203D/", "./capes%203D/", "capes3D/", "Capes 3D/", "Capes3D/", "capes-3D/", "capes_3D/", "3D/", "3d/"
-    ];
-    const artworkFolders = [
-      "", "./", "media/", "Media/", "images/", "Images/", "assets/", "Assets/",
-      "capes images/", "Capes Images/", "cape images/", "Cape Images/", "capes image/", "Capes Image/",
-      "cape-images/", "capes-images/", "Capes-Images/", "capes_images/", "Capes_Images/",
-      "capes png/", "Capes PNG/", "Capes Png/", "capes-png/", "capes_png/", "png/", "PNG/",
-      "capes/", "Capes/", "media/capes/", "Media/Capes/", "images/capes/", "Images/Capes/", "assets/capes/",
-      "capes 2D/", "Capes 2D/", "capes2D/", "capes-2D/", "capes_2D/", "2D/", "2d/",
-      "product images/", "Product Images/", "products/", "Products/", "media/images/", "assets/images/",
-      "images/capes 3D/", "assets/capes 3D/"
-    ];
-    // Search the likely category for the 3D render first; if it is absent, try all artwork folders.
-    const folders = /cape3d$/i.test(primary) ? [...productFolders, ...artworkFolders] : [...artworkFolders, ...productFolders];
-    const extensions = [".png", ".PNG", ".webp", ".WEBP", ".jpg", ".JPG", ".jpeg", ".JPEG",
-      ".avif", ".AVIF", ".gif", ".GIF", ".bmp", ".BMP", ""];
+    const fallbackPath = img.dataset.fallbackImage || img.dataset.originalSrc || "";
+    const originalPath = img.dataset.originalSrc || img.getAttribute("src") || "";
+    const preferred = stemAndExt(fallbackPath || originalPath);
+    const original = stemAndExt(originalPath);
     const current = String(img.getAttribute("src") || "").replace(/^\.\//, "");
+    const folders = [
+      "Capes Images/", "capes images/", "Capes-Images/", "capes-images/",
+      "Capes_Images/", "capes_images/", "Cape Images/", "cape images/",
+      "capes image/", "Capes Image/", "Capes PNG/", "capes png/",
+      "Capes/", "capes/", "Images/", "images/", "Assets/", "assets/",
+      "media/", "media/capes/", "images/capes/", "assets/capes/",
+      "Capes 2D/", "capes 2D/", "Capes2D/", "capes2D/", "", "./"
+    ];
+    const extensions = [...new Set([
+      preferred.ext, ".png", ".webp", ".jpg", ".jpeg", ".PNG", ".WEBP", ".JPG", ".JPEG"
+    ])];
     const candidates = [];
-    for (const stem of stems) {
-      for (const folder of folders) {
-        for (const extension of extensions) {
-          const candidate = folder + stem + extension;
-          if (candidate && candidate !== current && !candidates.includes(candidate)) candidates.push(candidate);
+    const add = value => {
+      if (value && value !== current && !candidates.includes(value)) candidates.push(value);
+    };
+
+    // Direct paths first: these are the filenames the store is meant to use.
+    add(fallbackPath);
+    add(originalPath);
+    add(img.dataset.fallbackImage);
+
+    // Search the named 2D artwork in its likely category folders first.
+    for (const folder of folders) {
+      for (const ext of extensions) add(folder + preferred.stem + ext);
+    }
+
+    // If the provided file is a 3D render, only try its name after the 2D art.
+    const originalLooks3D = /cape3d/i.test(original.stem) || /3d/i.test(original.stem);
+    if (originalLooks3D) {
+      const productFolders = [
+        "Capes 3D/", "capes 3D/", "Capes3D/", "capes3D/",
+        "Capes-3D/", "capes-3D/", "Capes_3D/", "capes_3D/", "3D/", "3d/"
+      ];
+      const renderStem = original.stem;
+      for (const folder of productFolders) {
+        for (const ext of [original.ext, ".png", ".webp", ".jpg", ".jpeg", ".PNG", ".WEBP"]) {
+          add(folder + renderStem + ext);
         }
       }
     }
+
     img.dataset.mcImageCandidates = JSON.stringify(candidates);
     img.dataset.mcImageCandidateIndex = "0";
   }
@@ -3358,14 +3382,17 @@ function handleCapeCardImageError(img) {
   const index = Number(img.dataset.mcImageCandidateIndex || 0);
   if (index < candidates.length) {
     img.dataset.mcImageCandidateIndex = String(index + 1);
+    img.hidden = false;
     img.src = candidates[index];
     return;
   }
 
-  // If assets are absent entirely, suppress the browser's broken-image icon/text.
+  // Leave the layout intact if an artwork is genuinely missing; don't show the
+  // browser's broken-image icon. Resetting src later clears this state.
   img.hidden = true;
   img.removeAttribute("alt");
 }
+
 function capeTitleMarkup(cape, title = cape.name) {
   // Keep "Cape" (and any trailing wording such as "Code") black; colour only the cape name.
   const capeSuffix = title.indexOf(" Cape");
@@ -3389,9 +3416,9 @@ function capeCard(cape) {
           <span class="card-tag ${cape.stock ? "" : "sold"} ${cape.onSale ? "sale-tag" : ""}">${tag}</span>
           ${cape.onSale && cape.stock ? `<span class="card-tag popular stock-tag">IN STOCK</span>` : (cape.label ? `<span class="card-tag popular">${escapeHTML(cape.label)}</span>` : "")}
           <img class="card-img"
-               src="${escapeHTML(cape.productImage || cape.image)}"
-               data-original-src="${escapeHTML(cape.productImage || cape.image)}"
-               data-image-file="${escapeHTML((cape.productImage || cape.image).split('/').pop())}"
+               src="${escapeHTML(cape.showcaseImage || cape.image)}"
+               data-original-src="${escapeHTML(cape.showcaseImage || cape.image)}"
+               data-image-file="${escapeHTML((cape.showcaseImage || cape.image).split('/').pop())}"
                data-fallback-image="${escapeHTML(cape.showcaseImage || cape.image)}"
                data-fallback-alt="${escapeHTML(cape.name)}"
                alt="${escapeHTML(cape.name)}"
@@ -3494,6 +3521,9 @@ function showFeatured(index) {
   const nextShowcaseImage = cape.showcaseImage || cape.image;
   const nextShowcaseURL = new URL(nextShowcaseImage, document.baseURI).href;
   featuredImage.alt = cape.name;
+  featuredImage.hidden = false;
+  featuredImage.dataset.mcImageCandidates = "";
+  featuredImage.dataset.mcImageCandidateIndex = "0";
   featuredImage.dataset.imageFile = String(nextShowcaseImage).split("/").pop();
   featuredImage.dataset.originalSrc = nextShowcaseImage;
   featuredImage.dataset.fallbackImage = cape.image || "";
