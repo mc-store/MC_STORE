@@ -2944,6 +2944,54 @@ body.mc-reveal-ready .mc-footer .reveal-on-scroll.is-visible {
   </section>
 
 
+  <!-- Home-only Fitting Room: select a cape and preview it on a walking Minecraft skin. -->
+  <section class="section container" id="homeFittingRoom" aria-labelledby="homeFittingRoomTitle">
+    <header class="home-fitting-heading">
+      <h2 id="homeFittingRoomTitle">Fitting Room</h2>
+      <p>Spin the player around to preview the cape on your skin.</p>
+    </header>
+
+    <div class="home-fitting-layout">
+      <div class="home-fitting-preview-column">
+        <div class="home-fitting-stage" id="homeFitStage" aria-label="Interactive Minecraft player preview">
+          <div class="home-fitting-world" aria-hidden="true"></div>
+          <div class="home-fitting-userbar">
+            <img id="homeFitHead" class="home-fitting-head" src="https://minotar.net/helm/Steve/40.png" alt="Steve head">
+            <label class="home-fitting-name-label" for="homeFitUsername">Minecraft Java username</label>
+            <input id="homeFitUsername" type="text" maxlength="16" autocomplete="off" spellcheck="false" autocapitalize="none" placeholder="Java username" aria-label="Minecraft Java username">
+            <button id="homeFitLoadSkin" type="button">Go</button>
+          </div>
+          <canvas id="homeFitCanvas" aria-label="3D Minecraft player wearing the selected cape"></canvas>
+          <div class="home-fitting-drag-hint" aria-hidden="true">DRAG TO TURN</div>
+          <div class="home-fitting-status" id="homeFitStatus" role="status" aria-live="polite">Loading Steve…</div>
+          <div class="home-fitting-mode-switch" role="group" aria-label="Player equipment">
+            <button class="home-fitting-mode active" type="button" data-home-fit-mode="player" aria-pressed="true">PLAYER</button>
+            <button class="home-fitting-mode" type="button" data-home-fit-mode="elytra" aria-pressed="false">ELYTRA</button>
+          </div>
+        </div>
+      </div>
+
+      <aside class="home-fitting-info-column" aria-label="Cape selection">
+        <div class="home-fitting-cape-picker">
+          <div class="home-fitting-kicker">EQUIP A CAPE</div>
+          <div class="home-fitting-cape-swatches" id="homeFitCapeSwatches" role="group" aria-label="Choose a cape"></div>
+        </div>
+
+        <div class="home-fitting-selected-card" id="homeFitSelectedCard">
+          <h3 id="homeFitCapeTitle">Aurora Cape</h3>
+          <div class="home-fitting-price-line">
+            <span class="home-fitting-price" id="homeFitCapePrice">$6</span>
+            <span class="home-fitting-old-price" id="homeFitCapeOldPrice" hidden></span>
+            <span class="home-fitting-stock" id="homeFitCapeStock">In stock</span>
+          </div>
+          <p class="home-fitting-description" id="homeFitCapeDescription">A vibrant cape for players who want a distinctive look in their Minecraft collection.</p>
+          <button class="home-fitting-buy" id="homeFitBuyNow" type="button">Buy now</button>
+          <button class="home-fitting-details" id="homeFitViewDetails" type="button">View details</button>
+          <p class="home-fitting-order-status" id="homeFitOrderStatus" role="status" aria-live="polite"></p>
+        </div>
+      </aside>
+    </div>
+  </section>
 
 </main>
 
@@ -3805,7 +3853,7 @@ function restartFeaturedTimer() {
   // Automatically feature the next cape every three seconds on desktop and mobile.
   featuredTimer = setInterval(() => {
     showFeatured((featuredIndex + 1) % featuredCapes.length);
-  }, 5000);
+  }, 4000);
 }
 
 function renderRecommendations(currentCape) {
@@ -27621,7 +27669,7 @@ nav .nav-links .nav-link[href="#home"].active {
   window.showFeatured = stableShowFeatured;
   window.restartFeaturedTimer = function () {
     if (typeof featuredTimer !== "undefined" && featuredTimer) clearInterval(featuredTimer);
-    featuredTimer = setInterval(() => stableShowFeatured((featuredIndex + 1) % featuredCapes.length), 5000);
+    featuredTimer = setInterval(() => stableShowFeatured((featuredIndex + 1) % featuredCapes.length), 4000);
   };
   try { showFeatured = stableShowFeatured; } catch (_) {}
   try { restartFeaturedTimer = window.restartFeaturedTimer; } catch (_) {}
@@ -28092,6 +28140,644 @@ nav .nav-links .nav-link[href="#home"].active {
   }
   @media(prefers-reduced-motion:reduce) { #details #capeLoadPlayer { transition:none !important; } }
 </style>
+
+
+
+<style id="mc-store-home-fitting-room">
+  /* The Fitting Room belongs only to Home, beneath the Explore All Capes link. */
+  #homeFittingRoom { padding-top: 55px !important; padding-bottom: 74px !important; }
+  #homePage.shop-only #homeFittingRoom { display: none !important; }
+  .home-fitting-heading { text-align: center; margin: 0 auto 43px; }
+  .home-fitting-heading h2 {
+    color: #282522 !important; font-size: clamp(36px, 5vw, 58px) !important;
+    line-height: 1.07; letter-spacing: -2px; font-weight: 950; margin: 0 0 13px;
+  }
+  .home-fitting-heading p { color: #625d55 !important; font-size: 15px; line-height: 1.7; margin: 0; }
+  .home-fitting-layout {
+    display: grid; grid-template-columns: minmax(0, 1.22fr) minmax(0, 1fr);
+    gap: 25px; align-items: center; width: 100%;
+  }
+  .home-fitting-preview-column, .home-fitting-info-column { min-width: 0; }
+  .home-fitting-stage {
+    position: relative; height: clamp(430px, 43vw, 530px); min-height: 430px;
+    overflow: hidden; isolation: isolate; border: 2px solid #292724; border-radius: 15px;
+    background: #9d9578; box-shadow: 4px 6px 0 #292724;
+  }
+  .home-fitting-world {
+    position: absolute; inset: 0; z-index: 0; overflow: hidden;
+    background:
+      radial-gradient(circle at 4% 38%, #f8e96b 0 7%, transparent 8%),
+      linear-gradient(180deg, #626b91 0%, #ba795e 31%, #a19a7b 48%, #74715b 64%, #3e513c 100%);
+  }
+  .home-fitting-world::before {
+    content: ""; position: absolute; inset: 24% -7% 14%; opacity: .86; filter: blur(7px);
+    background:
+      linear-gradient(90deg, transparent 0 8%, #938b69 8% 17%, transparent 17% 23%, #746f59 23% 37%, transparent 37% 43%, #928767 43% 51%, transparent 51% 60%, #77715b 60% 74%, transparent 74% 80%, #9b5e3f 80% 92%, transparent 92%),
+      linear-gradient(0deg, #443f31 0 13%, transparent 13% 31%, #77735b 31% 45%, transparent 45% 100%);
+  }
+  .home-fitting-world::after {
+    content: ""; position: absolute; left: -4%; right: -4%; bottom: -2%; height: 38%; opacity: .96; filter: blur(3px);
+    background:
+      linear-gradient(180deg, transparent 0 17%, #53673c 17% 41%, #604d34 41% 66%, #4b4935 66% 100%),
+      repeating-linear-gradient(90deg, transparent 0 52px, #383a2d 53px 61px, transparent 62px 94px);
+    clip-path: polygon(0 15%, 18% 11%, 35% 31%, 53% 16%, 73% 27%, 88% 9%, 100% 18%, 100% 100%, 0 100%);
+  }
+  #homeFitCanvas {
+    position: absolute !important; z-index: 2 !important; inset: 0 !important;
+    display: block !important; width: 100% !important; height: 100% !important;
+    outline: none !important; touch-action: pan-y !important; cursor: grab;
+  }
+  #homeFitCanvas:active { cursor: grabbing; }
+  .home-fitting-userbar {
+    position: absolute; z-index: 5; top: 12px; left: 12px; right: 12px;
+    display: grid; grid-template-columns: 42px minmax(0, 1fr) auto; gap: 7px; align-items: center;
+    max-width: 355px;
+  }
+  .home-fitting-head {
+    grid-row: span 2; width: 42px; height: 42px; display: block; object-fit: cover;
+    border: 2px solid #2a2926; border-radius: 8px; background: #fffdf7; box-shadow: 2px 2px 0 #2a2926;
+    image-rendering: pixelated;
+  }
+  .home-fitting-name-label {
+    grid-column: 2 / 4; color: #fffdf7 !important; font-size: 8px; line-height: 1;
+    font-weight: 900; letter-spacing: .7px; text-shadow: 0 1px 4px #171613;
+  }
+  #homeFitUsername {
+    width: 100%; min-width: 0; height: 34px; padding: 0 10px;
+    border: 1px solid #262521; border-radius: 8px; background: #fffdf8; color: #25231f;
+    font-size: 11px; outline: none; box-shadow: 2px 2px 0 #272622;
+  }
+  #homeFitUsername::placeholder { color: #92897c; }
+  #homeFitUsername:focus { border-color: #12bdf6; box-shadow: 0 0 0 3px #50d8ff55, 2px 2px 0 #272622; }
+  #homeFitLoadSkin {
+    height: 34px; padding: 0 12px; border: 1px solid #171714; border-radius: 8px;
+    background: #302e2a; color: #fffdf7; font-size: 10px; font-weight: 900;
+    box-shadow: 2px 2px 0 #171714; transition: transform .15s, background .15s;
+  }
+  #homeFitLoadSkin:hover { background: #137ea4; transform: translateY(-1px); }
+  #homeFitLoadSkin:disabled { opacity: .65; cursor: wait; transform: none; }
+  .home-fitting-drag-hint {
+    position: absolute; z-index: 4; left: 14px; bottom: 59px; padding: 6px 8px;
+    color: #fffdf7; border: 1px solid #ffffff50; border-radius: 6px;
+    background: #29272277; font-size: 8px; font-weight: 900; letter-spacing: 1px;
+    text-shadow: 0 1px 2px #000; pointer-events: none; transition: opacity .2s;
+  }
+  .home-fitting-stage.is-user-turning .home-fitting-drag-hint { opacity: .22; }
+  .home-fitting-status {
+    position: absolute; z-index: 5; top: 63px; left: 14px; max-width: calc(100% - 28px);
+    color: #fffdf7; font-size: 9px; line-height: 1.45; text-shadow: 0 1px 4px #171613;
+    pointer-events: none; overflow-wrap: anywhere;
+  }
+  .home-fitting-status.error { color: #ffe0d5; }
+  .home-fitting-status.success { color: #e4ffe9; }
+  .home-fitting-mode-switch {
+    position: absolute; z-index: 6; left: 50%; bottom: 12px; transform: translateX(-50%);
+    display: flex; align-items: center; gap: 3px; padding: 4px; min-width: 177px;
+    border: 2px solid #292724; border-radius: 999px; background: #fffdf7;
+    box-shadow: 3px 3px 0 #292724;
+  }
+  .home-fitting-mode {
+    flex: 1; min-height: 29px; padding: 7px 12px; border: 0; border-radius: 999px;
+    background: transparent; color: #625c53; font-size: 10px; font-weight: 950; letter-spacing: .55px;
+    transition: color .15s, background .15s;
+  }
+  .home-fitting-mode.active { color: #062432; background: linear-gradient(180deg, #7ee3ff, #19baf5); }
+  .home-fitting-info-column { display: grid; gap: 22px; }
+  .home-fitting-cape-picker, .home-fitting-selected-card {
+    border: 2px solid #2b2926; border-radius: 15px; background: #fffdf7;
+    box-shadow: 5px 6px 0 #2b2926;
+  }
+  .home-fitting-cape-picker { padding: 23px 21px 21px; }
+  .home-fitting-kicker {
+    margin-bottom: 14px; color: #71685d; font-size: 9px; font-weight: 950;
+    letter-spacing: 1.6px; text-transform: uppercase;
+  }
+  .home-fitting-cape-swatches {
+    display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 6px; align-items: center;
+  }
+  .home-fitting-swatch {
+    position: relative; display: flex; align-items: center; justify-content: center;
+    min-width: 0; height: 61px; padding: 2px; overflow: hidden;
+    border: 2px solid #282622; border-radius: 7px; background: #eee7d8;
+    box-shadow: 1px 2px 0 #282622; cursor: pointer;
+    transition: transform .16s, border-color .16s, box-shadow .16s;
+  }
+  .home-fitting-swatch:hover { transform: translateY(-3px); }
+  .home-fitting-swatch.active {
+    border-color: #19bdf5; box-shadow: 0 0 0 2px #19bdf5, 1px 2px 0 #282622;
+    transform: translateY(-1px);
+  }
+  .home-fitting-swatch img { display: block; width: 100%; height: 100%; object-fit: contain; image-rendering: pixelated; }
+  .home-fitting-swatch:focus-visible { outline: 3px solid #17bdf3; outline-offset: 3px; }
+  .home-fitting-selected-card { padding: 23px 23px 20px; }
+  .home-fitting-selected-card h3 {
+    color: #22201d !important; margin: 0 0 10px; font-size: clamp(23px, 2.4vw, 34px);
+    font-weight: 950; line-height: 1.16; letter-spacing: -.7px;
+  }
+  .home-fitting-selected-card h3 .home-fitting-cape-accent { color: var(--home-cape-color, #168fb4); }
+  .home-fitting-price-line { display: flex; align-items: center; gap: 9px; flex-wrap: wrap; margin-bottom: 12px; }
+  .home-fitting-price { color: #1f1d1a; font-size: 23px; line-height: 1; font-weight: 1000; }
+  .home-fitting-old-price { color: #9f9588; font-size: 11px; font-weight: 700; text-decoration: line-through; }
+  .home-fitting-stock {
+    display: inline-flex; align-items: center; padding: 4px 8px; border: 1px solid #d4a36f;
+    border-radius: 999px; color: #985a1e; background: #fff7eb; font-size: 9px; font-weight: 800;
+  }
+  .home-fitting-stock.unavailable { color: #a82b2b; border-color: #e4b1a9; background: #fff0ed; }
+  .home-fitting-description { color: #655f56 !important; font-size: 11px; line-height: 1.7; margin: 9px 0 18px; }
+  .home-fitting-buy {
+    width: 100%; min-height: 48px; padding: 12px 16px; border: 1px solid #1a272b; border-radius: 9px;
+    color: #061b25; background: linear-gradient(180deg, #8be6ff, #20baf5);
+    font-size: 12px; font-weight: 950; box-shadow: 3px 4px 0 #1a272b;
+    transition: transform .16s, filter .16s;
+  }
+  .home-fitting-buy:hover { transform: translateY(-2px); filter: brightness(1.035); }
+  .home-fitting-buy:disabled { color: #777067; background: #e6e0d5; border-color: #bfb6a7; box-shadow: 2px 3px 0 #bfb6a7; cursor: not-allowed; transform: none; }
+  .home-fitting-details {
+    display: block; margin: 13px auto 0; padding: 3px 9px; border: 0; background: transparent;
+    color: #625b51; font-size: 11px; cursor: pointer; transition: color .15s;
+  }
+  .home-fitting-details:hover { color: #078fc3; text-decoration: underline; }
+  .home-fitting-order-status { margin: 8px 0 0; color: #625b51; font-size: 10px; line-height: 1.55; text-align: center; }
+  .home-fitting-order-status:empty { display: none; }
+  @media (max-width: 950px) {
+    #homeFittingRoom { padding-top: 45px !important; }
+    .home-fitting-layout { grid-template-columns: minmax(0, 1fr); gap: 22px; }
+    .home-fitting-stage { height: clamp(430px, 72vw, 560px); }
+    .home-fitting-info-column { grid-template-columns: minmax(0, .9fr) minmax(0, 1fr); align-items: stretch; gap: 17px; }
+    .home-fitting-cape-picker { display: flex; flex-direction: column; justify-content: center; padding: 19px 15px; }
+    .home-fitting-cape-swatches { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+    .home-fitting-swatch { height: 59px; }
+    .home-fitting-selected-card { padding: 20px; }
+  }
+  @media (max-width: 620px) {
+    #homeFittingRoom { padding-top: 35px !important; padding-bottom: 48px !important; }
+    .home-fitting-heading { margin-bottom: 28px; }
+    .home-fitting-heading h2 { font-size: clamp(34px, 10vw, 46px) !important; letter-spacing: -1.4px; }
+    .home-fitting-heading p { max-width: 340px; margin: 0 auto; font-size: 12px; }
+    .home-fitting-stage { height: min(125vw, 490px); min-height: 385px; border-radius: 12px; box-shadow: 3px 4px 0 #292724; }
+    .home-fitting-userbar { top: 10px; left: 10px; grid-template-columns: 36px minmax(0, 1fr) auto; gap: 6px; max-width: 300px; }
+    .home-fitting-head { width: 36px; height: 36px; }
+    .home-fitting-name-label { font-size: 7px; }
+    #homeFitUsername, #homeFitLoadSkin { height: 31px; font-size: 10px; }
+    .home-fitting-status { top: 57px; left: 10px; font-size: 8px; }
+    .home-fitting-drag-hint { left: 9px; bottom: 56px; font-size: 7px; }
+    .home-fitting-mode-switch { bottom: 10px; min-width: 164px; }
+    .home-fitting-mode { min-height: 27px; font-size: 9px; }
+    .home-fitting-info-column { grid-template-columns: minmax(0, 1fr); gap: 14px; }
+    .home-fitting-cape-picker { padding: 18px 15px; }
+    .home-fitting-cape-swatches { grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 5px; }
+    .home-fitting-swatch { height: 54px; border-radius: 6px; }
+    .home-fitting-selected-card { padding: 20px 18px 17px; }
+    .home-fitting-selected-card h3 { font-size: 26px; }
+    .home-fitting-price { font-size: 21px; }
+  }
+  @media (max-width: 380px) {
+    .home-fitting-cape-swatches { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+    .home-fitting-swatch { height: 62px; }
+    .home-fitting-stage { min-height: 360px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .home-fitting-swatch, .home-fitting-mode, #homeFitLoadSkin, .home-fitting-buy { transition: none !important; }
+  }
+</style>
+
+<script id="mc-store-home-fitting-room-behavior">
+(() => {
+  "use strict";
+
+  const fittingCapes = [
+    { id: "aurora",       name: "Aurora Cape",       stem: "auroracapetexture",     thumb: "auroracape.gg",       art: "media/aurora-cape.png",      color: "#10a9c8" },
+    { id: "builder",      name: "Builder Cape",      stem: "buildercapetexture",    thumb: "buildercape.gg",      art: "media/builder-cape.png",     color: "#9a5b22" },
+    { id: "copper",       name: "Copper Cape",       stem: "coppercapetexture",     thumb: "coppercape.gg",        art: "media/copper-cape.png",      color: "#27834b" },
+    { id: "crafter",      name: "Crafter Cape",      stem: "craftercapetexture",    thumb: "craftercape.gg",       art: "media/crafter-cape.png",     color: "#8a5a2b" },
+    { id: "experience",   name: "Experience Cape Code", stem: "experiencecapetexture", thumb: "experiencecape.gg", art: "media/experience-cape.png",  color: "#7545b4" },
+    { id: "home",         name: "Home Cape",         stem: "homecapetexture",       thumb: "homecape.gg",          art: "media/home-cape.png",        color: "#2f8664" },
+    { id: "menace",       name: "Menace Cape",       stem: "menacecapetexture",     thumb: "menacecape.gg",        art: "media/menace-cape.png",      color: "#d92532" },
+    { id: "purple-heart", name: "Purple Heart Cape",  stem: "twitchcapetexture",     thumb: "purpulhurtcape.gg",    art: "media/twitch-cape.png",      color: "#7145a5" }
+  ];
+
+  const stage = document.getElementById("homeFitStage");
+  const canvas = document.getElementById("homeFitCanvas");
+  const usernameInput = document.getElementById("homeFitUsername");
+  const loadButton = document.getElementById("homeFitLoadSkin");
+  const headImage = document.getElementById("homeFitHead");
+  const status = document.getElementById("homeFitStatus");
+  const swatches = document.getElementById("homeFitCapeSwatches");
+  const title = document.getElementById("homeFitCapeTitle");
+  const price = document.getElementById("homeFitCapePrice");
+  const oldPrice = document.getElementById("homeFitCapeOldPrice");
+  const stock = document.getElementById("homeFitCapeStock");
+  const description = document.getElementById("homeFitCapeDescription");
+  const buyButton = document.getElementById("homeFitBuyNow");
+  const detailsButton = document.getElementById("homeFitViewDetails");
+  const orderStatus = document.getElementById("homeFitOrderStatus");
+  const homePage = document.getElementById("homePage");
+
+  let selectedCapeId = "aurora";
+  let selectedMode = "player";
+  let homeViewer = null;
+  let viewerReady = false;
+  let currentUsername = "Steve";
+  let textureRequestToken = 0;
+  let resizeObserver = null;
+
+  const textureFolders = [
+    "", "media/", "images/", "assets/", "textures/", "Textures/", "texture/", "Texture/",
+    "texture pack/", "Texture Pack/", "texture-pack/", "texture_pack/", "capes 3D/", "Capes 3D/",
+    "Media/", "Images/", "Assets/", "TEXTURE PACK/", "Texture-Pack/", "Texture_Pack/",
+    "textures pack/", "Textures Pack/", "textures-pack/", "Textures-Pack/", "textures_pack/",
+    "capes texture pack/", "Capes Texture Pack/", "Cape Texture Pack/", "cape texture pack/", "CAPE TEXTURE PACK/",
+    "capes textures/", "Capes Textures/", "cape textures/", "Cape Textures/", "capes texture/", "Capes Texture/", "cape texture/", "Cape Texture/",
+    "media/textures/", "media/texture pack/", "assets/textures/"
+  ];
+  const imageExtensions = ["", ".png", ".PNG", ".webp", ".WEBP", ".jpg", ".JPG", ".jpeg", ".JPEG"];
+  const artFolders = ["", "media/", "capes 3D/", "Capes 3D/", "images/", "assets/", "Media/", "Images/", "Assets/", "capes/", "Capes/"];
+
+  function safeText(value) {
+    return String(value).replace(/[&<>"']/g, ch => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"})[ch]);
+  }
+  function baseUrl() {
+    try {
+      return typeof mcStoreNestedAssetBaseUrl === "function"
+        ? mcStoreNestedAssetBaseUrl()
+        : new URL(".", document.baseURI).href;
+    } catch (_) { return new URL(".", document.baseURI).href; }
+  }
+  function makeUrl(path) {
+    try {
+      if (typeof mcStoreNestedAssetUrl === "function" && path && !/^https?:/i.test(path)) return mcStoreNestedAssetUrl(path);
+      return new URL(String(path || ""), baseUrl()).href;
+    } catch (_) { return String(path || ""); }
+  }
+  function probeImage(url, timeoutMs = 1800) {
+    return new Promise(resolve => {
+      if (!url) return resolve(null);
+      const image = new Image();
+      let finished = false;
+      const done = result => {
+        if (finished) return;
+        finished = true;
+        clearTimeout(timer);
+        image.onload = null;
+        image.onerror = null;
+        resolve(result);
+      };
+      const timer = setTimeout(() => done(null), timeoutMs);
+      image.onload = () => done(url);
+      image.onerror = () => done(null);
+      image.src = url;
+      if (image.complete && image.naturalWidth > 0) done(url);
+    });
+  }
+  function catalogCape(capeId) {
+    try { return Array.isArray(capes) ? capes.find(item => item.id === capeId) || null : null; }
+    catch (_) { return null; }
+  }
+  function getCape(capeId) { return fittingCapes.find(item => item.id === capeId) || fittingCapes[0]; }
+  function showStatus(message, state = "") {
+    if (!status) return;
+    status.textContent = message;
+    status.classList.remove("error", "success");
+    if (state) status.classList.add(state);
+  }
+  function formatMoney(value) {
+    if (typeof value !== "number" || !Number.isFinite(value)) return "Unavailable";
+    return "$" + (Number.isInteger(value) ? value.toFixed(0) : value.toFixed(2));
+  }
+
+  async function resolveNamedAsset(filename, folders, extensions) {
+    try {
+      if (typeof findMcStoreNestedAsset === "function") {
+        const indexed = await findMcStoreNestedAsset([filename]);
+        if (indexed && indexed.url) return indexed.url;
+        if (indexed && indexed.indexAvailable) return null;
+      }
+    } catch (_) {}
+    const names = /\.[a-z0-9]{2,5}$/i.test(filename) ? [filename] : extensions.map(ext => filename + ext);
+    for (const folder of folders) {
+      const found = await Promise.all(names.map(name => probeImage(makeUrl(folder + name))));
+      const match = found.find(Boolean);
+      if (match) return match;
+    }
+    return null;
+  }
+
+  async function resolveCapeTexture(cape) {
+    try {
+      if (typeof findMcStoreNestedAsset === "function") {
+        const indexed = await findMcStoreNestedAsset([cape.stem]);
+        if (indexed && indexed.url) return indexed.url;
+        if (indexed && indexed.indexAvailable) return null;
+      }
+    } catch (_) {}
+    for (const folder of textureFolders) {
+      const names = imageExtensions.map(ext => cape.stem + ext);
+      const found = await Promise.all(names.map(name => probeImage(makeUrl(folder + name), 1300)));
+      const match = found.find(Boolean);
+      if (match) return match;
+    }
+    return null;
+  }
+
+  async function prepareSwatchImages() {
+    const images = swatches ? swatches.querySelectorAll("img[data-thumb-file]") : [];
+    await Promise.all(Array.from(images).map(async image => {
+      const filename = image.dataset.thumbFile;
+      const found = await resolveNamedAsset(filename, artFolders, [""]);
+      if (found) {
+        image.dataset.homeThumbResolved = "1";
+        image.dataset.homeThumbFallback = "0";
+        image.src = found;
+      } else {
+        image.dataset.homeThumbFallback = "1";
+        image.src = image.dataset.fallbackArt || "";
+      }
+    }));
+  }
+
+  function renderSwatches() {
+    if (!swatches) return;
+    swatches.innerHTML = fittingCapes.map(cape => `
+      <button class="home-fitting-swatch${cape.id === selectedCapeId ? " active" : ""}" type="button"
+        data-home-fit-cape="${safeText(cape.id)}" aria-pressed="${cape.id === selectedCapeId ? "true" : "false"}"
+        title="${safeText(cape.name)}" aria-label="Equip ${safeText(cape.name)}">
+        <img src="${safeText(cape.thumb)}" data-thumb-file="${safeText(cape.thumb)}"
+          data-fallback-art="${safeText(cape.art)}" alt="${safeText(cape.name)}" loading="lazy" decoding="async">
+      </button>`).join("");
+    swatches.querySelectorAll(".home-fitting-swatch").forEach(button => {
+      button.addEventListener("click", () => selectCape(button.dataset.homeFitCape));
+    });
+    swatches.querySelectorAll("img").forEach(image => {
+      image.addEventListener("error", () => {
+        if (image.dataset.homeThumbFallback === "1") {
+          if (typeof window.handleCapeCardImageError === "function") window.handleCapeCardImageError(image);
+          return;
+        }
+        image.dataset.homeThumbFallback = "1";
+        image.dataset.imageFile = image.dataset.fallbackArt || "";
+        image.dataset.originalSrc = image.dataset.fallbackArt || "";
+        image.src = image.dataset.fallbackArt || "";
+      });
+    });
+    prepareSwatchImages();
+  }
+
+  function updateSelectedPanel(cape) {
+    const item = catalogCape(cape.id);
+    const itemName = item ? item.name : cape.name;
+    const itemDescription = item ? item.description : "A cape from the MC STORE collection.";
+    const itemPrice = item && typeof item.price === "number" && item.stock ? item.price : null;
+    const itemStock = Boolean(item && item.stock && typeof item.price === "number");
+    if (title) {
+      const baseName = itemName.replace(/\s+Cape Code$/i, "").replace(/\s+Cape$/i, "");
+      const suffix = itemName.slice(baseName.length);
+      title.innerHTML = `<span class="home-fitting-cape-accent">${safeText(baseName)}</span>${safeText(suffix)}`;
+      title.style.setProperty("--home-cape-color", cape.color);
+    }
+    if (price) price.textContent = itemPrice === null ? "Unavailable" : formatMoney(itemPrice);
+    if (oldPrice) {
+      if (item && item.stock && typeof item.originalPrice === "number") {
+        oldPrice.textContent = formatMoney(item.originalPrice);
+        oldPrice.hidden = false;
+      } else {
+        oldPrice.textContent = "";
+        oldPrice.hidden = true;
+      }
+    }
+    if (stock) {
+      stock.textContent = itemStock ? "In stock" : "Unavailable";
+      stock.classList.toggle("unavailable", !itemStock);
+    }
+    if (description) description.textContent = itemDescription || "Preview this cape on your Minecraft skin.";
+    if (buyButton) {
+      buyButton.disabled = !itemStock;
+      buyButton.textContent = itemStock ? "Buy now" : "Currently unavailable";
+    }
+    if (detailsButton) detailsButton.onclick = () => { if (typeof window.openCape === "function") window.openCape(cape.id); };
+    if (swatches) {
+      swatches.querySelectorAll(".home-fitting-swatch").forEach(button => {
+        const active = button.dataset.homeFitCape === cape.id;
+        button.classList.toggle("active", active);
+        button.setAttribute("aria-pressed", active ? "true" : "false");
+      });
+    }
+  }
+
+  function applyEquipmentMode() {
+    if (!homeViewer || !homeViewer.playerObject) return;
+    const player = homeViewer.playerObject;
+    player.skin.visible = true;
+    player.backEquipment = selectedMode === "elytra" ? "elytra" : "cape";
+    homeViewer.animation = new window.skinview3d.WalkingAnimation();
+    if (stage) {
+      stage.classList.toggle("mode-elytra", selectedMode === "elytra");
+      stage.classList.toggle("mode-player", selectedMode === "player");
+    }
+    document.querySelectorAll(".home-fitting-mode[data-home-fit-mode]").forEach(button => {
+      const active = button.dataset.homeFitMode === selectedMode;
+      button.classList.toggle("active", active);
+      button.setAttribute("aria-pressed", active ? "true" : "false");
+    });
+  }
+
+  async function selectCape(capeId) {
+    const cape = getCape(capeId);
+    selectedCapeId = cape.id;
+    if (orderStatus) orderStatus.textContent = "";
+    updateSelectedPanel(cape);
+    const token = ++textureRequestToken;
+    if (!homeViewer || !viewerReady) return;
+    showStatus(`Equipping ${cape.name}…`);
+    try {
+      const textureUrl = await resolveCapeTexture(cape);
+      if (token !== textureRequestToken || !homeViewer) return;
+      const fallbackUrl = makeUrl(cape.art);
+      await homeViewer.loadCape(textureUrl || fallbackUrl);
+      if (token !== textureRequestToken || !homeViewer) return;
+      applyEquipmentMode();
+      showStatus(`${cape.name} equipped. Drag the player to turn around.`, "success");
+    } catch (error) {
+      if (token !== textureRequestToken) return;
+      console.warn("MC STORE Fitting Room could not load the cape texture", error);
+      showStatus(`Could not load ${cape.name}'s texture. Check that ${cape.stem} is uploaded to the repository.`, "error");
+    }
+  }
+
+  async function loadUsernameSkin() {
+    const username = String(usernameInput && usernameInput.value || "").trim();
+    if (!/^[A-Za-z0-9_]{1,16}$/.test(username)) {
+      showStatus("Enter a valid Java username (1–16 letters, numbers, or underscores).", "error");
+      usernameInput && usernameInput.focus();
+      return;
+    }
+    if (!homeViewer) {
+      currentUsername = username;
+      showStatus("Loading the 3D preview…");
+      await ensureViewer();
+      return;
+    }
+    loadButton.disabled = true;
+    showStatus(`Loading ${username}'s skin…`);
+    try {
+      await homeViewer.loadSkin(`https://minotar.net/skin/${encodeURIComponent(username)}`);
+      currentUsername = username;
+      if (headImage) headImage.src = `https://minotar.net/helm/${encodeURIComponent(username)}/40.png`;
+      if (homeViewer.playerObject && homeViewer.playerObject.skin) homeViewer.playerObject.skin.visible = true;
+      applyEquipmentMode();
+      showStatus(`Skin loaded for ${username}. Your selected cape is equipped.`, "success");
+    } catch (error) {
+      showStatus(`Could not load ${username}'s skin. Check the Java username and try again.`, "error");
+      console.warn("MC STORE Fitting Room could not load the requested skin", error);
+    } finally {
+      if (loadButton) loadButton.disabled = false;
+    }
+  }
+
+  function installDragTurn(viewer, canvasElement) {
+    let pointer = null;
+    const onDown = event => {
+      if (event.pointerType === "mouse" && event.button !== 0) return;
+      pointer = { id: event.pointerId, startX: event.clientX, startY: event.clientY, lastX: event.clientX, turning: false, scrolling: false };
+    };
+    const onMove = event => {
+      if (!pointer || pointer.id !== event.pointerId || pointer.scrolling || !homeViewer) return;
+      const dxTotal = event.clientX - pointer.startX;
+      const dyTotal = event.clientY - pointer.startY;
+      if (!pointer.turning) {
+        if (Math.abs(dxTotal) < 4 && Math.abs(dyTotal) < 4) return;
+        if (Math.abs(dyTotal) > Math.abs(dxTotal) * 1.12) { pointer.scrolling = true; return; }
+        pointer.turning = true;
+        stage.classList.add("is-user-turning");
+        try { canvasElement.setPointerCapture(event.pointerId); } catch (_) {}
+      }
+      const dx = event.clientX - pointer.lastX;
+      pointer.lastX = event.clientX;
+      if (homeViewer && homeViewer.playerWrapper) homeViewer.playerWrapper.rotation.y += dx * 0.012;
+      if (event.pointerType === "mouse" && event.cancelable) event.preventDefault();
+    };
+    const onUp = event => {
+      if (pointer && pointer.id === event.pointerId) {
+        pointer = null;
+        stage.classList.remove("is-user-turning");
+        try { if (canvasElement.hasPointerCapture(event.pointerId)) canvasElement.releasePointerCapture(event.pointerId); } catch (_) {}
+      }
+    };
+    canvasElement.addEventListener("pointerdown", onDown, { passive: true });
+    canvasElement.addEventListener("pointermove", onMove, { passive: false });
+    canvasElement.addEventListener("pointerup", onUp, { passive: true });
+    canvasElement.addEventListener("pointercancel", onUp, { passive: true });
+    canvasElement.addEventListener("lostpointercapture", onUp, { passive: true });
+    canvasElement.__mcHomeFitDragCleanup = () => {
+      canvasElement.removeEventListener("pointerdown", onDown);
+      canvasElement.removeEventListener("pointermove", onMove);
+      canvasElement.removeEventListener("pointerup", onUp);
+      canvasElement.removeEventListener("pointercancel", onUp);
+      canvasElement.removeEventListener("lostpointercapture", onUp);
+    };
+  }
+
+  async function ensureViewer() {
+    if (homeViewer || !stage || !canvas || !window.skinview3d || typeof window.skinview3d.SkinViewer !== "function") return;
+    if (homePage && (homePage.style.display === "none" || homePage.classList.contains("shop-only"))) return;
+    stage.classList.add("is-loading");
+    try {
+      homeViewer = new window.skinview3d.SkinViewer({
+        canvas,
+        width: Math.max(320, stage.clientWidth || 650),
+        height: Math.max(360, stage.clientHeight || 500),
+        pixelRatio: Math.min(window.devicePixelRatio || 1, 2),
+        enableControls: true,
+        animation: new window.skinview3d.WalkingAnimation()
+      });
+      homeViewer.controls.enabled = false;
+      homeViewer.controls.enablePan = false;
+      homeViewer.controls.enableRotate = false;
+      homeViewer.controls.enableZoom = false;
+      homeViewer.controls.enableDamping = false;
+      homeViewer.autoRotate = false;
+      homeViewer.controls.autoRotate = false;
+      homeViewer.zoom = 0.76;
+      homeViewer.playerWrapper.rotation.x = 0;
+      homeViewer.playerWrapper.rotation.z = 0;
+      homeViewer.playerWrapper.rotation.y = Math.PI - 0.24;
+      if (homeViewer.playerObject && homeViewer.playerObject.skin) homeViewer.playerObject.skin.visible = true;
+      if (homeViewer.playerObject) homeViewer.playerObject.backEquipment = selectedMode === "elytra" ? "elytra" : "cape";
+      installDragTurn(homeViewer, canvas);
+      const viewerAtStart = homeViewer;
+      showStatus(`Loading ${currentUsername}'s skin…`);
+      await homeViewer.loadSkin(`https://minotar.net/skin/${encodeURIComponent(currentUsername || "Steve")}`);
+      if (viewerAtStart !== homeViewer) return;
+      if (homeViewer.playerObject && homeViewer.playerObject.skin) homeViewer.playerObject.skin.visible = true;
+      if (headImage) headImage.src = `https://minotar.net/helm/${encodeURIComponent(currentUsername || "Steve")}/40.png`;
+      viewerReady = true;
+      applyEquipmentMode();
+      stage.classList.remove("is-loading");
+      await selectCape(selectedCapeId);
+      if (!resizeObserver && "ResizeObserver" in window) {
+        resizeObserver = new ResizeObserver(() => {
+          if (!homeViewer || !stage.clientWidth || !stage.clientHeight) return;
+          homeViewer.width = stage.clientWidth;
+          homeViewer.height = stage.clientHeight;
+        });
+        resizeObserver.observe(stage);
+      }
+      showStatus(`${currentUsername || "Steve"} is ready. Drag to turn the player.`, "success");
+    } catch (error) {
+      stage.classList.remove("is-loading");
+      if (canvas.__mcHomeFitDragCleanup) canvas.__mcHomeFitDragCleanup();
+      if (homeViewer) { try { homeViewer.dispose(); } catch (_) {} }
+      homeViewer = null;
+      viewerReady = false;
+      console.warn("MC STORE Fitting Room could not start the 3D viewer", error);
+      showStatus("The 3D preview could not load. Check your connection and make sure WebGL is enabled.", "error");
+    }
+  }
+
+  function disposeViewer() {
+    textureRequestToken++;
+    viewerReady = false;
+    if (resizeObserver) { try { resizeObserver.disconnect(); } catch (_) {} resizeObserver = null; }
+    if (canvas && canvas.__mcHomeFitDragCleanup) { try { canvas.__mcHomeFitDragCleanup(); } catch (_) {} }
+    if (homeViewer) { try { homeViewer.dispose(); } catch (_) {} homeViewer = null; }
+  }
+
+  document.querySelectorAll(".home-fitting-mode[data-home-fit-mode]").forEach(button => {
+    button.addEventListener("click", () => {
+      selectedMode = button.dataset.homeFitMode === "elytra" ? "elytra" : "player";
+      applyEquipmentMode();
+      if (homeViewer) showStatus(selectedMode === "elytra" ? "Elytra mode selected." : "Player cape mode selected.", "success");
+    });
+  });
+  if (loadButton) loadButton.addEventListener("click", loadUsernameSkin);
+  if (usernameInput) usernameInput.addEventListener("keydown", event => {
+    if (event.key === "Enter") { event.preventDefault(); loadUsernameSkin(); }
+  });
+  if (buyButton) buyButton.addEventListener("click", () => {
+    const cape = getCape(selectedCapeId);
+    const item = catalogCape(cape.id);
+    if (!item || !item.stock || typeof item.price !== "number") return;
+    if (orderStatus) orderStatus.textContent = "Opening MC STORE on Discord to confirm your order. Online checkout is not connected on this page.";
+    window.open("https://discord.gg/G75MSAVe2k", "_blank", "noopener,noreferrer");
+  });
+
+  renderSwatches();
+  updateSelectedPanel(getCape(selectedCapeId));
+  if (usernameInput) usernameInput.value = "";
+  const lifecycleObserver = new MutationObserver(() => {
+    const visible = homePage && homePage.style.display !== "none" && !homePage.classList.contains("shop-only") && stage && stage.offsetWidth > 0;
+    if (visible) {
+      if (!homeViewer) ensureViewer();
+    } else if (homeViewer) {
+      disposeViewer();
+    }
+  });
+  if (homePage) lifecycleObserver.observe(homePage, { attributes: true, attributeFilter: ["class", "style"] });
+  requestAnimationFrame(() => {
+    const visible = homePage && homePage.style.display !== "none" && !homePage.classList.contains("shop-only") && stage && stage.offsetWidth > 0;
+    if (visible) ensureViewer();
+  });
+})();
+</script>
 
 </body>
 </html>
