@@ -24641,11 +24641,6 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
           const deltaX = event.clientX - pointerState.lastX;
           pointerState.lastX = event.clientX;
           pointerState.lastY = event.clientY;
-          if (Math.abs(deltaX) > 0.2) {
-            stage.classList.remove("cape-light-hit");
-            void stage.offsetWidth;
-            stage.classList.add("cape-light-hit");
-          }
           if (mcStoreViewer && mcStoreViewer.playerWrapper) {
             // Turn the whole display model in every mode; never bend the cape mesh itself.
             mcStoreViewer.playerWrapper.rotation.y += deltaX * 0.012;
@@ -28932,11 +28927,6 @@ nav .nav-links .nav-link[href="#home"].active {
       }
       const dx = event.clientX - pointer.lastX;
       pointer.lastX = event.clientX;
-      if (Math.abs(dx) > 0.2) {
-        stage.classList.remove("home-fit-light-hit");
-        void stage.offsetWidth;
-        stage.classList.add("home-fit-light-hit");
-      }
       if (homeViewer && homeViewer.playerWrapper) {
         homeViewer.playerWrapper.rotation.x = 0;
         homeViewer.playerWrapper.rotation.z = 0;
@@ -29676,6 +29666,55 @@ nav .nav-links .nav-link[href="#home"].active {
   updateBadge();
   render();
   try { if (window.location.hash === "#cart") window.mcStoreOpenCart(); } catch (_) {}
+})();
+</script>
+
+
+<style id="mc-store-stability-no-glint-final">
+/* Stability pass: never fade product artwork to blank during refresh, route changes, or fast cape selection. */
+#featured .featured-image img,
+#featured .featured-image img.mc-store-spin-now,
+#featured .featured-image img.mc-showcase-cape-outgoing,
+#shop .card img,
+#details .recommendations .card img {
+  backface-visibility: visible !important;
+}
+#featured .featured-image img:not(.mc-showcase-cape-outgoing) { opacity: 1 !important; }
+.mc-showcase-info-out,
+.mc-showcase-info-enter,
+#details .storefront-preview,
+#details .storefront-preview.preview-loading .cape-preview-fallback,
+#details .storefront-preview:not(.preview-loading):not(.fallback-cape-only) #capeSkinViewer,
+body.mc-open-cape-now #details .detail-card {
+  animation: none !important;
+  transition: none !important;
+  filter: none !important;
+}
+.mc-showcase-info-out { opacity: 1 !important; transform: none !important; filter: none !important; }
+.mc-showcase-info-enter { opacity: 1 !important; transform: none !important; filter: none !important; }
+/* Keep the requested fast 360-degree cape change, but remove the reflective/glowing sweep. */
+.home-fitting-stage::after,
+#details .storefront-preview::after,
+#details .storefront-preview.cape-light-hit::after,
+.home-fitting-stage.home-fit-light-hit::after { display: none !important; animation: none !important; opacity: 0 !important; }
+#details .cape-rotate-hint { animation: none !important; }
+/* Avoid blanking the previous image while the next image resolves; keep existing art visible. */
+#featured .featured-image img[hidden] { display: block !important; visibility: visible !important; }
+@media (prefers-reduced-motion: reduce) {
+  .mc-showcase-info-out, .mc-showcase-info-enter { opacity: 1 !important; transform: none !important; }
+}
+</style>
+
+<script id="mc-store-no-glow-cleanup">
+(() => {
+  const clearGlint = () => {
+    document.querySelectorAll('.home-fit-light-hit, .cape-light-hit').forEach(el => {
+      el.classList.remove('home-fit-light-hit', 'cape-light-hit');
+    });
+  };
+  clearGlint();
+  window.addEventListener('pageshow', clearGlint);
+  window.addEventListener('hashchange', clearGlint);
 })();
 </script>
 
