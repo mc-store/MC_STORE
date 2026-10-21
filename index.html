@@ -3384,6 +3384,7 @@ const capes = [
     id:"moonlight",
     name:"Moonlight Cape",
     textureStem:"moonlightcapetexture",
+    elytraTextureStem:"moonlightcapetexture",
     price:null,
     stock:false,
     image:"media/moonlight-cape.png",
@@ -24243,13 +24244,17 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
 
   async function findCapeTexture(stem) {
     if (!stem) return null;
-    // Search all committed repository paths first, including arbitrarily nested folders.
-    const repoResult = await findMcStoreNestedAsset(capeTextureExtensions.map(extension => stem + extension));
-    if (repoResult.indexAvailable) return repoResult.url || null;
-    // If the GitHub API is unavailable (for example due to rate limiting), use the
-    // existing direct-path checks as a fallback.
+    const fileNames = capeTextureExtensions.map(extension => stem + extension);
+    // First find the exact committed file, even if it lives in a deeply nested folder.
+    // A repository-tree lookup can be cached or incomplete, so a miss must NOT stop the
+    // direct-path fallback. This is important for Moonlight's moonlightcapetexture file.
+    try {
+      const repoResult = await findMcStoreNestedAsset(fileNames);
+      if (repoResult && repoResult.url) return repoResult.url;
+    } catch (_) {}
+    // Probe common paths even when the GitHub API answered but did not list the file.
     for (const folder of capeTextureFolders) {
-      const urls = capeTextureExtensions.map(extension => folder + stem + extension);
+      const urls = fileNames.map(fileName => folder + fileName);
       const results = await Promise.all(urls.map(probeImage));
       const found = results.find(Boolean);
       if (found) return found;
@@ -24461,6 +24466,12 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
     mcStoreViewer.playerWrapper.position.z = 0;
     const capeRoot = player.cape;
     const capeMesh = capeRoot && capeRoot.cape;
+    // SkinViewer's cape texture is also the Elytra texture. Re-attach it explicitly
+    // after mode changes so Moonlight uses moonlightcapetexture on BOTH 3D models.
+    if (mcStoreViewer.capeTexture) {
+      if (player.cape) player.cape.map = mcStoreViewer.capeTexture;
+      if (player.elytra) player.elytra.map = mcStoreViewer.capeTexture;
+    }
     // Skinview3D tilts the cape back by 10.8° by default. In standalone CAPE mode
     // flatten the cape root as well as its inner mesh, so the panel is upright.
     if (capeRoot && capeRoot.rotation) {
