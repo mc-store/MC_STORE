@@ -24629,7 +24629,8 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
           const totalY = event.clientY - pointerState.startY;
           if (!pointerState.turning) {
             if (Math.abs(totalX) < 4 && Math.abs(totalY) < 4) return;
-            if (Math.abs(totalY) > Math.abs(totalX) * 1.12) {
+            // In standalone CAPE mode, vertical drags remain page scrolling; Player/Elytra are freely draggable.
+            if (mcStorePreviewMode === "cape" && Math.abs(totalY) > Math.abs(totalX) * 1.12) {
               pointerState.scrolling = true;
               return;
             }
@@ -24639,13 +24640,19 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
             try { canvas.setPointerCapture(event.pointerId); } catch (_) {}
           }
           const deltaX = event.clientX - pointerState.lastX;
+          const deltaY = event.clientY - pointerState.lastY;
           pointerState.lastX = event.clientX;
           pointerState.lastY = event.clientY;
           if (mcStoreViewer && mcStoreViewer.playerWrapper) {
-            // Turn the whole display model in every mode; never bend the cape mesh itself.
+            // CAPE mode rotates around its own center with horizontal drag only: no pan/translation.
+            // PLAYER and ELYTRA respond to both horizontal and vertical drag while staying centered.
             mcStoreViewer.playerWrapper.rotation.y += deltaX * 0.012;
+            if (mcStorePreviewMode !== "cape") {
+              mcStoreViewer.playerWrapper.rotation.x = Math.max(-0.65, Math.min(0.65, mcStoreViewer.playerWrapper.rotation.x - deltaY * 0.009));
+              mcStoreViewer.playerWrapper.rotation.z = 0;
+            }
           }
-          if (event.pointerType === "mouse" && event.cancelable) event.preventDefault();
+          if (event.cancelable) event.preventDefault();
         };
         const onPointerUp = event => {
           if (pointerState && pointerState.pointerId === event.pointerId) {
@@ -28819,7 +28826,9 @@ nav .nav-links .nav-link[href="#home"].active {
   function updateHomeMotionButton() {
     const button = document.getElementById("homeFitMotionToggle");
     if (!button) return;
-    button.textContent = isWalking ? "Ⅱ Pause walking" : "▶ Resume walking";
+    // Keep only the compact icon, matching the product preview control.
+    button.textContent = isWalking ? "Ⅱ" : "▶";
+    button.setAttribute("aria-label", isWalking ? "Pause walking" : "Resume walking");
     button.setAttribute("aria-pressed", isWalking ? "true" : "false");
     button.title = isWalking ? "Pause the player and keep the current pose" : "Resume the player walking animation";
   }
@@ -28912,7 +28921,7 @@ nav .nav-links .nav-link[href="#home"].active {
     let pointer = null;
     const onDown = event => {
       if (event.pointerType === "mouse" && event.button !== 0) return;
-      pointer = { id: event.pointerId, startX: event.clientX, startY: event.clientY, lastX: event.clientX, turning: false, scrolling: false };
+      pointer = { id: event.pointerId, startX: event.clientX, startY: event.clientY, lastX: event.clientX, lastY: event.clientY, turning: false, scrolling: false };
     };
     const onMove = event => {
       if (!pointer || pointer.id !== event.pointerId || pointer.scrolling || !homeViewer) return;
@@ -28920,19 +28929,21 @@ nav .nav-links .nav-link[href="#home"].active {
       const dyTotal = event.clientY - pointer.startY;
       if (!pointer.turning) {
         if (Math.abs(dxTotal) < 4 && Math.abs(dyTotal) < 4) return;
-        if (Math.abs(dyTotal) > Math.abs(dxTotal) * 1.12) { pointer.scrolling = true; return; }
         pointer.turning = true;
         stage.classList.add("is-user-turning");
         try { canvasElement.setPointerCapture(event.pointerId); } catch (_) {}
       }
       const dx = event.clientX - pointer.lastX;
+      const dy = event.clientY - pointer.lastY;
       pointer.lastX = event.clientX;
+      pointer.lastY = event.clientY;
       if (homeViewer && homeViewer.playerWrapper) {
-        homeViewer.playerWrapper.rotation.x = 0;
-        homeViewer.playerWrapper.rotation.z = 0;
+        // The player/Elytra rotate in place: horizontal drag turns, vertical drag tilts the view.
         homeViewer.playerWrapper.rotation.y += dx * 0.012;
+        homeViewer.playerWrapper.rotation.x = Math.max(-0.65, Math.min(0.65, homeViewer.playerWrapper.rotation.x - dy * 0.009));
+        homeViewer.playerWrapper.rotation.z = 0;
       }
-      if (event.pointerType === "mouse" && event.cancelable) event.preventDefault();
+      if (event.cancelable) event.preventDefault();
     };
     const onUp = event => {
       if (pointer && pointer.id === event.pointerId) {
@@ -29717,6 +29728,33 @@ body.mc-open-cape-now #details .detail-card {
   window.addEventListener('hashchange', clearGlint);
 })();
 </script>
+
+
+<style id="mc-store-final-player-controls-drag-fix">
+/* CAPE / PLAYER / ELYTRA tabs remain available in the product viewer. */
+#details .preview-tabs { display:flex !important; }
+#details .product-preview-toolbar { display:flex !important; }
+/* CAPE rotates around its center on the horizontal axis; the player can tilt in both axes. */
+#details #capeSkinViewer { touch-action:pan-y !important; }
+#details #capePreviewStage.mode-player #capeSkinViewer,
+#details #capePreviewStage.mode-elytra #capeSkinViewer { touch-action:none !important; }
+#homeFitCanvas { touch-action:none !important; }
+/* Match the compact pause/play icon inside the cape preview: top-right, no words. */
+.home-fitting-motion-toggle {
+  top:10px !important; right:10px !important; left:auto !important; bottom:auto !important;
+  transform:none !important; width:34px !important; min-width:34px !important; max-width:34px !important;
+  height:34px !important; min-height:34px !important; padding:0 !important;
+  display:grid !important; place-items:center !important; border-radius:9px !important;
+  background:#342c28 !important; color:#fffdf7 !important; border:1.5px solid rgba(255,255,255,.45) !important;
+  box-shadow:0 2px 0 rgba(0,0,0,.25) !important; font-size:13px !important; line-height:1 !important;
+  font-weight:900 !important; white-space:nowrap !important;
+}
+.home-fitting-motion-toggle:hover { background:#137ea4 !important; }
+.home-fitting-motion-toggle[aria-pressed="false"] { background:#fffdf7 !important; color:#282522 !important; }
+@media(max-width:620px) {
+  .home-fitting-motion-toggle { top:8px !important; right:8px !important; width:32px !important; min-width:32px !important; max-width:32px !important; height:32px !important; min-height:32px !important; }
+}
+</style>
 
 </body>
 </html>
