@@ -24441,6 +24441,11 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
     // All user rotation is applied to playerWrapper, so the cape stays correctly attached.
     mcStoreViewer.playerWrapper.rotation.x = 0;
     mcStoreViewer.playerWrapper.rotation.z = 0;
+    // A previous CAPE drag may have offset the wrapper to keep the cape centered.
+    // Reset that compensation whenever switching preview modes.
+    mcStoreViewer.playerWrapper.position.x = 0;
+    mcStoreViewer.playerWrapper.position.y = 0;
+    mcStoreViewer.playerWrapper.position.z = 0;
     const capeMesh = player.cape && player.cape.cape;
     if (capeMesh && capeMesh.rotation) {
       capeMesh.rotation.x = 0;
@@ -24644,12 +24649,34 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
           pointerState.lastX = event.clientX;
           pointerState.lastY = event.clientY;
           if (mcStoreViewer && mcStoreViewer.playerWrapper) {
-            // CAPE mode rotates around its own center with horizontal drag only: no pan/translation.
-            // PLAYER and ELYTRA respond to both horizontal and vertical drag while staying centered.
-            mcStoreViewer.playerWrapper.rotation.y += deltaX * 0.012;
-            if (mcStorePreviewMode !== "cape") {
-              mcStoreViewer.playerWrapper.rotation.x = Math.max(-0.65, Math.min(0.65, mcStoreViewer.playerWrapper.rotation.x - deltaY * 0.009));
-              mcStoreViewer.playerWrapper.rotation.z = 0;
+            const wrapper = mcStoreViewer.playerWrapper;
+            if (mcStorePreviewMode === "cape") {
+              // Rotate the hidden player wrapper around the cape mesh's world-space
+              // center. Compensating the wrapper position prevents the cape from
+              // orbiting/sliding across the preview while it turns through 360°.
+              const capeCenterObject = mcStoreViewer.playerObject && mcStoreViewer.playerObject.cape && mcStoreViewer.playerObject.cape.cape;
+              const Vector3 = wrapper.position && wrapper.position.constructor;
+              if (capeCenterObject && typeof capeCenterObject.getWorldPosition === "function" && typeof Vector3 === "function") {
+                wrapper.updateMatrixWorld(true);
+                const centerBefore = new Vector3();
+                capeCenterObject.getWorldPosition(centerBefore);
+                wrapper.rotation.y += deltaX * 0.012;
+                wrapper.updateMatrixWorld(true);
+                const centerAfter = new Vector3();
+                capeCenterObject.getWorldPosition(centerAfter);
+                wrapper.position.x += centerBefore.x - centerAfter.x;
+                wrapper.position.y += centerBefore.y - centerAfter.y;
+                wrapper.position.z += centerBefore.z - centerAfter.z;
+                wrapper.updateMatrixWorld(true);
+              } else {
+                // Safe fallback for an unexpected viewer/library version.
+                wrapper.rotation.y += deltaX * 0.012;
+              }
+            } else {
+              // PLAYER and ELYTRA stay freely draggable in both axes.
+              wrapper.rotation.y += deltaX * 0.012;
+              wrapper.rotation.x = Math.max(-0.65, Math.min(0.65, wrapper.rotation.x - deltaY * 0.009));
+              wrapper.rotation.z = 0;
             }
           }
           if (event.cancelable) event.preventDefault();
