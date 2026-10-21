@@ -3909,18 +3909,22 @@ function showFeatured(index) {
     recoverFeaturedCapeImage(this, cape, requestToken);
   };
 
-  // Every artwork swap restarts the fast 360-degree spin from the same upright position.
+  // The very first cape is shown immediately and upright on refresh; only later cape changes spin.
+  const hasShownInitialCape = featuredImage.dataset.mcHasPaintedFirstCape === "1";
   featuredImage.classList.remove("cape-spin", "is-spinning", "spin-in", "mc-store-spin-now");
   featuredImage.dataset.capeSpinTarget = nextShowcaseURL;
   const currentShowcaseURL = new URL(featuredImage.currentSrc || featuredImage.src, document.baseURI).href;
   if (currentShowcaseURL !== nextShowcaseURL || !featuredImage.complete || featuredImage.naturalWidth === 0) {
     featuredImage.src = nextShowcaseImage;
   }
-  void featuredImage.offsetWidth;
-  featuredImage.classList.add("mc-store-spin-now");
-  window.setTimeout(() => {
-    if (requestToken === featuredImageRequestToken) featuredImage.classList.remove("mc-store-spin-now");
-  }, 125);
+  featuredImage.dataset.mcHasPaintedFirstCape = "1";
+  if (hasShownInitialCape) {
+    void featuredImage.offsetWidth;
+    featuredImage.classList.add("mc-store-spin-now");
+    window.setTimeout(() => {
+      if (requestToken === featuredImageRequestToken) featuredImage.classList.remove("mc-store-spin-now");
+    }, 125);
+  }
 
   const featuredName = document.getElementById("featuredName");
   featuredName.innerHTML = cape.id === "builder"
@@ -24455,7 +24459,15 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
     mcStoreViewer.playerWrapper.position.x = 0;
     mcStoreViewer.playerWrapper.position.y = 0;
     mcStoreViewer.playerWrapper.position.z = 0;
-    const capeMesh = player.cape && player.cape.cape;
+    const capeRoot = player.cape;
+    const capeMesh = capeRoot && capeRoot.cape;
+    // Skinview3D tilts the cape back by 10.8° by default. In standalone CAPE mode
+    // flatten the cape root as well as its inner mesh, so the panel is upright.
+    if (capeRoot && capeRoot.rotation) {
+      capeRoot.rotation.x = mode === "cape" ? 0 : (10.8 * Math.PI / 180);
+      capeRoot.rotation.y = Math.PI;
+      capeRoot.rotation.z = 0;
+    }
     if (capeMesh && capeMesh.rotation) {
       capeMesh.rotation.x = 0;
       capeMesh.rotation.y = 0;
@@ -24684,7 +24696,8 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
             } else {
               // PLAYER and ELYTRA stay freely draggable in both axes.
               wrapper.rotation.y += deltaX * 0.012;
-              wrapper.rotation.x = Math.max(-0.65, Math.min(0.65, wrapper.rotation.x - deltaY * 0.009));
+              // Match the cursor: moving upward tilts the player upward, not downward.
+              wrapper.rotation.x = Math.max(-0.65, Math.min(0.65, wrapper.rotation.x + deltaY * 0.009));
               wrapper.rotation.z = 0;
             }
           }
@@ -27871,7 +27884,9 @@ nav .nav-links .nav-link[href="#home"].active {
     const previousCapeId = image.dataset.mcVisualCapeId || image.dataset.mcActiveCapeId || "";
     const previousVisualSrc = image.dataset.mcVisualSrc ||
       ((image.complete && image.naturalWidth > 0) ? (image.currentSrc || image.src) : "");
-    const shouldSpinIncoming = !previousVisualSrc || previousCapeId !== cape.id;
+    const isFirstStablePaint = image.dataset.mcStableFirstPaint !== "1";
+    const shouldSpinIncoming = !isFirstStablePaint && Boolean(previousVisualSrc) && previousCapeId !== cape.id;
+    image.dataset.mcStableFirstPaint = "1";
     const stage = image.closest(".featured-image") || image.parentElement;
     if (stage) stage.querySelectorAll(".mc-showcase-cape-outgoing").forEach(node => node.remove());
 
@@ -29962,6 +29977,49 @@ body.mc-open-cape-now #details .detail-card {
     #featured .featured-image img.mc-store-spin-now:not(.mc-showcase-cape-outgoing) {
       animation: mcStoreHomeCapeRigid360Final .1s linear 1 both !important;
     }
+  }
+</style>
+
+<style id="mc-store-refresh-stability-and-preview-upright-final">
+  /* No flash, fade, zoom, or temporary shifted sizing when a product page is opened/refreshed. */
+  #details .detail-card,
+  #details .detail-card.mc-scroll-reveal,
+  #details .detail-card.mc-scroll-visible,
+  #details .detail-card.mc-scroll-replay,
+  #details .storefront-preview,
+  #details .storefront-preview .cape-preview-fallback,
+  #details .storefront-preview #capeSkinViewer {
+    animation: none !important;
+    transition: none !important;
+  }
+  #details .detail-card.mc-scroll-reveal,
+  #details .detail-card.mc-scroll-visible,
+  #details .detail-card.mc-scroll-replay {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  #details .storefront-preview {
+    opacity: 1 !important;
+    transform: none !important;
+    overflow: hidden !important;
+  }
+  #details .storefront-preview.preview-loading #capeSkinViewer {
+    visibility: hidden !important;
+    opacity: 0 !important;
+  }
+  #details .storefront-preview.preview-loading .cape-preview-fallback {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    transform: translate(-50%, -50%) !important;
+  }
+  #details .storefront-preview:not(.preview-loading) #capeSkinViewer {
+    visibility: visible !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  @media (max-width: 620px) {
+    #details .storefront-preview { min-height: 350px !important; }
   }
 </style>
 
