@@ -28737,6 +28737,7 @@ nav .nav-links .nav-link[href="#home"].active {
     { id: "experience",   name: "Experience Cape Code", stem: "experiencecapetexture", thumb: "experiencecape.gg", art: "media/experience-cape.png",  color: "#7545b4" },
     { id: "home",         name: "Home Cape",         stem: "homecapetexture",       thumb: "homecape.gg",          art: "media/home-cape.png",        color: "#2f8664" },
     { id: "menace",       name: "Menace Cape",       stem: "menacecapetexture",     thumb: "menacecape.gg",        art: "media/menace-cape.png",      color: "#d92532" },
+    // The thumbnail artwork (moonlightcape.gg) is separate from the 3D Minecraft texture.
     { id: "moonlight",    name: "Moonlight Cape",    stem: "moonlightcapetexture",  thumb: "moonlightcape.gg",     art: "media/moonlight-cape.png",   color: "#53a9d8" },
     { id: "purple-heart", name: "Purple Heart Cape",  stem: "twitchcapetexture",     thumb: "purpulhurtcape.gg",    art: "media/twitch-cape.png",      color: "#7145a5" }
   ];
@@ -28898,15 +28899,22 @@ nav .nav-links .nav-link[href="#home"].active {
   }
 
   async function resolveCapeTexture(cape) {
+    // Moonlight's actual Minecraft texture is moonlightcapetexture (with the
+    // repository's real image extension). A successful GitHub tree response that
+    // misses the file must not stop the direct-path checks below: the API can be
+    // cached or temporarily incomplete while the texture is still available.
+    const stem = String(cape && cape.stem || "").trim();
+    if (!stem) return null;
     try {
       if (typeof findMcStoreNestedAsset === "function") {
-        const indexed = await findMcStoreNestedAsset([cape.stem]);
+        const indexed = await findMcStoreNestedAsset([stem]);
         if (indexed && indexed.url) return indexed.url;
-        if (indexed && indexed.indexAvailable) return null;
+        // Deliberately continue when indexAvailable is true but url is empty.
+        // The direct folder/extension probes are needed for Moonlight too.
       }
     } catch (_) {}
+    const names = [...new Set([stem, ...imageExtensions.map(ext => stem + ext)])];
     for (const folder of textureFolders) {
-      const names = imageExtensions.map(ext => cape.stem + ext);
       const found = await Promise.all(names.map(name => probeImage(makeUrl(folder + name), 1300)));
       const match = found.find(Boolean);
       if (match) return match;
