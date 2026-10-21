@@ -24660,14 +24660,12 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
     const canvas = document.getElementById("capeSkinViewer");
     if (!stage || !canvas) return;
     stage.classList.remove("fallback-cape-only");
-    // Moonlight must open straight into the interactive 3D cape, never a flat artwork
-    // image that sits over the canvas while the player skin is still loading.
-    stage.classList.toggle("moonlight-direct-3d", cape.id === "moonlight");
+    // Immediately show the cape artwork while the 3D texture is loading. This
+    // avoids the blank pause (notably on Aurora) before SkinViewer finishes loading.
     const previewFallback = document.getElementById("capePreviewFallback");
     if (previewFallback) {
       previewFallback.src = detailsImage(cape);
       previewFallback.alt = cape.name;
-      previewFallback.style.pointerEvents = "none";
     }
     stage.classList.add("preview-loading");
 
@@ -24809,37 +24807,21 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
         console.warn(`MC STORE: Minecraft cape texture not found for ${cape.name}. Expected ${textureStems.join(" or ")}.`);
         textureUrl = cape.image || cape.showcaseImage;
       }
-      const activeViewer = mcStoreViewer;
-      const capeLoad = activeViewer.loadCape(textureUrl);
-      // Load Steve/the requested skin in parallel, but don't make the 3D cape wait for it.
-      // In CAPE mode the skin is hidden, so waiting for Minotar used to leave the flat
-      // artwork covering Moonlight for too long and made the preview appear click-to-start.
-      const skinLoadPromise = activeViewer.loadSkin(`https://minotar.net/skin/${encodeURIComponent(mcStorePlayerUsername || "Steve")}`)
-        .then(() => {
-          if (activeViewer !== mcStoreViewer) return;
-          mcStorePlayerSkinLoaded = true;
-          if (mcStorePreviewMode !== "cape") setPreviewMode(mcStorePreviewMode);
-          else updateProductMotionButton();
-        })
-        .catch(error => {
-          if (activeViewer === mcStoreViewer) {
-            mcStorePlayerSkinLoaded = false;
-            console.info("MC STORE: default skin is still unavailable; the standalone 3D cape remains usable.");
-          }
-        });
-      const capeResults = await Promise.allSettled([capeLoad]);
-      if (activeViewer !== mcStoreViewer || document.getElementById("capePreviewStage") !== stage) return;
-      // Rebind both equipment materials after the cape has loaded so the exact selected
-      // texture is what CAPE, PLAYER, and ELYTRA render.
+      const capeLoad = mcStoreViewer.loadCape(textureUrl);
+      const defaultSkinLoad = mcStoreViewer.loadSkin(`https://minotar.net/skin/${encodeURIComponent(mcStorePlayerUsername || "Steve")}`);
+      const results = await Promise.allSettled([capeLoad, defaultSkinLoad]);
+      mcStorePlayerSkinLoaded = results[1].status === "fulfilled";
+      // Rebind both equipment materials after loading so the exact texture selected above
+      // is what the active CAPE / PLAYER / ELYTRA mode will render.
       syncCapeTextureToModels();
-      const capeLoadFailed = capeResults[0].status === "rejected";
+      const capeLoadFailed = results[0].status === "rejected";
       if (capeLoadFailed) {
         stage.classList.remove("preview-loading");
         stage.classList.add("fallback-cape-only");
       } else {
-        // First real 3D cape frame takes over immediately; never wait for the player skin.
+        // Let SkinViewer paint the first loaded frame before removing the instant fallback.
         requestAnimationFrame(() => requestAnimationFrame(() => {
-          if (document.getElementById("capePreviewStage") === stage && activeViewer === mcStoreViewer) {
+          if (document.getElementById("capePreviewStage") === stage) {
             stage.classList.remove("preview-loading");
           }
         }));
@@ -30150,26 +30132,6 @@ body.mc-open-cape-now #details .detail-card {
   #details .recommendations .card-img {
     object-fit: contain !important;
   }
-</style>
-
-
-<style id="mc-store-moonlight-open-directly-final">
-/* Moonlight opens straight into the live 3D viewer. Do not overlay its flat .gg artwork
-   while textures/skin resolve; retain that artwork only as a real 3D-failure fallback. */
-#details .storefront-preview.moonlight-direct-3d:not(.fallback-cape-only) .cape-preview-fallback {
-  display: none !important;
-  visibility: hidden !important;
-  opacity: 0 !important;
-  pointer-events: none !important;
-}
-#details .storefront-preview.moonlight-direct-3d:not(.fallback-cape-only) #capeSkinViewer,
-#details .storefront-preview.moonlight-direct-3d.preview-loading:not(.fallback-cape-only) #capeSkinViewer {
-  display: block !important;
-  visibility: visible !important;
-  opacity: 1 !important;
-  pointer-events: auto !important;
-}
-#details .storefront-preview #capePreviewFallback { pointer-events: none !important; }
 </style>
 
 </body>
