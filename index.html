@@ -3323,6 +3323,7 @@ const capes = [
     image:"media/builder-cape.png",
     showcaseImage:"media/builder-cape.png",
     productImage:"capes 3D/buildercape3D",
+    sceneBackground:"village.png",
     description:"A classic addition for Minecraft cape collectors and fans of building.",
     label:"Featured"
   },
@@ -3335,6 +3336,7 @@ const capes = [
     image:"media/copper-cape.png",
     showcaseImage:"media/copper-cape.png",
     productImage:"capes 3D/coppercape3D",
+    sceneBackground:"trialchambers.png",
     description:"A copper-themed design for Minecraft players and collectors.",
     label:""
   },
@@ -3347,6 +3349,7 @@ const capes = [
     image:"media/crafter-cape.png",
     showcaseImage:"media/crafter-cape.png",
     productImage:"capes 3D/craftercape3D",
+    sceneBackground:"disert.png",
     description:"A crafting-inspired design for Minecraft fans and cape collectors.",
     label:""
   },
@@ -3360,6 +3363,7 @@ const capes = [
     image:"media/experience-cape.png",
     showcaseImage:"media/experience-cape.png",
     productImage:"capes 3D/experiencecape3D",
+    sceneBackground:"villageheader.png",
     description:"The Experience cape was the first IRL obtainable cape since Minecon 2016. The cape is only obtainable via attending an IRL Minecraft Event located in different places across the World. If you can't go, don't worry, you can buy it here!",
     label:""
   },
@@ -3372,6 +3376,7 @@ const capes = [
     image:"media/home-cape.png",
     showcaseImage:"media/home-cape.png",
     productImage:"capes 3D/homecape3D",
+    sceneBackground:"cherrybiome.png",
     description:"A Home cape design for Minecraft players and collectors.",
     label:""
   },
@@ -3384,6 +3389,7 @@ const capes = [
     image:"media/moonlight-cape.png",
     showcaseImage:"media/moonlight-cape.png",
     productImage:"capes 3D/moonlightcape3D",
+    sceneBackground:"moonvillage.png",
     description:"A moonlight-inspired design for your Minecraft cape collection.",
     label:""
   },
@@ -3396,6 +3402,7 @@ const capes = [
     image:"media/twitch-cape.png",
     showcaseImage:"media/twitch-cape.png",
     productImage:"capes 3D/twitchcape3D",
+    sceneBackground:"snowvillage.png",
     description:"A purple-themed cape design for your collection.",
     label:""
   },
@@ -3408,6 +3415,7 @@ const capes = [
     image:"media/menace-cape.png",
     detailImage:"media/menace-cape.png",
     productImage:"capes 3D/menacecape3D",
+    sceneBackground:"nether.png",
     description:"A striking cape design in the MC STORE collection.",
     label:""
   }
@@ -3724,6 +3732,7 @@ function capeCard(cape) {
          aria-label="View ${escapeHTML(cape.name)} details"
          onclick="openCape('${cape.id}');return false">
         <div class="card-art">
+          ${cape.sceneBackground ? `<img class="card-scene-bg" src="${escapeHTML(cape.sceneBackground)}" data-original-src="${escapeHTML(cape.sceneBackground)}" data-image-file="${escapeHTML(cape.sceneBackground.split('/').pop())}" alt="" aria-hidden="true" loading="lazy" onerror="handleCapeCardImageError(this)">` : ""}
           <span class="card-tag ${cape.stock ? "" : "sold"} ${cape.onSale ? "sale-tag" : ""}">${tag}</span>
           ${cape.onSale && cape.stock ? `<span class="card-tag popular stock-tag">IN STOCK</span>` : (cape.label ? `<span class="card-tag popular">${escapeHTML(cape.label)}</span>` : "")}
           <img class="card-img"
@@ -24156,7 +24165,7 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
   "use strict";
   let mcStoreViewer = null;
   let mcStoreActiveCape = null;
-  let mcStorePreviewMode = "player";
+  let mcStorePreviewMode = "cape";
   let mcStorePlayerUsername = "Steve";
   let mcStorePlayerSkinLoaded = true;
   let mcStoreIsWalking = true;
@@ -24273,7 +24282,7 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
     const isExperience = chosen.id === "experience";
     const viewCape = isExperience ? {...chosen, name:"Experience Cape Code", price:69.99, originalPrice:79.99, stock:true} : chosen;
     mcStoreActiveCape = viewCape;
-    mcStorePreviewMode = "player";
+    mcStorePreviewMode = "cape";
     try { mcStorePlayerUsername = localStorage.getItem("mc_store_skin_username") || "Steve"; } catch (_) { mcStorePlayerUsername = "Steve"; }
     mcStorePlayerSkinLoaded = true;
     mcStoreIsWalking = true;
@@ -24294,7 +24303,7 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
       <article class="detail-card detail-card--storefront">
         <div class="storefront-preview-column">
           <div class="storefront-preview" id="capePreviewStage" aria-label="Interactive Minecraft dressing room">
-            <div class="cape-preview-scene" aria-hidden="true"></div>
+            <div class="cape-preview-scene${viewCape.sceneBackground ? " has-image" : ""}" aria-hidden="true">${viewCape.sceneBackground ? `<img class="cape-preview-scene-image" src="${safeText(viewCape.sceneBackground)}" data-original-src="${safeText(viewCape.sceneBackground)}" data-image-file="${safeText(viewCape.sceneBackground.split("/").pop())}" alt="" loading="eager" decoding="async" onerror="handleCapeCardImageError(this)">` : ""}</div>
             <div class="product-preview-userbar" id="capePreviewUserbar">
               <button class="product-preview-identity-toggle" id="capePreviewIdentityToggle" type="button" aria-label="Open Minecraft username search" aria-expanded="false" title="Change Minecraft skin">
                 <img id="capePreviewHead" src="https://minotar.net/helm/${encodeURIComponent(mcStorePlayerUsername || "Steve")}/40.png" alt="Minecraft skin head">
@@ -24318,8 +24327,8 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
           </div>
           <div class="product-preview-toolbar">
             <div class="preview-tabs" role="tablist" aria-label="Minecraft preview mode">
-              <button class="preview-tab" type="button" role="tab" aria-selected="false" data-preview-mode="cape">CAPE</button>
-              <button class="preview-tab active" type="button" role="tab" aria-selected="true" data-preview-mode="player">PLAYER</button>
+              <button class="preview-tab active" type="button" role="tab" aria-selected="true" data-preview-mode="cape">CAPE</button>
+              <button class="preview-tab" type="button" role="tab" aria-selected="false" data-preview-mode="player">PLAYER</button>
               <button class="preview-tab" type="button" role="tab" aria-selected="false" data-preview-mode="elytra">ELYTRA</button>
             </div>
           </div>
@@ -24357,7 +24366,7 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
     jumpToTopImmediately();
     wireProductControls(viewCape);
     wirePreviewControls();
-    setPreviewMode("player");
+    setPreviewMode("cape");
     init3DPreview(viewCape);
   };
 
@@ -29847,6 +29856,89 @@ body.mc-open-cape-now #details .detail-card {
   #shop .card-art { height: 235px !important; }
   #details .recommendations .card-art { height: 175px !important; }
   #details .recommendations .card-img { height: 168px !important; }
+}
+</style>
+
+
+
+<style id="mc-store-blurred-cape-scene-backgrounds">
+/* Blurred Minecraft scenery behind each 3D cape in Our Products and You might also like. */
+#shop .card-art,
+#details .recommendations .card-art {
+  position: relative !important;
+  isolation: isolate !important;
+  background-color: #07172a !important;
+}
+#shop .card-scene-bg,
+#details .recommendations .card-scene-bg {
+  position: absolute !important;
+  z-index: 0 !important;
+  inset: -10px !important;
+  display: block !important;
+  width: calc(100% + 20px) !important;
+  height: calc(100% + 20px) !important;
+  max-width: none !important;
+  object-fit: cover !important;
+  object-position: center !important;
+  opacity: .9 !important;
+  filter: blur(7px) brightness(.62) saturate(1.05) !important;
+  transform: scale(1.06) !important;
+  pointer-events: none !important;
+  user-select: none !important;
+}
+#shop .card-img,
+#details .recommendations .card-img {
+  position: relative !important;
+  z-index: 1 !important;
+}
+#shop .card-tag,
+#details .recommendations .card-tag {
+  z-index: 2 !important;
+}
+@media (max-width: 620px) {
+  #shop .card-scene-bg,
+  #details .recommendations .card-scene-bg {
+    filter: blur(6px) brightness(.62) saturate(1.05) !important;
+  }
+}
+</style>
+
+
+<style id="mc-store-product-preview-blurred-backgrounds-final">
+/* Use each cape's matching Minecraft scenery behind CAPE, PLAYER, and ELYTRA preview modes. */
+#details .cape-preview-scene.has-image {
+  background: #07172a !important;
+}
+#details .cape-preview-scene.has-image::before,
+#details .cape-preview-scene.has-image::after {
+  display: none !important;
+  content: none !important;
+}
+#details .cape-preview-scene.has-image .cape-preview-scene-image {
+  position: absolute !important;
+  inset: -12px !important;
+  display: block !important;
+  width: calc(100% + 24px) !important;
+  height: calc(100% + 24px) !important;
+  max-width: none !important;
+  object-fit: cover !important;
+  object-position: center !important;
+  opacity: .96 !important;
+  filter: blur(8px) brightness(.62) saturate(1.05) !important;
+  transform: scale(1.06) !important;
+  pointer-events: none !important;
+  user-select: none !important;
+}
+#details #capePreviewStage.mode-cape .cape-preview-scene,
+#details #capePreviewStage.mode-player .cape-preview-scene,
+#details #capePreviewStage.mode-elytra .cape-preview-scene {
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+@media (max-width: 620px) {
+  #details .cape-preview-scene.has-image .cape-preview-scene-image {
+    filter: blur(6px) brightness(.62) saturate(1.05) !important;
+  }
 }
 </style>
 
