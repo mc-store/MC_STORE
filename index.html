@@ -3387,9 +3387,8 @@ const capes = [
     elytraTextureStem:"moonlightcapetexture",
     price:null,
     stock:false,
-    // Use the requested Moonlight artwork on Home, Our Products, the product detail,
-    // and recommendation cards. The asset resolver accepts the literal name plus common
-    // image suffixes (moonlightcape.gg.png / .webp / .jpg) and nested repository folders.
+    // Use the exact Moonlight artwork filename requested across Home, Our Products,
+    // and the small/recommended cape cards. Keep the older artwork as a safe fallback.
     image:"moonlightcape.gg",
     showcaseImage:"moonlightcape.gg",
     productImage:"moonlightcape.gg",
@@ -3551,28 +3550,15 @@ function mcStoreAssetBasename(value) {
 }
 
 function mcStoreAssetFilenameOptions(values) {
-  const extensions = [".png", ".PNG", ".webp", ".WEBP", ".jpg", ".JPG", ".jpeg", ".JPEG", ".avif", ".gif", ".bmp"];
-  const knownImageExtension = /\.(?:png|webp|jpe?g|avif|gif|bmp)$/i;
+  const extensions = [".png", ".webp", ".jpg", ".jpeg", ".avif", ".gif", ".bmp"];
   const options = [];
   for (const value of values || []) {
     const basename = mcStoreAssetBasename(value);
     if (!basename) continue;
     if (!options.includes(basename)) options.push(basename);
-
-    // Only a real image extension should stop extension recovery. In this project,
-    // "moonlightcape.gg" is the requested artwork stem, not necessarily a file that
-    // the browser can decode without an image extension. Try it exactly as named,
-    // then the common image formats (e.g. moonlightcape.gg.png), then the base stem.
-    if (!knownImageExtension.test(basename)) {
+    if (!/\.[a-z0-9]{2,5}$/i.test(basename)) {
       for (const extension of extensions) {
         if (!options.includes(basename + extension)) options.push(basename + extension);
-      }
-      const dot = basename.lastIndexOf(".");
-      if (dot > 0) {
-        const root = basename.slice(0, dot);
-        for (const extension of extensions) {
-          if (!options.includes(root + extension)) options.push(root + extension);
-        }
       }
     }
   }
@@ -3632,9 +3618,8 @@ async function handleCapeCardImageError(img) {
 
   // Offline/API-unavailable fallback: check a short list of common root and nested folders
   // together, so the display isn't delayed by serial 404 attempts.
-  const stripKnownImageExtension = value => mcStoreAssetBasename(value).replace(/\.(?:png|webp|jpe?g|avif|gif|bmp)$/i, "");
-  const primary = stripKnownImageExtension(sourceName);
-  const fallback = stripKnownImageExtension(fallbackName);
+  const primary = mcStoreAssetBasename(sourceName).replace(/\.[^.]*$/, "");
+  const fallback = mcStoreAssetBasename(fallbackName).replace(/\.[^.]*$/, "");
   const productFolders = ["capes 3D/", "Capes 3D/", "capes3D/", "capes-3D/", "3D/", "3d/"];
   const artworkFolders = [
     "", "media/", "Media/", "images/", "Images/", "assets/", "Assets/", "capes images/", "Capes Images/",
@@ -3645,8 +3630,7 @@ async function handleCapeCardImageError(img) {
   ];
   const prefer3d = /cape3d$/i.test(primary);
   const folders = prefer3d ? [...productFolders, ...artworkFolders] : [...artworkFolders, ...productFolders];
-  const rawSourceName = mcStoreAssetBasename(sourceName);
-  const names = [...new Set([rawSourceName, primary, fallback].filter(Boolean))];
+  const names = [...new Set([primary, fallback].filter(Boolean))];
   const extensions = [".png", ".PNG", ".webp", ".WEBP", ".jpg", ".JPG", ".jpeg", ".JPEG", ""];
   const candidates = [];
   for (const name of names) {
@@ -27895,24 +27879,14 @@ nav .nav-links .nav-link[href="#home"].active {
       } catch (_) {}
 
       const dot = filename.lastIndexOf(".");
-      const looksLikeRealImage = /\.(?:png|webp|jpe?g|avif|gif|bmp)$/i.test(filename);
-      const stem = looksLikeRealImage && dot > 0 ? filename.slice(0, dot) : filename;
+      const stem = dot > 0 ? filename.slice(0, dot) : filename;
       const names = new Set([filename]);
-      if (looksLikeRealImage && dot > 0) {
+      if (dot > 0) {
         const ext = filename.slice(dot);
         names.add(stem + ext.toLowerCase());
         names.add(stem + ext.toUpperCase());
-        extensions.forEach(otherExt => names.add(stem + otherExt));
       } else {
-        // A name such as "moonlightcape.gg" may be an artwork base name. Search
-        // moonlightcape.gg.png/webp/jpg as well as the literal filename and stem formats.
-        extensions.forEach(ext => names.add(filename + ext));
-        if (dot > 0) {
-          const root = filename.slice(0, dot);
-          extensions.forEach(ext => names.add(root + ext));
-        } else {
-          extensions.forEach(ext => names.add(stem + ext));
-        }
+        extensions.forEach(ext => names.add(stem + ext));
       }
       const broader = [];
       imageFolders.forEach(folder => names.forEach(name => broader.push(folder + name)));
@@ -28069,7 +28043,7 @@ nav .nav-links .nav-link[href="#home"].active {
   window.handleCapeCardImageError = recoverAnyImage;
   window.mcStoreShowcaseImageError = recoverAnyImage;
 
-  // On every page entry, pre-resolve artwork in the background so the five-second carousel swaps instantly.
+  // On every page entry, pre-resolve artwork in the background so the three-second carousel swaps instantly.
   function initializeShowcase() {
     const gallery = doc.getElementById("mcShowcaseGallery");
     if (gallery) gallery.replaceChildren();
@@ -30121,16 +30095,6 @@ body.mc-open-cape-now #details .detail-card {
   }
   @media (max-width: 620px) {
     #details .storefront-preview { min-height: 350px !important; }
-  }
-</style>
-
-
-
-<style id="mc-store-moonlight-artwork-recovery-final">
-  /* Keep Moonlight's requested artwork compatible with common image-file suffixes. */
-  #shop .card-img,
-  #details .recommendations .card-img {
-    object-fit: contain !important;
   }
 </style>
 
