@@ -28637,7 +28637,7 @@ nav .nav-links .nav-link[href="#home"].active {
     letter-spacing: 1.6px; text-transform: uppercase;
   }
   .home-fitting-cape-swatches {
-    display: grid; grid-template-columns: repeat(9, minmax(0, 1fr)); gap: 6px; align-items: center;
+    display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 6px; align-items: center;
   }
   .home-fitting-swatch {
     position: relative; display: flex; align-items: center; justify-content: center;
@@ -28709,7 +28709,7 @@ nav .nav-links .nav-link[href="#home"].active {
     .home-fitting-mode { min-height: 27px; font-size: 9px; }
     .home-fitting-info-column { grid-template-columns: minmax(0, 1fr); gap: 14px; }
     .home-fitting-cape-picker { padding: 18px 15px; }
-    .home-fitting-cape-swatches { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 7px; }
+    .home-fitting-cape-swatches { grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 5px; }
     .home-fitting-swatch { height: 54px; border-radius: 6px; }
     .home-fitting-selected-card { padding: 20px 18px 17px; }
     .home-fitting-selected-card h3 { font-size: 26px; }
@@ -28737,7 +28737,6 @@ nav .nav-links .nav-link[href="#home"].active {
     { id: "experience",   name: "Experience Cape Code", stem: "experiencecapetexture", thumb: "experiencecape.gg", art: "media/experience-cape.png",  color: "#7545b4" },
     { id: "home",         name: "Home Cape",         stem: "homecapetexture",       thumb: "homecape.gg",          art: "media/home-cape.png",        color: "#2f8664" },
     { id: "menace",       name: "Menace Cape",       stem: "menacecapetexture",     thumb: "menacecape.gg",        art: "media/menace-cape.png",      color: "#d92532" },
-    { id: "moonlight",    name: "Moonlight Cape",    stem: "moonlightcapetexture",  thumb: "moonlightcape.gg",     art: "media/moonlight-cape.png",   color: "#53a9d8" },
     { id: "purple-heart", name: "Purple Heart Cape",  stem: "twitchcapetexture",     thumb: "purpulhurtcape.gg",    art: "media/twitch-cape.png",      color: "#7145a5" }
   ];
 
@@ -28861,36 +28860,16 @@ nav .nav-links .nav-link[href="#home"].active {
   }
 
   async function resolveNamedAsset(filename, folders, extensions) {
-    // Prefer the repository index, but retain direct URL fallbacks if the index is
-    // rate-limited or the artwork uses the special stem "moonlightcape.gg".
     try {
       if (typeof findMcStoreNestedAsset === "function") {
         const indexed = await findMcStoreNestedAsset([filename]);
         if (indexed && indexed.url) return indexed.url;
+        if (indexed && indexed.indexAvailable) return null;
       }
     } catch (_) {}
-
-    const candidates = new Set([filename]);
-    const commonImageExtensions = [".png", ".PNG", ".webp", ".WEBP", ".jpg", ".JPG", ".jpeg", ".JPEG"];
-    (extensions || []).forEach(ext => candidates.add(filename + ext));
-    const isRealImageExtension = /\.(?:png|webp|jpe?g|avif|gif|bmp)$/i.test(filename);
-    if (!isRealImageExtension) {
-      commonImageExtensions.forEach(ext => candidates.add(filename + ext));
-      // Also handle files named "moonlightcape.png" when the configured stem is
-      // "moonlightcape.gg" as well as the preferred "moonlightcape.gg.png".
-      const dot = filename.lastIndexOf(".");
-      if (dot > 0) {
-        const root = filename.slice(0, dot);
-        commonImageExtensions.forEach(ext => candidates.add(root + ext));
-      }
-    } else {
-      const dot = filename.lastIndexOf(".");
-      const root = dot > 0 ? filename.slice(0, dot) : filename;
-      commonImageExtensions.forEach(ext => candidates.add(root + ext));
-    }
-
+    const names = /\.[a-z0-9]{2,5}$/i.test(filename) ? [filename] : extensions.map(ext => filename + ext);
     for (const folder of folders) {
-      const found = await Promise.all([...candidates].map(name => probeImage(makeUrl(folder + name))));
+      const found = await Promise.all(names.map(name => probeImage(makeUrl(folder + name))));
       const match = found.find(Boolean);
       if (match) return match;
     }
