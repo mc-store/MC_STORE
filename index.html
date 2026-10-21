@@ -3387,9 +3387,14 @@ const capes = [
     elytraTextureStem:"moonlightcapetexture",
     price:null,
     stock:false,
-    image:"media/moonlight-cape.png",
-    showcaseImage:"media/moonlight-cape.png",
-    productImage:"capes 3D/moonlightcape3D",
+    // Use the requested Moonlight artwork on Home, Our Products, the product detail,
+    // and recommendation cards. The asset resolver accepts the literal name plus common
+    // image suffixes (moonlightcape.gg.png / .webp / .jpg) and nested repository folders.
+    image:"moonlightcape.gg",
+    showcaseImage:"moonlightcape.gg",
+    productImage:"moonlightcape.gg",
+    detailImage:"moonlightcape.gg",
+    fallbackImage:"media/moonlight-cape.png",
     sceneBackground:"moonvillage.png",
     description:"A moonlight-inspired design for your Minecraft cape collection.",
     label:""
@@ -3446,7 +3451,7 @@ function renderMcShowcaseGallery() {
         onclick="showFeatured(${index});restartFeaturedTimer();return false">
         <span class="mc-showcase-cape-art">
           <img src="${escapeHTML(imagePath)}" data-image-file="${escapeHTML(filename)}"
-            data-original-src="${escapeHTML(imagePath)}" data-fallback-image="${escapeHTML(cape.image || imagePath)}"
+            data-original-src="${escapeHTML(imagePath)}" data-fallback-image="${escapeHTML(cape.fallbackImage || cape.image || imagePath)}"
             alt="${escapeHTML(cape.name)}" loading="eager" decoding="async"
             onerror="mcStoreShowcaseImageError(this)">
           <span class="mc-showcase-missing-label" aria-hidden="true">Image unavailable</span>
@@ -3546,15 +3551,28 @@ function mcStoreAssetBasename(value) {
 }
 
 function mcStoreAssetFilenameOptions(values) {
-  const extensions = [".png", ".webp", ".jpg", ".jpeg", ".avif", ".gif", ".bmp"];
+  const extensions = [".png", ".PNG", ".webp", ".WEBP", ".jpg", ".JPG", ".jpeg", ".JPEG", ".avif", ".gif", ".bmp"];
+  const knownImageExtension = /\.(?:png|webp|jpe?g|avif|gif|bmp)$/i;
   const options = [];
   for (const value of values || []) {
     const basename = mcStoreAssetBasename(value);
     if (!basename) continue;
     if (!options.includes(basename)) options.push(basename);
-    if (!/\.[a-z0-9]{2,5}$/i.test(basename)) {
+
+    // Only a real image extension should stop extension recovery. In this project,
+    // "moonlightcape.gg" is the requested artwork stem, not necessarily a file that
+    // the browser can decode without an image extension. Try it exactly as named,
+    // then the common image formats (e.g. moonlightcape.gg.png), then the base stem.
+    if (!knownImageExtension.test(basename)) {
       for (const extension of extensions) {
         if (!options.includes(basename + extension)) options.push(basename + extension);
+      }
+      const dot = basename.lastIndexOf(".");
+      if (dot > 0) {
+        const root = basename.slice(0, dot);
+        for (const extension of extensions) {
+          if (!options.includes(root + extension)) options.push(root + extension);
+        }
       }
     }
   }
@@ -3614,8 +3632,9 @@ async function handleCapeCardImageError(img) {
 
   // Offline/API-unavailable fallback: check a short list of common root and nested folders
   // together, so the display isn't delayed by serial 404 attempts.
-  const primary = mcStoreAssetBasename(sourceName).replace(/\.[^.]*$/, "");
-  const fallback = mcStoreAssetBasename(fallbackName).replace(/\.[^.]*$/, "");
+  const stripKnownImageExtension = value => mcStoreAssetBasename(value).replace(/\.(?:png|webp|jpe?g|avif|gif|bmp)$/i, "");
+  const primary = stripKnownImageExtension(sourceName);
+  const fallback = stripKnownImageExtension(fallbackName);
   const productFolders = ["capes 3D/", "Capes 3D/", "capes3D/", "capes-3D/", "3D/", "3d/"];
   const artworkFolders = [
     "", "media/", "Media/", "images/", "Images/", "assets/", "Assets/", "capes images/", "Capes Images/",
@@ -3626,7 +3645,8 @@ async function handleCapeCardImageError(img) {
   ];
   const prefer3d = /cape3d$/i.test(primary);
   const folders = prefer3d ? [...productFolders, ...artworkFolders] : [...artworkFolders, ...productFolders];
-  const names = [...new Set([primary, fallback].filter(Boolean))];
+  const rawSourceName = mcStoreAssetBasename(sourceName);
+  const names = [...new Set([rawSourceName, primary, fallback].filter(Boolean))];
   const extensions = [".png", ".PNG", ".webp", ".WEBP", ".jpg", ".JPG", ".jpeg", ".JPEG", ""];
   const candidates = [];
   for (const name of names) {
@@ -3740,7 +3760,7 @@ function capeCard(cape) {
                src="${escapeHTML(cape.productImage || cape.image)}"
                data-original-src="${escapeHTML(cape.productImage || cape.image)}"
                data-image-file="${escapeHTML((cape.productImage || cape.image).split('/').pop())}"
-               data-fallback-image="${escapeHTML(cape.showcaseImage || cape.image)}"
+               data-fallback-image="${escapeHTML(cape.fallbackImage || cape.showcaseImage || cape.image)}"
                data-fallback-alt="${escapeHTML(cape.name)}"
                alt="${escapeHTML(cape.name)}"
                loading="lazy"
@@ -24263,8 +24283,8 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
   }
 
   function detailsImage(cape) {
-    // Menace uses its dedicated artwork on the opened product page.
-    return safeText(cape.detailImage || cape.showcaseImage || cape.image || "media/experience-cape.png");
+    // Use requested artwork when available; its known artwork fallback keeps the page clean during recovery.
+    return safeText(cape.detailImage || cape.showcaseImage || cape.imageFallback || cape.fallbackImage || cape.image || "media/experience-cape.png");
   }
 
   // Replace only the product details view; the home page, filters and other sections remain intact.
@@ -24327,7 +24347,7 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
             </div>
             <img class="cape-preview-fallback" id="capePreviewFallback" src="${detailsImage(viewCape)}" alt="${safeText(viewCape.name)}"
               data-image-file="${safeText((viewCape.detailImage || viewCape.showcaseImage || viewCape.image || "media/experience-cape.png").split("/").pop())}"
-              data-original-src="${detailsImage(viewCape)}" data-fallback-image="${safeText(viewCape.image || viewCape.showcaseImage || "")}"
+              data-original-src="${detailsImage(viewCape)}" data-fallback-image="${safeText(viewCape.fallbackImage || viewCape.image || viewCape.showcaseImage || "")}"
               onerror="handleCapeCardImageError(this)">
             <div class="cape-rotate-hint" aria-hidden="true">DRAG TO ROTATE</div>
             <div class="preview-mode-message" id="previewModeMessage" hidden>Tap the head icon to search for your Java username.</div>
@@ -24427,6 +24447,19 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
     updateProductMotionButton();
   }
 
+  // SkinViewer's cape texture atlas is shared by its cape and Elytra meshes.
+  // Re-apply it whenever the preview mode changes, so the chosen cape texture
+  // remains on the standalone 3D cape, on the player's back, and on Elytra wings.
+  function syncCapeTextureToModels() {
+    const viewer = mcStoreViewer;
+    const player = viewer && viewer.playerObject;
+    const texture = viewer && viewer.capeTexture;
+    if (!player || !texture) return;
+    if (player.cape) player.cape.map = texture;
+    if (player.elytra) player.elytra.map = texture;
+    texture.needsUpdate = true;
+  }
+
   function setPreviewMode(mode) {
     if (!["cape", "player", "elytra"].includes(mode)) mode = "cape";
     mcStorePreviewMode = mode;
@@ -24454,7 +24487,14 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
     if (hint) hint.textContent = mode === "cape" ? "DRAG TO ROTATE" : "DRAG TO TURN PLAYER";
     updateProductMotionButton();
     if (!mcStoreViewer || !mcStoreViewer.playerObject) return;
+    syncCapeTextureToModels();
     const player = mcStoreViewer.playerObject;
+    // Explicitly attach either the cape or the elytra to the player on every tab change.
+    // This keeps the selected Moonlight texture on the visible back equipment as well.
+    const requestedEquipment = mode === "elytra" ? "elytra" : "cape";
+    player.backEquipment = requestedEquipment;
+    if (player.cape) player.cape.visible = requestedEquipment === "cape";
+    if (player.elytra) player.elytra.visible = requestedEquipment === "elytra";
     // Never leave the cape mesh twisted after switching back from the standalone CAPE view.
     // All user rotation is applied to playerWrapper, so the cape stays correctly attached.
     mcStoreViewer.playerWrapper.rotation.x = 0;
@@ -24466,11 +24506,17 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
     mcStoreViewer.playerWrapper.position.z = 0;
     const capeRoot = player.cape;
     const capeMesh = capeRoot && capeRoot.cape;
-    // SkinViewer's cape texture is also the Elytra texture. Re-attach it explicitly
-    // after mode changes so Moonlight uses moonlightcapetexture on BOTH 3D models.
+    // Keep the selected cape texture attached to both 3D meshes. In particular,
+    // Moonlight uses moonlightcapetexture for the standalone cape AND the Elytra wings.
     if (mcStoreViewer.capeTexture) {
-      if (player.cape) player.cape.map = mcStoreViewer.capeTexture;
-      if (player.elytra) player.elytra.map = mcStoreViewer.capeTexture;
+      if (player.cape) {
+        player.cape.map = mcStoreViewer.capeTexture;
+        player.cape.map.needsUpdate = true;
+      }
+      if (player.elytra) {
+        player.elytra.map = mcStoreViewer.capeTexture;
+        player.elytra.map.needsUpdate = true;
+      }
     }
     // Skinview3D tilts the cape back by 10.8° by default. In standalone CAPE mode
     // flatten the cape root as well as its inner mesh, so the panel is upright.
@@ -24492,13 +24538,15 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
       mcStoreViewer.playerWrapper.rotation.y = Math.PI;
       mcStoreViewer.zoom = 1.55;
     } else if (mode === "player") {
+      // Keep the selected cape mesh attached even if the remote player skin is slow to load.
       player.skin.visible = mcStorePlayerSkinLoaded;
-      player.backEquipment = mcStorePlayerSkinLoaded ? "cape" : null;
+      player.backEquipment = "cape";
       mcStoreViewer.playerWrapper.rotation.y = Math.PI - 0.24;
       mcStoreViewer.zoom = 0.76;
     } else {
+      // The 3D Elytra wings should always render in Elytra mode; skin loading must not hide them.
       player.skin.visible = mcStorePlayerSkinLoaded;
-      player.backEquipment = mcStorePlayerSkinLoaded ? "elytra" : null;
+      player.backEquipment = "elytra";
       mcStoreViewer.playerWrapper.rotation.y = Math.PI;
       mcStoreViewer.zoom = 0.76;
     }
@@ -24565,7 +24613,9 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
       const headImage = document.getElementById("capePreviewHead");
       if (headImage) headImage.src = `https://minotar.net/helm/${encodeURIComponent(username)}/40.png`;
       if (status) { status.textContent = `Skin loaded for ${username}. Your selected cape is equipped.`; status.classList.remove("error"); status.classList.add("success"); }
-      setPreviewMode("player");
+      // Loading a skin normally opens PLAYER mode, but keep ELYTRA selected if that
+      // was the active choice so the wings and their cape texture stay visible.
+      setPreviewMode(mcStorePreviewMode === "elytra" ? "elytra" : "player");
       setProductSearchOpen(false);
     } catch (error) {
       if (viewer !== mcStoreViewer) return;
@@ -24742,12 +24792,28 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
       // Use each cape's Minecraft texture file for the actual 3D cloth mesh.
       // If no texture is found in the common asset folders, try the existing art
       // image as a graceful backup so the preview still has something to show.
-      let textureUrl = await findCapeTexture(cape.textureStem);
-      if (!textureUrl) textureUrl = cape.image || cape.showcaseImage;
+      // Try the cape's dedicated Minecraft texture first, then its Elytra texture stem.
+      // Moonlight intentionally uses moonlightcapetexture for both the standalone cape
+      // and the Elytra wings. Product artwork (moonlightcape.gg) is never used as a 3D texture.
+      const textureStems = cape.id === "moonlight"
+        ? ["moonlightcapetexture"]
+        : [...new Set([cape.textureStem, cape.elytraTextureStem].filter(Boolean))];
+      let textureUrl = null;
+      for (const stem of textureStems) {
+        textureUrl = await findCapeTexture(stem);
+        if (textureUrl) break;
+      }
+      if (!textureUrl) {
+        console.warn(`MC STORE: Minecraft cape texture not found for ${cape.name}. Expected ${textureStems.join(" or ")}.`);
+        textureUrl = cape.image || cape.showcaseImage;
+      }
       const capeLoad = mcStoreViewer.loadCape(textureUrl);
       const defaultSkinLoad = mcStoreViewer.loadSkin(`https://minotar.net/skin/${encodeURIComponent(mcStorePlayerUsername || "Steve")}`);
       const results = await Promise.allSettled([capeLoad, defaultSkinLoad]);
       mcStorePlayerSkinLoaded = results[1].status === "fulfilled";
+      // Rebind both equipment materials after loading so the exact texture selected above
+      // is what the active CAPE / PLAYER / ELYTRA mode will render.
+      syncCapeTextureToModels();
       const capeLoadFailed = results[0].status === "rejected";
       if (capeLoadFailed) {
         stage.classList.remove("preview-loading");
@@ -27829,14 +27895,24 @@ nav .nav-links .nav-link[href="#home"].active {
       } catch (_) {}
 
       const dot = filename.lastIndexOf(".");
-      const stem = dot > 0 ? filename.slice(0, dot) : filename;
+      const looksLikeRealImage = /\.(?:png|webp|jpe?g|avif|gif|bmp)$/i.test(filename);
+      const stem = looksLikeRealImage && dot > 0 ? filename.slice(0, dot) : filename;
       const names = new Set([filename]);
-      if (dot > 0) {
+      if (looksLikeRealImage && dot > 0) {
         const ext = filename.slice(dot);
         names.add(stem + ext.toLowerCase());
         names.add(stem + ext.toUpperCase());
+        extensions.forEach(otherExt => names.add(stem + otherExt));
       } else {
-        extensions.forEach(ext => names.add(stem + ext));
+        // A name such as "moonlightcape.gg" may be an artwork base name. Search
+        // moonlightcape.gg.png/webp/jpg as well as the literal filename and stem formats.
+        extensions.forEach(ext => names.add(filename + ext));
+        if (dot > 0) {
+          const root = filename.slice(0, dot);
+          extensions.forEach(ext => names.add(root + ext));
+        } else {
+          extensions.forEach(ext => names.add(stem + ext));
+        }
       }
       const broader = [];
       imageFolders.forEach(folder => names.forEach(name => broader.push(folder + name)));
@@ -27882,7 +27958,11 @@ nav .nav-links .nav-link[href="#home"].active {
     ].filter(Boolean);
     copy.forEach(el => { el.classList.remove("mc-showcase-info-enter"); el.classList.add("mc-showcase-info-out"); });
 
-    const resolved = await resolveArt(cape);
+    let resolved = await resolveArt(cape);
+    if (!resolved && cape.fallbackImage) {
+      const fallback = { image: cape.fallbackImage, showcaseImage: cape.fallbackImage, productImage: cape.fallbackImage };
+      resolved = await resolveArt(fallback, true);
+    }
     if (token !== activeShowcaseToken) return;
     // Never set a known-bad src or hide the shared image while an asset is being recovered.
     // If an asset can't be found yet, leave the last good cape visible and don't mismatch its text.
@@ -27967,6 +28047,16 @@ nav .nav-links .nav-link[href="#home"].active {
         }
       } catch (_) {}
     }
+    if (!resolved) {
+      const fallbackPath = img.dataset.fallbackImage || "";
+      if (fallbackPath && fallbackPath !== original && fallbackPath !== filename) {
+        try {
+          const fallbackCape = { image: fallbackPath, showcaseImage: fallbackPath, productImage: fallbackPath };
+          resolved = await resolveArt(fallbackCape, true);
+          if (!resolved) resolved = await probe(imageUrl(fallbackPath));
+        } catch (_) {}
+      }
+    }
     img.dataset.mcStableRecovering = "0";
     if (resolved) {
       img.hidden = false;
@@ -27979,7 +28069,7 @@ nav .nav-links .nav-link[href="#home"].active {
   window.handleCapeCardImageError = recoverAnyImage;
   window.mcStoreShowcaseImageError = recoverAnyImage;
 
-  // On every page entry, pre-resolve artwork in the background so the three-second carousel swaps instantly.
+  // On every page entry, pre-resolve artwork in the background so the five-second carousel swaps instantly.
   function initializeShowcase() {
     const gallery = doc.getElementById("mcShowcaseGallery");
     if (gallery) gallery.replaceChildren();
@@ -30031,6 +30121,16 @@ body.mc-open-cape-now #details .detail-card {
   }
   @media (max-width: 620px) {
     #details .storefront-preview { min-height: 350px !important; }
+  }
+</style>
+
+
+
+<style id="mc-store-moonlight-artwork-recovery-final">
+  /* Keep Moonlight's requested artwork compatible with common image-file suffixes. */
+  #shop .card-img,
+  #details .recommendations .card-img {
+    object-fit: contain !important;
   }
 </style>
 
