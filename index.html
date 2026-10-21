@@ -29803,5 +29803,52 @@ body.mc-open-cape-now #details .detail-card {
 }
 </style>
 
+
+
+<style id="mc-store-bigger-shop-and-recommendation-capes">
+/* Make the 3D cape artwork substantially larger in Our Products. */
+#shop .card-art {
+  height: clamp(230px, 21vw, 290px) !important;
+  overflow: hidden !important;
+}
+#shop .card-img {
+  width: 100% !important;
+  height: 100% !important;
+  max-height: none !important;
+  object-fit: contain !important;
+  object-position: center !important;
+}
+
+/* Also enlarge the cape artwork under “You might also like” on product pages. */
+#details .recommendations .card-art {
+  height: 230px !important;
+  overflow: hidden !important;
+}
+#details .recommendations .card-img {
+  width: 100% !important;
+  height: 218px !important;
+  max-height: none !important;
+  object-fit: contain !important;
+  object-position: center !important;
+}
+
+@media (max-width: 900px) {
+  #shop .card-art { height: 225px !important; }
+  #details .recommendations .card-art { height: 205px !important; }
+  #details .recommendations .card-img { height: 195px !important; }
+}
+@media (max-width: 620px) {
+  #shop .card-art { height: 205px !important; }
+  #shop .card-img { width: 100% !important; height: 100% !important; }
+  #details .recommendations .card-art { height: 185px !important; }
+  #details .recommendations .card-img { width: 100% !important; height: 178px !important; }
+}
+@media (max-width: 390px) {
+  #shop .card-art { height: 235px !important; }
+  #details .recommendations .card-art { height: 175px !important; }
+  #details .recommendations .card-img { height: 168px !important; }
+}
+</style>
+
 </body>
 </html>
