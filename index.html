@@ -2868,8 +2868,9 @@ body.mc-reveal-ready .mc-footer .reveal-on-scroll.is-visible {
 
     <div class="nav-actions">
       <span class="currency-pill" aria-label="Currency: US dollars"><span class="currency-flag">🇺🇸</span><span>USD</span><span class="currency-chevron">▾</span></span>
-      <a class="cart-top" href="#shop" onclick="showHome('shop');return false" aria-label="Browse the cape shop" title="Browse the cape shop">
+      <a class="cart-top" href="#cart" onclick="window.mcStoreOpenCart();return false" aria-label="Open shopping cart" title="Shopping cart">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 4h2l2.1 10.1a2 2 0 0 0 2 1.6h7.8a2 2 0 0 0 1.9-1.4L21 8H6"/><circle cx="10" cy="20" r="1.3"/><circle cx="18" cy="20" r="1.3"/></svg>
+        <span class="mc-cart-count" id="mcStoreCartCount" hidden>0</span>
       </a>
       <span class="user-label" id="authUserLabel" hidden></span>
       <button class="account-icon" id="authOpenBtn" type="button" aria-label="Sign in" title="Sign in">
@@ -2955,15 +2956,22 @@ body.mc-reveal-ready .mc-footer .reveal-on-scroll.is-visible {
       <div class="home-fitting-preview-column">
         <div class="home-fitting-stage" id="homeFitStage" aria-label="Interactive Minecraft player preview">
           <div class="home-fitting-world" aria-hidden="true"></div>
-          <div class="home-fitting-userbar">
-            <img id="homeFitHead" class="home-fitting-head" src="https://minotar.net/helm/Steve/40.png" alt="Steve head">
-            <label class="home-fitting-name-label" for="homeFitUsername">Minecraft Java username</label>
-            <input id="homeFitUsername" type="text" maxlength="16" autocomplete="off" spellcheck="false" autocapitalize="none" placeholder="Java username" aria-label="Minecraft Java username">
-            <button id="homeFitLoadSkin" type="button">Go</button>
+          <div class="home-fitting-userbar" id="homeFitUserbar">
+            <button class="home-fitting-identity-toggle" id="homeFitIdentityToggle" type="button" aria-label="Open Minecraft username search" aria-expanded="false" title="Change Minecraft skin">
+              <img id="homeFitHead" class="home-fitting-head" src="https://minotar.net/helm/Steve/40.png" alt="Steve head">
+            </button>
+            <div class="home-fitting-search-panel" id="homeFitUsernamePanel" aria-hidden="true">
+              <label class="home-fitting-name-label" for="homeFitUsername">Minecraft Java username</label>
+              <div class="home-fitting-search-row">
+                <input id="homeFitUsername" type="text" maxlength="16" autocomplete="off" spellcheck="false" autocapitalize="none" placeholder="Java username" aria-label="Minecraft Java username">
+                <button id="homeFitLoadSkin" type="button">Go</button>
+              </div>
+            </div>
           </div>
           <canvas id="homeFitCanvas" aria-label="3D Minecraft player wearing the selected cape"></canvas>
           <div class="home-fitting-drag-hint" aria-hidden="true">DRAG TO TURN</div>
           <div class="home-fitting-status" id="homeFitStatus" role="status" aria-live="polite">Loading Steve…</div>
+          <button class="home-fitting-motion-toggle" id="homeFitMotionToggle" type="button" aria-pressed="true">Ⅱ Pause walking</button>
           <div class="home-fitting-mode-switch" role="group" aria-label="Player equipment">
             <button class="home-fitting-mode active" type="button" data-home-fit-mode="player" aria-pressed="true">PLAYER</button>
             <button class="home-fitting-mode" type="button" data-home-fit-mode="elytra" aria-pressed="false">ELYTRA</button>
@@ -2993,6 +3001,94 @@ body.mc-reveal-ready .mc-footer .reveal-on-scroll.is-visible {
     </div>
   </section>
 
+
+
+  <section class="redeem-guide" id="howToRedeem" aria-labelledby="redeemGuideTitle">
+    <header class="redeem-section-heading">
+      <h2 id="redeemGuideTitle">How to Redeem</h2>
+      <p>Watch the quick walkthrough or follow the steps below.</p>
+    </header>
+    <div class="redeem-guide-card">
+      <div class="redeem-video-wrap">
+        <iframe
+          src="https://www.youtube-nocookie.com/embed/MNyL3LbCvkw?rel=0"
+          title="How to redeem a Minecraft cape for Java and Bedrock Edition"
+          loading="lazy"
+          referrerpolicy="strict-origin-when-cross-origin"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowfullscreen></iframe>
+      </div>
+      <div class="redeem-steps">
+        <h3>How do I redeem the cape?</h3>
+        <ol>
+          <li><span>1</span><p>Open the official <a href="https://www.minecraft.net/en-us/redeem" target="_blank" rel="noopener noreferrer">Minecraft redeem page</a>.</p></li>
+          <li><span>2</span><p>Sign in to the Microsoft account linked to your Minecraft profile and enter your cape code.</p></li>
+          <li><span>3</span><p>Confirm the code and wait for the redemption to finish.</p></li>
+          <li><span>4</span><p>Launch Minecraft Bedrock Edition and equip the cape from the Dressing Room, if it is available there.</p></li>
+          <li><span>5</span><p>If it does not appear straight away, sign out and back in, then allow some time for your account to sync.</p></li>
+          <li><span>6</span><p>For Java Edition, open the Minecraft Launcher, go to <strong>Skins</strong>, choose <strong>Edit</strong> and select your cape.</p></li>
+        </ol>
+      </div>
+    </div>
+
+    <section class="redeem-faq" aria-labelledby="redeemFaqTitle">
+      <header class="redeem-section-heading redeem-faq-heading">
+        <h2 id="redeemFaqTitle">Frequently Asked Questions</h2>
+        <p>Find answers to common questions about cape redemption and ordering.</p>
+      </header>
+      <div class="redeem-faq-list">
+        <details class="redeem-faq-item">
+          <summary>How do I redeem capes for Java &amp; Bedrock Edition? <span class="redeem-most-common">MOST COMMON</span><span class="redeem-chevron" aria-hidden="true">⌄</span></summary>
+          <p>Redeem the code on the official Minecraft website while signed into the correct Microsoft account. Then check Bedrock's Dressing Room and Java Edition's Skin settings to equip the cape where it is available.</p>
+        </details>
+        <details class="redeem-faq-item">
+          <summary>Are capes for both Bedrock and Java Edition? <span class="redeem-chevron" aria-hidden="true">⌄</span></summary>
+          <p>Check the individual cape listing for its edition details. Once a cape is redeemed, you may need to equip it separately in Bedrock and Java.</p>
+        </details>
+        <details class="redeem-faq-item">
+          <summary>What payment methods do you accept? <span class="redeem-chevron" aria-hidden="true">⌄</span></summary>
+          <p>Online checkout is not connected on this page. Contact MC STORE through Discord to confirm the current order process, final price, and available payment options before paying.</p>
+        </details>
+        <details class="redeem-faq-item">
+          <summary>I'm a parent. What exactly am I purchasing? <span class="redeem-chevron" aria-hidden="true">⌄</span></summary>
+          <p>A cape code is a digital code intended to unlock a cosmetic item on the Minecraft account used during redemption. Check the product listing and confirm the delivery details with MC STORE before placing an order.</p>
+        </details>
+        <details class="redeem-faq-item">
+          <summary>What do I do if my order hasn't processed/cancelled? <span class="redeem-chevron" aria-hidden="true">⌄</span></summary>
+          <p>Contact MC STORE through Discord and explain what happened. Share only the order information needed to identify the issue; never send your Microsoft password or account security codes.</p>
+        </details>
+        <details class="redeem-faq-item">
+          <summary>Some capes are much more expensive than others, why is this? <span class="redeem-chevron" aria-hidden="true">⌄</span></summary>
+          <p>Prices can differ by cape, availability, and market demand. Review the displayed price and confirm the final cost before completing an order.</p>
+        </details>
+      </div>
+    </section>
+
+    <section class="redeem-customer-note" aria-labelledby="redeemCustomersTitle">
+      <header class="redeem-section-heading">
+        <h2 id="redeemCustomersTitle">Our Customers</h2>
+        <p>Helpful cape setup guidance for Minecraft players.</p>
+      </header>
+      <div class="redeem-customer-cards">
+        <article class="redeem-customer-card">
+          <span class="redeem-customer-icon" aria-hidden="true">✓</span>
+          <h3>Redeem your code</h3>
+          <p>Use the official Minecraft redeem page and the Microsoft account linked to your game.</p>
+        </article>
+        <article class="redeem-customer-card">
+          <span class="redeem-customer-icon" aria-hidden="true">◆</span>
+          <h3>Equip on Java</h3>
+          <p>Open the Launcher, choose Skins, select Edit, and pick the cape for your character.</p>
+        </article>
+        <article class="redeem-customer-card">
+          <span class="redeem-customer-icon" aria-hidden="true">✦</span>
+          <h3>Need support?</h3>
+          <p>Ask MC STORE about an order or redemption issue through the community Discord.</p>
+          <a href="https://discord.gg/G75MSAVe2k" target="_blank" rel="noopener noreferrer">Contact support ↗</a>
+        </article>
+      </div>
+    </section>
+  </section>
 </main>
 
 <section id="aboutPage" class="container about-page" hidden>
@@ -3079,6 +3175,8 @@ body.mc-reveal-ready .mc-footer .reveal-on-scroll.is-visible {
     </div>
     <div class="products" id="recommendedProducts"></div>
   </div>
+
+  
 </section>
 
 <section id="not-found" class="container">
@@ -24058,9 +24156,11 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
   "use strict";
   let mcStoreViewer = null;
   let mcStoreActiveCape = null;
-  let mcStorePreviewMode = "cape";
-  let mcStorePlayerUsername = "";
-  let mcStorePlayerSkinLoaded = false;
+  let mcStorePreviewMode = "player";
+  let mcStorePlayerUsername = "Steve";
+  let mcStorePlayerSkinLoaded = true;
+  let mcStoreIsWalking = true;
+  let mcStoreSearchOutsideHandler = null;
 
   function safeText(value) {
     return String(value).replace(/[&<>"']/g, ch => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"})[ch]);
@@ -24093,6 +24193,10 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
     if (mcStoreViewer) {
       try { mcStoreViewer.dispose(); } catch (_) {}
       mcStoreViewer = null;
+    }
+    if (mcStoreSearchOutsideHandler) {
+      document.removeEventListener("pointerdown", mcStoreSearchOutsideHandler);
+      mcStoreSearchOutsideHandler = null;
     }
   }
   function selectedTitle(cape) {
@@ -24169,9 +24273,10 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
     const isExperience = chosen.id === "experience";
     const viewCape = isExperience ? {...chosen, name:"Experience Cape Code", price:69.99, originalPrice:79.99, stock:true} : chosen;
     mcStoreActiveCape = viewCape;
-    mcStorePreviewMode = "cape";
-    mcStorePlayerUsername = "";
-    mcStorePlayerSkinLoaded = false;
+    mcStorePreviewMode = "player";
+    try { mcStorePlayerUsername = localStorage.getItem("mc_store_skin_username") || "Steve"; } catch (_) { mcStorePlayerUsername = "Steve"; }
+    mcStorePlayerSkinLoaded = true;
+    mcStoreIsWalking = true;
     document.body.classList.add("mc-product-view");
     document.getElementById("details").style.display = "block";
     document.title = viewCape.name + " | MC STORE";
@@ -24188,28 +24293,38 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
     document.getElementById("detailContent").innerHTML = `
       <article class="detail-card detail-card--storefront">
         <div class="storefront-preview-column">
-          <div class="storefront-preview" id="capePreviewStage" aria-label="Interactive Minecraft cape preview">
+          <div class="storefront-preview" id="capePreviewStage" aria-label="Interactive Minecraft dressing room">
             <div class="cape-preview-scene" aria-hidden="true"></div>
+            <div class="product-preview-userbar" id="capePreviewUserbar">
+              <button class="product-preview-identity-toggle" id="capePreviewIdentityToggle" type="button" aria-label="Open Minecraft username search" aria-expanded="false" title="Change Minecraft skin">
+                <img id="capePreviewHead" src="https://minotar.net/helm/${encodeURIComponent(mcStorePlayerUsername || "Steve")}/40.png" alt="Minecraft skin head">
+              </button>
+              <div class="product-preview-search-panel" id="capePreviewUsernamePanel" aria-hidden="true">
+                <label for="capePlayerUsername">Minecraft Java username</label>
+                <div class="preview-player-input-row">
+                  <input id="capePlayerUsername" type="text" maxlength="16" autocomplete="off" spellcheck="false" autocapitalize="none" value="${mcStorePlayerUsername === "Steve" ? "" : safeText(mcStorePlayerUsername)}" placeholder="Java username" aria-label="Minecraft Java username" aria-describedby="capePlayerStatus">
+                  <button id="capeLoadPlayer" type="button">Go</button>
+                </div>
+              </div>
+            </div>
             <img class="cape-preview-fallback" id="capePreviewFallback" src="${detailsImage(viewCape)}" alt="${safeText(viewCape.name)}"
               data-image-file="${safeText((viewCape.detailImage || viewCape.showcaseImage || viewCape.image || "media/experience-cape.png").split("/").pop())}"
               data-original-src="${detailsImage(viewCape)}" data-fallback-image="${safeText(viewCape.image || viewCape.showcaseImage || "")}"
               onerror="handleCapeCardImageError(this)">
             <div class="cape-rotate-hint" aria-hidden="true">DRAG TO ROTATE</div>
-            <div class="preview-mode-message" id="previewModeMessage" hidden>Load a Java username to preview the player.</div>
-            <canvas id="capeSkinViewer" aria-label="Interactive Minecraft cape and player preview"></canvas>
+            <div class="preview-mode-message" id="previewModeMessage" hidden>Tap the head icon to search for your Java username.</div>
+            <canvas id="capeSkinViewer" aria-label="Interactive Minecraft player wearing the selected cape"></canvas>
+            <button class="preview-motion-toggle" id="capeMotionToggle" type="button" aria-pressed="true">Ⅱ Pause walking</button>
           </div>
-          <div class="preview-tabs" role="tablist" aria-label="Minecraft preview mode">
-            <button class="preview-tab active" type="button" role="tab" aria-selected="true" data-preview-mode="cape">CAPE</button>
-            <button class="preview-tab" type="button" role="tab" aria-selected="false" data-preview-mode="player">PLAYER</button>
-            <button class="preview-tab" type="button" role="tab" aria-selected="false" data-preview-mode="elytra">ELYTRA</button>
+          <div class="product-preview-toolbar">
+            <div class="preview-tabs" role="tablist" aria-label="Minecraft preview mode">
+              <button class="preview-tab" type="button" role="tab" aria-selected="false" data-preview-mode="cape">CAPE</button>
+              <button class="preview-tab active" type="button" role="tab" aria-selected="true" data-preview-mode="player">PLAYER</button>
+              <button class="preview-tab" type="button" role="tab" aria-selected="false" data-preview-mode="elytra">ELYTRA</button>
+            </div>
           </div>
           <div class="preview-player-controls">
-            <label for="capePlayerUsername">MINECRAFT JAVA USERNAME</label>
-            <div class="preview-player-input-row">
-              <input id="capePlayerUsername" type="text" maxlength="16" autocomplete="off" spellcheck="false" autocapitalize="none" placeholder="Enter Java username" aria-describedby="capePlayerStatus">
-              <button id="capeLoadPlayer" type="button">Load Skin</button>
-            </div>
-            <p id="capePlayerStatus" role="status" aria-live="polite">Enter a Java username, then select Player or Elytra.</p>
+            <p id="capePlayerStatus" role="status" aria-live="polite">Steve is loaded by default. Click the head square to search for your Java username.</p>
           </div>
         </div>
         <div class="detail-info">
@@ -24221,7 +24336,15 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
           <div class="storefront-quantity-row storefront-stock-row">
             <div class="storefront-stock ${available ? "" : "out-of-stock"}"><span class="storefront-stock-mark">${available ? "✓" : "×"}</span>${statusLabel}</div>
           </div>
-          <div class="detail-actions storefront-detail-actions">
+          <div class="mc-product-quantity-row" aria-label="Choose quantity">
+            <div class="mc-product-quantity-stepper">
+              <button type="button" data-product-quantity="down" aria-label="Decrease quantity" ${available ? "" : "disabled"}>−</button>
+              <span id="capeBuyQuantity" aria-live="polite">1</span>
+              <button type="button" data-product-quantity="up" aria-label="Increase quantity" ${available ? "" : "disabled"}>+</button>
+            </div>
+          </div>
+          <div class="detail-actions storefront-detail-actions mc-store-cart-actions">
+            <button class="storefront-add-cart" id="capeAddToCart" type="button" ${available ? "" : "disabled"}>🛒 Add to Cart</button>
             <button class="storefront-buy" id="capeBuyNow" type="button" ${available ? "" : "disabled"}>Buy Now</button>
           </div>
           <div class="storefront-feedback" id="capeOrderFeedback" role="status" aria-live="polite"></div>
@@ -24234,18 +24357,56 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
     jumpToTopImmediately();
     wireProductControls(viewCape);
     wirePreviewControls();
-    setPreviewMode("cape");
+    setPreviewMode("player");
     init3DPreview(viewCape);
   };
 
   function wireProductControls(cape) {
     const feedback = document.getElementById("capeOrderFeedback");
+    const add = document.getElementById("capeAddToCart");
     const buy = document.getElementById("capeBuyNow");
     if (!feedback) return;
-    buy?.addEventListener("click", () => {
-      feedback.textContent = "Opening MC STORE on Discord to confirm the order. Online payment checkout is not connected on this page.";
-      window.open(DISCORD_URL, "_blank", "noopener,noreferrer");
+    const quantityValue = () => Math.max(1, Math.min(99, Math.floor(Number(document.getElementById("capeBuyQuantity")?.textContent) || 1)));
+    document.querySelectorAll("#details [data-product-quantity]").forEach(button => button.addEventListener("click", () => {
+      const value = document.getElementById("capeBuyQuantity");
+      if (!value) return;
+      const current = quantityValue();
+      value.textContent = String(button.dataset.productQuantity === "up" ? Math.min(99, current + 1) : Math.max(1, current - 1));
+    }));
+    add?.addEventListener("click", () => {
+      const added = typeof window.mcStoreCartAdd === "function" && window.mcStoreCartAdd(cape.id, quantityValue());
+      feedback.textContent = added ? `${cape.name} added to your cart.` : "This cape is currently unavailable.";
+      feedback.classList.toggle("success", Boolean(added));
+      feedback.classList.toggle("error", !added);
     });
+    buy?.addEventListener("click", () => {
+      const added = typeof window.mcStoreCartAdd === "function" && window.mcStoreCartAdd(cape.id, quantityValue());
+      if (!added) {
+        feedback.textContent = "This cape is currently unavailable.";
+        feedback.classList.add("error");
+        return;
+      }
+      if (typeof window.mcStoreOpenCart === "function") window.mcStoreOpenCart({ checkout: true });
+    });
+  }
+
+  function updateProductMotionButton() {
+    const button = document.getElementById("capeMotionToggle");
+    if (!button) return;
+    const canWalk = mcStorePreviewMode !== "cape" && mcStorePlayerSkinLoaded;
+    button.disabled = !canWalk;
+    button.textContent = mcStoreIsWalking ? "Ⅱ" : "▶";
+    button.setAttribute("aria-label", mcStoreIsWalking ? "Pause walking" : "Resume walking");
+    button.setAttribute("aria-pressed", mcStoreIsWalking ? "true" : "false");
+    button.title = canWalk ? (mcStoreIsWalking ? "Pause the player animation" : "Resume the player animation") : "Choose Player or Elytra to control walking";
+  }
+  function setProductWalking(isWalking) {
+    mcStoreIsWalking = Boolean(isWalking);
+    if (mcStoreViewer) {
+      mcStoreViewer.animation = mcStorePreviewMode !== "cape" && mcStoreIsWalking && window.skinview3d && window.skinview3d.WalkingAnimation
+        ? new window.skinview3d.WalkingAnimation() : null;
+    }
+    updateProductMotionButton();
   }
 
   function setPreviewMode(mode) {
@@ -24270,14 +24431,24 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
     const needsSkin = mode !== "cape";
     if (message) {
       message.hidden = !needsSkin || mcStorePlayerSkinLoaded;
-      message.textContent = mode === "elytra"
-        ? "Load a Java username below to see the player from behind with Elytra."
-        : "Load a Java username below to preview the player skin.";
+      message.textContent = "Tap the head icon to search for your Java username.";
     }
     if (hint) hint.textContent = mode === "cape" ? "DRAG TO ROTATE" : "DRAG TO TURN PLAYER";
+    updateProductMotionButton();
     if (!mcStoreViewer || !mcStoreViewer.playerObject) return;
     const player = mcStoreViewer.playerObject;
-    mcStoreViewer.animation = null;
+    // Never leave the cape mesh twisted after switching back from the standalone CAPE view.
+    // All user rotation is applied to playerWrapper, so the cape stays correctly attached.
+    mcStoreViewer.playerWrapper.rotation.x = 0;
+    mcStoreViewer.playerWrapper.rotation.z = 0;
+    const capeMesh = player.cape && player.cape.cape;
+    if (capeMesh && capeMesh.rotation) {
+      capeMesh.rotation.x = 0;
+      capeMesh.rotation.y = 0;
+      capeMesh.rotation.z = 0;
+    }
+    mcStoreViewer.animation = mode !== "cape" && mcStoreIsWalking && window.skinview3d && window.skinview3d.WalkingAnimation
+      ? new window.skinview3d.WalkingAnimation() : null;
     if (mode === "cape") {
       player.skin.visible = false;
       player.backEquipment = "cape";
@@ -24286,7 +24457,7 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
     } else if (mode === "player") {
       player.skin.visible = mcStorePlayerSkinLoaded;
       player.backEquipment = mcStorePlayerSkinLoaded ? "cape" : null;
-      mcStoreViewer.playerWrapper.rotation.y = 0;
+      mcStoreViewer.playerWrapper.rotation.y = Math.PI - 0.24;
       mcStoreViewer.zoom = 0.76;
     } else {
       player.skin.visible = mcStorePlayerSkinLoaded;
@@ -24296,12 +24467,46 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
     }
   }
 
+  function setProductSearchOpen(open) {
+    const userbar = document.getElementById("capePreviewUserbar");
+    const toggle = document.getElementById("capePreviewIdentityToggle");
+    const panel = document.getElementById("capePreviewUsernamePanel");
+    const input = document.getElementById("capePlayerUsername");
+    const expanded = Boolean(open);
+    if (userbar) userbar.classList.toggle("username-open", expanded);
+    if (toggle) {
+      toggle.setAttribute("aria-expanded", expanded ? "true" : "false");
+      toggle.setAttribute("aria-label", expanded ? "Close Minecraft username search" : "Open Minecraft username search");
+    }
+    if (panel) panel.setAttribute("aria-hidden", expanded ? "false" : "true");
+    if (expanded && input) window.setTimeout(() => input.focus(), 30);
+  }
+
+  async function resolveCanonicalMinecraftUsername(enteredName) {
+    // Minecraft names are case-insensitive. Ask Mojang for the profile's canonical casing
+    // before asking the skin service for the texture (e.g. ayoubmc_ -> AyoubMC_).
+    try {
+      const response = await fetch(`https://api.mojang.com/users/profiles/minecraft/${encodeURIComponent(enteredName)}`, { cache: "no-store" });
+      if (response.status === 204 || response.status === 404) {
+        throw new Error("No Minecraft Java profile was found for that username.");
+      }
+      if (response.ok) {
+        const profile = await response.json();
+        if (profile && typeof profile.name === "string" && profile.name) return profile.name;
+      }
+    } catch (error) {
+      if (error && error.message === "No Minecraft Java profile was found for that username.") throw error;
+      // If Mojang's lookup is temporarily unavailable or blocked, keep Minotar as a fallback.
+    }
+    return enteredName;
+  }
+
   async function loadPreviewPlayerSkin() {
     const input = document.getElementById("capePlayerUsername");
     const status = document.getElementById("capePlayerStatus");
     const button = document.getElementById("capeLoadPlayer");
-    const username = String(input && input.value || "").trim();
-    if (!/^[A-Za-z0-9_]{1,16}$/.test(username)) {
+    const enteredName = String(input && input.value || "").trim();
+    if (!/^[A-Za-z0-9_]{1,16}$/.test(enteredName)) {
       if (status) { status.textContent = "Enter a valid Java username (1–16 letters, numbers, or underscores)."; status.classList.add("error"); }
       input?.focus();
       return;
@@ -24312,17 +24517,22 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
     }
     const viewer = mcStoreViewer;
     if (button) button.disabled = true;
-    if (status) { status.textContent = `Loading Java skin for ${username}…`; status.classList.remove("error", "success"); }
+    if (status) { status.textContent = `Finding Minecraft profile for ${enteredName}…`; status.classList.remove("error", "success"); }
     try {
+      const username = await resolveCanonicalMinecraftUsername(enteredName);
       await viewer.loadSkin(`https://minotar.net/skin/${encodeURIComponent(username)}`);
       if (viewer !== mcStoreViewer) return;
       mcStorePlayerUsername = username;
       mcStorePlayerSkinLoaded = true;
-      if (status) { status.textContent = `Skin loaded for ${username}. Choose Player or Elytra to preview it.`; status.classList.remove("error"); status.classList.add("success"); }
+      try { localStorage.setItem("mc_store_skin_username", username); } catch (_) {}
+      const headImage = document.getElementById("capePreviewHead");
+      if (headImage) headImage.src = `https://minotar.net/helm/${encodeURIComponent(username)}/40.png`;
+      if (status) { status.textContent = `Skin loaded for ${username}. Your selected cape is equipped.`; status.classList.remove("error"); status.classList.add("success"); }
       setPreviewMode("player");
+      setProductSearchOpen(false);
     } catch (error) {
       if (viewer !== mcStoreViewer) return;
-      if (status) { status.textContent = "Could not load that skin. Check the Java username and your internet connection."; status.classList.remove("success"); status.classList.add("error"); }
+      if (status) { status.textContent = error && error.message === "No Minecraft Java profile was found for that username." ? error.message : "Could not load that skin. Check the Java username and your internet connection."; status.classList.remove("success"); status.classList.add("error"); }
       console.warn("Minecraft Java skin could not be loaded.", error);
     } finally {
       if (button && viewer === mcStoreViewer) button.disabled = false;
@@ -24333,10 +24543,29 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
     document.querySelectorAll("#details .preview-tab[data-preview-mode]").forEach(button => {
       button.addEventListener("click", () => setPreviewMode(button.dataset.previewMode));
     });
+    document.getElementById("capeMotionToggle")?.addEventListener("click", () => {
+      if (mcStorePreviewMode === "cape") return;
+      // Setting animation to null freezes the model at its current walking pose.
+      setProductWalking(!mcStoreIsWalking);
+    });
+    const userbar = document.getElementById("capePreviewUserbar");
+    const identityToggle = document.getElementById("capePreviewIdentityToggle");
+    identityToggle?.addEventListener("click", () => {
+      setProductSearchOpen(!(userbar && userbar.classList.contains("username-open")));
+    });
     document.getElementById("capeLoadPlayer")?.addEventListener("click", loadPreviewPlayerSkin);
     document.getElementById("capePlayerUsername")?.addEventListener("keydown", event => {
       if (event.key === "Enter") { event.preventDefault(); loadPreviewPlayerSkin(); }
+      if (event.key === "Escape") { event.preventDefault(); setProductSearchOpen(false); }
     });
+    if (mcStoreSearchOutsideHandler) document.removeEventListener("pointerdown", mcStoreSearchOutsideHandler);
+    mcStoreSearchOutsideHandler = event => {
+      const activeBar = document.getElementById("capePreviewUserbar");
+      if (activeBar && activeBar.classList.contains("username-open") && !activeBar.contains(event.target)) {
+        setProductSearchOpen(false);
+      }
+    };
+    document.addEventListener("pointerdown", mcStoreSearchOutsideHandler);
   }
 
   async function init3DPreview(cape) {
@@ -24412,17 +24641,14 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
           const deltaX = event.clientX - pointerState.lastX;
           pointerState.lastX = event.clientX;
           pointerState.lastY = event.clientY;
-          if (mcStoreViewer && mcStoreViewer.playerObject) {
-            if (mcStorePreviewMode === "cape") {
-              const capeMesh = mcStoreViewer.playerObject.cape && mcStoreViewer.playerObject.cape.cape;
-              if (capeMesh) {
-                capeMesh.rotation.y += deltaX * 0.012;
-                capeMesh.rotation.x = 0;
-                capeMesh.rotation.z = 0;
-              }
-            } else {
-              mcStoreViewer.playerWrapper.rotation.y += deltaX * 0.012;
-            }
+          if (Math.abs(deltaX) > 0.2) {
+            stage.classList.remove("cape-light-hit");
+            void stage.offsetWidth;
+            stage.classList.add("cape-light-hit");
+          }
+          if (mcStoreViewer && mcStoreViewer.playerWrapper) {
+            // Turn the whole display model in every mode; never bend the cape mesh itself.
+            mcStoreViewer.playerWrapper.rotation.y += deltaX * 0.012;
           }
           if (event.pointerType === "mouse" && event.cancelable) event.preventDefault();
         };
@@ -24457,8 +24683,10 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
       let textureUrl = await findCapeTexture(cape.textureStem);
       if (!textureUrl) textureUrl = cape.image || cape.showcaseImage;
       const capeLoad = mcStoreViewer.loadCape(textureUrl);
-      const results = await Promise.allSettled([capeLoad]);
-      const capeLoadFailed = results.some(result => result.status === "rejected");
+      const defaultSkinLoad = mcStoreViewer.loadSkin(`https://minotar.net/skin/${encodeURIComponent(mcStorePlayerUsername || "Steve")}`);
+      const results = await Promise.allSettled([capeLoad, defaultSkinLoad]);
+      mcStorePlayerSkinLoaded = results[1].status === "fulfilled";
+      const capeLoadFailed = results[0].status === "rejected";
       if (capeLoadFailed) {
         stage.classList.remove("preview-loading");
         stage.classList.add("fallback-cape-only");
@@ -24472,6 +24700,7 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
       }
       if (mcStoreViewer) {
         setPreviewMode(mcStorePreviewMode);
+        updateProductMotionButton();
         const resize = () => {
           if (!mcStoreViewer || !document.getElementById("capeSkinViewer")) return;
           const activeStage = document.getElementById("capePreviewStage");
@@ -27604,9 +27833,8 @@ nav .nav-links .nav-link[href="#home"].active {
     const previousCapeId = image.dataset.mcVisualCapeId || image.dataset.mcActiveCapeId || "";
     const previousVisualSrc = image.dataset.mcVisualSrc ||
       ((image.complete && image.naturalWidth > 0) ? (image.currentSrc || image.src) : "");
-    const shouldCrossSpin = Boolean(
-      previousCapeId && previousCapeId !== cape.id && previousVisualSrc && previousVisualSrc !== resolved
-    );
+    const shouldCrossSpin = Boolean(previousCapeId && previousCapeId !== cape.id && previousVisualSrc);
+    const shouldSpinIncoming = !previousVisualSrc || previousCapeId !== cape.id;
     if (shouldCrossSpin) {
       const stage = image.closest(".featured-image") || image.parentElement;
       if (stage) {
@@ -27648,7 +27876,7 @@ nav .nav-links .nav-link[href="#home"].active {
 
     image.classList.remove("mc-store-spin-now", "cape-spin", "is-spinning", "spin-in");
     if (image.src !== resolved) image.src = resolved;
-    if (shouldCrossSpin) {
+    if (shouldSpinIncoming) {
       void image.offsetWidth;
       image.classList.add("mc-store-spin-now");
       setTimeout(() => {
@@ -28372,12 +28600,16 @@ nav .nav-links .nav-link[href="#home"].active {
   const detailsButton = document.getElementById("homeFitViewDetails");
   const orderStatus = document.getElementById("homeFitOrderStatus");
   const homePage = document.getElementById("homePage");
+  const userbar = document.getElementById("homeFitUserbar");
+  const identityToggle = document.getElementById("homeFitIdentityToggle");
+  const usernamePanel = document.getElementById("homeFitUsernamePanel");
 
   let selectedCapeId = "aurora";
   let selectedMode = "player";
   let homeViewer = null;
   let viewerReady = false;
-  let currentUsername = "Steve";
+  let currentUsername = (() => { try { return localStorage.getItem("mc_store_skin_username") || "Steve"; } catch (_) { return "Steve"; } })();
+  let isWalking = true;
   let textureRequestToken = 0;
   let resizeObserver = null;
 
@@ -28440,9 +28672,35 @@ nav .nav-links .nav-link[href="#home"].active {
     status.classList.remove("error", "success");
     if (state) status.classList.add(state);
   }
+  function setUsernameSearchOpen(open) {
+    const expanded = Boolean(open);
+    if (userbar) userbar.classList.toggle("username-open", expanded);
+    if (identityToggle) identityToggle.setAttribute("aria-expanded", expanded ? "true" : "false");
+    if (identityToggle) identityToggle.setAttribute("aria-label", expanded ? "Close Minecraft username search" : "Open Minecraft username search");
+    if (usernamePanel) usernamePanel.setAttribute("aria-hidden", expanded ? "false" : "true");
+    if (expanded && usernameInput) window.setTimeout(() => usernameInput.focus(), 30);
+  }
   function formatMoney(value) {
     if (typeof value !== "number" || !Number.isFinite(value)) return "Unavailable";
     return "$" + (Number.isInteger(value) ? value.toFixed(0) : value.toFixed(2));
+  }
+
+  async function resolveCanonicalMinecraftUsername(enteredName) {
+    // Resolve case-insensitive name input to Minecraft's canonical capitalization.
+    try {
+      const response = await fetch(`https://api.mojang.com/users/profiles/minecraft/${encodeURIComponent(enteredName)}`, { cache: "no-store" });
+      if (response.status === 204 || response.status === 404) {
+        throw new Error("No Minecraft Java profile was found for that username.");
+      }
+      if (response.ok) {
+        const profile = await response.json();
+        if (profile && typeof profile.name === "string" && profile.name) return profile.name;
+      }
+    } catch (error) {
+      if (error && error.message === "No Minecraft Java profile was found for that username.") throw error;
+      // Fall back to the skin image provider if the profile lookup endpoint is unavailable.
+    }
+    return enteredName;
   }
 
   async function resolveNamedAsset(filename, folders, extensions) {
@@ -28563,12 +28821,22 @@ nav .nav-links .nav-link[href="#home"].active {
     }
   }
 
+  function updateHomeMotionButton() {
+    const button = document.getElementById("homeFitMotionToggle");
+    if (!button) return;
+    button.textContent = isWalking ? "Ⅱ Pause walking" : "▶ Resume walking";
+    button.setAttribute("aria-pressed", isWalking ? "true" : "false");
+    button.title = isWalking ? "Pause the player and keep the current pose" : "Resume the player walking animation";
+  }
+
   function applyEquipmentMode() {
+    updateHomeMotionButton();
     if (!homeViewer || !homeViewer.playerObject) return;
     const player = homeViewer.playerObject;
     player.skin.visible = true;
     player.backEquipment = selectedMode === "elytra" ? "elytra" : "cape";
-    homeViewer.animation = new window.skinview3d.WalkingAnimation();
+    homeViewer.animation = isWalking && window.skinview3d && window.skinview3d.WalkingAnimation
+      ? new window.skinview3d.WalkingAnimation() : null;
     if (stage) {
       stage.classList.toggle("mode-elytra", selectedMode === "elytra");
       stage.classList.toggle("mode-player", selectedMode === "player");
@@ -28604,27 +28872,39 @@ nav .nav-links .nav-link[href="#home"].active {
   }
 
   async function loadUsernameSkin() {
-    const username = String(usernameInput && usernameInput.value || "").trim();
-    if (!/^[A-Za-z0-9_]{1,16}$/.test(username)) {
+    const input = document.getElementById("homeFitUsername");
+    const enteredName = String(input && input.value || "").trim();
+    if (!/^[A-Za-z0-9_]{1,16}$/.test(enteredName)) {
       showStatus("Enter a valid Java username (1–16 letters, numbers, or underscores).", "error");
-      usernameInput && usernameInput.focus();
+      input && input.focus();
+      return;
+    }
+    let username = enteredName;
+    if (loadButton) loadButton.disabled = true;
+    try {
+      username = await resolveCanonicalMinecraftUsername(enteredName);
+    } catch (error) {
+      showStatus(error && error.message ? error.message : "Could not find that Minecraft Java profile.", "error");
+      if (loadButton) loadButton.disabled = false;
       return;
     }
     if (!homeViewer) {
       currentUsername = username;
       showStatus("Loading the 3D preview…");
       await ensureViewer();
+      if (loadButton) loadButton.disabled = false;
       return;
     }
-    loadButton.disabled = true;
     showStatus(`Loading ${username}'s skin…`);
     try {
       await homeViewer.loadSkin(`https://minotar.net/skin/${encodeURIComponent(username)}`);
       currentUsername = username;
+      try { localStorage.setItem("mc_store_skin_username", username); } catch (_) {}
       if (headImage) headImage.src = `https://minotar.net/helm/${encodeURIComponent(username)}/40.png`;
       if (homeViewer.playerObject && homeViewer.playerObject.skin) homeViewer.playerObject.skin.visible = true;
       applyEquipmentMode();
       showStatus(`Skin loaded for ${username}. Your selected cape is equipped.`, "success");
+      setUsernameSearchOpen(false);
     } catch (error) {
       showStatus(`Could not load ${username}'s skin. Check the Java username and try again.`, "error");
       console.warn("MC STORE Fitting Room could not load the requested skin", error);
@@ -28652,7 +28932,16 @@ nav .nav-links .nav-link[href="#home"].active {
       }
       const dx = event.clientX - pointer.lastX;
       pointer.lastX = event.clientX;
-      if (homeViewer && homeViewer.playerWrapper) homeViewer.playerWrapper.rotation.y += dx * 0.012;
+      if (Math.abs(dx) > 0.2) {
+        stage.classList.remove("home-fit-light-hit");
+        void stage.offsetWidth;
+        stage.classList.add("home-fit-light-hit");
+      }
+      if (homeViewer && homeViewer.playerWrapper) {
+        homeViewer.playerWrapper.rotation.x = 0;
+        homeViewer.playerWrapper.rotation.z = 0;
+        homeViewer.playerWrapper.rotation.y += dx * 0.012;
+      }
       if (event.pointerType === "mouse" && event.cancelable) event.preventDefault();
     };
     const onUp = event => {
@@ -28748,21 +29037,36 @@ nav .nav-links .nav-link[href="#home"].active {
       if (homeViewer) showStatus(selectedMode === "elytra" ? "Elytra mode selected." : "Player cape mode selected.", "success");
     });
   });
+  const homeMotionButton = document.getElementById("homeFitMotionToggle");
+  if (homeMotionButton) homeMotionButton.addEventListener("click", () => {
+    isWalking = !isWalking;
+    applyEquipmentMode();
+    showStatus(isWalking ? "Walking resumed." : "Walking paused. Current pose is held.", "success");
+  });
+  updateHomeMotionButton();
+  if (identityToggle) identityToggle.addEventListener("click", () => {
+    setUsernameSearchOpen(!(userbar && userbar.classList.contains("username-open")));
+  });
   if (loadButton) loadButton.addEventListener("click", loadUsernameSkin);
   if (usernameInput) usernameInput.addEventListener("keydown", event => {
     if (event.key === "Enter") { event.preventDefault(); loadUsernameSkin(); }
+    if (event.key === "Escape") { event.preventDefault(); setUsernameSearchOpen(false); }
+  });
+  document.addEventListener("pointerdown", event => {
+    if (userbar && userbar.classList.contains("username-open") && !userbar.contains(event.target)) setUsernameSearchOpen(false);
   });
   if (buyButton) buyButton.addEventListener("click", () => {
     const cape = getCape(selectedCapeId);
     const item = catalogCape(cape.id);
     if (!item || !item.stock || typeof item.price !== "number") return;
-    if (orderStatus) orderStatus.textContent = "Opening MC STORE on Discord to confirm your order. Online checkout is not connected on this page.";
-    window.open("https://discord.gg/G75MSAVe2k", "_blank", "noopener,noreferrer");
+    const added = typeof window.mcStoreCartAdd === "function" && window.mcStoreCartAdd(cape.id, 1);
+    if (added && typeof window.mcStoreOpenCart === "function") window.mcStoreOpenCart({ checkout: true });
+    else if (orderStatus) orderStatus.textContent = "This cape is currently unavailable.";
   });
 
   renderSwatches();
   updateSelectedPanel(getCape(selectedCapeId));
-  if (usernameInput) usernameInput.value = "";
+  if (usernameInput) usernameInput.value = currentUsername === "Steve" ? "" : currentUsername;
   const lifecycleObserver = new MutationObserver(() => {
     const visible = homePage && homePage.style.display !== "none" && !homePage.classList.contains("shop-only") && stage && stage.offsetWidth > 0;
     if (visible) {
@@ -28776,6 +29080,602 @@ nav .nav-links .nav-link[href="#home"].active {
     const visible = homePage && homePage.style.display !== "none" && !homePage.classList.contains("shop-only") && stage && stage.offsetWidth > 0;
     if (visible) ensureViewer();
   });
+})();
+</script>
+
+
+<style id="mc-store-fitting-room-search-and-redeem-final">
+/* Fitting Room: the square skin head is the compact search button. */
+.home-fitting-userbar {
+  display: block !important;
+  width: 44px;
+  min-height: 44px;
+  right: auto !important;
+  max-width: none !important;
+}
+.home-fitting-identity-toggle {
+  display: block; width: 44px; height: 44px; padding: 0; border: 0; background: transparent;
+  border-radius: 9px; cursor: pointer; transition: transform .16s ease, filter .16s ease;
+}
+.home-fitting-identity-toggle:hover { transform: translateY(-1px); filter: brightness(1.06); }
+.home-fitting-identity-toggle:focus-visible { outline: 3px solid #2dc5f5; outline-offset: 3px; }
+.home-fitting-head {
+  grid-row: auto !important; width: 44px !important; height: 44px !important; margin: 0;
+  border: 2px solid #292724 !important; border-radius: 8px !important; box-shadow: 2px 2px 0 #292724 !important;
+}
+.home-fitting-search-panel {
+  position: absolute; left: 53px; top: 0; display: block; width: clamp(200px, 35vw, 300px);
+  padding: 5px; border: 1px solid #292724; border-radius: 10px; background: #fffdf7;
+  box-shadow: 3px 4px 0 #292724; opacity: 0; visibility: hidden; pointer-events: none;
+  transform: translateX(-8px); transition: opacity .18s ease, transform .18s ease, visibility .18s ease;
+}
+.home-fitting-userbar.username-open .home-fitting-search-panel {
+  opacity: 1; visibility: visible; pointer-events: auto; transform: translateX(0);
+}
+.home-fitting-name-label { position: absolute !important; width: 1px !important; height: 1px !important; padding: 0 !important; margin: -1px !important; overflow: hidden !important; clip: rect(0,0,0,0) !important; white-space: nowrap !important; border: 0 !important; }
+.home-fitting-search-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 5px; }
+#homeFitUsername { height: 34px !important; min-width: 0; padding: 0 9px !important; border-radius: 7px !important; font-size: 10px !important; box-shadow: none !important; }
+#homeFitLoadSkin { height: 34px !important; border-radius: 7px !important; box-shadow: none !important; }
+.home-fitting-stage::after {
+  content: ""; position: absolute; z-index: 3; inset: 0; pointer-events: none; opacity: 0;
+  background: linear-gradient(112deg, transparent 30%, rgba(255,255,255,.02) 39%, rgba(255,255,255,.35) 47%, rgba(88,222,255,.22) 51%, rgba(255,255,255,.04) 58%, transparent 67%);
+  mix-blend-mode: screen;
+}
+.home-fitting-stage.home-fit-light-hit::after { animation: mcStoreLightReflection .62s ease-out; }
+@keyframes mcStoreLightReflection {
+  0% { opacity: 0; transform: translateX(-28%); }
+  23% { opacity: .9; }
+  100% { opacity: 0; transform: translateX(28%); }
+}
+
+/* Product details: use the same 3D player-first fitting-room behavior. */
+#details .product-preview-toolbar {
+  display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 10px; margin: 15px auto 0;
+}
+#details .preview-tabs {
+  display: flex !important; width: fit-content; max-width: 100%; margin: 0 !important; padding: 4px !important;
+  gap: 4px !important; border: 2px solid #2d2925 !important; border-radius: 999px !important;
+  background: #fffdf7 !important; box-shadow: 3px 3px 0 #2d2925 !important;
+}
+#details .preview-tab { min-width: 64px !important; padding: 8px 11px !important; border: 0 !important; border-radius: 999px !important; background: transparent !important; color: #5d5750 !important; font-size: 10px !important; font-weight: 900 !important; letter-spacing: .6px !important; box-shadow: none !important; }
+#details .preview-tab.active { background: linear-gradient(180deg,#80e0ff 0%,#16baf8 90%) !important; color: #062432 !important; }
+#details .preview-motion-toggle {
+  min-height: 34px; padding: 8px 12px; border: 1.5px solid #2d2925; border-radius: 999px;
+  background: #fffdf7; color: #282522; box-shadow: 2px 3px 0 #2d2925; font-size: 10px; font-weight: 900;
+  cursor: pointer; transition: transform .15s, background .15s, color .15s;
+}
+#details .preview-motion-toggle:hover:not(:disabled) { transform: translateY(-1px); background: #dff8ff; }
+#details .preview-motion-toggle[aria-pressed="false"] { background: #282522; color: #fffdf7; }
+#details .preview-motion-toggle:disabled { opacity: .45; cursor: not-allowed; box-shadow: none; }
+#details .storefront-preview::after {
+  content: ""; position: absolute; z-index: 4; inset: 0; border-radius: inherit; pointer-events: none; opacity: 0;
+  background: linear-gradient(112deg, transparent 27%, rgba(255,255,255,.03) 37%, rgba(255,255,255,.44) 45%, rgba(67,213,255,.24) 51%, rgba(255,255,255,.04) 58%, transparent 68%);
+  mix-blend-mode: screen;
+}
+#details .storefront-preview.cape-light-hit::after { animation: mcStoreLightReflection .62s ease-out; }
+
+/* Reference-matched How to Redeem card, accordion FAQ and customer help section. */
+.redeem-guide { margin: 56px auto 68px; color: #24211e; }
+.redeem-section-heading { margin: 0 auto 22px; text-align: center; }
+.redeem-section-heading h2 { margin: 0 0 8px; color: #24211e; font-size: clamp(24px, 3.2vw, 31px); line-height: 1.18; letter-spacing: -.7px; font-weight: 900; }
+.redeem-section-heading p { margin: 0; color: #746b60; font-size: 12px; line-height: 1.75; }
+.redeem-guide-card {
+  display: grid; grid-template-columns: minmax(0, 1.03fr) minmax(0, 1fr); gap: 22px; align-items: center;
+  padding: 20px; border: 1px solid #dfd2bd; border-radius: 12px; background: #fffdf8;
+  box-shadow: 0 2px 0 rgba(55,43,24,.08);
+}
+.redeem-video-wrap { position: relative; width: 100%; aspect-ratio: 16 / 9; min-height: 170px; overflow: hidden; border: 1px solid #d1c4af; border-radius: 7px; background: #26211e; }
+.redeem-video-wrap iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.redeem-steps h3 { margin: 0 0 12px; color: #25221e; font-size: 14px; font-weight: 900; }
+.redeem-steps ol { display: grid; gap: 9px; padding: 0; margin: 0; list-style: none; }
+.redeem-steps li { display: grid; grid-template-columns: 20px minmax(0,1fr); gap: 8px; align-items: start; }
+.redeem-steps li > span { display: grid; place-items: center; width: 19px; height: 19px; border-radius: 50%; background: #eae5db; color: #625b51; font-size: 10px; font-weight: 900; }
+.redeem-steps li p { margin: 1px 0 0; color: #655d52; font-size: 10px; line-height: 1.55; }
+.redeem-steps a { color: #267fa5; text-decoration: underline; text-underline-offset: 2px; }
+.redeem-faq { margin-top: 36px; }
+.redeem-faq-heading { margin-bottom: 23px; }
+.redeem-faq-list { display: grid; gap: 10px; }
+.redeem-faq-item { overflow: hidden; border: 1px solid #dfd2bd; border-radius: 10px; background: #fffdf8; box-shadow: 0 2px 0 rgba(55,43,24,.07); }
+.redeem-faq-item summary { position: relative; display: flex; align-items: center; gap: 9px; min-height: 48px; padding: 13px 43px 13px 16px; color: #24211e; font-size: 11px; line-height: 1.5; font-weight: 850; cursor: pointer; list-style: none; }
+.redeem-faq-item summary::-webkit-details-marker { display: none; }
+.redeem-most-common { flex-shrink: 0; padding: 3px 6px; border-radius: 6px; background: #37332d; color: #fffdf8; font-size: 7px; line-height: 1; font-weight: 900; }
+.redeem-chevron { position: absolute; right: 15px; top: 50%; transform: translateY(-55%); color: #655d52; font-size: 16px; font-weight: 500; transition: transform .18s; }
+.redeem-faq-item[open] .redeem-chevron { transform: translateY(-35%) rotate(180deg); }
+.redeem-faq-item > p { margin: 0; padding: 0 16px 16px; color: #655d52; font-size: 11px; line-height: 1.8; }
+.redeem-customer-note { margin-top: 62px; text-align: center; }
+.redeem-customer-cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 15px; }
+.redeem-customer-card { min-width: 0; padding: 21px 18px; text-align: left; border: 1px solid #dfd2bd; border-radius: 9px; background: #fffdf8; box-shadow: 0 2px 0 rgba(55,43,24,.07); }
+.redeem-customer-icon { display: grid; place-items: center; width: 29px; height: 29px; margin-bottom: 12px; border-radius: 8px; background: #e5f8ff; color: #137fa9; font-size: 14px; font-weight: 900; }
+.redeem-customer-card h3 { margin: 0 0 8px; color: #27231f; font-size: 12px; font-weight: 900; }
+.redeem-customer-card p { margin: 0; color: #655d52; font-size: 10px; line-height: 1.7; }
+.redeem-customer-card a { display: inline-block; margin-top: 11px; color: #226d8d; font-size: 10px; font-weight: 850; text-decoration: underline; text-underline-offset: 3px; }
+.redeem-customer-card a:hover { color: #109fd0; }
+
+@media (max-width: 760px) {
+  .redeem-guide-card { grid-template-columns: minmax(0,1fr); gap: 18px; padding: 14px; }
+  .redeem-video-wrap { min-height: 0; }
+  .redeem-steps h3 { font-size: 13px; }
+  .redeem-steps li p { font-size: 11px; }
+  .redeem-faq-item summary { padding-left: 12px; font-size: 10px; }
+  .redeem-customer-cards { grid-template-columns: minmax(0,1fr); gap: 10px; }
+  .redeem-customer-card { padding: 16px; }
+}
+@media (max-width: 420px) {
+  .home-fitting-search-panel { left: 49px; width: min(248px, calc(100vw - 82px)); }
+  .home-fitting-identity-toggle, .home-fitting-head { width: 39px !important; height: 39px !important; }
+  .home-fitting-userbar { width: 39px; min-height: 39px; }
+  #details .product-preview-toolbar { gap: 8px; }
+  #details .preview-tab { min-width: 54px !important; padding: 8px 8px !important; font-size: 9px !important; }
+  #details .preview-motion-toggle { font-size: 9px; padding: 8px 10px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .home-fitting-search-panel, #details .preview-motion-toggle { transition: none !important; }
+  .home-fitting-stage.home-fit-light-hit::after, #details .storefront-preview.cape-light-hit::after { animation-duration: .01ms !important; }
+}
+</style>
+
+
+
+<style id="mc-store-dressing-room-final-request">
+  /* Product details use the same click-to-search head tile as the Home Dressing Room. */
+  #details .storefront-preview { position: relative !important; isolation: isolate !important; }
+  #details .product-preview-userbar {
+    position: absolute; z-index: 12; top: 12px; left: 12px; display: flex; align-items: flex-start; gap: 7px;
+    max-width: calc(100% - 24px);
+  }
+  #details .product-preview-identity-toggle {
+    flex: 0 0 44px; width: 44px; height: 44px; padding: 0; overflow: hidden;
+    border: 2px solid #292724; border-radius: 8px; background: #fffdf7; box-shadow: 2px 2px 0 #292724;
+    cursor: pointer; transition: transform .16s ease, filter .16s ease;
+  }
+  #details .product-preview-identity-toggle:hover { transform: translateY(-1px); filter: brightness(1.06); }
+  #details .product-preview-identity-toggle:focus-visible { outline: 3px solid #2dc5f5; outline-offset: 3px; }
+  #details .product-preview-identity-toggle img { display: block; width: 100%; height: 100%; object-fit: cover; image-rendering: pixelated; }
+  #details .product-preview-search-panel {
+    width: clamp(210px, 30vw, 290px); padding: 6px; border: 1px solid #292724; border-radius: 10px;
+    background: #fffdf7; box-shadow: 3px 4px 0 #292724; opacity: 0; visibility: hidden; pointer-events: none;
+    transform: translateX(-8px); transition: opacity .18s ease, transform .18s ease, visibility .18s ease;
+  }
+  #details .product-preview-userbar.username-open .product-preview-search-panel {
+    opacity: 1; visibility: visible; pointer-events: auto; transform: translateX(0);
+  }
+  #details .product-preview-search-panel label {
+    position: absolute !important; width: 1px !important; height: 1px !important; padding: 0 !important; margin: -1px !important;
+    overflow: hidden !important; clip: rect(0,0,0,0) !important; white-space: nowrap !important; border: 0 !important;
+  }
+  #details .product-preview-search-panel .preview-player-input-row { display: grid; grid-template-columns: minmax(0,1fr) auto; align-items: center; gap: 5px; }
+  #details #capePlayerUsername { height: 34px; min-height: 34px; min-width: 0; padding: 0 9px; border: 1px solid #d5c9b7; border-radius: 7px; background: #fffefa; color: #29251f; font-size: 10px; box-shadow: none; }
+  #details #capePlayerUsername::placeholder { color: #92897c; }
+  #details #capeLoadPlayer { height: 34px; min-height: 34px; padding: 0 12px; border: 1px solid #171714; border-radius: 7px; background: #302e2a; color: #fffdf7; font-size: 10px; font-weight: 900; box-shadow: 2px 2px 0 #171714; }
+  #details #capeLoadPlayer:hover { background: #137ea4; }
+  #details .product-preview-toolbar { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 10px; margin: 15px auto 0; }
+  #details .product-preview-toolbar .preview-tabs { margin: 0 !important; }
+  #details .storefront-preview .preview-motion-toggle {
+    position: absolute; z-index: 11; top: 50%; right: 12px; transform: translateY(-50%);
+    width: auto; max-width: 116px; min-height: 36px; padding: 9px 10px; border: 1.5px solid #2d2925; border-radius: 999px;
+    background: #fffdf7; color: #282522; box-shadow: 2px 3px 0 #2d2925; font-size: 10px; line-height: 1.25; font-weight: 900;
+    white-space: normal; cursor: pointer; transition: background .15s, color .15s, box-shadow .15s;
+  }
+  #details .storefront-preview .preview-motion-toggle:hover:not(:disabled) { background: #dff8ff; }
+  #details .storefront-preview .preview-motion-toggle[aria-pressed="false"] { background: #282522; color: #fffdf7; }
+  #details .storefront-preview .preview-motion-toggle:disabled { opacity: .45; cursor: not-allowed; box-shadow: none; }
+  #details .preview-player-controls { display: block !important; width: 100%; margin: 10px auto 0; padding: 0 3px; border: 0; border-radius: 0; background: transparent; box-shadow: none; }
+  #details #capePlayerStatus { display: block; margin: 0; color: #756c60; font-size: 10px; line-height: 1.6; overflow-wrap: anywhere; }
+  #details #capePlayerStatus.success { color: #23694b; }
+  #details #capePlayerStatus.error { color: #a34035; }
+  #details .storefront-preview.mode-cape .preview-motion-toggle { opacity: .42; }
+
+  /* How to Redeem belongs on Home immediately below Fitting Room. */
+  #homePage #howToRedeem { display: block; width: min(1185px, 88%); margin: 0 auto 66px; padding: 0; color: #24211e; }
+  #homePage.shop-only #howToRedeem { display: none !important; }
+  #homePage #howToRedeem .redeem-section-heading { margin: 0 auto 22px; text-align: center; }
+  #homePage #howToRedeem .redeem-section-heading h2 { margin: 0 0 8px; color: #24211e; font-size: clamp(24px,3.2vw,31px); line-height: 1.18; letter-spacing: -.7px; font-weight: 900; }
+  #homePage #howToRedeem .redeem-section-heading p { margin: 0; color: #746b60; font-size: 12px; line-height: 1.75; }
+  #homePage #howToRedeem .redeem-guide-card { display: grid; grid-template-columns: minmax(0,1.03fr) minmax(0,1fr); gap: 22px; align-items: center; padding: 20px; border: 1px solid #dfd2bd; border-radius: 12px; background: #fffdf8; box-shadow: 0 2px 0 rgba(55,43,24,.08); }
+  #homePage #howToRedeem .redeem-video-wrap { position: relative; width: 100%; aspect-ratio: 16 / 9; min-height: 170px; overflow: hidden; border: 1px solid #d1c4af; border-radius: 7px; background: #26211e; }
+  #homePage #howToRedeem .redeem-video-wrap iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+  #homePage #howToRedeem .redeem-steps h3 { margin: 0 0 12px; color: #25221e; font-size: 14px; font-weight: 900; }
+  #homePage #howToRedeem .redeem-steps ol { display: grid; gap: 9px; padding: 0; margin: 0; list-style: none; }
+  #homePage #howToRedeem .redeem-steps li { display: grid; grid-template-columns: 20px minmax(0,1fr); gap: 8px; align-items: start; }
+  #homePage #howToRedeem .redeem-steps li > span { display: grid; place-items: center; width: 19px; height: 19px; border-radius: 50%; background: #eae5db; color: #625b51; font-size: 10px; font-weight: 900; }
+  #homePage #howToRedeem .redeem-steps li p { margin: 1px 0 0; color: #655d52; font-size: 10px; line-height: 1.55; }
+  #homePage #howToRedeem .redeem-steps a { color: #267fa5; text-decoration: underline; text-underline-offset: 2px; }
+  #homePage #howToRedeem .redeem-faq { margin-top: 36px; }
+  #homePage #howToRedeem .redeem-faq-heading { margin-bottom: 23px; }
+  #homePage #howToRedeem .redeem-faq-list { display: grid; gap: 10px; }
+  #homePage #howToRedeem .redeem-faq-item { overflow: hidden; border: 1px solid #dfd2bd; border-radius: 10px; background: #fffdf8; box-shadow: 0 2px 0 rgba(55,43,24,.07); }
+  #homePage #howToRedeem .redeem-faq-item summary { position: relative; display: flex; align-items: center; gap: 9px; min-height: 48px; padding: 13px 43px 13px 16px; color: #24211e; font-size: 11px; line-height: 1.5; font-weight: 850; cursor: pointer; list-style: none; }
+  #homePage #howToRedeem .redeem-faq-item summary::-webkit-details-marker { display: none; }
+  #homePage #howToRedeem .redeem-most-common { flex-shrink: 0; padding: 3px 6px; border-radius: 6px; background: #37332d; color: #fffdf8; font-size: 7px; line-height: 1; font-weight: 900; }
+  #homePage #howToRedeem .redeem-chevron { position: absolute; right: 15px; top: 50%; transform: translateY(-55%); color: #655d52; font-size: 16px; font-weight: 500; transition: transform .18s; }
+  #homePage #howToRedeem .redeem-faq-item[open] .redeem-chevron { transform: translateY(-35%) rotate(180deg); }
+  #homePage #howToRedeem .redeem-faq-item > p { margin: 0; padding: 0 16px 16px; color: #655d52; font-size: 11px; line-height: 1.8; }
+  #homePage #howToRedeem .redeem-customer-note { margin-top: 62px; text-align: center; }
+  #homePage #howToRedeem .redeem-customer-cards { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 15px; }
+  #homePage #howToRedeem .redeem-customer-card { min-width: 0; padding: 21px 18px; text-align: left; border: 1px solid #dfd2bd; border-radius: 9px; background: #fffdf8; box-shadow: 0 2px 0 rgba(55,43,24,.07); }
+  #homePage #howToRedeem .redeem-customer-icon { display: grid; place-items: center; width: 29px; height: 29px; margin-bottom: 12px; border-radius: 8px; background: #e5f8ff; color: #137fa9; font-size: 14px; font-weight: 900; }
+  #homePage #howToRedeem .redeem-customer-card h3 { margin: 0 0 8px; color: #27231f; font-size: 12px; font-weight: 900; }
+  #homePage #howToRedeem .redeem-customer-card p { margin: 0; color: #655d52; font-size: 10px; line-height: 1.7; }
+  #homePage #howToRedeem .redeem-customer-card a { display: inline-block; margin-top: 11px; color: #226d8d; font-size: 10px; font-weight: 850; text-decoration: underline; text-underline-offset: 3px; }
+  #homePage #howToRedeem .redeem-customer-card a:hover { color: #109fd0; }
+
+  @media (max-width: 760px) {
+    #details .product-preview-userbar { top: 9px; left: 9px; }
+    #details .product-preview-identity-toggle { width: 39px; height: 39px; flex-basis: 39px; }
+    #details .product-preview-search-panel { width: min(245px, calc(100vw - 90px)); }
+    #details .storefront-preview .preview-motion-toggle { right: 8px; max-width: 92px; min-height: 32px; padding: 7px 8px; font-size: 9px; }
+    #homePage #howToRedeem { width: 92%; margin-bottom: 48px; }
+    #homePage #howToRedeem .redeem-guide-card { grid-template-columns: minmax(0,1fr); gap: 18px; padding: 14px; }
+    #homePage #howToRedeem .redeem-video-wrap { min-height: 0; }
+    #homePage #howToRedeem .redeem-steps h3 { font-size: 13px; }
+    #homePage #howToRedeem .redeem-steps li p { font-size: 11px; }
+    #homePage #howToRedeem .redeem-faq-item summary { padding-left: 12px; font-size: 10px; }
+    #homePage #howToRedeem .redeem-customer-cards { grid-template-columns: minmax(0,1fr); gap: 10px; }
+    #homePage #howToRedeem .redeem-customer-card { padding: 16px; }
+  }
+  @media (max-width: 420px) {
+    #details .product-preview-search-panel { width: min(224px, calc(100vw - 82px)); }
+    #details .storefront-preview .preview-motion-toggle { right: 7px; max-width: 78px; font-size: 8px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    #details .product-preview-search-panel, #details .product-preview-identity-toggle, #details .storefront-preview .preview-motion-toggle { transition: none !important; }
+  }
+</style>
+
+
+<style id="mc-store-final-spin-fix-and-home-motion">
+/* Keep the cape rigid: drag rotates the full 3D player wrapper, not the cape cloth mesh. */
+#details .storefront-preview { touch-action: pan-y !important; }
+/* Always show a clean 360-degree arrival and simultaneous spin-out on the Home showcase. */
+@keyframes mcStoreFinalIncomingCapeSpin {
+  from { opacity: 1; transform: rotateY(0deg); }
+  to   { opacity: 1; transform: rotateY(360deg); }
+}
+@keyframes mcStoreFinalOutgoingCapeSpin {
+  from { opacity: 1; transform: translateX(-50%) rotateY(0deg); }
+  to   { opacity: 0; transform: translateX(-50%) rotateY(360deg); }
+}
+#featured .featured-image img.mc-store-spin-now:not(.mc-showcase-cape-outgoing) {
+  animation: mcStoreFinalIncomingCapeSpin .1s linear 1 both !important;
+  transform-origin: 50% 50% !important;
+  transform-style: preserve-3d !important;
+  backface-visibility: visible !important;
+}
+#featured .featured-image img.mc-showcase-cape-outgoing {
+  animation: mcStoreFinalOutgoingCapeSpin .1s linear 1 both !important;
+  transform-origin: 50% 50% !important;
+  transform-style: preserve-3d !important;
+}
+.home-fitting-motion-toggle {
+  position: absolute !important; z-index: 12 !important; top: 50% !important; right: 12px !important;
+  transform: translateY(-50%) !important; width: auto !important; max-width: 106px !important;
+  min-height: 36px !important; padding: 8px 10px !important; border: 1.5px solid #292724 !important;
+  border-radius: 999px !important; background: #fffdf7 !important; color: #282522 !important;
+  box-shadow: 2px 3px 0 #292724 !important; font-size: 10px !important; line-height: 1.25 !important;
+  font-weight: 900 !important; cursor: pointer !important; white-space: normal !important;
+}
+.home-fitting-motion-toggle:hover { background: #dff8ff !important; }
+.home-fitting-motion-toggle[aria-pressed="false"] { background: #282522 !important; color: #fffdf7 !important; }
+@media (max-width: 620px) {
+  .home-fitting-motion-toggle { right: 8px !important; max-width: 84px !important; min-height: 32px !important; padding: 7px 8px !important; font-size: 9px !important; }
+}
+@media (prefers-reduced-motion: reduce) {
+  #featured .featured-image img.mc-store-spin-now:not(.mc-showcase-cape-outgoing) { animation: mcStoreFinalIncomingCapeSpin .1s linear 1 both !important; }
+  #featured .featured-image img.mc-showcase-cape-outgoing { animation: mcStoreFinalOutgoingCapeSpin .1s linear 1 both !important; }
+}
+</style>
+
+
+<style id="mc-store-cart-and-checkout-final">
+  .mc-cart-count { position:absolute; top:-7px; right:-7px; display:grid; place-items:center; min-width:18px; height:18px; padding:0 4px; border-radius:999px; background:#22bff0; color:#07232d; border:1.5px solid #fffdf7; font-size:10px; font-weight:1000; line-height:1; }
+  .cart-top { position:relative !important; }
+  #mcStoreCartPage[hidden] { display:none !important; }
+  #mcStoreCartPage { width:min(1120px,92%); margin:24px auto 70px; color:#27241f; }
+  .mc-cart-heading { text-align:center; margin:18px 0 42px; }
+  .mc-cart-heading h1 { margin:0 0 12px; color:#282521; font-size:clamp(30px,4vw,40px); font-weight:900; letter-spacing:-1.2px; }
+  .mc-cart-heading p { margin:0; color:#70685d; font-size:14px; }
+  .mc-cart-layout { display:grid; grid-template-columns:minmax(0,1fr) minmax(310px,358px); gap:26px; align-items:start; }
+  .mc-cart-items { display:grid; gap:14px; min-width:0; }
+  .mc-cart-item { display:grid; grid-template-columns:minmax(125px,245px) minmax(0,1fr) auto; align-items:center; gap:18px; min-width:0; padding:20px; border:1px solid #e1d5c2; border-radius:11px; background:#fffdf8; box-shadow:0 2px 0 rgba(47,38,24,.08); }
+  .mc-cart-item-art { width:100%; height:138px; display:grid; place-items:center; overflow:hidden; border-radius:8px; background:linear-gradient(145deg,#e7e0d3,#f7f2e7); }
+  .mc-cart-item-art img { width:100%; height:100%; object-fit:contain; padding:8px; }
+  .mc-cart-item-copy { min-width:0; }
+  .mc-cart-item-copy h3 { margin:0 0 8px; color:#24211e; font-size:16px; line-height:1.4; font-weight:900; overflow-wrap:anywhere; }
+  .mc-cart-item-copy p { margin:0 0 15px; color:#766d61; font-size:12px; }
+  .mc-cart-item-total { margin:0; color:#26221e; font-size:14px; font-weight:900; }
+  .mc-cart-item-controls { display:grid; justify-items:center; gap:12px; }
+  .mc-cart-quantity { display:flex; align-items:center; gap:0; overflow:hidden; border:1px solid #e2d6c3; border-radius:999px; background:#f0e8d9; }
+  .mc-cart-quantity button { width:31px; height:34px; border:0; background:transparent; color:#655d52; font-size:16px; font-weight:700; }
+  .mc-cart-quantity button:hover { background:#e1f7ff; color:#087da4; }
+  .mc-cart-quantity span { min-width:28px; text-align:center; font-size:12px; color:#282521; }
+  .mc-cart-remove { width:28px; height:28px; border:0; border-radius:9px; background:#f2e8d8; color:#c3483f; font-size:15px; }
+  .mc-cart-remove:hover { background:#ffe1d8; }
+  .mc-cart-summary { padding:22px; border:1px solid #e1d5c2; border-radius:11px; background:#fffdf8; box-shadow:0 2px 0 rgba(47,38,24,.08); }
+  .mc-cart-summary h2 { margin:0 0 17px; padding-bottom:12px; border-bottom:1px solid #e6dac6; color:#2b2722; font-size:20px; font-weight:900; }
+  .mc-cart-summary-row { display:flex; justify-content:space-between; gap:12px; margin:14px 0; color:#71685d; font-size:13px; }
+  .mc-cart-summary-row strong { color:#292621; font-weight:750; white-space:nowrap; }
+  .mc-cart-total-row { margin-top:17px; padding-top:16px; border-top:1px solid #e6dac6; color:#2a2722; font-weight:900; }
+  .mc-cart-coupon { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:7px; margin:19px 0 8px; }
+  .mc-cart-coupon input, .mc-checkout-field { width:100%; min-width:0; min-height:43px; padding:12px; border:1px solid #e4d8c3; border-radius:8px; color:#2a2722; background:#f0e8d8; font:inherit; font-size:12px; }
+  .mc-cart-coupon button { padding:0 14px; border:1px solid #e0d4c0; border-radius:8px; background:#efe6d6; color:#2e2a24; font-size:12px; font-weight:800; }
+  .mc-cart-coupon button:hover { background:#e1f7ff; }
+  .mc-cart-code-message { min-height:17px; margin:2px 0 11px; color:#786f64; font-size:10px; line-height:1.5; }
+  .mc-cart-primary { width:100%; min-height:48px; padding:12px 14px; border:1px solid #0b7ca7; border-radius:8px; background:linear-gradient(180deg,#78e7ff,#25b9eb); color:#042534; box-shadow:0 4px 0 #126782; font-size:12px; font-weight:1000; cursor:pointer; transition:transform .16s,filter .16s; }
+  .mc-cart-primary:hover { transform:translateY(-2px); filter:brightness(1.04); }
+  .mc-cart-primary:active { transform:translateY(2px); box-shadow:0 1px 0 #126782; }
+  .mc-cart-payment-note { margin:19px 0 0; text-align:center; color:#7a7165; font-size:11px; line-height:1.7; }
+  .mc-cart-payment-icons { display:flex; justify-content:center; gap:10px; margin-top:10px; color:#746c60; font-weight:900; font-size:12px; }
+  .mc-cart-checkout { margin-top:20px; padding-top:17px; border-top:1px solid #e6dac6; }
+  .mc-cart-checkout h3 { margin:0 0 8px; color:#282521; font-size:15px; }
+  .mc-cart-checkout p { margin:0 0 13px; color:#71685d; font-size:11px; line-height:1.7; }
+  .mc-cart-checkout label { display:block; margin:11px 0 5px; color:#3b362e; font-size:11px; font-weight:800; }
+  .mc-cart-secure-note { display:flex; gap:9px; align-items:flex-start; margin:13px 0; padding:11px; border:1px solid #d7e8db; border-radius:8px; background:#f1faf2; color:#315f40; font-size:10px; line-height:1.6; }
+  .mc-cart-checkout-status { margin-top:10px !important; color:#a34c31 !important; font-size:11px !important; overflow-wrap:anywhere; }
+  .mc-cart-secondary { display:flex; justify-content:center; width:100%; margin-top:17px; color:#282521; font-size:13px; text-decoration:none; }
+  .mc-cart-secondary:hover { color:#1289ac; text-decoration:underline; }
+  .mc-cart-empty { padding:38px 20px; border:1px dashed #d9cbb6; border-radius:11px; background:#fffdf8; text-align:center; }
+  .mc-cart-empty .empty-icon { font-size:34px; margin-bottom:12px; }
+  .mc-cart-empty h3 { margin:0 0 8px; color:#29251f; font-size:18px; }
+  .mc-cart-empty p { margin:0 0 19px; color:#786f63; font-size:12px; line-height:1.7; }
+  .mc-cart-empty .mc-cart-primary { max-width:250px; }
+  body.mc-cart-open .mc-footer, body.mc-cart-open #discordFloat { display:none !important; }
+  body.mc-cart-open #homePage, body.mc-cart-open #details, body.mc-cart-open #aboutPage, body.mc-cart-open #endorsementsPage, body.mc-cart-open #footerInfoPage, body.mc-cart-open #not-found { display:none !important; }
+  @media(max-width:800px) { .mc-cart-layout { grid-template-columns:minmax(0,1fr); gap:16px; } .mc-cart-heading { margin-bottom:27px; } .mc-cart-summary { order:2; } }
+  @media(max-width:520px) { #mcStoreCartPage { width:92%; margin-top:16px; } .mc-cart-item { grid-template-columns:104px minmax(0,1fr); gap:12px; padding:12px; } .mc-cart-item-art { height:112px; } .mc-cart-item-controls { grid-column:2; display:flex; justify-content:space-between; justify-items:initial; align-items:center; } .mc-cart-item-copy h3 { font-size:13px; } .mc-cart-item-copy p { margin-bottom:9px; font-size:10px; } .mc-cart-item-total { font-size:12px; } .mc-cart-summary { padding:17px; } .mc-cart-heading h1 { font-size:30px; } }
+  @media(prefers-reduced-motion:reduce) { .mc-cart-primary { transition:none !important; } }
+
+  /* Match the product preview toolbar and pause control to the supplied reference. */
+  #details .preview-tabs { flex-direction:row !important; }
+  #details .preview-motion-toggle { top:10px !important; right:10px !important; left:auto !important; bottom:auto !important; transform:none !important; width:34px !important; min-width:34px !important; max-width:34px !important; height:34px !important; min-height:34px !important; padding:0 !important; display:grid !important; place-items:center !important; border-radius:9px !important; background:#342c28 !important; color:#fffdf7 !important; border:1.5px solid rgba(255,255,255,.45) !important; box-shadow:0 2px 0 rgba(0,0,0,.25) !important; font-size:13px !important; line-height:1 !important; }
+  #details .preview-motion-toggle[aria-pressed="false"] { background:#fffdf7 !important; color:#282522 !important; }
+  #details .preview-motion-toggle:disabled { opacity:.65 !important; }
+  #details .mc-product-quantity-row { display:flex !important; align-items:center !important; justify-content:flex-start !important; margin:11px 0 15px !important; }
+  #details .mc-product-quantity-stepper { display:inline-flex !important; align-items:center !important; overflow:hidden !important; border:1px solid #e2d6c3 !important; border-radius:8px !important; background:#fffdf8 !important; }
+  #details .mc-product-quantity-stepper button { width:32px !important; height:32px !important; padding:0 !important; border:0 !important; background:transparent !important; color:#5f584f !important; font-size:16px !important; font-weight:800 !important; }
+  #details .mc-product-quantity-stepper button:hover:not(:disabled) { background:#e5f8ff !important; }
+  #details .mc-product-quantity-stepper button:disabled { opacity:.45 !important; cursor:not-allowed !important; }
+  #details .mc-product-quantity-stepper span { display:grid !important; place-items:center !important; width:30px !important; color:#282521 !important; font-size:12px !important; }
+  #details .storefront-detail-actions.mc-store-cart-actions { display:grid !important; grid-template-columns:minmax(0,1fr) minmax(0,1fr) !important; gap:10px !important; }
+  #details .storefront-add-cart { min-height:43px !important; border:1px solid #dfd2bd !important; border-radius:9px !important; background:#fffdf8 !important; color:#29251f !important; font-size:12px !important; font-weight:850 !important; cursor:pointer !important; }
+  #details .storefront-add-cart:hover:not(:disabled) { background:#e9faff !important; border-color:#9ddfee !important; }
+  #details .storefront-add-cart:disabled { opacity:.48; cursor:not-allowed; }
+  #details .storefront-buy:disabled { opacity:.48 !important; cursor:not-allowed !important; }
+  .storefront-feedback.success { color:#237a43 !important; }
+  .storefront-feedback.error { color:#a33b32 !important; }
+  @media(max-width:520px) { #details .storefront-detail-actions.mc-store-cart-actions { grid-template-columns:minmax(0,1fr) !important; } }
+</style>
+
+<section id="mcStoreCartPage" hidden aria-labelledby="mcStoreCartTitle">
+  <header class="mc-cart-heading">
+    <h1 id="mcStoreCartTitle">Your Cart</h1>
+    <p id="mcStoreCartSubtitle">You have 0 cape codes in your cart.</p>
+  </header>
+  <div class="mc-cart-layout">
+    <div class="mc-cart-items" id="mcStoreCartItems" aria-live="polite"></div>
+    <aside class="mc-cart-summary" aria-label="Order summary">
+      <h2>Order Summary</h2>
+      <div class="mc-cart-summary-row"><span>Subtotal</span><strong id="mcStoreCartSubtotal">$0.00</strong></div>
+      <div class="mc-cart-summary-row"><span>Payment Fee (3%)</span><strong id="mcStoreCartFee">$0.00</strong></div>
+      <div class="mc-cart-summary-row" id="mcStoreCartDiscountRow" hidden><span>Discount</span><strong id="mcStoreCartDiscount">−$0.00</strong></div>
+      <div class="mc-cart-summary-row mc-cart-total-row"><span>Total</span><strong id="mcStoreCartTotal">$0.00</strong></div>
+      <form class="mc-cart-coupon" id="mcStoreCouponForm">
+        <input id="mcStoreCouponInput" type="text" autocomplete="off" placeholder="Coupon or affiliate code" aria-label="Coupon or affiliate code">
+        <button type="submit">Apply</button>
+      </form>
+      <p class="mc-cart-code-message" id="mcStoreCouponMessage" role="status">Enter a code supplied by MC STORE.</p>
+      <button class="mc-cart-primary" id="mcStoreProceedCheckout" type="button">Proceed to Checkout</button>
+      <p class="mc-cart-payment-note">Secure bank-card payment must be completed on a verified payment provider.</p>
+      <div class="mc-cart-payment-icons" aria-label="Payment methods"><span>▰</span><span>VISA</span><span>●</span><span>PayPal</span></div>
+      <section class="mc-cart-checkout" id="mcStoreCheckoutForm" hidden aria-labelledby="mcStoreCheckoutTitle">
+        <h3 id="mcStoreCheckoutTitle">Secure Checkout</h3>
+        <p>Review your order, then continue to your connected payment provider. This storefront never asks for or stores your bank-card number.</p>
+        <label for="mcStoreCheckoutEmail">Email for your order</label>
+        <input class="mc-checkout-field" id="mcStoreCheckoutEmail" type="email" autocomplete="email" placeholder="you@example.com" required>
+        <div class="mc-cart-secure-note"><span aria-hidden="true">🔒</span><span>Card details are entered only on the provider's secure hosted checkout page. Never send a card number or password in Discord.</span></div>
+        <button class="mc-cart-primary" id="mcStoreSecurePay" type="button">Continue to Secure Payment</button>
+        <p class="mc-cart-checkout-status" id="mcStoreCheckoutStatus" role="status" aria-live="polite"></p>
+        <a class="mc-cart-secondary" href="https://discord.gg/G75MSAVe2k" target="_blank" rel="noopener noreferrer">Ask MC STORE about ordering ↗</a>
+      </section>
+    </aside>
+  </div>
+  <a href="#shop" class="mc-cart-secondary" id="mcStoreContinueShopping">‹ Continue Shopping</a>
+</section>
+
+<script id="mc-store-persistent-cart-system">
+(() => {
+  "use strict";
+  const CART_KEY = "mc_store_cart_v1";
+  const SKIN_KEY = "mc_store_skin_username";
+  // Add a secure server endpoint that creates a hosted Stripe/PayPal checkout session.
+  // Leave empty until the endpoint is deployed; this static page cannot safely create payments itself.
+  const MC_STORE_PAYMENT_CHECKOUT_ENDPOINT = "";
+  // Only add real, authorized coupons to this map. Example format: { "STORECODE": 5 } for 5% off.
+  const MC_STORE_COUPONS = {};
+  let cart = readCart();
+  let activeCoupon = null;
+
+  function escape(value) { return String(value ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;", "'":"&#39;"}[c])); }
+  function money(value) { return "$" + Number(value || 0).toFixed(2); }
+  function itemFor(id) {
+    const lookup = id === "twitch" ? "purple-heart" : id;
+    const item = Array.isArray(capes) ? capes.find(entry => entry.id === lookup) : null;
+    if (!item) return null;
+    if (lookup === "experience") return {...item, name:"Experience Cape Code", price:69.99, originalPrice:79.99, stock:true};
+    return item;
+  }
+  function readCart() {
+    try {
+      const parsed = JSON.parse(localStorage.getItem(CART_KEY) || "[]");
+      if (!Array.isArray(parsed)) return [];
+      return parsed.filter(entry => entry && typeof entry.id === "string" && itemFor(entry.id) && itemFor(entry.id).stock && Number.isFinite(Number(itemFor(entry.id).price)))
+        .map(entry => ({id: entry.id === "twitch" ? "purple-heart" : entry.id, quantity: Math.max(1, Math.min(99, Math.floor(Number(entry.quantity) || 1)))}));
+    } catch (_) { return []; }
+  }
+  function persist() { try { localStorage.setItem(CART_KEY, JSON.stringify(cart)); } catch (_) {} }
+  function quantityCount() { return cart.reduce((sum, item) => sum + item.quantity, 0); }
+  function calc() {
+    const subtotal = cart.reduce((sum, line) => { const cape = itemFor(line.id); return sum + (cape ? Number(cape.price) * line.quantity : 0); }, 0);
+    const discountRate = activeCoupon ? Number(MC_STORE_COUPONS[activeCoupon]) || 0 : 0;
+    const discount = subtotal * discountRate / 100;
+    const fee = Math.max(0, subtotal - discount) * 0.03;
+    return {subtotal, discount, fee, total: Math.max(0, subtotal - discount) + fee};
+  }
+  function updateBadge() {
+    const badge = document.getElementById("mcStoreCartCount");
+    if (!badge) return;
+    const count = quantityCount();
+    badge.textContent = String(count);
+    badge.hidden = count === 0;
+    badge.setAttribute("aria-label", `${count} items in cart`);
+  }
+  function render() {
+    const itemsRoot = document.getElementById("mcStoreCartItems");
+    if (!itemsRoot) return;
+    const count = quantityCount();
+    const subtitle = document.getElementById("mcStoreCartSubtitle");
+    if (subtitle) subtitle.textContent = `You have ${count} ${count === 1 ? "cape code" : "cape codes"} in your cart.`;
+    if (!cart.length) {
+      itemsRoot.innerHTML = `<div class="mc-cart-empty"><div class="empty-icon" aria-hidden="true">🛒</div><h3>Your cart is empty</h3><p>Explore the collection and add a cape code to start your order.</p><button class="mc-cart-primary" type="button" id="mcStoreEmptyShop">Continue Shopping</button></div>`;
+      const checkout = document.getElementById("mcStoreCheckoutForm");
+      if (checkout) checkout.hidden = true;
+    } else {
+      itemsRoot.innerHTML = cart.map(line => {
+        const cape = itemFor(line.id);
+        if (!cape) return "";
+        const filename = String(cape.productImage || cape.image || "").split("/").pop();
+        return `<article class="mc-cart-item" data-cart-item="${escape(cape.id)}">
+          <div class="mc-cart-item-art"><img src="${escape(cape.productImage || cape.image || "")}" data-image-file="${escape(filename)}" data-original-src="${escape(cape.productImage || cape.image || "")}" alt="${escape(cape.name)}" loading="lazy" onerror="if(window.handleCapeCardImageError)window.handleCapeCardImageError(this)"></div>
+          <div class="mc-cart-item-copy"><h3>${escape(cape.name)}</h3><p>Cape Code</p><div class="mc-cart-item-total">${money(cape.price)} × ${line.quantity} = ${money(cape.price * line.quantity)}</div></div>
+          <div class="mc-cart-item-controls"><div class="mc-cart-quantity" aria-label="Quantity"><button type="button" data-cart-action="decrease" data-cape-id="${escape(cape.id)}" aria-label="Decrease quantity">−</button><span>${line.quantity}</span><button type="button" data-cart-action="increase" data-cape-id="${escape(cape.id)}" aria-label="Increase quantity">+</button></div><button class="mc-cart-remove" type="button" data-cart-action="remove" data-cape-id="${escape(cape.id)}" aria-label="Remove ${escape(cape.name)}" title="Remove item">▤</button></div>
+        </article>`;
+      }).join("");
+    }
+    const sums = calc();
+    const subtotalEl = document.getElementById("mcStoreCartSubtotal");
+    const feeEl = document.getElementById("mcStoreCartFee");
+    const totalEl = document.getElementById("mcStoreCartTotal");
+    const discountRow = document.getElementById("mcStoreCartDiscountRow");
+    const discountEl = document.getElementById("mcStoreCartDiscount");
+    if (subtotalEl) subtotalEl.textContent = money(sums.subtotal);
+    if (feeEl) feeEl.textContent = money(sums.fee);
+    if (totalEl) totalEl.textContent = money(sums.total);
+    if (discountRow) discountRow.hidden = !sums.discount;
+    if (discountEl) discountEl.textContent = "−" + money(sums.discount);
+    const checkoutButton = document.getElementById("mcStoreProceedCheckout");
+    if (checkoutButton) checkoutButton.disabled = !cart.length;
+    updateBadge();
+  }
+  function closeCartUI() {
+    document.body.classList.remove("mc-cart-open");
+    const page = document.getElementById("mcStoreCartPage");
+    if (page) page.hidden = true;
+  }
+  window.mcStoreCartAdd = function(id, quantity = 1) {
+    const cape = itemFor(id);
+    if (!cape || !cape.stock || typeof cape.price !== "number" || !Number.isFinite(cape.price)) return false;
+    const lookup = cape.id;
+    let line = cart.find(entry => entry.id === lookup);
+    if (line) line.quantity = Math.min(99, line.quantity + Math.max(1, Math.floor(Number(quantity) || 1)));
+    else cart.push({id: lookup, quantity: Math.max(1, Math.min(99, Math.floor(Number(quantity) || 1)))});
+    persist(); render(); return true;
+  };
+  window.mcStoreOpenCart = function(options = {}) {
+    closeCartUI();
+    ["homePage", "details", "aboutPage", "endorsementsPage", "footerInfoPage", "not-found"].forEach(id => {
+      const el = document.getElementById(id); if (!el) return;
+      if (id === "homePage" || id === "details" || id === "not-found") el.style.display = "none";
+      else el.hidden = true;
+    });
+    document.body.classList.add("mc-cart-open");
+    const page = document.getElementById("mcStoreCartPage");
+    if (page) page.hidden = false;
+    safeReplaceState("#cart");
+    document.title = "Your Cart | MC STORE";
+    document.querySelectorAll(".nav-link").forEach(link => link.classList.remove("active"));
+    render();
+    const checkout = document.getElementById("mcStoreCheckoutForm");
+    if (checkout) checkout.hidden = !options.checkout;
+    window.scrollTo({top:0, behavior:"auto"});
+  };
+  window.mcStoreRenderCart = render;
+
+  // Keep the normal app navigation compatible with the cart view.
+  const originalShowHome = window.showHome;
+  if (typeof originalShowHome === "function") window.showHome = function(...args) { closeCartUI(); return originalShowHome.apply(this, args); };
+  const originalOpenCape = window.openCape;
+  if (typeof originalOpenCape === "function") window.openCape = function(...args) { closeCartUI(); return originalOpenCape.apply(this, args); };
+  for (const name of ["showAbout", "showEndorsements", "showFooterInfo"]) {
+    const original = window[name];
+    if (typeof original === "function") window[name] = function(...args) { closeCartUI(); return original.apply(this, args); };
+  }
+
+  document.getElementById("mcStoreCartPage")?.addEventListener("click", event => {
+    const shopButton = event.target.closest("#mcStoreEmptyShop");
+    if (shopButton) { window.showHome("shop"); return; }
+    const actionButton = event.target.closest("[data-cart-action]");
+    if (!actionButton) return;
+    const id = actionButton.dataset.capeId;
+    const line = cart.find(entry => entry.id === id);
+    if (!line) return;
+    switch (actionButton.dataset.cartAction) {
+      case "increase": line.quantity = Math.min(99, line.quantity + 1); break;
+      case "decrease": line.quantity -= 1; if (line.quantity < 1) cart = cart.filter(entry => entry.id !== id); break;
+      case "remove": cart = cart.filter(entry => entry.id !== id); break;
+    }
+    persist(); render();
+  });
+  document.getElementById("mcStoreCouponForm")?.addEventListener("submit", event => {
+    event.preventDefault();
+    const input = document.getElementById("mcStoreCouponInput");
+    const message = document.getElementById("mcStoreCouponMessage");
+    const code = String(input && input.value || "").trim().toUpperCase();
+    if (code && Object.prototype.hasOwnProperty.call(MC_STORE_COUPONS, code) && Number(MC_STORE_COUPONS[code]) > 0) {
+      activeCoupon = code;
+      if (message) { message.textContent = `Code applied: ${MC_STORE_COUPONS[code]}% off.`; message.style.color = "#237a43"; }
+    } else {
+      activeCoupon = null;
+      if (message) { message.textContent = "This code is not configured yet. Please confirm it with MC STORE."; message.style.color = "#a34c31"; }
+    }
+    render();
+  });
+  document.getElementById("mcStoreProceedCheckout")?.addEventListener("click", () => {
+    const form = document.getElementById("mcStoreCheckoutForm");
+    if (!cart.length) return;
+    if (form) form.hidden = false;
+    form?.scrollIntoView({behavior:"smooth", block:"nearest"});
+    document.getElementById("mcStoreCheckoutEmail")?.focus({preventScroll:true});
+  });
+  document.getElementById("mcStoreSecurePay")?.addEventListener("click", async () => {
+    const status = document.getElementById("mcStoreCheckoutStatus");
+    const email = String(document.getElementById("mcStoreCheckoutEmail")?.value || "").trim();
+    if (!cart.length) { if (status) status.textContent = "Your cart is empty."; return; }
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { if (status) status.textContent = "Enter a valid email address for the order."; document.getElementById("mcStoreCheckoutEmail")?.focus(); return; }
+    if (!MC_STORE_PAYMENT_CHECKOUT_ENDPOINT) {
+      if (status) status.textContent = "Secure card checkout is not connected yet. The site is ready for a secure payment-provider endpoint, but no live payment can be taken until MC STORE configures one. Use the Discord link below to confirm the current ordering process.";
+      return;
+    }
+    if (status) status.textContent = "Preparing secure checkout…";
+    try {
+      const response = await fetch(MC_STORE_PAYMENT_CHECKOUT_ENDPOINT, {
+        method: "POST", headers: {"Content-Type":"application/json"},
+        body: JSON.stringify({email, currency:"USD", items: cart.map(line => ({id:line.id, quantity:line.quantity})), coupon:activeCoupon || null})
+      });
+      if (!response.ok) throw new Error("The checkout service did not accept the order.");
+      const result = await response.json();
+      const url = new URL(result.url || "");
+      if (url.protocol !== "https:") throw new Error("The payment provider must return a secure HTTPS checkout URL.");
+      window.location.assign(url.href);
+    } catch (error) {
+      if (status) status.textContent = error && error.message ? error.message : "Could not start secure checkout. Please contact MC STORE.";
+    }
+  });
+  document.getElementById("mcStoreContinueShopping")?.addEventListener("click", event => {
+    event.preventDefault();
+    window.showHome("shop");
+  });
+  updateBadge();
+  render();
+  try { if (window.location.hash === "#cart") window.mcStoreOpenCart(); } catch (_) {}
 })();
 </script>
 
