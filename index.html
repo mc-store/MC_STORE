@@ -29784,5 +29784,24 @@ body.mc-open-cape-now #details .detail-card {
 }
 </style>
 
+
+<style id="mc-store-make-shop-capes-bigger-final">
+/* Only enlarge the cape renders in Shop / Our Products; keep card layout and all other images unchanged. */
+#shop .card-art { overflow: hidden !important; }
+#shop .card-img {
+  width: 98% !important;
+  height: 252px !important;
+  max-height: calc(100% - 8px) !important;
+  object-fit: contain !important;
+  object-position: center !important;
+}
+@media (max-width: 900px) {
+  #shop .card-img { width: 98% !important; height: 216px !important; }
+}
+@media (max-width: 620px) {
+  #shop .card-img { width: 98% !important; height: 180px !important; }
+}
+</style>
+
 </body>
 </html>
