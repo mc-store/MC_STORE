@@ -3957,10 +3957,10 @@ function showFeatured(index) {
 
 function restartFeaturedTimer() {
   clearInterval(featuredTimer);
-  // Automatically feature the next cape every three seconds on desktop and mobile.
+  // Automatically feature the next cape every five seconds on desktop and mobile.
   featuredTimer = setInterval(() => {
     showFeatured((featuredIndex + 1) % featuredCapes.length);
-  }, 4000);
+  }, 5000);
 }
 
 function renderRecommendations(currentCape) {
@@ -27867,30 +27867,13 @@ nav .nav-links .nav-link[href="#home"].active {
       return;
     }
 
-    // Remember the last successfully resolved artwork before changing the shared image.
-    // An overlay copy lets the old cape spin out while the next cape spins in simultaneously.
+    // Show only one cape at a time: no duplicated outgoing image, fade, zoom, or cross-spin.
     const previousCapeId = image.dataset.mcVisualCapeId || image.dataset.mcActiveCapeId || "";
     const previousVisualSrc = image.dataset.mcVisualSrc ||
       ((image.complete && image.naturalWidth > 0) ? (image.currentSrc || image.src) : "");
-    const shouldCrossSpin = Boolean(previousCapeId && previousCapeId !== cape.id && previousVisualSrc);
     const shouldSpinIncoming = !previousVisualSrc || previousCapeId !== cape.id;
-    if (shouldCrossSpin) {
-      const stage = image.closest(".featured-image") || image.parentElement;
-      if (stage) {
-        // Remove any stale outgoing layer left behind by a very fast timer tick.
-        stage.querySelectorAll(".mc-showcase-cape-outgoing").forEach(node => node.remove());
-        const outgoing = doc.createElement("img");
-        outgoing.className = "mc-showcase-cape-outgoing";
-        outgoing.src = previousVisualSrc;
-        outgoing.alt = "";
-        outgoing.setAttribute("aria-hidden", "true");
-        outgoing.draggable = false;
-        stage.appendChild(outgoing);
-        const removeOutgoing = () => { if (outgoing.isConnected) outgoing.remove(); };
-        outgoing.addEventListener("animationend", removeOutgoing, { once: true });
-        setTimeout(removeOutgoing, 140);
-      }
-    }
+    const stage = image.closest(".featured-image") || image.parentElement;
+    if (stage) stage.querySelectorAll(".mc-showcase-cape-outgoing").forEach(node => node.remove());
 
     image.hidden = false;
     image.removeAttribute("hidden");
@@ -27936,7 +27919,7 @@ nav .nav-links .nav-link[href="#home"].active {
   window.showFeatured = stableShowFeatured;
   window.restartFeaturedTimer = function () {
     if (typeof featuredTimer !== "undefined" && featuredTimer) clearInterval(featuredTimer);
-    featuredTimer = setInterval(() => stableShowFeatured((featuredIndex + 1) % featuredCapes.length), 4000);
+    featuredTimer = setInterval(() => stableShowFeatured((featuredIndex + 1) % featuredCapes.length), 5000);
   };
   try { showFeatured = stableShowFeatured; } catch (_) {}
   try { restartFeaturedTimer = window.restartFeaturedTimer; } catch (_) {}
@@ -29940,6 +29923,46 @@ body.mc-open-cape-now #details .detail-card {
     filter: blur(6px) brightness(.62) saturate(1.05) !important;
   }
 }
+</style>
+
+
+<style id="mc-store-home-showcase-clean-360-final">
+  /* HOME showcase: keep the cape fixed in place; only rotate it once when a different cape arrives. */
+  #featured .featured-image,
+  #featured .featured-image.cape-zoom-switch {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+  }
+  #featured .featured-image img:not(.mc-store-spin-now):not(.mc-showcase-cape-outgoing) {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+    filter: drop-shadow(8px 16px 18px rgba(0,0,0,.2)) !important;
+  }
+  @keyframes mcStoreHomeCapeRigid360Final {
+    from { transform: perspective(1100px) rotateY(0deg); }
+    to   { transform: perspective(1100px) rotateY(360deg); }
+  }
+  #featured .featured-image img.mc-store-spin-now:not(.mc-showcase-cape-outgoing) {
+    animation: mcStoreHomeCapeRigid360Final .1s linear 1 both !important;
+    transform-origin: 50% 50% !important;
+    transform-style: preserve-3d !important;
+    backface-visibility: visible !important;
+    will-change: transform !important;
+    opacity: 1 !important;
+  }
+  /* Any old outgoing clone is suppressed; the next cape replaces the previous one in place. */
+  #featured .featured-image img.mc-showcase-cape-outgoing { display: none !important; animation: none !important; }
+  @media (prefers-reduced-motion: reduce) {
+    #featured .featured-image,
+    #featured .featured-image img:not(.mc-store-spin-now) { animation: none !important; transition: none !important; }
+    #featured .featured-image img.mc-store-spin-now:not(.mc-showcase-cape-outgoing) {
+      animation: mcStoreHomeCapeRigid360Final .1s linear 1 both !important;
+    }
+  }
 </style>
 
 </body>
