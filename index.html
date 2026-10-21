@@ -2868,8 +2868,9 @@ body.mc-reveal-ready .mc-footer .reveal-on-scroll.is-visible {
 
     <div class="nav-actions">
       <span class="currency-pill" aria-label="Currency: US dollars"><span class="currency-flag">🇺🇸</span><span>USD</span><span class="currency-chevron">▾</span></span>
-      <a class="cart-top" href="#shop" onclick="showHome('shop');return false" aria-label="Browse the cape shop" title="Browse the cape shop">
+      <a class="cart-top" href="#cart" onclick="window.mcStoreOpenCart();return false" aria-label="Open shopping cart" title="Shopping cart">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 4h2l2.1 10.1a2 2 0 0 0 2 1.6h7.8a2 2 0 0 0 1.9-1.4L21 8H6"/><circle cx="10" cy="20" r="1.3"/><circle cx="18" cy="20" r="1.3"/></svg>
+        <span class="mc-cart-count" id="mcStoreCartCount" hidden>0</span>
       </a>
       <span class="user-label" id="authUserLabel" hidden></span>
       <button class="account-icon" id="authOpenBtn" type="button" aria-label="Sign in" title="Sign in">
@@ -2970,6 +2971,7 @@ body.mc-reveal-ready .mc-footer .reveal-on-scroll.is-visible {
           <canvas id="homeFitCanvas" aria-label="3D Minecraft player wearing the selected cape"></canvas>
           <div class="home-fitting-drag-hint" aria-hidden="true">DRAG TO TURN</div>
           <div class="home-fitting-status" id="homeFitStatus" role="status" aria-live="polite">Loading Steve…</div>
+          <button class="home-fitting-motion-toggle" id="homeFitMotionToggle" type="button" aria-pressed="true">Ⅱ Pause walking</button>
           <div class="home-fitting-mode-switch" role="group" aria-label="Player equipment">
             <button class="home-fitting-mode active" type="button" data-home-fit-mode="player" aria-pressed="true">PLAYER</button>
             <button class="home-fitting-mode" type="button" data-home-fit-mode="elytra" aria-pressed="false">ELYTRA</button>
@@ -2999,92 +3001,7 @@ body.mc-reveal-ready .mc-footer .reveal-on-scroll.is-visible {
     </div>
   </section>
 
-</main>
 
-<section id="aboutPage" class="container about-page" hidden>
-  <div class="back-row">
-    <button class="back-btn" type="button" onclick="showHome('home')">← Back to Home</button>
-  </div>
-  <article class="about-panel">
-    <div class="kicker">GET TO KNOW US</div>
-    <h1>About <span class="gradient">MC STORE</span></h1>
-    <p class="about-lead">A Minecraft cape store built around clear listings, careful checks, and a better shopping experience.</p>
-    <div class="about-copy">
-      <p><strong>MC STORE is an independent shop for Minecraft cape collectors.</strong> Founded in December 2024, our goal is to make cape shopping clearer in a community where misleading listings and unreliable sellers can be a concern.</p>
-      <p>We aim to make browsing and purchasing easier by showing clear product details and checking cape-code listings before they are offered. Please review each cape’s current stock, price, and delivery information so you can make an informed decision.</p>
-      <p>Community feedback matters to us. Our Endorsements page brings together creator features, customer-review information, and partner details as each item is confirmed.</p>
-      <p>MC STORE is not affiliated with Mojang, Minecraft, or Microsoft. Before placing an order, confirm the cape’s availability, final price, and delivery details. For questions or community updates, contact us through our Discord server.</p>
-    </div>
-    <div class="about-actions">
-      <a class="btn" href="#endorsements" onclick="showEndorsements();return false">Explore Endorsements ↗</a>
-      <a class="btn btn-outline" href="https://discord.gg/G75MSAVe2k" target="_blank" rel="noopener noreferrer">Contact Us on Discord ↗</a>
-    </div>
-  </article>
-</section>
-
-<section id="endorsementsPage" class="container endorsements-page" hidden>
-  <div class="back-row">
-    <button class="back-btn" type="button" onclick="showHome('home')">← Back to Home</button>
-  </div>
-  <article class="about-panel endorsements-panel">
-    <div class="kicker">CREATORS · REVIEWS · PARTNERS</div>
-    <h1>Endorsements &amp; <span class="gradient">Partners</span></h1>
-    <p class="about-lead">Community recommendations help cape collectors find a more trustworthy place to shop.</p>
-    <div class="endorsement-grid">
-      <section class="endorsement-card">
-        <div class="endorsement-icon">✦</div>
-        <h2>Creator Endorsements</h2>
-        <p>MC STORE is building a clear list of Minecraft YouTubers and creators who feature or recommend our store. Creator names and original links will be added when each endorsement or partnership is confirmed.</p>
-      </section>
-      <section class="endorsement-card" id="customerReviewsCard">
-        <div class="endorsement-icon">★</div>
-        <h2>Customer Reviews</h2>
-        <p>We value feedback from cape collectors. Where reviews are available, we aim to link to their original sources so visitors can read the full context for themselves.</p>
-      </section>
-      <section class="endorsement-card">
-        <div class="endorsement-icon">✓</div>
-        <h2>Verified Cape Codes</h2>
-        <p>MC STORE focuses on clear cape-code listings and transparent product information. Check each listing for current availability, price, and ordering details before purchasing.</p>
-      </section>
-    </div>
-    <p class="endorsement-note">For MC STORE community news or questions, visit our Discord server. This page stays on MC STORE; only the Discord link opens the community invitation.</p>
-    <a class="btn" href="https://discord.gg/G75MSAVe2k" target="_blank" rel="noopener noreferrer">Visit MC STORE on Discord ↗</a>
-  </article>
-</section>
-
-
-<section id="footerInfoPage" class="container about-page" hidden>
-  <div class="back-row">
-    <button class="back-btn" type="button" onclick="showHome('home')">← Back to Home</button>
-  </div>
-  <article class="about-panel">
-    <div class="kicker">MC STORE INFORMATION</div>
-    <h1 id="footerInfoTitle">MC STORE Information</h1>
-    <div class="about-copy" id="footerInfoContent"></div>
-    <div class="about-actions">
-      <a class="btn" href="https://discord.gg/G75MSAVe2k" target="_blank" rel="noopener noreferrer">Ask MC STORE on Discord ↗</a>
-      <button class="btn btn-outline" type="button" onclick="showHome('home')">Back to Home</button>
-    </div>
-  </article>
-</section>
-
-<section class="container" id="details">
-  <div class="back-row">
-    <button class="back-btn" type="button" onclick="showHome('home')">← Back to Home</button>
-  </div>
-
-  <div id="detailContent"></div>
-
-  <div class="recommendations">
-    <div class="section-head">
-      <div>
-        <div class="kicker">MC STORE COLLECTION</div>
-        <h2>You might also like</h2>
-        <p>Here are some other capes you might like.</p>
-      </div>
-    </div>
-    <div class="products" id="recommendedProducts"></div>
-  </div>
 
   <section class="redeem-guide" id="howToRedeem" aria-labelledby="redeemGuideTitle">
     <header class="redeem-section-heading">
@@ -3172,6 +3089,94 @@ body.mc-reveal-ready .mc-footer .reveal-on-scroll.is-visible {
       </div>
     </section>
   </section>
+</main>
+
+<section id="aboutPage" class="container about-page" hidden>
+  <div class="back-row">
+    <button class="back-btn" type="button" onclick="showHome('home')">← Back to Home</button>
+  </div>
+  <article class="about-panel">
+    <div class="kicker">GET TO KNOW US</div>
+    <h1>About <span class="gradient">MC STORE</span></h1>
+    <p class="about-lead">A Minecraft cape store built around clear listings, careful checks, and a better shopping experience.</p>
+    <div class="about-copy">
+      <p><strong>MC STORE is an independent shop for Minecraft cape collectors.</strong> Founded in December 2024, our goal is to make cape shopping clearer in a community where misleading listings and unreliable sellers can be a concern.</p>
+      <p>We aim to make browsing and purchasing easier by showing clear product details and checking cape-code listings before they are offered. Please review each cape’s current stock, price, and delivery information so you can make an informed decision.</p>
+      <p>Community feedback matters to us. Our Endorsements page brings together creator features, customer-review information, and partner details as each item is confirmed.</p>
+      <p>MC STORE is not affiliated with Mojang, Minecraft, or Microsoft. Before placing an order, confirm the cape’s availability, final price, and delivery details. For questions or community updates, contact us through our Discord server.</p>
+    </div>
+    <div class="about-actions">
+      <a class="btn" href="#endorsements" onclick="showEndorsements();return false">Explore Endorsements ↗</a>
+      <a class="btn btn-outline" href="https://discord.gg/G75MSAVe2k" target="_blank" rel="noopener noreferrer">Contact Us on Discord ↗</a>
+    </div>
+  </article>
+</section>
+
+<section id="endorsementsPage" class="container endorsements-page" hidden>
+  <div class="back-row">
+    <button class="back-btn" type="button" onclick="showHome('home')">← Back to Home</button>
+  </div>
+  <article class="about-panel endorsements-panel">
+    <div class="kicker">CREATORS · REVIEWS · PARTNERS</div>
+    <h1>Endorsements &amp; <span class="gradient">Partners</span></h1>
+    <p class="about-lead">Community recommendations help cape collectors find a more trustworthy place to shop.</p>
+    <div class="endorsement-grid">
+      <section class="endorsement-card">
+        <div class="endorsement-icon">✦</div>
+        <h2>Creator Endorsements</h2>
+        <p>MC STORE is building a clear list of Minecraft YouTubers and creators who feature or recommend our store. Creator names and original links will be added when each endorsement or partnership is confirmed.</p>
+      </section>
+      <section class="endorsement-card" id="customerReviewsCard">
+        <div class="endorsement-icon">★</div>
+        <h2>Customer Reviews</h2>
+        <p>We value feedback from cape collectors. Where reviews are available, we aim to link to their original sources so visitors can read the full context for themselves.</p>
+      </section>
+      <section class="endorsement-card">
+        <div class="endorsement-icon">✓</div>
+        <h2>Verified Cape Codes</h2>
+        <p>MC STORE focuses on clear cape-code listings and transparent product information. Check each listing for current availability, price, and ordering details before purchasing.</p>
+      </section>
+    </div>
+    <p class="endorsement-note">For MC STORE community news or questions, visit our Discord server. This page stays on MC STORE; only the Discord link opens the community invitation.</p>
+    <a class="btn" href="https://discord.gg/G75MSAVe2k" target="_blank" rel="noopener noreferrer">Visit MC STORE on Discord ↗</a>
+  </article>
+</section>
+
+
+<section id="footerInfoPage" class="container about-page" hidden>
+  <div class="back-row">
+    <button class="back-btn" type="button" onclick="showHome('home')">← Back to Home</button>
+  </div>
+  <article class="about-panel">
+    <div class="kicker">MC STORE INFORMATION</div>
+    <h1 id="footerInfoTitle">MC STORE Information</h1>
+    <div class="about-copy" id="footerInfoContent"></div>
+    <div class="about-actions">
+      <a class="btn" href="https://discord.gg/G75MSAVe2k" target="_blank" rel="noopener noreferrer">Ask MC STORE on Discord ↗</a>
+      <button class="btn btn-outline" type="button" onclick="showHome('home')">Back to Home</button>
+    </div>
+  </article>
+</section>
+
+<section class="container" id="details">
+  <div class="back-row">
+    <button class="back-btn" type="button" onclick="showHome('home')">← Back to Home</button>
+  </div>
+
+  <div id="detailContent"></div>
+
+  <div class="recommendations">
+    <div class="section-head">
+      <div>
+        <div class="kicker">MC STORE COLLECTION</div>
+        <h2>You might also like</h2>
+        <p>Here are some other capes you might like.</p>
+      </div>
+    </div>
+    <div class="products" id="recommendedProducts"></div>
+  </div>
+
+  
 </section>
 
 <section id="not-found" class="container">
@@ -3304,7 +3309,7 @@ const capes = [
     onSale:true,
     image:"media/aurora-cape.png",
     showcaseImage:"media/aurora-cape.png",
-    productImage:"media/aurora-cape.png",
+    productImage:"capes 3D/auroracape3D",
     description:"A vibrant cape for players who want a distinctive look in their Minecraft collection.",
     label:"Popular"
   },
@@ -3317,7 +3322,8 @@ const capes = [
     onSale:true,
     image:"media/builder-cape.png",
     showcaseImage:"media/builder-cape.png",
-    productImage:"media/builder-cape.png",
+    productImage:"capes 3D/buildercape3D",
+    sceneBackground:"village.png",
     description:"A classic addition for Minecraft cape collectors and fans of building.",
     label:"Featured"
   },
@@ -3329,7 +3335,8 @@ const capes = [
     stock:false,
     image:"media/copper-cape.png",
     showcaseImage:"media/copper-cape.png",
-    productImage:"media/copper-cape.png",
+    productImage:"capes 3D/coppercape3D",
+    sceneBackground:"trialchambers.png",
     description:"A copper-themed design for Minecraft players and collectors.",
     label:""
   },
@@ -3341,7 +3348,8 @@ const capes = [
     stock:false,
     image:"media/crafter-cape.png",
     showcaseImage:"media/crafter-cape.png",
-    productImage:"media/crafter-cape.png",
+    productImage:"capes 3D/craftercape3D",
+    sceneBackground:"disert.png",
     description:"A crafting-inspired design for Minecraft fans and cape collectors.",
     label:""
   },
@@ -3354,7 +3362,8 @@ const capes = [
     stock:true,
     image:"media/experience-cape.png",
     showcaseImage:"media/experience-cape.png",
-    productImage:"media/experience-cape.png",
+    productImage:"capes 3D/experiencecape3D",
+    sceneBackground:"villageheader.png",
     description:"The Experience cape was the first IRL obtainable cape since Minecon 2016. The cape is only obtainable via attending an IRL Minecraft Event located in different places across the World. If you can't go, don't worry, you can buy it here!",
     label:""
   },
@@ -3366,7 +3375,8 @@ const capes = [
     stock:false,
     image:"media/home-cape.png",
     showcaseImage:"media/home-cape.png",
-    productImage:"media/home-cape.png",
+    productImage:"capes 3D/homecape3D",
+    sceneBackground:"cherrybiome.png",
     description:"A Home cape design for Minecraft players and collectors.",
     label:""
   },
@@ -3374,11 +3384,18 @@ const capes = [
     id:"moonlight",
     name:"Moonlight Cape",
     textureStem:"moonlightcapetexture",
+    elytraTextureStem:"moonlightcapetexture",
     price:null,
     stock:false,
-    image:"media/moonlight-cape.png",
-    showcaseImage:"media/moonlight-cape.png",
-    productImage:"media/moonlight-cape.png",
+    // Use the requested Moonlight artwork on Home, Our Products, the product detail,
+    // and recommendation cards. The asset resolver accepts the literal name plus common
+    // image suffixes (moonlightcape.gg.png / .webp / .jpg) and nested repository folders.
+    image:"moonlightcape.gg",
+    showcaseImage:"moonlightcape.gg",
+    productImage:"moonlightcape.gg",
+    detailImage:"moonlightcape.gg",
+    fallbackImage:"media/moonlight-cape.png",
+    sceneBackground:"moonvillage.png",
     description:"A moonlight-inspired design for your Minecraft cape collection.",
     label:""
   },
@@ -3390,7 +3407,8 @@ const capes = [
     stock:false,
     image:"media/twitch-cape.png",
     showcaseImage:"media/twitch-cape.png",
-    productImage:"media/twitch-cape.png",
+    productImage:"capes 3D/twitchcape3D",
+    sceneBackground:"snowvillage.png",
     description:"A purple-themed cape design for your collection.",
     label:""
   },
@@ -3402,7 +3420,8 @@ const capes = [
     stock:false,
     image:"media/menace-cape.png",
     detailImage:"media/menace-cape.png",
-    productImage:"media/menace-cape.png",
+    productImage:"capes 3D/menacecape3D",
+    sceneBackground:"nether.png",
     description:"A striking cape design in the MC STORE collection.",
     label:""
   }
@@ -3432,7 +3451,7 @@ function renderMcShowcaseGallery() {
         onclick="showFeatured(${index});restartFeaturedTimer();return false">
         <span class="mc-showcase-cape-art">
           <img src="${escapeHTML(imagePath)}" data-image-file="${escapeHTML(filename)}"
-            data-original-src="${escapeHTML(imagePath)}" data-fallback-image="${escapeHTML(cape.image || imagePath)}"
+            data-original-src="${escapeHTML(imagePath)}" data-fallback-image="${escapeHTML(cape.fallbackImage || cape.image || imagePath)}"
             alt="${escapeHTML(cape.name)}" loading="eager" decoding="async"
             onerror="mcStoreShowcaseImageError(this)">
           <span class="mc-showcase-missing-label" aria-hidden="true">Image unavailable</span>
@@ -3532,15 +3551,28 @@ function mcStoreAssetBasename(value) {
 }
 
 function mcStoreAssetFilenameOptions(values) {
-  const extensions = [".png", ".webp", ".jpg", ".jpeg", ".avif", ".gif", ".bmp"];
+  const extensions = [".png", ".PNG", ".webp", ".WEBP", ".jpg", ".JPG", ".jpeg", ".JPEG", ".avif", ".gif", ".bmp"];
+  const knownImageExtension = /\.(?:png|webp|jpe?g|avif|gif|bmp)$/i;
   const options = [];
   for (const value of values || []) {
     const basename = mcStoreAssetBasename(value);
     if (!basename) continue;
     if (!options.includes(basename)) options.push(basename);
-    if (!/\.[a-z0-9]{2,5}$/i.test(basename)) {
+
+    // Only a real image extension should stop extension recovery. In this project,
+    // "moonlightcape.gg" is the requested artwork stem, not necessarily a file that
+    // the browser can decode without an image extension. Try it exactly as named,
+    // then the common image formats (e.g. moonlightcape.gg.png), then the base stem.
+    if (!knownImageExtension.test(basename)) {
       for (const extension of extensions) {
         if (!options.includes(basename + extension)) options.push(basename + extension);
+      }
+      const dot = basename.lastIndexOf(".");
+      if (dot > 0) {
+        const root = basename.slice(0, dot);
+        for (const extension of extensions) {
+          if (!options.includes(root + extension)) options.push(root + extension);
+        }
       }
     }
   }
@@ -3600,8 +3632,9 @@ async function handleCapeCardImageError(img) {
 
   // Offline/API-unavailable fallback: check a short list of common root and nested folders
   // together, so the display isn't delayed by serial 404 attempts.
-  const primary = mcStoreAssetBasename(sourceName).replace(/\.[^.]*$/, "");
-  const fallback = mcStoreAssetBasename(fallbackName).replace(/\.[^.]*$/, "");
+  const stripKnownImageExtension = value => mcStoreAssetBasename(value).replace(/\.(?:png|webp|jpe?g|avif|gif|bmp)$/i, "");
+  const primary = stripKnownImageExtension(sourceName);
+  const fallback = stripKnownImageExtension(fallbackName);
   const productFolders = ["capes 3D/", "Capes 3D/", "capes3D/", "capes-3D/", "3D/", "3d/"];
   const artworkFolders = [
     "", "media/", "Media/", "images/", "Images/", "assets/", "Assets/", "capes images/", "Capes Images/",
@@ -3612,7 +3645,8 @@ async function handleCapeCardImageError(img) {
   ];
   const prefer3d = /cape3d$/i.test(primary);
   const folders = prefer3d ? [...productFolders, ...artworkFolders] : [...artworkFolders, ...productFolders];
-  const names = [...new Set([primary, fallback].filter(Boolean))];
+  const rawSourceName = mcStoreAssetBasename(sourceName);
+  const names = [...new Set([rawSourceName, primary, fallback].filter(Boolean))];
   const extensions = [".png", ".PNG", ".webp", ".WEBP", ".jpg", ".JPG", ".jpeg", ".JPEG", ""];
   const candidates = [];
   for (const name of names) {
@@ -3719,13 +3753,14 @@ function capeCard(cape) {
          aria-label="View ${escapeHTML(cape.name)} details"
          onclick="openCape('${cape.id}');return false">
         <div class="card-art">
+          ${cape.sceneBackground ? `<img class="card-scene-bg" src="${escapeHTML(cape.sceneBackground)}" data-original-src="${escapeHTML(cape.sceneBackground)}" data-image-file="${escapeHTML(cape.sceneBackground.split('/').pop())}" alt="" aria-hidden="true" loading="lazy" onerror="handleCapeCardImageError(this)">` : ""}
           <span class="card-tag ${cape.stock ? "" : "sold"} ${cape.onSale ? "sale-tag" : ""}">${tag}</span>
           ${cape.onSale && cape.stock ? `<span class="card-tag popular stock-tag">IN STOCK</span>` : (cape.label ? `<span class="card-tag popular">${escapeHTML(cape.label)}</span>` : "")}
           <img class="card-img"
                src="${escapeHTML(cape.productImage || cape.image)}"
                data-original-src="${escapeHTML(cape.productImage || cape.image)}"
                data-image-file="${escapeHTML((cape.productImage || cape.image).split('/').pop())}"
-               data-fallback-image="${escapeHTML(cape.showcaseImage || cape.image)}"
+               data-fallback-image="${escapeHTML(cape.fallbackImage || cape.showcaseImage || cape.image)}"
                data-fallback-alt="${escapeHTML(cape.name)}"
                alt="${escapeHTML(cape.name)}"
                loading="lazy"
@@ -3895,18 +3930,22 @@ function showFeatured(index) {
     recoverFeaturedCapeImage(this, cape, requestToken);
   };
 
-  // Every artwork swap restarts the fast 360-degree spin from the same upright position.
+  // The very first cape is shown immediately and upright on refresh; only later cape changes spin.
+  const hasShownInitialCape = featuredImage.dataset.mcHasPaintedFirstCape === "1";
   featuredImage.classList.remove("cape-spin", "is-spinning", "spin-in", "mc-store-spin-now");
   featuredImage.dataset.capeSpinTarget = nextShowcaseURL;
   const currentShowcaseURL = new URL(featuredImage.currentSrc || featuredImage.src, document.baseURI).href;
   if (currentShowcaseURL !== nextShowcaseURL || !featuredImage.complete || featuredImage.naturalWidth === 0) {
     featuredImage.src = nextShowcaseImage;
   }
-  void featuredImage.offsetWidth;
-  featuredImage.classList.add("mc-store-spin-now");
-  window.setTimeout(() => {
-    if (requestToken === featuredImageRequestToken) featuredImage.classList.remove("mc-store-spin-now");
-  }, 125);
+  featuredImage.dataset.mcHasPaintedFirstCape = "1";
+  if (hasShownInitialCape) {
+    void featuredImage.offsetWidth;
+    featuredImage.classList.add("mc-store-spin-now");
+    window.setTimeout(() => {
+      if (requestToken === featuredImageRequestToken) featuredImage.classList.remove("mc-store-spin-now");
+    }, 125);
+  }
 
   const featuredName = document.getElementById("featuredName");
   featuredName.innerHTML = cape.id === "builder"
@@ -3943,10 +3982,10 @@ function showFeatured(index) {
 
 function restartFeaturedTimer() {
   clearInterval(featuredTimer);
-  // Automatically feature the next cape every three seconds on desktop and mobile.
+  // Automatically feature the next cape every five seconds on desktop and mobile.
   featuredTimer = setInterval(() => {
     showFeatured((featuredIndex + 1) % featuredCapes.length);
-  }, 4000);
+  }, 5000);
 }
 
 function renderRecommendations(currentCape) {
@@ -24151,10 +24190,11 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
   "use strict";
   let mcStoreViewer = null;
   let mcStoreActiveCape = null;
-  let mcStorePreviewMode = "player";
+  let mcStorePreviewMode = "cape";
   let mcStorePlayerUsername = "Steve";
   let mcStorePlayerSkinLoaded = true;
   let mcStoreIsWalking = true;
+  let mcStoreSearchOutsideHandler = null;
 
   function safeText(value) {
     return String(value).replace(/[&<>"']/g, ch => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"})[ch]);
@@ -24188,6 +24228,10 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
       try { mcStoreViewer.dispose(); } catch (_) {}
       mcStoreViewer = null;
     }
+    if (mcStoreSearchOutsideHandler) {
+      document.removeEventListener("pointerdown", mcStoreSearchOutsideHandler);
+      mcStoreSearchOutsideHandler = null;
+    }
   }
   function selectedTitle(cape) {
     const name = cape.id === "experience" ? "Experience Cape Code" : cape.name;
@@ -24220,13 +24264,17 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
 
   async function findCapeTexture(stem) {
     if (!stem) return null;
-    // Search all committed repository paths first, including arbitrarily nested folders.
-    const repoResult = await findMcStoreNestedAsset(capeTextureExtensions.map(extension => stem + extension));
-    if (repoResult.indexAvailable) return repoResult.url || null;
-    // If the GitHub API is unavailable (for example due to rate limiting), use the
-    // existing direct-path checks as a fallback.
+    const fileNames = capeTextureExtensions.map(extension => stem + extension);
+    // First find the exact committed file, even if it lives in a deeply nested folder.
+    // A repository-tree lookup can be cached or incomplete, so a miss must NOT stop the
+    // direct-path fallback. This is important for Moonlight's moonlightcapetexture file.
+    try {
+      const repoResult = await findMcStoreNestedAsset(fileNames);
+      if (repoResult && repoResult.url) return repoResult.url;
+    } catch (_) {}
+    // Probe common paths even when the GitHub API answered but did not list the file.
     for (const folder of capeTextureFolders) {
-      const urls = capeTextureExtensions.map(extension => folder + stem + extension);
+      const urls = fileNames.map(fileName => folder + fileName);
       const results = await Promise.all(urls.map(probeImage));
       const found = results.find(Boolean);
       if (found) return found;
@@ -24235,8 +24283,8 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
   }
 
   function detailsImage(cape) {
-    // Menace uses its dedicated artwork on the opened product page.
-    return safeText(cape.detailImage || cape.showcaseImage || cape.image || "media/experience-cape.png");
+    // Use requested artwork when available; its known artwork fallback keeps the page clean during recovery.
+    return safeText(cape.detailImage || cape.showcaseImage || cape.imageFallback || cape.fallbackImage || cape.image || "media/experience-cape.png");
   }
 
   // Replace only the product details view; the home page, filters and other sections remain intact.
@@ -24263,8 +24311,8 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
     const isExperience = chosen.id === "experience";
     const viewCape = isExperience ? {...chosen, name:"Experience Cape Code", price:69.99, originalPrice:79.99, stock:true} : chosen;
     mcStoreActiveCape = viewCape;
-    mcStorePreviewMode = "player";
-    mcStorePlayerUsername = "Steve";
+    mcStorePreviewMode = "cape";
+    try { mcStorePlayerUsername = localStorage.getItem("mc_store_skin_username") || "Steve"; } catch (_) { mcStorePlayerUsername = "Steve"; }
     mcStorePlayerSkinLoaded = true;
     mcStoreIsWalking = true;
     document.body.classList.add("mc-product-view");
@@ -24283,31 +24331,38 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
     document.getElementById("detailContent").innerHTML = `
       <article class="detail-card detail-card--storefront">
         <div class="storefront-preview-column">
-          <div class="storefront-preview" id="capePreviewStage" aria-label="Interactive Minecraft cape preview">
-            <div class="cape-preview-scene" aria-hidden="true"></div>
+          <div class="storefront-preview" id="capePreviewStage" aria-label="Interactive Minecraft dressing room">
+            <div class="cape-preview-scene${viewCape.sceneBackground ? " has-image" : ""}" aria-hidden="true">${viewCape.sceneBackground ? `<img class="cape-preview-scene-image" src="${safeText(viewCape.sceneBackground)}" data-original-src="${safeText(viewCape.sceneBackground)}" data-image-file="${safeText(viewCape.sceneBackground.split("/").pop())}" alt="" loading="eager" decoding="async" onerror="handleCapeCardImageError(this)">` : ""}</div>
+            <div class="product-preview-userbar" id="capePreviewUserbar">
+              <button class="product-preview-identity-toggle" id="capePreviewIdentityToggle" type="button" aria-label="Open Minecraft username search" aria-expanded="false" title="Change Minecraft skin">
+                <img id="capePreviewHead" src="https://minotar.net/helm/${encodeURIComponent(mcStorePlayerUsername || "Steve")}/40.png" alt="Minecraft skin head">
+              </button>
+              <div class="product-preview-search-panel" id="capePreviewUsernamePanel" aria-hidden="true">
+                <label for="capePlayerUsername">Minecraft Java username</label>
+                <div class="preview-player-input-row">
+                  <input id="capePlayerUsername" type="text" maxlength="16" autocomplete="off" spellcheck="false" autocapitalize="none" value="${mcStorePlayerUsername === "Steve" ? "" : safeText(mcStorePlayerUsername)}" placeholder="Java username" aria-label="Minecraft Java username" aria-describedby="capePlayerStatus">
+                  <button id="capeLoadPlayer" type="button">Go</button>
+                </div>
+              </div>
+            </div>
             <img class="cape-preview-fallback" id="capePreviewFallback" src="${detailsImage(viewCape)}" alt="${safeText(viewCape.name)}"
               data-image-file="${safeText((viewCape.detailImage || viewCape.showcaseImage || viewCape.image || "media/experience-cape.png").split("/").pop())}"
-              data-original-src="${detailsImage(viewCape)}" data-fallback-image="${safeText(viewCape.image || viewCape.showcaseImage || "")}"
+              data-original-src="${detailsImage(viewCape)}" data-fallback-image="${safeText(viewCape.fallbackImage || viewCape.image || viewCape.showcaseImage || "")}"
               onerror="handleCapeCardImageError(this)">
             <div class="cape-rotate-hint" aria-hidden="true">DRAG TO ROTATE</div>
-            <div class="preview-mode-message" id="previewModeMessage" hidden>Load a Java username to preview the player.</div>
-            <canvas id="capeSkinViewer" aria-label="Interactive Minecraft cape and player preview"></canvas>
+            <div class="preview-mode-message" id="previewModeMessage" hidden>Tap the head icon to search for your Java username.</div>
+            <canvas id="capeSkinViewer" aria-label="Interactive Minecraft player wearing the selected cape"></canvas>
+            <button class="preview-motion-toggle" id="capeMotionToggle" type="button" aria-pressed="true">Ⅱ Pause walking</button>
           </div>
           <div class="product-preview-toolbar">
             <div class="preview-tabs" role="tablist" aria-label="Minecraft preview mode">
-              <button class="preview-tab active" type="button" role="tab" aria-selected="true" data-preview-mode="player">PLAYER</button>
-              <button class="preview-tab" type="button" role="tab" aria-selected="false" data-preview-mode="cape">CAPE</button>
+              <button class="preview-tab active" type="button" role="tab" aria-selected="true" data-preview-mode="cape">CAPE</button>
+              <button class="preview-tab" type="button" role="tab" aria-selected="false" data-preview-mode="player">PLAYER</button>
               <button class="preview-tab" type="button" role="tab" aria-selected="false" data-preview-mode="elytra">ELYTRA</button>
             </div>
-            <button class="preview-motion-toggle" id="capeMotionToggle" type="button" aria-pressed="true">Ⅱ Pause walking</button>
           </div>
           <div class="preview-player-controls">
-            <label for="capePlayerUsername">MINECRAFT JAVA USERNAME</label>
-            <div class="preview-player-input-row">
-              <input id="capePlayerUsername" type="text" maxlength="16" autocomplete="off" spellcheck="false" autocapitalize="none" placeholder="Enter Java username" aria-describedby="capePlayerStatus">
-              <button id="capeLoadPlayer" type="button">Load Skin</button>
-            </div>
-            <p id="capePlayerStatus" role="status" aria-live="polite">Steve is loaded by default. Enter another Java username to preview your own skin.</p>
+            <p id="capePlayerStatus" role="status" aria-live="polite">Steve is loaded by default. Click the head square to search for your Java username.</p>
           </div>
         </div>
         <div class="detail-info">
@@ -24319,7 +24374,15 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
           <div class="storefront-quantity-row storefront-stock-row">
             <div class="storefront-stock ${available ? "" : "out-of-stock"}"><span class="storefront-stock-mark">${available ? "✓" : "×"}</span>${statusLabel}</div>
           </div>
-          <div class="detail-actions storefront-detail-actions">
+          <div class="mc-product-quantity-row" aria-label="Choose quantity">
+            <div class="mc-product-quantity-stepper">
+              <button type="button" data-product-quantity="down" aria-label="Decrease quantity" ${available ? "" : "disabled"}>−</button>
+              <span id="capeBuyQuantity" aria-live="polite">1</span>
+              <button type="button" data-product-quantity="up" aria-label="Increase quantity" ${available ? "" : "disabled"}>+</button>
+            </div>
+          </div>
+          <div class="detail-actions storefront-detail-actions mc-store-cart-actions">
+            <button class="storefront-add-cart" id="capeAddToCart" type="button" ${available ? "" : "disabled"}>🛒 Add to Cart</button>
             <button class="storefront-buy" id="capeBuyNow" type="button" ${available ? "" : "disabled"}>Buy Now</button>
           </div>
           <div class="storefront-feedback" id="capeOrderFeedback" role="status" aria-live="polite"></div>
@@ -24332,17 +24395,36 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
     jumpToTopImmediately();
     wireProductControls(viewCape);
     wirePreviewControls();
-    setPreviewMode("player");
+    setPreviewMode("cape");
     init3DPreview(viewCape);
   };
 
   function wireProductControls(cape) {
     const feedback = document.getElementById("capeOrderFeedback");
+    const add = document.getElementById("capeAddToCart");
     const buy = document.getElementById("capeBuyNow");
     if (!feedback) return;
+    const quantityValue = () => Math.max(1, Math.min(99, Math.floor(Number(document.getElementById("capeBuyQuantity")?.textContent) || 1)));
+    document.querySelectorAll("#details [data-product-quantity]").forEach(button => button.addEventListener("click", () => {
+      const value = document.getElementById("capeBuyQuantity");
+      if (!value) return;
+      const current = quantityValue();
+      value.textContent = String(button.dataset.productQuantity === "up" ? Math.min(99, current + 1) : Math.max(1, current - 1));
+    }));
+    add?.addEventListener("click", () => {
+      const added = typeof window.mcStoreCartAdd === "function" && window.mcStoreCartAdd(cape.id, quantityValue());
+      feedback.textContent = added ? `${cape.name} added to your cart.` : "This cape is currently unavailable.";
+      feedback.classList.toggle("success", Boolean(added));
+      feedback.classList.toggle("error", !added);
+    });
     buy?.addEventListener("click", () => {
-      feedback.textContent = "Opening MC STORE on Discord to confirm the order. Online payment checkout is not connected on this page.";
-      window.open(DISCORD_URL, "_blank", "noopener,noreferrer");
+      const added = typeof window.mcStoreCartAdd === "function" && window.mcStoreCartAdd(cape.id, quantityValue());
+      if (!added) {
+        feedback.textContent = "This cape is currently unavailable.";
+        feedback.classList.add("error");
+        return;
+      }
+      if (typeof window.mcStoreOpenCart === "function") window.mcStoreOpenCart({ checkout: true });
     });
   }
 
@@ -24351,7 +24433,8 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
     if (!button) return;
     const canWalk = mcStorePreviewMode !== "cape" && mcStorePlayerSkinLoaded;
     button.disabled = !canWalk;
-    button.textContent = mcStoreIsWalking ? "Ⅱ Pause walking" : "▶ Resume walking";
+    button.textContent = mcStoreIsWalking ? "Ⅱ" : "▶";
+    button.setAttribute("aria-label", mcStoreIsWalking ? "Pause walking" : "Resume walking");
     button.setAttribute("aria-pressed", mcStoreIsWalking ? "true" : "false");
     button.title = canWalk ? (mcStoreIsWalking ? "Pause the player animation" : "Resume the player animation") : "Choose Player or Elytra to control walking";
   }
@@ -24362,6 +24445,19 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
         ? new window.skinview3d.WalkingAnimation() : null;
     }
     updateProductMotionButton();
+  }
+
+  // SkinViewer's cape texture atlas is shared by its cape and Elytra meshes.
+  // Re-apply it whenever the preview mode changes, so the chosen cape texture
+  // remains on the standalone 3D cape, on the player's back, and on Elytra wings.
+  function syncCapeTextureToModels() {
+    const viewer = mcStoreViewer;
+    const player = viewer && viewer.playerObject;
+    const texture = viewer && viewer.capeTexture;
+    if (!player || !texture) return;
+    if (player.cape) player.cape.map = texture;
+    if (player.elytra) player.elytra.map = texture;
+    texture.needsUpdate = true;
   }
 
   function setPreviewMode(mode) {
@@ -24386,14 +24482,54 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
     const needsSkin = mode !== "cape";
     if (message) {
       message.hidden = !needsSkin || mcStorePlayerSkinLoaded;
-      message.textContent = mode === "elytra"
-        ? "Load a Java username below to see the player from behind with Elytra."
-        : "Load a Java username below to preview the player skin.";
+      message.textContent = "Tap the head icon to search for your Java username.";
     }
     if (hint) hint.textContent = mode === "cape" ? "DRAG TO ROTATE" : "DRAG TO TURN PLAYER";
     updateProductMotionButton();
     if (!mcStoreViewer || !mcStoreViewer.playerObject) return;
+    syncCapeTextureToModels();
     const player = mcStoreViewer.playerObject;
+    // Explicitly attach either the cape or the elytra to the player on every tab change.
+    // This keeps the selected Moonlight texture on the visible back equipment as well.
+    const requestedEquipment = mode === "elytra" ? "elytra" : "cape";
+    player.backEquipment = requestedEquipment;
+    if (player.cape) player.cape.visible = requestedEquipment === "cape";
+    if (player.elytra) player.elytra.visible = requestedEquipment === "elytra";
+    // Never leave the cape mesh twisted after switching back from the standalone CAPE view.
+    // All user rotation is applied to playerWrapper, so the cape stays correctly attached.
+    mcStoreViewer.playerWrapper.rotation.x = 0;
+    mcStoreViewer.playerWrapper.rotation.z = 0;
+    // A previous CAPE drag may have offset the wrapper to keep the cape centered.
+    // Reset that compensation whenever switching preview modes.
+    mcStoreViewer.playerWrapper.position.x = 0;
+    mcStoreViewer.playerWrapper.position.y = 0;
+    mcStoreViewer.playerWrapper.position.z = 0;
+    const capeRoot = player.cape;
+    const capeMesh = capeRoot && capeRoot.cape;
+    // Keep the selected cape texture attached to both 3D meshes. In particular,
+    // Moonlight uses moonlightcapetexture for the standalone cape AND the Elytra wings.
+    if (mcStoreViewer.capeTexture) {
+      if (player.cape) {
+        player.cape.map = mcStoreViewer.capeTexture;
+        player.cape.map.needsUpdate = true;
+      }
+      if (player.elytra) {
+        player.elytra.map = mcStoreViewer.capeTexture;
+        player.elytra.map.needsUpdate = true;
+      }
+    }
+    // Skinview3D tilts the cape back by 10.8° by default. In standalone CAPE mode
+    // flatten the cape root as well as its inner mesh, so the panel is upright.
+    if (capeRoot && capeRoot.rotation) {
+      capeRoot.rotation.x = mode === "cape" ? 0 : (10.8 * Math.PI / 180);
+      capeRoot.rotation.y = Math.PI;
+      capeRoot.rotation.z = 0;
+    }
+    if (capeMesh && capeMesh.rotation) {
+      capeMesh.rotation.x = 0;
+      capeMesh.rotation.y = 0;
+      capeMesh.rotation.z = 0;
+    }
     mcStoreViewer.animation = mode !== "cape" && mcStoreIsWalking && window.skinview3d && window.skinview3d.WalkingAnimation
       ? new window.skinview3d.WalkingAnimation() : null;
     if (mode === "cape") {
@@ -24402,24 +24538,60 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
       mcStoreViewer.playerWrapper.rotation.y = Math.PI;
       mcStoreViewer.zoom = 1.55;
     } else if (mode === "player") {
+      // Keep the selected cape mesh attached even if the remote player skin is slow to load.
       player.skin.visible = mcStorePlayerSkinLoaded;
-      player.backEquipment = mcStorePlayerSkinLoaded ? "cape" : null;
+      player.backEquipment = "cape";
       mcStoreViewer.playerWrapper.rotation.y = Math.PI - 0.24;
       mcStoreViewer.zoom = 0.76;
     } else {
+      // The 3D Elytra wings should always render in Elytra mode; skin loading must not hide them.
       player.skin.visible = mcStorePlayerSkinLoaded;
-      player.backEquipment = mcStorePlayerSkinLoaded ? "elytra" : null;
+      player.backEquipment = "elytra";
       mcStoreViewer.playerWrapper.rotation.y = Math.PI;
       mcStoreViewer.zoom = 0.76;
     }
+  }
+
+  function setProductSearchOpen(open) {
+    const userbar = document.getElementById("capePreviewUserbar");
+    const toggle = document.getElementById("capePreviewIdentityToggle");
+    const panel = document.getElementById("capePreviewUsernamePanel");
+    const input = document.getElementById("capePlayerUsername");
+    const expanded = Boolean(open);
+    if (userbar) userbar.classList.toggle("username-open", expanded);
+    if (toggle) {
+      toggle.setAttribute("aria-expanded", expanded ? "true" : "false");
+      toggle.setAttribute("aria-label", expanded ? "Close Minecraft username search" : "Open Minecraft username search");
+    }
+    if (panel) panel.setAttribute("aria-hidden", expanded ? "false" : "true");
+    if (expanded && input) window.setTimeout(() => input.focus(), 30);
+  }
+
+  async function resolveCanonicalMinecraftUsername(enteredName) {
+    // Minecraft names are case-insensitive. Ask Mojang for the profile's canonical casing
+    // before asking the skin service for the texture (e.g. ayoubmc_ -> AyoubMC_).
+    try {
+      const response = await fetch(`https://api.mojang.com/users/profiles/minecraft/${encodeURIComponent(enteredName)}`, { cache: "no-store" });
+      if (response.status === 204 || response.status === 404) {
+        throw new Error("No Minecraft Java profile was found for that username.");
+      }
+      if (response.ok) {
+        const profile = await response.json();
+        if (profile && typeof profile.name === "string" && profile.name) return profile.name;
+      }
+    } catch (error) {
+      if (error && error.message === "No Minecraft Java profile was found for that username.") throw error;
+      // If Mojang's lookup is temporarily unavailable or blocked, keep Minotar as a fallback.
+    }
+    return enteredName;
   }
 
   async function loadPreviewPlayerSkin() {
     const input = document.getElementById("capePlayerUsername");
     const status = document.getElementById("capePlayerStatus");
     const button = document.getElementById("capeLoadPlayer");
-    const username = String(input && input.value || "").trim();
-    if (!/^[A-Za-z0-9_]{1,16}$/.test(username)) {
+    const enteredName = String(input && input.value || "").trim();
+    if (!/^[A-Za-z0-9_]{1,16}$/.test(enteredName)) {
       if (status) { status.textContent = "Enter a valid Java username (1–16 letters, numbers, or underscores)."; status.classList.add("error"); }
       input?.focus();
       return;
@@ -24430,17 +24602,24 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
     }
     const viewer = mcStoreViewer;
     if (button) button.disabled = true;
-    if (status) { status.textContent = `Loading Java skin for ${username}…`; status.classList.remove("error", "success"); }
+    if (status) { status.textContent = `Finding Minecraft profile for ${enteredName}…`; status.classList.remove("error", "success"); }
     try {
+      const username = await resolveCanonicalMinecraftUsername(enteredName);
       await viewer.loadSkin(`https://minotar.net/skin/${encodeURIComponent(username)}`);
       if (viewer !== mcStoreViewer) return;
       mcStorePlayerUsername = username;
       mcStorePlayerSkinLoaded = true;
+      try { localStorage.setItem("mc_store_skin_username", username); } catch (_) {}
+      const headImage = document.getElementById("capePreviewHead");
+      if (headImage) headImage.src = `https://minotar.net/helm/${encodeURIComponent(username)}/40.png`;
       if (status) { status.textContent = `Skin loaded for ${username}. Your selected cape is equipped.`; status.classList.remove("error"); status.classList.add("success"); }
-      setPreviewMode("player");
+      // Loading a skin normally opens PLAYER mode, but keep ELYTRA selected if that
+      // was the active choice so the wings and their cape texture stay visible.
+      setPreviewMode(mcStorePreviewMode === "elytra" ? "elytra" : "player");
+      setProductSearchOpen(false);
     } catch (error) {
       if (viewer !== mcStoreViewer) return;
-      if (status) { status.textContent = "Could not load that skin. Check the Java username and your internet connection."; status.classList.remove("success"); status.classList.add("error"); }
+      if (status) { status.textContent = error && error.message === "No Minecraft Java profile was found for that username." ? error.message : "Could not load that skin. Check the Java username and your internet connection."; status.classList.remove("success"); status.classList.add("error"); }
       console.warn("Minecraft Java skin could not be loaded.", error);
     } finally {
       if (button && viewer === mcStoreViewer) button.disabled = false;
@@ -24453,12 +24632,27 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
     });
     document.getElementById("capeMotionToggle")?.addEventListener("click", () => {
       if (mcStorePreviewMode === "cape") return;
+      // Setting animation to null freezes the model at its current walking pose.
       setProductWalking(!mcStoreIsWalking);
+    });
+    const userbar = document.getElementById("capePreviewUserbar");
+    const identityToggle = document.getElementById("capePreviewIdentityToggle");
+    identityToggle?.addEventListener("click", () => {
+      setProductSearchOpen(!(userbar && userbar.classList.contains("username-open")));
     });
     document.getElementById("capeLoadPlayer")?.addEventListener("click", loadPreviewPlayerSkin);
     document.getElementById("capePlayerUsername")?.addEventListener("keydown", event => {
       if (event.key === "Enter") { event.preventDefault(); loadPreviewPlayerSkin(); }
+      if (event.key === "Escape") { event.preventDefault(); setProductSearchOpen(false); }
     });
+    if (mcStoreSearchOutsideHandler) document.removeEventListener("pointerdown", mcStoreSearchOutsideHandler);
+    mcStoreSearchOutsideHandler = event => {
+      const activeBar = document.getElementById("capePreviewUserbar");
+      if (activeBar && activeBar.classList.contains("username-open") && !activeBar.contains(event.target)) {
+        setProductSearchOpen(false);
+      }
+    };
+    document.addEventListener("pointerdown", mcStoreSearchOutsideHandler);
   }
 
   async function init3DPreview(cape) {
@@ -24466,12 +24660,14 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
     const canvas = document.getElementById("capeSkinViewer");
     if (!stage || !canvas) return;
     stage.classList.remove("fallback-cape-only");
-    // Immediately show the cape artwork while the 3D texture is loading. This
-    // avoids the blank pause (notably on Aurora) before SkinViewer finishes loading.
+    // Moonlight must open straight into the interactive 3D cape, never a flat artwork
+    // image that sits over the canvas while the player skin is still loading.
+    stage.classList.toggle("moonlight-direct-3d", cape.id === "moonlight");
     const previewFallback = document.getElementById("capePreviewFallback");
     if (previewFallback) {
       previewFallback.src = detailsImage(cape);
       previewFallback.alt = cape.name;
+      previewFallback.style.pointerEvents = "none";
     }
     stage.classList.add("preview-loading");
 
@@ -24522,7 +24718,8 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
           const totalY = event.clientY - pointerState.startY;
           if (!pointerState.turning) {
             if (Math.abs(totalX) < 4 && Math.abs(totalY) < 4) return;
-            if (Math.abs(totalY) > Math.abs(totalX) * 1.12) {
+            // In standalone CAPE mode, vertical drags remain page scrolling; Player/Elytra are freely draggable.
+            if (mcStorePreviewMode === "cape" && Math.abs(totalY) > Math.abs(totalX) * 1.12) {
               pointerState.scrolling = true;
               return;
             }
@@ -24532,26 +24729,42 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
             try { canvas.setPointerCapture(event.pointerId); } catch (_) {}
           }
           const deltaX = event.clientX - pointerState.lastX;
+          const deltaY = event.clientY - pointerState.lastY;
           pointerState.lastX = event.clientX;
           pointerState.lastY = event.clientY;
-          if (Math.abs(deltaX) > 0.2) {
-            stage.classList.remove("cape-light-hit");
-            void stage.offsetWidth;
-            stage.classList.add("cape-light-hit");
-          }
-          if (mcStoreViewer && mcStoreViewer.playerObject) {
+          if (mcStoreViewer && mcStoreViewer.playerWrapper) {
+            const wrapper = mcStoreViewer.playerWrapper;
             if (mcStorePreviewMode === "cape") {
-              const capeMesh = mcStoreViewer.playerObject.cape && mcStoreViewer.playerObject.cape.cape;
-              if (capeMesh) {
-                capeMesh.rotation.y += deltaX * 0.012;
-                capeMesh.rotation.x = 0;
-                capeMesh.rotation.z = 0;
+              // Rotate the hidden player wrapper around the cape mesh's world-space
+              // center. Compensating the wrapper position prevents the cape from
+              // orbiting/sliding across the preview while it turns through 360°.
+              const capeCenterObject = mcStoreViewer.playerObject && mcStoreViewer.playerObject.cape && mcStoreViewer.playerObject.cape.cape;
+              const Vector3 = wrapper.position && wrapper.position.constructor;
+              if (capeCenterObject && typeof capeCenterObject.getWorldPosition === "function" && typeof Vector3 === "function") {
+                wrapper.updateMatrixWorld(true);
+                const centerBefore = new Vector3();
+                capeCenterObject.getWorldPosition(centerBefore);
+                wrapper.rotation.y += deltaX * 0.012;
+                wrapper.updateMatrixWorld(true);
+                const centerAfter = new Vector3();
+                capeCenterObject.getWorldPosition(centerAfter);
+                wrapper.position.x += centerBefore.x - centerAfter.x;
+                wrapper.position.y += centerBefore.y - centerAfter.y;
+                wrapper.position.z += centerBefore.z - centerAfter.z;
+                wrapper.updateMatrixWorld(true);
+              } else {
+                // Safe fallback for an unexpected viewer/library version.
+                wrapper.rotation.y += deltaX * 0.012;
               }
             } else {
-              mcStoreViewer.playerWrapper.rotation.y += deltaX * 0.012;
+              // PLAYER and ELYTRA stay freely draggable in both axes.
+              wrapper.rotation.y += deltaX * 0.012;
+              // Match the cursor: moving upward tilts the player upward, not downward.
+              wrapper.rotation.x = Math.max(-0.65, Math.min(0.65, wrapper.rotation.x + deltaY * 0.009));
+              wrapper.rotation.z = 0;
             }
           }
-          if (event.pointerType === "mouse" && event.cancelable) event.preventDefault();
+          if (event.cancelable) event.preventDefault();
         };
         const onPointerUp = event => {
           if (pointerState && pointerState.pointerId === event.pointerId) {
@@ -24581,20 +24794,52 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
       // Use each cape's Minecraft texture file for the actual 3D cloth mesh.
       // If no texture is found in the common asset folders, try the existing art
       // image as a graceful backup so the preview still has something to show.
-      let textureUrl = await findCapeTexture(cape.textureStem);
-      if (!textureUrl) textureUrl = cape.image || cape.showcaseImage;
-      const capeLoad = mcStoreViewer.loadCape(textureUrl);
-      const defaultSkinLoad = mcStoreViewer.loadSkin(`https://minotar.net/skin/${encodeURIComponent(mcStorePlayerUsername || "Steve")}`);
-      const results = await Promise.allSettled([capeLoad, defaultSkinLoad]);
-      mcStorePlayerSkinLoaded = results[1].status === "fulfilled";
-      const capeLoadFailed = results[0].status === "rejected";
+      // Try the cape's dedicated Minecraft texture first, then its Elytra texture stem.
+      // Moonlight intentionally uses moonlightcapetexture for both the standalone cape
+      // and the Elytra wings. Product artwork (moonlightcape.gg) is never used as a 3D texture.
+      const textureStems = cape.id === "moonlight"
+        ? ["moonlightcapetexture"]
+        : [...new Set([cape.textureStem, cape.elytraTextureStem].filter(Boolean))];
+      let textureUrl = null;
+      for (const stem of textureStems) {
+        textureUrl = await findCapeTexture(stem);
+        if (textureUrl) break;
+      }
+      if (!textureUrl) {
+        console.warn(`MC STORE: Minecraft cape texture not found for ${cape.name}. Expected ${textureStems.join(" or ")}.`);
+        textureUrl = cape.image || cape.showcaseImage;
+      }
+      const activeViewer = mcStoreViewer;
+      const capeLoad = activeViewer.loadCape(textureUrl);
+      // Load Steve/the requested skin in parallel, but don't make the 3D cape wait for it.
+      // In CAPE mode the skin is hidden, so waiting for Minotar used to leave the flat
+      // artwork covering Moonlight for too long and made the preview appear click-to-start.
+      const skinLoadPromise = activeViewer.loadSkin(`https://minotar.net/skin/${encodeURIComponent(mcStorePlayerUsername || "Steve")}`)
+        .then(() => {
+          if (activeViewer !== mcStoreViewer) return;
+          mcStorePlayerSkinLoaded = true;
+          if (mcStorePreviewMode !== "cape") setPreviewMode(mcStorePreviewMode);
+          else updateProductMotionButton();
+        })
+        .catch(error => {
+          if (activeViewer === mcStoreViewer) {
+            mcStorePlayerSkinLoaded = false;
+            console.info("MC STORE: default skin is still unavailable; the standalone 3D cape remains usable.");
+          }
+        });
+      const capeResults = await Promise.allSettled([capeLoad]);
+      if (activeViewer !== mcStoreViewer || document.getElementById("capePreviewStage") !== stage) return;
+      // Rebind both equipment materials after the cape has loaded so the exact selected
+      // texture is what CAPE, PLAYER, and ELYTRA render.
+      syncCapeTextureToModels();
+      const capeLoadFailed = capeResults[0].status === "rejected";
       if (capeLoadFailed) {
         stage.classList.remove("preview-loading");
         stage.classList.add("fallback-cape-only");
       } else {
-        // Let SkinViewer paint the first loaded frame before removing the instant fallback.
+        // First real 3D cape frame takes over immediately; never wait for the player skin.
         requestAnimationFrame(() => requestAnimationFrame(() => {
-          if (document.getElementById("capePreviewStage") === stage) {
+          if (document.getElementById("capePreviewStage") === stage && activeViewer === mcStoreViewer) {
             stage.classList.remove("preview-loading");
           }
         }));
@@ -27600,6 +27845,7 @@ nav .nav-links .nav-link[href="#home"].active {
   const artLoads = new Map();
   let activeShowcaseToken = 0;
   const imageFolders = [
+    "capes 3D/", "Capes 3D/", "capes3D/", "capes-3D/", "3D/", "3d/",
     "media/", "", "Media/", "images/", "Images/", "assets/", "Assets/",
     "media/capes/", "images/capes/", "assets/capes/", "media/images/",
     "assets/images/", "capes/", "Capes/", "capes images/", "Capes Images/",
@@ -27667,14 +27913,24 @@ nav .nav-links .nav-link[href="#home"].active {
       } catch (_) {}
 
       const dot = filename.lastIndexOf(".");
-      const stem = dot > 0 ? filename.slice(0, dot) : filename;
+      const looksLikeRealImage = /\.(?:png|webp|jpe?g|avif|gif|bmp)$/i.test(filename);
+      const stem = looksLikeRealImage && dot > 0 ? filename.slice(0, dot) : filename;
       const names = new Set([filename]);
-      if (dot > 0) {
+      if (looksLikeRealImage && dot > 0) {
         const ext = filename.slice(dot);
         names.add(stem + ext.toLowerCase());
         names.add(stem + ext.toUpperCase());
+        extensions.forEach(otherExt => names.add(stem + otherExt));
       } else {
-        extensions.forEach(ext => names.add(stem + ext));
+        // A name such as "moonlightcape.gg" may be an artwork base name. Search
+        // moonlightcape.gg.png/webp/jpg as well as the literal filename and stem formats.
+        extensions.forEach(ext => names.add(filename + ext));
+        if (dot > 0) {
+          const root = filename.slice(0, dot);
+          extensions.forEach(ext => names.add(root + ext));
+        } else {
+          extensions.forEach(ext => names.add(stem + ext));
+        }
       }
       const broader = [];
       imageFolders.forEach(folder => names.forEach(name => broader.push(folder + name)));
@@ -27720,7 +27976,11 @@ nav .nav-links .nav-link[href="#home"].active {
     ].filter(Boolean);
     copy.forEach(el => { el.classList.remove("mc-showcase-info-enter"); el.classList.add("mc-showcase-info-out"); });
 
-    const resolved = await resolveArt(cape);
+    let resolved = await resolveArt(cape);
+    if (!resolved && cape.fallbackImage) {
+      const fallback = { image: cape.fallbackImage, showcaseImage: cape.fallbackImage, productImage: cape.fallbackImage };
+      resolved = await resolveArt(fallback, true);
+    }
     if (token !== activeShowcaseToken) return;
     // Never set a known-bad src or hide the shared image while an asset is being recovered.
     // If an asset can't be found yet, leave the last good cape visible and don't mismatch its text.
@@ -27729,31 +27989,15 @@ nav .nav-links .nav-link[href="#home"].active {
       return;
     }
 
-    // Remember the last successfully resolved artwork before changing the shared image.
-    // An overlay copy lets the old cape spin out while the next cape spins in simultaneously.
+    // Show only one cape at a time: no duplicated outgoing image, fade, zoom, or cross-spin.
     const previousCapeId = image.dataset.mcVisualCapeId || image.dataset.mcActiveCapeId || "";
     const previousVisualSrc = image.dataset.mcVisualSrc ||
       ((image.complete && image.naturalWidth > 0) ? (image.currentSrc || image.src) : "");
-    const shouldCrossSpin = Boolean(
-      previousCapeId && previousCapeId !== cape.id && previousVisualSrc && previousVisualSrc !== resolved
-    );
-    if (shouldCrossSpin) {
-      const stage = image.closest(".featured-image") || image.parentElement;
-      if (stage) {
-        // Remove any stale outgoing layer left behind by a very fast timer tick.
-        stage.querySelectorAll(".mc-showcase-cape-outgoing").forEach(node => node.remove());
-        const outgoing = doc.createElement("img");
-        outgoing.className = "mc-showcase-cape-outgoing";
-        outgoing.src = previousVisualSrc;
-        outgoing.alt = "";
-        outgoing.setAttribute("aria-hidden", "true");
-        outgoing.draggable = false;
-        stage.appendChild(outgoing);
-        const removeOutgoing = () => { if (outgoing.isConnected) outgoing.remove(); };
-        outgoing.addEventListener("animationend", removeOutgoing, { once: true });
-        setTimeout(removeOutgoing, 140);
-      }
-    }
+    const isFirstStablePaint = image.dataset.mcStableFirstPaint !== "1";
+    const shouldSpinIncoming = !isFirstStablePaint && Boolean(previousVisualSrc) && previousCapeId !== cape.id;
+    image.dataset.mcStableFirstPaint = "1";
+    const stage = image.closest(".featured-image") || image.parentElement;
+    if (stage) stage.querySelectorAll(".mc-showcase-cape-outgoing").forEach(node => node.remove());
 
     image.hidden = false;
     image.removeAttribute("hidden");
@@ -27778,7 +28022,7 @@ nav .nav-links .nav-link[href="#home"].active {
 
     image.classList.remove("mc-store-spin-now", "cape-spin", "is-spinning", "spin-in");
     if (image.src !== resolved) image.src = resolved;
-    if (shouldCrossSpin) {
+    if (shouldSpinIncoming) {
       void image.offsetWidth;
       image.classList.add("mc-store-spin-now");
       setTimeout(() => {
@@ -27799,7 +28043,7 @@ nav .nav-links .nav-link[href="#home"].active {
   window.showFeatured = stableShowFeatured;
   window.restartFeaturedTimer = function () {
     if (typeof featuredTimer !== "undefined" && featuredTimer) clearInterval(featuredTimer);
-    featuredTimer = setInterval(() => stableShowFeatured((featuredIndex + 1) % featuredCapes.length), 4000);
+    featuredTimer = setInterval(() => stableShowFeatured((featuredIndex + 1) % featuredCapes.length), 5000);
   };
   try { showFeatured = stableShowFeatured; } catch (_) {}
   try { restartFeaturedTimer = window.restartFeaturedTimer; } catch (_) {}
@@ -27821,6 +28065,16 @@ nav .nav-links .nav-link[href="#home"].active {
         }
       } catch (_) {}
     }
+    if (!resolved) {
+      const fallbackPath = img.dataset.fallbackImage || "";
+      if (fallbackPath && fallbackPath !== original && fallbackPath !== filename) {
+        try {
+          const fallbackCape = { image: fallbackPath, showcaseImage: fallbackPath, productImage: fallbackPath };
+          resolved = await resolveArt(fallbackCape, true);
+          if (!resolved) resolved = await probe(imageUrl(fallbackPath));
+        } catch (_) {}
+      }
+    }
     img.dataset.mcStableRecovering = "0";
     if (resolved) {
       img.hidden = false;
@@ -27833,7 +28087,7 @@ nav .nav-links .nav-link[href="#home"].active {
   window.handleCapeCardImageError = recoverAnyImage;
   window.mcStoreShowcaseImageError = recoverAnyImage;
 
-  // On every page entry, pre-resolve artwork in the background so the three-second carousel swaps instantly.
+  // On every page entry, pre-resolve artwork in the background so the five-second carousel swaps instantly.
   function initializeShowcase() {
     const gallery = doc.getElementById("mcShowcaseGallery");
     if (gallery) gallery.replaceChildren();
@@ -28383,7 +28637,7 @@ nav .nav-links .nav-link[href="#home"].active {
     letter-spacing: 1.6px; text-transform: uppercase;
   }
   .home-fitting-cape-swatches {
-    display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 6px; align-items: center;
+    display: grid; grid-template-columns: repeat(9, minmax(0, 1fr)); gap: 6px; align-items: center;
   }
   .home-fitting-swatch {
     position: relative; display: flex; align-items: center; justify-content: center;
@@ -28455,7 +28709,7 @@ nav .nav-links .nav-link[href="#home"].active {
     .home-fitting-mode { min-height: 27px; font-size: 9px; }
     .home-fitting-info-column { grid-template-columns: minmax(0, 1fr); gap: 14px; }
     .home-fitting-cape-picker { padding: 18px 15px; }
-    .home-fitting-cape-swatches { grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 5px; }
+    .home-fitting-cape-swatches { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 7px; }
     .home-fitting-swatch { height: 54px; border-radius: 6px; }
     .home-fitting-selected-card { padding: 20px 18px 17px; }
     .home-fitting-selected-card h3 { font-size: 26px; }
@@ -28483,6 +28737,8 @@ nav .nav-links .nav-link[href="#home"].active {
     { id: "experience",   name: "Experience Cape Code", stem: "experiencecapetexture", thumb: "experiencecape.gg", art: "media/experience-cape.png",  color: "#7545b4" },
     { id: "home",         name: "Home Cape",         stem: "homecapetexture",       thumb: "homecape.gg",          art: "media/home-cape.png",        color: "#2f8664" },
     { id: "menace",       name: "Menace Cape",       stem: "menacecapetexture",     thumb: "menacecape.gg",        art: "media/menace-cape.png",      color: "#d92532" },
+    // The thumbnail artwork (moonlightcape.gg) is separate from the 3D Minecraft texture.
+    { id: "moonlight",    name: "Moonlight Cape",    stem: "moonlightcapetexture",  thumb: "moonlightcape.gg",     art: "media/moonlight-cape.png",   color: "#53a9d8" },
     { id: "purple-heart", name: "Purple Heart Cape",  stem: "twitchcapetexture",     thumb: "purpulhurtcape.gg",    art: "media/twitch-cape.png",      color: "#7145a5" }
   ];
 
@@ -28510,7 +28766,8 @@ nav .nav-links .nav-link[href="#home"].active {
   let selectedMode = "player";
   let homeViewer = null;
   let viewerReady = false;
-  let currentUsername = "Steve";
+  let currentUsername = (() => { try { return localStorage.getItem("mc_store_skin_username") || "Steve"; } catch (_) { return "Steve"; } })();
+  let isWalking = true;
   let textureRequestToken = 0;
   let resizeObserver = null;
 
@@ -28586,17 +28843,55 @@ nav .nav-links .nav-link[href="#home"].active {
     return "$" + (Number.isInteger(value) ? value.toFixed(0) : value.toFixed(2));
   }
 
+  async function resolveCanonicalMinecraftUsername(enteredName) {
+    // Resolve case-insensitive name input to Minecraft's canonical capitalization.
+    try {
+      const response = await fetch(`https://api.mojang.com/users/profiles/minecraft/${encodeURIComponent(enteredName)}`, { cache: "no-store" });
+      if (response.status === 204 || response.status === 404) {
+        throw new Error("No Minecraft Java profile was found for that username.");
+      }
+      if (response.ok) {
+        const profile = await response.json();
+        if (profile && typeof profile.name === "string" && profile.name) return profile.name;
+      }
+    } catch (error) {
+      if (error && error.message === "No Minecraft Java profile was found for that username.") throw error;
+      // Fall back to the skin image provider if the profile lookup endpoint is unavailable.
+    }
+    return enteredName;
+  }
+
   async function resolveNamedAsset(filename, folders, extensions) {
+    // Prefer the repository index, but retain direct URL fallbacks if the index is
+    // rate-limited or the artwork uses the special stem "moonlightcape.gg".
     try {
       if (typeof findMcStoreNestedAsset === "function") {
         const indexed = await findMcStoreNestedAsset([filename]);
         if (indexed && indexed.url) return indexed.url;
-        if (indexed && indexed.indexAvailable) return null;
       }
     } catch (_) {}
-    const names = /\.[a-z0-9]{2,5}$/i.test(filename) ? [filename] : extensions.map(ext => filename + ext);
+
+    const candidates = new Set([filename]);
+    const commonImageExtensions = [".png", ".PNG", ".webp", ".WEBP", ".jpg", ".JPG", ".jpeg", ".JPEG"];
+    (extensions || []).forEach(ext => candidates.add(filename + ext));
+    const isRealImageExtension = /\.(?:png|webp|jpe?g|avif|gif|bmp)$/i.test(filename);
+    if (!isRealImageExtension) {
+      commonImageExtensions.forEach(ext => candidates.add(filename + ext));
+      // Also handle files named "moonlightcape.png" when the configured stem is
+      // "moonlightcape.gg" as well as the preferred "moonlightcape.gg.png".
+      const dot = filename.lastIndexOf(".");
+      if (dot > 0) {
+        const root = filename.slice(0, dot);
+        commonImageExtensions.forEach(ext => candidates.add(root + ext));
+      }
+    } else {
+      const dot = filename.lastIndexOf(".");
+      const root = dot > 0 ? filename.slice(0, dot) : filename;
+      commonImageExtensions.forEach(ext => candidates.add(root + ext));
+    }
+
     for (const folder of folders) {
-      const found = await Promise.all(names.map(name => probeImage(makeUrl(folder + name))));
+      const found = await Promise.all([...candidates].map(name => probeImage(makeUrl(folder + name))));
       const match = found.find(Boolean);
       if (match) return match;
     }
@@ -28604,15 +28899,22 @@ nav .nav-links .nav-link[href="#home"].active {
   }
 
   async function resolveCapeTexture(cape) {
+    // Moonlight's actual Minecraft texture is moonlightcapetexture (with the
+    // repository's real image extension). A successful GitHub tree response that
+    // misses the file must not stop the direct-path checks below: the API can be
+    // cached or temporarily incomplete while the texture is still available.
+    const stem = String(cape && cape.stem || "").trim();
+    if (!stem) return null;
     try {
       if (typeof findMcStoreNestedAsset === "function") {
-        const indexed = await findMcStoreNestedAsset([cape.stem]);
+        const indexed = await findMcStoreNestedAsset([stem]);
         if (indexed && indexed.url) return indexed.url;
-        if (indexed && indexed.indexAvailable) return null;
+        // Deliberately continue when indexAvailable is true but url is empty.
+        // The direct folder/extension probes are needed for Moonlight too.
       }
     } catch (_) {}
+    const names = [...new Set([stem, ...imageExtensions.map(ext => stem + ext)])];
     for (const folder of textureFolders) {
-      const names = imageExtensions.map(ext => cape.stem + ext);
       const found = await Promise.all(names.map(name => probeImage(makeUrl(folder + name), 1300)));
       const match = found.find(Boolean);
       if (match) return match;
@@ -28704,12 +29006,24 @@ nav .nav-links .nav-link[href="#home"].active {
     }
   }
 
+  function updateHomeMotionButton() {
+    const button = document.getElementById("homeFitMotionToggle");
+    if (!button) return;
+    // Keep only the compact icon, matching the product preview control.
+    button.textContent = isWalking ? "Ⅱ" : "▶";
+    button.setAttribute("aria-label", isWalking ? "Pause walking" : "Resume walking");
+    button.setAttribute("aria-pressed", isWalking ? "true" : "false");
+    button.title = isWalking ? "Pause the player and keep the current pose" : "Resume the player walking animation";
+  }
+
   function applyEquipmentMode() {
+    updateHomeMotionButton();
     if (!homeViewer || !homeViewer.playerObject) return;
     const player = homeViewer.playerObject;
     player.skin.visible = true;
     player.backEquipment = selectedMode === "elytra" ? "elytra" : "cape";
-    homeViewer.animation = new window.skinview3d.WalkingAnimation();
+    homeViewer.animation = isWalking && window.skinview3d && window.skinview3d.WalkingAnimation
+      ? new window.skinview3d.WalkingAnimation() : null;
     if (stage) {
       stage.classList.toggle("mode-elytra", selectedMode === "elytra");
       stage.classList.toggle("mode-player", selectedMode === "player");
@@ -28745,23 +29059,34 @@ nav .nav-links .nav-link[href="#home"].active {
   }
 
   async function loadUsernameSkin() {
-    const username = String(usernameInput && usernameInput.value || "").trim();
-    if (!/^[A-Za-z0-9_]{1,16}$/.test(username)) {
+    const input = document.getElementById("homeFitUsername");
+    const enteredName = String(input && input.value || "").trim();
+    if (!/^[A-Za-z0-9_]{1,16}$/.test(enteredName)) {
       showStatus("Enter a valid Java username (1–16 letters, numbers, or underscores).", "error");
-      usernameInput && usernameInput.focus();
+      input && input.focus();
+      return;
+    }
+    let username = enteredName;
+    if (loadButton) loadButton.disabled = true;
+    try {
+      username = await resolveCanonicalMinecraftUsername(enteredName);
+    } catch (error) {
+      showStatus(error && error.message ? error.message : "Could not find that Minecraft Java profile.", "error");
+      if (loadButton) loadButton.disabled = false;
       return;
     }
     if (!homeViewer) {
       currentUsername = username;
       showStatus("Loading the 3D preview…");
       await ensureViewer();
+      if (loadButton) loadButton.disabled = false;
       return;
     }
-    loadButton.disabled = true;
     showStatus(`Loading ${username}'s skin…`);
     try {
       await homeViewer.loadSkin(`https://minotar.net/skin/${encodeURIComponent(username)}`);
       currentUsername = username;
+      try { localStorage.setItem("mc_store_skin_username", username); } catch (_) {}
       if (headImage) headImage.src = `https://minotar.net/helm/${encodeURIComponent(username)}/40.png`;
       if (homeViewer.playerObject && homeViewer.playerObject.skin) homeViewer.playerObject.skin.visible = true;
       applyEquipmentMode();
@@ -28779,7 +29104,7 @@ nav .nav-links .nav-link[href="#home"].active {
     let pointer = null;
     const onDown = event => {
       if (event.pointerType === "mouse" && event.button !== 0) return;
-      pointer = { id: event.pointerId, startX: event.clientX, startY: event.clientY, lastX: event.clientX, turning: false, scrolling: false };
+      pointer = { id: event.pointerId, startX: event.clientX, startY: event.clientY, lastX: event.clientX, lastY: event.clientY, turning: false, scrolling: false };
     };
     const onMove = event => {
       if (!pointer || pointer.id !== event.pointerId || pointer.scrolling || !homeViewer) return;
@@ -28787,20 +29112,21 @@ nav .nav-links .nav-link[href="#home"].active {
       const dyTotal = event.clientY - pointer.startY;
       if (!pointer.turning) {
         if (Math.abs(dxTotal) < 4 && Math.abs(dyTotal) < 4) return;
-        if (Math.abs(dyTotal) > Math.abs(dxTotal) * 1.12) { pointer.scrolling = true; return; }
         pointer.turning = true;
         stage.classList.add("is-user-turning");
         try { canvasElement.setPointerCapture(event.pointerId); } catch (_) {}
       }
       const dx = event.clientX - pointer.lastX;
+      const dy = event.clientY - pointer.lastY;
       pointer.lastX = event.clientX;
-      if (Math.abs(dx) > 0.2) {
-        stage.classList.remove("home-fit-light-hit");
-        void stage.offsetWidth;
-        stage.classList.add("home-fit-light-hit");
+      pointer.lastY = event.clientY;
+      if (homeViewer && homeViewer.playerWrapper) {
+        // The player/Elytra rotate in place: horizontal drag turns, vertical drag tilts the view.
+        homeViewer.playerWrapper.rotation.y += dx * 0.012;
+        homeViewer.playerWrapper.rotation.x = Math.max(-0.65, Math.min(0.65, homeViewer.playerWrapper.rotation.x - dy * 0.009));
+        homeViewer.playerWrapper.rotation.z = 0;
       }
-      if (homeViewer && homeViewer.playerWrapper) homeViewer.playerWrapper.rotation.y += dx * 0.012;
-      if (event.pointerType === "mouse" && event.cancelable) event.preventDefault();
+      if (event.cancelable) event.preventDefault();
     };
     const onUp = event => {
       if (pointer && pointer.id === event.pointerId) {
@@ -28895,6 +29221,13 @@ nav .nav-links .nav-link[href="#home"].active {
       if (homeViewer) showStatus(selectedMode === "elytra" ? "Elytra mode selected." : "Player cape mode selected.", "success");
     });
   });
+  const homeMotionButton = document.getElementById("homeFitMotionToggle");
+  if (homeMotionButton) homeMotionButton.addEventListener("click", () => {
+    isWalking = !isWalking;
+    applyEquipmentMode();
+    showStatus(isWalking ? "Walking resumed." : "Walking paused. Current pose is held.", "success");
+  });
+  updateHomeMotionButton();
   if (identityToggle) identityToggle.addEventListener("click", () => {
     setUsernameSearchOpen(!(userbar && userbar.classList.contains("username-open")));
   });
@@ -28910,13 +29243,14 @@ nav .nav-links .nav-link[href="#home"].active {
     const cape = getCape(selectedCapeId);
     const item = catalogCape(cape.id);
     if (!item || !item.stock || typeof item.price !== "number") return;
-    if (orderStatus) orderStatus.textContent = "Opening MC STORE on Discord to confirm your order. Online checkout is not connected on this page.";
-    window.open("https://discord.gg/G75MSAVe2k", "_blank", "noopener,noreferrer");
+    const added = typeof window.mcStoreCartAdd === "function" && window.mcStoreCartAdd(cape.id, 1);
+    if (added && typeof window.mcStoreOpenCart === "function") window.mcStoreOpenCart({ checkout: true });
+    else if (orderStatus) orderStatus.textContent = "This cape is currently unavailable.";
   });
 
   renderSwatches();
   updateSelectedPanel(getCape(selectedCapeId));
-  if (usernameInput) usernameInput.value = "";
+  if (usernameInput) usernameInput.value = currentUsername === "Steve" ? "" : currentUsername;
   const lifecycleObserver = new MutationObserver(() => {
     const visible = homePage && homePage.style.display !== "none" && !homePage.classList.contains("shop-only") && stage && stage.offsetWidth > 0;
     if (visible) {
@@ -29005,50 +29339,50 @@ nav .nav-links .nav-link[href="#home"].active {
 #details .storefront-preview.cape-light-hit::after { animation: mcStoreLightReflection .62s ease-out; }
 
 /* Reference-matched How to Redeem card, accordion FAQ and customer help section. */
-#details .redeem-guide { margin: 56px auto 68px; color: #24211e; }
-#details .redeem-section-heading { margin: 0 auto 22px; text-align: center; }
-#details .redeem-section-heading h2 { margin: 0 0 8px; color: #24211e; font-size: clamp(24px, 3.2vw, 31px); line-height: 1.18; letter-spacing: -.7px; font-weight: 900; }
-#details .redeem-section-heading p { margin: 0; color: #746b60; font-size: 12px; line-height: 1.75; }
-#details .redeem-guide-card {
+.redeem-guide { margin: 56px auto 68px; color: #24211e; }
+.redeem-section-heading { margin: 0 auto 22px; text-align: center; }
+.redeem-section-heading h2 { margin: 0 0 8px; color: #24211e; font-size: clamp(24px, 3.2vw, 31px); line-height: 1.18; letter-spacing: -.7px; font-weight: 900; }
+.redeem-section-heading p { margin: 0; color: #746b60; font-size: 12px; line-height: 1.75; }
+.redeem-guide-card {
   display: grid; grid-template-columns: minmax(0, 1.03fr) minmax(0, 1fr); gap: 22px; align-items: center;
   padding: 20px; border: 1px solid #dfd2bd; border-radius: 12px; background: #fffdf8;
   box-shadow: 0 2px 0 rgba(55,43,24,.08);
 }
-#details .redeem-video-wrap { position: relative; width: 100%; aspect-ratio: 16 / 9; min-height: 170px; overflow: hidden; border: 1px solid #d1c4af; border-radius: 7px; background: #26211e; }
-#details .redeem-video-wrap iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
-#details .redeem-steps h3 { margin: 0 0 12px; color: #25221e; font-size: 14px; font-weight: 900; }
-#details .redeem-steps ol { display: grid; gap: 9px; padding: 0; margin: 0; list-style: none; }
-#details .redeem-steps li { display: grid; grid-template-columns: 20px minmax(0,1fr); gap: 8px; align-items: start; }
-#details .redeem-steps li > span { display: grid; place-items: center; width: 19px; height: 19px; border-radius: 50%; background: #eae5db; color: #625b51; font-size: 10px; font-weight: 900; }
-#details .redeem-steps li p { margin: 1px 0 0; color: #655d52; font-size: 10px; line-height: 1.55; }
-#details .redeem-steps a { color: #267fa5; text-decoration: underline; text-underline-offset: 2px; }
-#details .redeem-faq { margin-top: 36px; }
-#details .redeem-faq-heading { margin-bottom: 23px; }
-#details .redeem-faq-list { display: grid; gap: 10px; }
-#details .redeem-faq-item { overflow: hidden; border: 1px solid #dfd2bd; border-radius: 10px; background: #fffdf8; box-shadow: 0 2px 0 rgba(55,43,24,.07); }
-#details .redeem-faq-item summary { position: relative; display: flex; align-items: center; gap: 9px; min-height: 48px; padding: 13px 43px 13px 16px; color: #24211e; font-size: 11px; line-height: 1.5; font-weight: 850; cursor: pointer; list-style: none; }
-#details .redeem-faq-item summary::-webkit-details-marker { display: none; }
-#details .redeem-most-common { flex-shrink: 0; padding: 3px 6px; border-radius: 6px; background: #37332d; color: #fffdf8; font-size: 7px; line-height: 1; font-weight: 900; }
-#details .redeem-chevron { position: absolute; right: 15px; top: 50%; transform: translateY(-55%); color: #655d52; font-size: 16px; font-weight: 500; transition: transform .18s; }
-#details .redeem-faq-item[open] .redeem-chevron { transform: translateY(-35%) rotate(180deg); }
-#details .redeem-faq-item > p { margin: 0; padding: 0 16px 16px; color: #655d52; font-size: 11px; line-height: 1.8; }
-#details .redeem-customer-note { margin-top: 62px; text-align: center; }
-#details .redeem-customer-cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 15px; }
-#details .redeem-customer-card { min-width: 0; padding: 21px 18px; text-align: left; border: 1px solid #dfd2bd; border-radius: 9px; background: #fffdf8; box-shadow: 0 2px 0 rgba(55,43,24,.07); }
-#details .redeem-customer-icon { display: grid; place-items: center; width: 29px; height: 29px; margin-bottom: 12px; border-radius: 8px; background: #e5f8ff; color: #137fa9; font-size: 14px; font-weight: 900; }
-#details .redeem-customer-card h3 { margin: 0 0 8px; color: #27231f; font-size: 12px; font-weight: 900; }
-#details .redeem-customer-card p { margin: 0; color: #655d52; font-size: 10px; line-height: 1.7; }
-#details .redeem-customer-card a { display: inline-block; margin-top: 11px; color: #226d8d; font-size: 10px; font-weight: 850; text-decoration: underline; text-underline-offset: 3px; }
-#details .redeem-customer-card a:hover { color: #109fd0; }
+.redeem-video-wrap { position: relative; width: 100%; aspect-ratio: 16 / 9; min-height: 170px; overflow: hidden; border: 1px solid #d1c4af; border-radius: 7px; background: #26211e; }
+.redeem-video-wrap iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.redeem-steps h3 { margin: 0 0 12px; color: #25221e; font-size: 14px; font-weight: 900; }
+.redeem-steps ol { display: grid; gap: 9px; padding: 0; margin: 0; list-style: none; }
+.redeem-steps li { display: grid; grid-template-columns: 20px minmax(0,1fr); gap: 8px; align-items: start; }
+.redeem-steps li > span { display: grid; place-items: center; width: 19px; height: 19px; border-radius: 50%; background: #eae5db; color: #625b51; font-size: 10px; font-weight: 900; }
+.redeem-steps li p { margin: 1px 0 0; color: #655d52; font-size: 10px; line-height: 1.55; }
+.redeem-steps a { color: #267fa5; text-decoration: underline; text-underline-offset: 2px; }
+.redeem-faq { margin-top: 36px; }
+.redeem-faq-heading { margin-bottom: 23px; }
+.redeem-faq-list { display: grid; gap: 10px; }
+.redeem-faq-item { overflow: hidden; border: 1px solid #dfd2bd; border-radius: 10px; background: #fffdf8; box-shadow: 0 2px 0 rgba(55,43,24,.07); }
+.redeem-faq-item summary { position: relative; display: flex; align-items: center; gap: 9px; min-height: 48px; padding: 13px 43px 13px 16px; color: #24211e; font-size: 11px; line-height: 1.5; font-weight: 850; cursor: pointer; list-style: none; }
+.redeem-faq-item summary::-webkit-details-marker { display: none; }
+.redeem-most-common { flex-shrink: 0; padding: 3px 6px; border-radius: 6px; background: #37332d; color: #fffdf8; font-size: 7px; line-height: 1; font-weight: 900; }
+.redeem-chevron { position: absolute; right: 15px; top: 50%; transform: translateY(-55%); color: #655d52; font-size: 16px; font-weight: 500; transition: transform .18s; }
+.redeem-faq-item[open] .redeem-chevron { transform: translateY(-35%) rotate(180deg); }
+.redeem-faq-item > p { margin: 0; padding: 0 16px 16px; color: #655d52; font-size: 11px; line-height: 1.8; }
+.redeem-customer-note { margin-top: 62px; text-align: center; }
+.redeem-customer-cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 15px; }
+.redeem-customer-card { min-width: 0; padding: 21px 18px; text-align: left; border: 1px solid #dfd2bd; border-radius: 9px; background: #fffdf8; box-shadow: 0 2px 0 rgba(55,43,24,.07); }
+.redeem-customer-icon { display: grid; place-items: center; width: 29px; height: 29px; margin-bottom: 12px; border-radius: 8px; background: #e5f8ff; color: #137fa9; font-size: 14px; font-weight: 900; }
+.redeem-customer-card h3 { margin: 0 0 8px; color: #27231f; font-size: 12px; font-weight: 900; }
+.redeem-customer-card p { margin: 0; color: #655d52; font-size: 10px; line-height: 1.7; }
+.redeem-customer-card a { display: inline-block; margin-top: 11px; color: #226d8d; font-size: 10px; font-weight: 850; text-decoration: underline; text-underline-offset: 3px; }
+.redeem-customer-card a:hover { color: #109fd0; }
 
 @media (max-width: 760px) {
-  #details .redeem-guide-card { grid-template-columns: minmax(0,1fr); gap: 18px; padding: 14px; }
-  #details .redeem-video-wrap { min-height: 0; }
-  #details .redeem-steps h3 { font-size: 13px; }
-  #details .redeem-steps li p { font-size: 11px; }
-  #details .redeem-faq-item summary { padding-left: 12px; font-size: 10px; }
-  #details .redeem-customer-cards { grid-template-columns: minmax(0,1fr); gap: 10px; }
-  #details .redeem-customer-card { padding: 16px; }
+  .redeem-guide-card { grid-template-columns: minmax(0,1fr); gap: 18px; padding: 14px; }
+  .redeem-video-wrap { min-height: 0; }
+  .redeem-steps h3 { font-size: 13px; }
+  .redeem-steps li p { font-size: 11px; }
+  .redeem-faq-item summary { padding-left: 12px; font-size: 10px; }
+  .redeem-customer-cards { grid-template-columns: minmax(0,1fr); gap: 10px; }
+  .redeem-customer-card { padding: 16px; }
 }
 @media (max-width: 420px) {
   .home-fitting-search-panel { left: 49px; width: min(248px, calc(100vw - 82px)); }
@@ -29062,6 +29396,809 @@ nav .nav-links .nav-link[href="#home"].active {
   .home-fitting-search-panel, #details .preview-motion-toggle { transition: none !important; }
   .home-fitting-stage.home-fit-light-hit::after, #details .storefront-preview.cape-light-hit::after { animation-duration: .01ms !important; }
 }
+</style>
+
+
+
+<style id="mc-store-dressing-room-final-request">
+  /* Product details use the same click-to-search head tile as the Home Dressing Room. */
+  #details .storefront-preview { position: relative !important; isolation: isolate !important; }
+  #details .product-preview-userbar {
+    position: absolute; z-index: 12; top: 12px; left: 12px; display: flex; align-items: flex-start; gap: 7px;
+    max-width: calc(100% - 24px);
+  }
+  #details .product-preview-identity-toggle {
+    flex: 0 0 44px; width: 44px; height: 44px; padding: 0; overflow: hidden;
+    border: 2px solid #292724; border-radius: 8px; background: #fffdf7; box-shadow: 2px 2px 0 #292724;
+    cursor: pointer; transition: transform .16s ease, filter .16s ease;
+  }
+  #details .product-preview-identity-toggle:hover { transform: translateY(-1px); filter: brightness(1.06); }
+  #details .product-preview-identity-toggle:focus-visible { outline: 3px solid #2dc5f5; outline-offset: 3px; }
+  #details .product-preview-identity-toggle img { display: block; width: 100%; height: 100%; object-fit: cover; image-rendering: pixelated; }
+  #details .product-preview-search-panel {
+    width: clamp(210px, 30vw, 290px); padding: 6px; border: 1px solid #292724; border-radius: 10px;
+    background: #fffdf7; box-shadow: 3px 4px 0 #292724; opacity: 0; visibility: hidden; pointer-events: none;
+    transform: translateX(-8px); transition: opacity .18s ease, transform .18s ease, visibility .18s ease;
+  }
+  #details .product-preview-userbar.username-open .product-preview-search-panel {
+    opacity: 1; visibility: visible; pointer-events: auto; transform: translateX(0);
+  }
+  #details .product-preview-search-panel label {
+    position: absolute !important; width: 1px !important; height: 1px !important; padding: 0 !important; margin: -1px !important;
+    overflow: hidden !important; clip: rect(0,0,0,0) !important; white-space: nowrap !important; border: 0 !important;
+  }
+  #details .product-preview-search-panel .preview-player-input-row { display: grid; grid-template-columns: minmax(0,1fr) auto; align-items: center; gap: 5px; }
+  #details #capePlayerUsername { height: 34px; min-height: 34px; min-width: 0; padding: 0 9px; border: 1px solid #d5c9b7; border-radius: 7px; background: #fffefa; color: #29251f; font-size: 10px; box-shadow: none; }
+  #details #capePlayerUsername::placeholder { color: #92897c; }
+  #details #capeLoadPlayer { height: 34px; min-height: 34px; padding: 0 12px; border: 1px solid #171714; border-radius: 7px; background: #302e2a; color: #fffdf7; font-size: 10px; font-weight: 900; box-shadow: 2px 2px 0 #171714; }
+  #details #capeLoadPlayer:hover { background: #137ea4; }
+  #details .product-preview-toolbar { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 10px; margin: 15px auto 0; }
+  #details .product-preview-toolbar .preview-tabs { margin: 0 !important; }
+  #details .storefront-preview .preview-motion-toggle {
+    position: absolute; z-index: 11; top: 50%; right: 12px; transform: translateY(-50%);
+    width: auto; max-width: 116px; min-height: 36px; padding: 9px 10px; border: 1.5px solid #2d2925; border-radius: 999px;
+    background: #fffdf7; color: #282522; box-shadow: 2px 3px 0 #2d2925; font-size: 10px; line-height: 1.25; font-weight: 900;
+    white-space: normal; cursor: pointer; transition: background .15s, color .15s, box-shadow .15s;
+  }
+  #details .storefront-preview .preview-motion-toggle:hover:not(:disabled) { background: #dff8ff; }
+  #details .storefront-preview .preview-motion-toggle[aria-pressed="false"] { background: #282522; color: #fffdf7; }
+  #details .storefront-preview .preview-motion-toggle:disabled { opacity: .45; cursor: not-allowed; box-shadow: none; }
+  #details .preview-player-controls { display: block !important; width: 100%; margin: 10px auto 0; padding: 0 3px; border: 0; border-radius: 0; background: transparent; box-shadow: none; }
+  #details #capePlayerStatus { display: block; margin: 0; color: #756c60; font-size: 10px; line-height: 1.6; overflow-wrap: anywhere; }
+  #details #capePlayerStatus.success { color: #23694b; }
+  #details #capePlayerStatus.error { color: #a34035; }
+  #details .storefront-preview.mode-cape .preview-motion-toggle { opacity: .42; }
+
+  /* How to Redeem belongs on Home immediately below Fitting Room. */
+  #homePage #howToRedeem { display: block; width: min(1185px, 88%); margin: 0 auto 66px; padding: 0; color: #24211e; }
+  #homePage.shop-only #howToRedeem { display: none !important; }
+  #homePage #howToRedeem .redeem-section-heading { margin: 0 auto 22px; text-align: center; }
+  #homePage #howToRedeem .redeem-section-heading h2 { margin: 0 0 8px; color: #24211e; font-size: clamp(24px,3.2vw,31px); line-height: 1.18; letter-spacing: -.7px; font-weight: 900; }
+  #homePage #howToRedeem .redeem-section-heading p { margin: 0; color: #746b60; font-size: 12px; line-height: 1.75; }
+  #homePage #howToRedeem .redeem-guide-card { display: grid; grid-template-columns: minmax(0,1.03fr) minmax(0,1fr); gap: 22px; align-items: center; padding: 20px; border: 1px solid #dfd2bd; border-radius: 12px; background: #fffdf8; box-shadow: 0 2px 0 rgba(55,43,24,.08); }
+  #homePage #howToRedeem .redeem-video-wrap { position: relative; width: 100%; aspect-ratio: 16 / 9; min-height: 170px; overflow: hidden; border: 1px solid #d1c4af; border-radius: 7px; background: #26211e; }
+  #homePage #howToRedeem .redeem-video-wrap iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+  #homePage #howToRedeem .redeem-steps h3 { margin: 0 0 12px; color: #25221e; font-size: 14px; font-weight: 900; }
+  #homePage #howToRedeem .redeem-steps ol { display: grid; gap: 9px; padding: 0; margin: 0; list-style: none; }
+  #homePage #howToRedeem .redeem-steps li { display: grid; grid-template-columns: 20px minmax(0,1fr); gap: 8px; align-items: start; }
+  #homePage #howToRedeem .redeem-steps li > span { display: grid; place-items: center; width: 19px; height: 19px; border-radius: 50%; background: #eae5db; color: #625b51; font-size: 10px; font-weight: 900; }
+  #homePage #howToRedeem .redeem-steps li p { margin: 1px 0 0; color: #655d52; font-size: 10px; line-height: 1.55; }
+  #homePage #howToRedeem .redeem-steps a { color: #267fa5; text-decoration: underline; text-underline-offset: 2px; }
+  #homePage #howToRedeem .redeem-faq { margin-top: 36px; }
+  #homePage #howToRedeem .redeem-faq-heading { margin-bottom: 23px; }
+  #homePage #howToRedeem .redeem-faq-list { display: grid; gap: 10px; }
+  #homePage #howToRedeem .redeem-faq-item { overflow: hidden; border: 1px solid #dfd2bd; border-radius: 10px; background: #fffdf8; box-shadow: 0 2px 0 rgba(55,43,24,.07); }
+  #homePage #howToRedeem .redeem-faq-item summary { position: relative; display: flex; align-items: center; gap: 9px; min-height: 48px; padding: 13px 43px 13px 16px; color: #24211e; font-size: 11px; line-height: 1.5; font-weight: 850; cursor: pointer; list-style: none; }
+  #homePage #howToRedeem .redeem-faq-item summary::-webkit-details-marker { display: none; }
+  #homePage #howToRedeem .redeem-most-common { flex-shrink: 0; padding: 3px 6px; border-radius: 6px; background: #37332d; color: #fffdf8; font-size: 7px; line-height: 1; font-weight: 900; }
+  #homePage #howToRedeem .redeem-chevron { position: absolute; right: 15px; top: 50%; transform: translateY(-55%); color: #655d52; font-size: 16px; font-weight: 500; transition: transform .18s; }
+  #homePage #howToRedeem .redeem-faq-item[open] .redeem-chevron { transform: translateY(-35%) rotate(180deg); }
+  #homePage #howToRedeem .redeem-faq-item > p { margin: 0; padding: 0 16px 16px; color: #655d52; font-size: 11px; line-height: 1.8; }
+  #homePage #howToRedeem .redeem-customer-note { margin-top: 62px; text-align: center; }
+  #homePage #howToRedeem .redeem-customer-cards { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 15px; }
+  #homePage #howToRedeem .redeem-customer-card { min-width: 0; padding: 21px 18px; text-align: left; border: 1px solid #dfd2bd; border-radius: 9px; background: #fffdf8; box-shadow: 0 2px 0 rgba(55,43,24,.07); }
+  #homePage #howToRedeem .redeem-customer-icon { display: grid; place-items: center; width: 29px; height: 29px; margin-bottom: 12px; border-radius: 8px; background: #e5f8ff; color: #137fa9; font-size: 14px; font-weight: 900; }
+  #homePage #howToRedeem .redeem-customer-card h3 { margin: 0 0 8px; color: #27231f; font-size: 12px; font-weight: 900; }
+  #homePage #howToRedeem .redeem-customer-card p { margin: 0; color: #655d52; font-size: 10px; line-height: 1.7; }
+  #homePage #howToRedeem .redeem-customer-card a { display: inline-block; margin-top: 11px; color: #226d8d; font-size: 10px; font-weight: 850; text-decoration: underline; text-underline-offset: 3px; }
+  #homePage #howToRedeem .redeem-customer-card a:hover { color: #109fd0; }
+
+  @media (max-width: 760px) {
+    #details .product-preview-userbar { top: 9px; left: 9px; }
+    #details .product-preview-identity-toggle { width: 39px; height: 39px; flex-basis: 39px; }
+    #details .product-preview-search-panel { width: min(245px, calc(100vw - 90px)); }
+    #details .storefront-preview .preview-motion-toggle { right: 8px; max-width: 92px; min-height: 32px; padding: 7px 8px; font-size: 9px; }
+    #homePage #howToRedeem { width: 92%; margin-bottom: 48px; }
+    #homePage #howToRedeem .redeem-guide-card { grid-template-columns: minmax(0,1fr); gap: 18px; padding: 14px; }
+    #homePage #howToRedeem .redeem-video-wrap { min-height: 0; }
+    #homePage #howToRedeem .redeem-steps h3 { font-size: 13px; }
+    #homePage #howToRedeem .redeem-steps li p { font-size: 11px; }
+    #homePage #howToRedeem .redeem-faq-item summary { padding-left: 12px; font-size: 10px; }
+    #homePage #howToRedeem .redeem-customer-cards { grid-template-columns: minmax(0,1fr); gap: 10px; }
+    #homePage #howToRedeem .redeem-customer-card { padding: 16px; }
+  }
+  @media (max-width: 420px) {
+    #details .product-preview-search-panel { width: min(224px, calc(100vw - 82px)); }
+    #details .storefront-preview .preview-motion-toggle { right: 7px; max-width: 78px; font-size: 8px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    #details .product-preview-search-panel, #details .product-preview-identity-toggle, #details .storefront-preview .preview-motion-toggle { transition: none !important; }
+  }
+</style>
+
+
+<style id="mc-store-final-spin-fix-and-home-motion">
+/* Keep the cape rigid: drag rotates the full 3D player wrapper, not the cape cloth mesh. */
+#details .storefront-preview { touch-action: pan-y !important; }
+/* Always show a clean 360-degree arrival and simultaneous spin-out on the Home showcase. */
+@keyframes mcStoreFinalIncomingCapeSpin {
+  from { opacity: 1; transform: rotateY(0deg); }
+  to   { opacity: 1; transform: rotateY(360deg); }
+}
+@keyframes mcStoreFinalOutgoingCapeSpin {
+  from { opacity: 1; transform: translateX(-50%) rotateY(0deg); }
+  to   { opacity: 0; transform: translateX(-50%) rotateY(360deg); }
+}
+#featured .featured-image img.mc-store-spin-now:not(.mc-showcase-cape-outgoing) {
+  animation: mcStoreFinalIncomingCapeSpin .1s linear 1 both !important;
+  transform-origin: 50% 50% !important;
+  transform-style: preserve-3d !important;
+  backface-visibility: visible !important;
+}
+#featured .featured-image img.mc-showcase-cape-outgoing {
+  animation: mcStoreFinalOutgoingCapeSpin .1s linear 1 both !important;
+  transform-origin: 50% 50% !important;
+  transform-style: preserve-3d !important;
+}
+.home-fitting-motion-toggle {
+  position: absolute !important; z-index: 12 !important; top: 50% !important; right: 12px !important;
+  transform: translateY(-50%) !important; width: auto !important; max-width: 106px !important;
+  min-height: 36px !important; padding: 8px 10px !important; border: 1.5px solid #292724 !important;
+  border-radius: 999px !important; background: #fffdf7 !important; color: #282522 !important;
+  box-shadow: 2px 3px 0 #292724 !important; font-size: 10px !important; line-height: 1.25 !important;
+  font-weight: 900 !important; cursor: pointer !important; white-space: normal !important;
+}
+.home-fitting-motion-toggle:hover { background: #dff8ff !important; }
+.home-fitting-motion-toggle[aria-pressed="false"] { background: #282522 !important; color: #fffdf7 !important; }
+@media (max-width: 620px) {
+  .home-fitting-motion-toggle { right: 8px !important; max-width: 84px !important; min-height: 32px !important; padding: 7px 8px !important; font-size: 9px !important; }
+}
+@media (prefers-reduced-motion: reduce) {
+  #featured .featured-image img.mc-store-spin-now:not(.mc-showcase-cape-outgoing) { animation: mcStoreFinalIncomingCapeSpin .1s linear 1 both !important; }
+  #featured .featured-image img.mc-showcase-cape-outgoing { animation: mcStoreFinalOutgoingCapeSpin .1s linear 1 both !important; }
+}
+</style>
+
+
+<style id="mc-store-cart-and-checkout-final">
+  .mc-cart-count { position:absolute; top:-7px; right:-7px; display:grid; place-items:center; min-width:18px; height:18px; padding:0 4px; border-radius:999px; background:#22bff0; color:#07232d; border:1.5px solid #fffdf7; font-size:10px; font-weight:1000; line-height:1; }
+  .cart-top { position:relative !important; }
+  #mcStoreCartPage[hidden] { display:none !important; }
+  #mcStoreCartPage { width:min(1120px,92%); margin:24px auto 70px; color:#27241f; }
+  .mc-cart-heading { text-align:center; margin:18px 0 42px; }
+  .mc-cart-heading h1 { margin:0 0 12px; color:#282521; font-size:clamp(30px,4vw,40px); font-weight:900; letter-spacing:-1.2px; }
+  .mc-cart-heading p { margin:0; color:#70685d; font-size:14px; }
+  .mc-cart-layout { display:grid; grid-template-columns:minmax(0,1fr) minmax(310px,358px); gap:26px; align-items:start; }
+  .mc-cart-items { display:grid; gap:14px; min-width:0; }
+  .mc-cart-item { display:grid; grid-template-columns:minmax(125px,245px) minmax(0,1fr) auto; align-items:center; gap:18px; min-width:0; padding:20px; border:1px solid #e1d5c2; border-radius:11px; background:#fffdf8; box-shadow:0 2px 0 rgba(47,38,24,.08); }
+  .mc-cart-item-art { width:100%; height:138px; display:grid; place-items:center; overflow:hidden; border-radius:8px; background:linear-gradient(145deg,#e7e0d3,#f7f2e7); }
+  .mc-cart-item-art img { width:100%; height:100%; object-fit:contain; padding:8px; }
+  .mc-cart-item-copy { min-width:0; }
+  .mc-cart-item-copy h3 { margin:0 0 8px; color:#24211e; font-size:16px; line-height:1.4; font-weight:900; overflow-wrap:anywhere; }
+  .mc-cart-item-copy p { margin:0 0 15px; color:#766d61; font-size:12px; }
+  .mc-cart-item-total { margin:0; color:#26221e; font-size:14px; font-weight:900; }
+  .mc-cart-item-controls { display:grid; justify-items:center; gap:12px; }
+  .mc-cart-quantity { display:flex; align-items:center; gap:0; overflow:hidden; border:1px solid #e2d6c3; border-radius:999px; background:#f0e8d9; }
+  .mc-cart-quantity button { width:31px; height:34px; border:0; background:transparent; color:#655d52; font-size:16px; font-weight:700; }
+  .mc-cart-quantity button:hover { background:#e1f7ff; color:#087da4; }
+  .mc-cart-quantity span { min-width:28px; text-align:center; font-size:12px; color:#282521; }
+  .mc-cart-remove { width:28px; height:28px; border:0; border-radius:9px; background:#f2e8d8; color:#c3483f; font-size:15px; }
+  .mc-cart-remove:hover { background:#ffe1d8; }
+  .mc-cart-summary { padding:22px; border:1px solid #e1d5c2; border-radius:11px; background:#fffdf8; box-shadow:0 2px 0 rgba(47,38,24,.08); }
+  .mc-cart-summary h2 { margin:0 0 17px; padding-bottom:12px; border-bottom:1px solid #e6dac6; color:#2b2722; font-size:20px; font-weight:900; }
+  .mc-cart-summary-row { display:flex; justify-content:space-between; gap:12px; margin:14px 0; color:#71685d; font-size:13px; }
+  .mc-cart-summary-row strong { color:#292621; font-weight:750; white-space:nowrap; }
+  .mc-cart-total-row { margin-top:17px; padding-top:16px; border-top:1px solid #e6dac6; color:#2a2722; font-weight:900; }
+  .mc-cart-coupon { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:7px; margin:19px 0 8px; }
+  .mc-cart-coupon input, .mc-checkout-field { width:100%; min-width:0; min-height:43px; padding:12px; border:1px solid #e4d8c3; border-radius:8px; color:#2a2722; background:#f0e8d8; font:inherit; font-size:12px; }
+  .mc-cart-coupon button { padding:0 14px; border:1px solid #e0d4c0; border-radius:8px; background:#efe6d6; color:#2e2a24; font-size:12px; font-weight:800; }
+  .mc-cart-coupon button:hover { background:#e1f7ff; }
+  .mc-cart-code-message { min-height:17px; margin:2px 0 11px; color:#786f64; font-size:10px; line-height:1.5; }
+  .mc-cart-primary { width:100%; min-height:48px; padding:12px 14px; border:1px solid #0b7ca7; border-radius:8px; background:linear-gradient(180deg,#78e7ff,#25b9eb); color:#042534; box-shadow:0 4px 0 #126782; font-size:12px; font-weight:1000; cursor:pointer; transition:transform .16s,filter .16s; }
+  .mc-cart-primary:hover { transform:translateY(-2px); filter:brightness(1.04); }
+  .mc-cart-primary:active { transform:translateY(2px); box-shadow:0 1px 0 #126782; }
+  .mc-cart-payment-note { margin:19px 0 0; text-align:center; color:#7a7165; font-size:11px; line-height:1.7; }
+  .mc-cart-payment-icons { display:flex; justify-content:center; gap:10px; margin-top:10px; color:#746c60; font-weight:900; font-size:12px; }
+  .mc-cart-checkout { margin-top:20px; padding-top:17px; border-top:1px solid #e6dac6; }
+  .mc-cart-checkout h3 { margin:0 0 8px; color:#282521; font-size:15px; }
+  .mc-cart-checkout p { margin:0 0 13px; color:#71685d; font-size:11px; line-height:1.7; }
+  .mc-cart-checkout label { display:block; margin:11px 0 5px; color:#3b362e; font-size:11px; font-weight:800; }
+  .mc-cart-secure-note { display:flex; gap:9px; align-items:flex-start; margin:13px 0; padding:11px; border:1px solid #d7e8db; border-radius:8px; background:#f1faf2; color:#315f40; font-size:10px; line-height:1.6; }
+  .mc-cart-checkout-status { margin-top:10px !important; color:#a34c31 !important; font-size:11px !important; overflow-wrap:anywhere; }
+  .mc-cart-secondary { display:flex; justify-content:center; width:100%; margin-top:17px; color:#282521; font-size:13px; text-decoration:none; }
+  .mc-cart-secondary:hover { color:#1289ac; text-decoration:underline; }
+  .mc-cart-empty { padding:38px 20px; border:1px dashed #d9cbb6; border-radius:11px; background:#fffdf8; text-align:center; }
+  .mc-cart-empty .empty-icon { font-size:34px; margin-bottom:12px; }
+  .mc-cart-empty h3 { margin:0 0 8px; color:#29251f; font-size:18px; }
+  .mc-cart-empty p { margin:0 0 19px; color:#786f63; font-size:12px; line-height:1.7; }
+  .mc-cart-empty .mc-cart-primary { max-width:250px; }
+  body.mc-cart-open .mc-footer, body.mc-cart-open #discordFloat { display:none !important; }
+  body.mc-cart-open #homePage, body.mc-cart-open #details, body.mc-cart-open #aboutPage, body.mc-cart-open #endorsementsPage, body.mc-cart-open #footerInfoPage, body.mc-cart-open #not-found { display:none !important; }
+  @media(max-width:800px) { .mc-cart-layout { grid-template-columns:minmax(0,1fr); gap:16px; } .mc-cart-heading { margin-bottom:27px; } .mc-cart-summary { order:2; } }
+  @media(max-width:520px) { #mcStoreCartPage { width:92%; margin-top:16px; } .mc-cart-item { grid-template-columns:104px minmax(0,1fr); gap:12px; padding:12px; } .mc-cart-item-art { height:112px; } .mc-cart-item-controls { grid-column:2; display:flex; justify-content:space-between; justify-items:initial; align-items:center; } .mc-cart-item-copy h3 { font-size:13px; } .mc-cart-item-copy p { margin-bottom:9px; font-size:10px; } .mc-cart-item-total { font-size:12px; } .mc-cart-summary { padding:17px; } .mc-cart-heading h1 { font-size:30px; } }
+  @media(prefers-reduced-motion:reduce) { .mc-cart-primary { transition:none !important; } }
+
+  /* Match the product preview toolbar and pause control to the supplied reference. */
+  #details .preview-tabs { flex-direction:row !important; }
+  #details .preview-motion-toggle { top:10px !important; right:10px !important; left:auto !important; bottom:auto !important; transform:none !important; width:34px !important; min-width:34px !important; max-width:34px !important; height:34px !important; min-height:34px !important; padding:0 !important; display:grid !important; place-items:center !important; border-radius:9px !important; background:#342c28 !important; color:#fffdf7 !important; border:1.5px solid rgba(255,255,255,.45) !important; box-shadow:0 2px 0 rgba(0,0,0,.25) !important; font-size:13px !important; line-height:1 !important; }
+  #details .preview-motion-toggle[aria-pressed="false"] { background:#fffdf7 !important; color:#282522 !important; }
+  #details .preview-motion-toggle:disabled { opacity:.65 !important; }
+  #details .mc-product-quantity-row { display:flex !important; align-items:center !important; justify-content:flex-start !important; margin:11px 0 15px !important; }
+  #details .mc-product-quantity-stepper { display:inline-flex !important; align-items:center !important; overflow:hidden !important; border:1px solid #e2d6c3 !important; border-radius:8px !important; background:#fffdf8 !important; }
+  #details .mc-product-quantity-stepper button { width:32px !important; height:32px !important; padding:0 !important; border:0 !important; background:transparent !important; color:#5f584f !important; font-size:16px !important; font-weight:800 !important; }
+  #details .mc-product-quantity-stepper button:hover:not(:disabled) { background:#e5f8ff !important; }
+  #details .mc-product-quantity-stepper button:disabled { opacity:.45 !important; cursor:not-allowed !important; }
+  #details .mc-product-quantity-stepper span { display:grid !important; place-items:center !important; width:30px !important; color:#282521 !important; font-size:12px !important; }
+  #details .storefront-detail-actions.mc-store-cart-actions { display:grid !important; grid-template-columns:minmax(0,1fr) minmax(0,1fr) !important; gap:10px !important; }
+  #details .storefront-add-cart { min-height:43px !important; border:1px solid #dfd2bd !important; border-radius:9px !important; background:#fffdf8 !important; color:#29251f !important; font-size:12px !important; font-weight:850 !important; cursor:pointer !important; }
+  #details .storefront-add-cart:hover:not(:disabled) { background:#e9faff !important; border-color:#9ddfee !important; }
+  #details .storefront-add-cart:disabled { opacity:.48; cursor:not-allowed; }
+  #details .storefront-buy:disabled { opacity:.48 !important; cursor:not-allowed !important; }
+  .storefront-feedback.success { color:#237a43 !important; }
+  .storefront-feedback.error { color:#a33b32 !important; }
+  @media(max-width:520px) { #details .storefront-detail-actions.mc-store-cart-actions { grid-template-columns:minmax(0,1fr) !important; } }
+</style>
+
+<section id="mcStoreCartPage" hidden aria-labelledby="mcStoreCartTitle">
+  <header class="mc-cart-heading">
+    <h1 id="mcStoreCartTitle">Your Cart</h1>
+    <p id="mcStoreCartSubtitle">You have 0 cape codes in your cart.</p>
+  </header>
+  <div class="mc-cart-layout">
+    <div class="mc-cart-items" id="mcStoreCartItems" aria-live="polite"></div>
+    <aside class="mc-cart-summary" aria-label="Order summary">
+      <h2>Order Summary</h2>
+      <div class="mc-cart-summary-row"><span>Subtotal</span><strong id="mcStoreCartSubtotal">$0.00</strong></div>
+      <div class="mc-cart-summary-row"><span>Payment Fee (3%)</span><strong id="mcStoreCartFee">$0.00</strong></div>
+      <div class="mc-cart-summary-row" id="mcStoreCartDiscountRow" hidden><span>Discount</span><strong id="mcStoreCartDiscount">−$0.00</strong></div>
+      <div class="mc-cart-summary-row mc-cart-total-row"><span>Total</span><strong id="mcStoreCartTotal">$0.00</strong></div>
+      <form class="mc-cart-coupon" id="mcStoreCouponForm">
+        <input id="mcStoreCouponInput" type="text" autocomplete="off" placeholder="Coupon or affiliate code" aria-label="Coupon or affiliate code">
+        <button type="submit">Apply</button>
+      </form>
+      <p class="mc-cart-code-message" id="mcStoreCouponMessage" role="status">Enter a code supplied by MC STORE.</p>
+      <button class="mc-cart-primary" id="mcStoreProceedCheckout" type="button">Proceed to Checkout</button>
+      <p class="mc-cart-payment-note">Secure bank-card payment must be completed on a verified payment provider.</p>
+      <div class="mc-cart-payment-icons" aria-label="Payment methods"><span>▰</span><span>VISA</span><span>●</span><span>PayPal</span></div>
+      <section class="mc-cart-checkout" id="mcStoreCheckoutForm" hidden aria-labelledby="mcStoreCheckoutTitle">
+        <h3 id="mcStoreCheckoutTitle">Secure Checkout</h3>
+        <p>Review your order, then continue to your connected payment provider. This storefront never asks for or stores your bank-card number.</p>
+        <label for="mcStoreCheckoutEmail">Email for your order</label>
+        <input class="mc-checkout-field" id="mcStoreCheckoutEmail" type="email" autocomplete="email" placeholder="you@example.com" required>
+        <div class="mc-cart-secure-note"><span aria-hidden="true">🔒</span><span>Card details are entered only on the provider's secure hosted checkout page. Never send a card number or password in Discord.</span></div>
+        <button class="mc-cart-primary" id="mcStoreSecurePay" type="button">Continue to Secure Payment</button>
+        <p class="mc-cart-checkout-status" id="mcStoreCheckoutStatus" role="status" aria-live="polite"></p>
+        <a class="mc-cart-secondary" href="https://discord.gg/G75MSAVe2k" target="_blank" rel="noopener noreferrer">Ask MC STORE about ordering ↗</a>
+      </section>
+    </aside>
+  </div>
+  <a href="#shop" class="mc-cart-secondary" id="mcStoreContinueShopping">‹ Continue Shopping</a>
+</section>
+
+<script id="mc-store-persistent-cart-system">
+(() => {
+  "use strict";
+  const CART_KEY = "mc_store_cart_v1";
+  const SKIN_KEY = "mc_store_skin_username";
+  // Add a secure server endpoint that creates a hosted Stripe/PayPal checkout session.
+  // Leave empty until the endpoint is deployed; this static page cannot safely create payments itself.
+  const MC_STORE_PAYMENT_CHECKOUT_ENDPOINT = "";
+  // Only add real, authorized coupons to this map. Example format: { "STORECODE": 5 } for 5% off.
+  const MC_STORE_COUPONS = {};
+  let cart = readCart();
+  let activeCoupon = null;
+
+  function escape(value) { return String(value ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;", "'":"&#39;"}[c])); }
+  function money(value) { return "$" + Number(value || 0).toFixed(2); }
+  function itemFor(id) {
+    const lookup = id === "twitch" ? "purple-heart" : id;
+    const item = Array.isArray(capes) ? capes.find(entry => entry.id === lookup) : null;
+    if (!item) return null;
+    if (lookup === "experience") return {...item, name:"Experience Cape Code", price:69.99, originalPrice:79.99, stock:true};
+    return item;
+  }
+  function readCart() {
+    try {
+      const parsed = JSON.parse(localStorage.getItem(CART_KEY) || "[]");
+      if (!Array.isArray(parsed)) return [];
+      return parsed.filter(entry => entry && typeof entry.id === "string" && itemFor(entry.id) && itemFor(entry.id).stock && Number.isFinite(Number(itemFor(entry.id).price)))
+        .map(entry => ({id: entry.id === "twitch" ? "purple-heart" : entry.id, quantity: Math.max(1, Math.min(99, Math.floor(Number(entry.quantity) || 1)))}));
+    } catch (_) { return []; }
+  }
+  function persist() { try { localStorage.setItem(CART_KEY, JSON.stringify(cart)); } catch (_) {} }
+  function quantityCount() { return cart.reduce((sum, item) => sum + item.quantity, 0); }
+  function calc() {
+    const subtotal = cart.reduce((sum, line) => { const cape = itemFor(line.id); return sum + (cape ? Number(cape.price) * line.quantity : 0); }, 0);
+    const discountRate = activeCoupon ? Number(MC_STORE_COUPONS[activeCoupon]) || 0 : 0;
+    const discount = subtotal * discountRate / 100;
+    const fee = Math.max(0, subtotal - discount) * 0.03;
+    return {subtotal, discount, fee, total: Math.max(0, subtotal - discount) + fee};
+  }
+  function updateBadge() {
+    const badge = document.getElementById("mcStoreCartCount");
+    if (!badge) return;
+    const count = quantityCount();
+    badge.textContent = String(count);
+    badge.hidden = count === 0;
+    badge.setAttribute("aria-label", `${count} items in cart`);
+  }
+  function render() {
+    const itemsRoot = document.getElementById("mcStoreCartItems");
+    if (!itemsRoot) return;
+    const count = quantityCount();
+    const subtitle = document.getElementById("mcStoreCartSubtitle");
+    if (subtitle) subtitle.textContent = `You have ${count} ${count === 1 ? "cape code" : "cape codes"} in your cart.`;
+    if (!cart.length) {
+      itemsRoot.innerHTML = `<div class="mc-cart-empty"><div class="empty-icon" aria-hidden="true">🛒</div><h3>Your cart is empty</h3><p>Explore the collection and add a cape code to start your order.</p><button class="mc-cart-primary" type="button" id="mcStoreEmptyShop">Continue Shopping</button></div>`;
+      const checkout = document.getElementById("mcStoreCheckoutForm");
+      if (checkout) checkout.hidden = true;
+    } else {
+      itemsRoot.innerHTML = cart.map(line => {
+        const cape = itemFor(line.id);
+        if (!cape) return "";
+        const filename = String(cape.productImage || cape.image || "").split("/").pop();
+        return `<article class="mc-cart-item" data-cart-item="${escape(cape.id)}">
+          <div class="mc-cart-item-art"><img src="${escape(cape.productImage || cape.image || "")}" data-image-file="${escape(filename)}" data-original-src="${escape(cape.productImage || cape.image || "")}" alt="${escape(cape.name)}" loading="lazy" onerror="if(window.handleCapeCardImageError)window.handleCapeCardImageError(this)"></div>
+          <div class="mc-cart-item-copy"><h3>${escape(cape.name)}</h3><p>Cape Code</p><div class="mc-cart-item-total">${money(cape.price)} × ${line.quantity} = ${money(cape.price * line.quantity)}</div></div>
+          <div class="mc-cart-item-controls"><div class="mc-cart-quantity" aria-label="Quantity"><button type="button" data-cart-action="decrease" data-cape-id="${escape(cape.id)}" aria-label="Decrease quantity">−</button><span>${line.quantity}</span><button type="button" data-cart-action="increase" data-cape-id="${escape(cape.id)}" aria-label="Increase quantity">+</button></div><button class="mc-cart-remove" type="button" data-cart-action="remove" data-cape-id="${escape(cape.id)}" aria-label="Remove ${escape(cape.name)}" title="Remove item">▤</button></div>
+        </article>`;
+      }).join("");
+    }
+    const sums = calc();
+    const subtotalEl = document.getElementById("mcStoreCartSubtotal");
+    const feeEl = document.getElementById("mcStoreCartFee");
+    const totalEl = document.getElementById("mcStoreCartTotal");
+    const discountRow = document.getElementById("mcStoreCartDiscountRow");
+    const discountEl = document.getElementById("mcStoreCartDiscount");
+    if (subtotalEl) subtotalEl.textContent = money(sums.subtotal);
+    if (feeEl) feeEl.textContent = money(sums.fee);
+    if (totalEl) totalEl.textContent = money(sums.total);
+    if (discountRow) discountRow.hidden = !sums.discount;
+    if (discountEl) discountEl.textContent = "−" + money(sums.discount);
+    const checkoutButton = document.getElementById("mcStoreProceedCheckout");
+    if (checkoutButton) checkoutButton.disabled = !cart.length;
+    updateBadge();
+  }
+  function closeCartUI() {
+    document.body.classList.remove("mc-cart-open");
+    const page = document.getElementById("mcStoreCartPage");
+    if (page) page.hidden = true;
+  }
+  window.mcStoreCartAdd = function(id, quantity = 1) {
+    const cape = itemFor(id);
+    if (!cape || !cape.stock || typeof cape.price !== "number" || !Number.isFinite(cape.price)) return false;
+    const lookup = cape.id;
+    let line = cart.find(entry => entry.id === lookup);
+    if (line) line.quantity = Math.min(99, line.quantity + Math.max(1, Math.floor(Number(quantity) || 1)));
+    else cart.push({id: lookup, quantity: Math.max(1, Math.min(99, Math.floor(Number(quantity) || 1)))});
+    persist(); render(); return true;
+  };
+  window.mcStoreOpenCart = function(options = {}) {
+    closeCartUI();
+    ["homePage", "details", "aboutPage", "endorsementsPage", "footerInfoPage", "not-found"].forEach(id => {
+      const el = document.getElementById(id); if (!el) return;
+      if (id === "homePage" || id === "details" || id === "not-found") el.style.display = "none";
+      else el.hidden = true;
+    });
+    document.body.classList.add("mc-cart-open");
+    const page = document.getElementById("mcStoreCartPage");
+    if (page) page.hidden = false;
+    safeReplaceState("#cart");
+    document.title = "Your Cart | MC STORE";
+    document.querySelectorAll(".nav-link").forEach(link => link.classList.remove("active"));
+    render();
+    const checkout = document.getElementById("mcStoreCheckoutForm");
+    if (checkout) checkout.hidden = !options.checkout;
+    window.scrollTo({top:0, behavior:"auto"});
+  };
+  window.mcStoreRenderCart = render;
+
+  // Keep the normal app navigation compatible with the cart view.
+  const originalShowHome = window.showHome;
+  if (typeof originalShowHome === "function") window.showHome = function(...args) { closeCartUI(); return originalShowHome.apply(this, args); };
+  const originalOpenCape = window.openCape;
+  if (typeof originalOpenCape === "function") window.openCape = function(...args) { closeCartUI(); return originalOpenCape.apply(this, args); };
+  for (const name of ["showAbout", "showEndorsements", "showFooterInfo"]) {
+    const original = window[name];
+    if (typeof original === "function") window[name] = function(...args) { closeCartUI(); return original.apply(this, args); };
+  }
+
+  document.getElementById("mcStoreCartPage")?.addEventListener("click", event => {
+    const shopButton = event.target.closest("#mcStoreEmptyShop");
+    if (shopButton) { window.showHome("shop"); return; }
+    const actionButton = event.target.closest("[data-cart-action]");
+    if (!actionButton) return;
+    const id = actionButton.dataset.capeId;
+    const line = cart.find(entry => entry.id === id);
+    if (!line) return;
+    switch (actionButton.dataset.cartAction) {
+      case "increase": line.quantity = Math.min(99, line.quantity + 1); break;
+      case "decrease": line.quantity -= 1; if (line.quantity < 1) cart = cart.filter(entry => entry.id !== id); break;
+      case "remove": cart = cart.filter(entry => entry.id !== id); break;
+    }
+    persist(); render();
+  });
+  document.getElementById("mcStoreCouponForm")?.addEventListener("submit", event => {
+    event.preventDefault();
+    const input = document.getElementById("mcStoreCouponInput");
+    const message = document.getElementById("mcStoreCouponMessage");
+    const code = String(input && input.value || "").trim().toUpperCase();
+    if (code && Object.prototype.hasOwnProperty.call(MC_STORE_COUPONS, code) && Number(MC_STORE_COUPONS[code]) > 0) {
+      activeCoupon = code;
+      if (message) { message.textContent = `Code applied: ${MC_STORE_COUPONS[code]}% off.`; message.style.color = "#237a43"; }
+    } else {
+      activeCoupon = null;
+      if (message) { message.textContent = "This code is not configured yet. Please confirm it with MC STORE."; message.style.color = "#a34c31"; }
+    }
+    render();
+  });
+  document.getElementById("mcStoreProceedCheckout")?.addEventListener("click", () => {
+    const form = document.getElementById("mcStoreCheckoutForm");
+    if (!cart.length) return;
+    if (form) form.hidden = false;
+    form?.scrollIntoView({behavior:"smooth", block:"nearest"});
+    document.getElementById("mcStoreCheckoutEmail")?.focus({preventScroll:true});
+  });
+  document.getElementById("mcStoreSecurePay")?.addEventListener("click", async () => {
+    const status = document.getElementById("mcStoreCheckoutStatus");
+    const email = String(document.getElementById("mcStoreCheckoutEmail")?.value || "").trim();
+    if (!cart.length) { if (status) status.textContent = "Your cart is empty."; return; }
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { if (status) status.textContent = "Enter a valid email address for the order."; document.getElementById("mcStoreCheckoutEmail")?.focus(); return; }
+    if (!MC_STORE_PAYMENT_CHECKOUT_ENDPOINT) {
+      if (status) status.textContent = "Secure card checkout is not connected yet. The site is ready for a secure payment-provider endpoint, but no live payment can be taken until MC STORE configures one. Use the Discord link below to confirm the current ordering process.";
+      return;
+    }
+    if (status) status.textContent = "Preparing secure checkout…";
+    try {
+      const response = await fetch(MC_STORE_PAYMENT_CHECKOUT_ENDPOINT, {
+        method: "POST", headers: {"Content-Type":"application/json"},
+        body: JSON.stringify({email, currency:"USD", items: cart.map(line => ({id:line.id, quantity:line.quantity})), coupon:activeCoupon || null})
+      });
+      if (!response.ok) throw new Error("The checkout service did not accept the order.");
+      const result = await response.json();
+      const url = new URL(result.url || "");
+      if (url.protocol !== "https:") throw new Error("The payment provider must return a secure HTTPS checkout URL.");
+      window.location.assign(url.href);
+    } catch (error) {
+      if (status) status.textContent = error && error.message ? error.message : "Could not start secure checkout. Please contact MC STORE.";
+    }
+  });
+  document.getElementById("mcStoreContinueShopping")?.addEventListener("click", event => {
+    event.preventDefault();
+    window.showHome("shop");
+  });
+  updateBadge();
+  render();
+  try { if (window.location.hash === "#cart") window.mcStoreOpenCart(); } catch (_) {}
+})();
+</script>
+
+
+<style id="mc-store-stability-no-glint-final">
+/* Stability pass: never fade product artwork to blank during refresh, route changes, or fast cape selection. */
+#featured .featured-image img,
+#featured .featured-image img.mc-store-spin-now,
+#featured .featured-image img.mc-showcase-cape-outgoing,
+#shop .card img,
+#details .recommendations .card img {
+  backface-visibility: visible !important;
+}
+#featured .featured-image img:not(.mc-showcase-cape-outgoing) { opacity: 1 !important; }
+.mc-showcase-info-out,
+.mc-showcase-info-enter,
+#details .storefront-preview,
+#details .storefront-preview.preview-loading .cape-preview-fallback,
+#details .storefront-preview:not(.preview-loading):not(.fallback-cape-only) #capeSkinViewer,
+body.mc-open-cape-now #details .detail-card {
+  animation: none !important;
+  transition: none !important;
+  filter: none !important;
+}
+.mc-showcase-info-out { opacity: 1 !important; transform: none !important; filter: none !important; }
+.mc-showcase-info-enter { opacity: 1 !important; transform: none !important; filter: none !important; }
+/* Keep the requested fast 360-degree cape change, but remove the reflective/glowing sweep. */
+.home-fitting-stage::after,
+#details .storefront-preview::after,
+#details .storefront-preview.cape-light-hit::after,
+.home-fitting-stage.home-fit-light-hit::after { display: none !important; animation: none !important; opacity: 0 !important; }
+#details .cape-rotate-hint { animation: none !important; }
+/* Avoid blanking the previous image while the next image resolves; keep existing art visible. */
+#featured .featured-image img[hidden] { display: block !important; visibility: visible !important; }
+@media (prefers-reduced-motion: reduce) {
+  .mc-showcase-info-out, .mc-showcase-info-enter { opacity: 1 !important; transform: none !important; }
+}
+</style>
+
+<script id="mc-store-no-glow-cleanup">
+(() => {
+  const clearGlint = () => {
+    document.querySelectorAll('.home-fit-light-hit, .cape-light-hit').forEach(el => {
+      el.classList.remove('home-fit-light-hit', 'cape-light-hit');
+    });
+  };
+  clearGlint();
+  window.addEventListener('pageshow', clearGlint);
+  window.addEventListener('hashchange', clearGlint);
+})();
+</script>
+
+
+<style id="mc-store-final-player-controls-drag-fix">
+/* CAPE / PLAYER / ELYTRA tabs remain available in the product viewer. */
+#details .preview-tabs { display:flex !important; }
+#details .product-preview-toolbar { display:flex !important; }
+/* CAPE rotates around its center on the horizontal axis; the player can tilt in both axes. */
+#details #capeSkinViewer { touch-action:pan-y !important; }
+#details #capePreviewStage.mode-player #capeSkinViewer,
+#details #capePreviewStage.mode-elytra #capeSkinViewer { touch-action:none !important; }
+#homeFitCanvas { touch-action:none !important; }
+/* Match the compact pause/play icon inside the cape preview: top-right, no words. */
+.home-fitting-motion-toggle {
+  top:10px !important; right:10px !important; left:auto !important; bottom:auto !important;
+  transform:none !important; width:34px !important; min-width:34px !important; max-width:34px !important;
+  height:34px !important; min-height:34px !important; padding:0 !important;
+  display:grid !important; place-items:center !important; border-radius:9px !important;
+  background:#342c28 !important; color:#fffdf7 !important; border:1.5px solid rgba(255,255,255,.45) !important;
+  box-shadow:0 2px 0 rgba(0,0,0,.25) !important; font-size:13px !important; line-height:1 !important;
+  font-weight:900 !important; white-space:nowrap !important;
+}
+.home-fitting-motion-toggle:hover { background:#137ea4 !important; }
+.home-fitting-motion-toggle[aria-pressed="false"] { background:#fffdf7 !important; color:#282522 !important; }
+@media(max-width:620px) {
+  .home-fitting-motion-toggle { top:8px !important; right:8px !important; width:32px !important; min-width:32px !important; max-width:32px !important; height:32px !important; min-height:32px !important; }
+}
+</style>
+
+
+<style id="mc-store-make-shop-capes-bigger-final">
+/* Only enlarge the cape renders in Shop / Our Products; keep card layout and all other images unchanged. */
+#shop .card-art { overflow: hidden !important; }
+#shop .card-img {
+  width: 98% !important;
+  height: 252px !important;
+  max-height: calc(100% - 8px) !important;
+  object-fit: contain !important;
+  object-position: center !important;
+}
+@media (max-width: 900px) {
+  #shop .card-img { width: 98% !important; height: 216px !important; }
+}
+@media (max-width: 620px) {
+  #shop .card-img { width: 98% !important; height: 180px !important; }
+}
+</style>
+
+
+
+<style id="mc-store-bigger-shop-and-recommendation-capes">
+/* Make the 3D cape artwork substantially larger in Our Products. */
+#shop .card-art {
+  height: clamp(230px, 21vw, 290px) !important;
+  overflow: hidden !important;
+}
+#shop .card-img {
+  width: 100% !important;
+  height: 100% !important;
+  max-height: none !important;
+  object-fit: contain !important;
+  object-position: center !important;
+}
+
+/* Also enlarge the cape artwork under “You might also like” on product pages. */
+#details .recommendations .card-art {
+  height: 230px !important;
+  overflow: hidden !important;
+}
+#details .recommendations .card-img {
+  width: 100% !important;
+  height: 218px !important;
+  max-height: none !important;
+  object-fit: contain !important;
+  object-position: center !important;
+}
+
+@media (max-width: 900px) {
+  #shop .card-art { height: 225px !important; }
+  #details .recommendations .card-art { height: 205px !important; }
+  #details .recommendations .card-img { height: 195px !important; }
+}
+@media (max-width: 620px) {
+  #shop .card-art { height: 205px !important; }
+  #shop .card-img { width: 100% !important; height: 100% !important; }
+  #details .recommendations .card-art { height: 185px !important; }
+  #details .recommendations .card-img { width: 100% !important; height: 178px !important; }
+}
+@media (max-width: 390px) {
+  #shop .card-art { height: 235px !important; }
+  #details .recommendations .card-art { height: 175px !important; }
+  #details .recommendations .card-img { height: 168px !important; }
+}
+</style>
+
+
+
+<style id="mc-store-blurred-cape-scene-backgrounds">
+/* Blurred Minecraft scenery behind each 3D cape in Our Products and You might also like. */
+#shop .card-art,
+#details .recommendations .card-art {
+  position: relative !important;
+  isolation: isolate !important;
+  background-color: #07172a !important;
+}
+#shop .card-scene-bg,
+#details .recommendations .card-scene-bg {
+  position: absolute !important;
+  z-index: 0 !important;
+  inset: -10px !important;
+  display: block !important;
+  width: calc(100% + 20px) !important;
+  height: calc(100% + 20px) !important;
+  max-width: none !important;
+  object-fit: cover !important;
+  object-position: center !important;
+  opacity: .9 !important;
+  filter: blur(7px) brightness(.62) saturate(1.05) !important;
+  transform: scale(1.06) !important;
+  pointer-events: none !important;
+  user-select: none !important;
+}
+#shop .card-img,
+#details .recommendations .card-img {
+  position: relative !important;
+  z-index: 1 !important;
+}
+#shop .card-tag,
+#details .recommendations .card-tag {
+  z-index: 2 !important;
+}
+@media (max-width: 620px) {
+  #shop .card-scene-bg,
+  #details .recommendations .card-scene-bg {
+    filter: blur(6px) brightness(.62) saturate(1.05) !important;
+  }
+}
+</style>
+
+
+<style id="mc-store-product-preview-blurred-backgrounds-final">
+/* Use each cape's matching Minecraft scenery behind CAPE, PLAYER, and ELYTRA preview modes. */
+#details .cape-preview-scene.has-image {
+  background: #07172a !important;
+}
+#details .cape-preview-scene.has-image::before,
+#details .cape-preview-scene.has-image::after {
+  display: none !important;
+  content: none !important;
+}
+#details .cape-preview-scene.has-image .cape-preview-scene-image {
+  position: absolute !important;
+  inset: -12px !important;
+  display: block !important;
+  width: calc(100% + 24px) !important;
+  height: calc(100% + 24px) !important;
+  max-width: none !important;
+  object-fit: cover !important;
+  object-position: center !important;
+  opacity: .96 !important;
+  filter: blur(8px) brightness(.62) saturate(1.05) !important;
+  transform: scale(1.06) !important;
+  pointer-events: none !important;
+  user-select: none !important;
+}
+#details #capePreviewStage.mode-cape .cape-preview-scene,
+#details #capePreviewStage.mode-player .cape-preview-scene,
+#details #capePreviewStage.mode-elytra .cape-preview-scene {
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+@media (max-width: 620px) {
+  #details .cape-preview-scene.has-image .cape-preview-scene-image {
+    filter: blur(6px) brightness(.62) saturate(1.05) !important;
+  }
+}
+</style>
+
+
+<style id="mc-store-home-showcase-clean-360-final">
+  /* HOME showcase: keep the cape fixed in place; only rotate it once when a different cape arrives. */
+  #featured .featured-image,
+  #featured .featured-image.cape-zoom-switch {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+  }
+  #featured .featured-image img:not(.mc-store-spin-now):not(.mc-showcase-cape-outgoing) {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+    filter: drop-shadow(8px 16px 18px rgba(0,0,0,.2)) !important;
+  }
+  @keyframes mcStoreHomeCapeRigid360Final {
+    from { transform: perspective(1100px) rotateY(0deg); }
+    to   { transform: perspective(1100px) rotateY(360deg); }
+  }
+  #featured .featured-image img.mc-store-spin-now:not(.mc-showcase-cape-outgoing) {
+    animation: mcStoreHomeCapeRigid360Final .1s linear 1 both !important;
+    transform-origin: 50% 50% !important;
+    transform-style: preserve-3d !important;
+    backface-visibility: visible !important;
+    will-change: transform !important;
+    opacity: 1 !important;
+  }
+  /* Any old outgoing clone is suppressed; the next cape replaces the previous one in place. */
+  #featured .featured-image img.mc-showcase-cape-outgoing { display: none !important; animation: none !important; }
+  @media (prefers-reduced-motion: reduce) {
+    #featured .featured-image,
+    #featured .featured-image img:not(.mc-store-spin-now) { animation: none !important; transition: none !important; }
+    #featured .featured-image img.mc-store-spin-now:not(.mc-showcase-cape-outgoing) {
+      animation: mcStoreHomeCapeRigid360Final .1s linear 1 both !important;
+    }
+  }
+</style>
+
+<style id="mc-store-refresh-stability-and-preview-upright-final">
+  /* No flash, fade, zoom, or temporary shifted sizing when a product page is opened/refreshed. */
+  #details .detail-card,
+  #details .detail-card.mc-scroll-reveal,
+  #details .detail-card.mc-scroll-visible,
+  #details .detail-card.mc-scroll-replay,
+  #details .storefront-preview,
+  #details .storefront-preview .cape-preview-fallback,
+  #details .storefront-preview #capeSkinViewer {
+    animation: none !important;
+    transition: none !important;
+  }
+  #details .detail-card.mc-scroll-reveal,
+  #details .detail-card.mc-scroll-visible,
+  #details .detail-card.mc-scroll-replay {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  #details .storefront-preview {
+    opacity: 1 !important;
+    transform: none !important;
+    overflow: hidden !important;
+  }
+  #details .storefront-preview.preview-loading #capeSkinViewer {
+    visibility: hidden !important;
+    opacity: 0 !important;
+  }
+  #details .storefront-preview.preview-loading .cape-preview-fallback {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    transform: translate(-50%, -50%) !important;
+  }
+  #details .storefront-preview:not(.preview-loading) #capeSkinViewer {
+    visibility: visible !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  @media (max-width: 620px) {
+    #details .storefront-preview { min-height: 350px !important; }
+  }
+</style>
+
+
+
+<style id="mc-store-moonlight-artwork-recovery-final">
+  /* Keep Moonlight's requested artwork compatible with common image-file suffixes. */
+  #shop .card-img,
+  #details .recommendations .card-img {
+    object-fit: contain !important;
+  }
+</style>
+
+
+<style id="mc-store-moonlight-open-directly-final">
+/* Moonlight opens straight into the live 3D viewer. Do not overlay its flat .gg artwork
+   while textures/skin resolve; retain that artwork only as a real 3D-failure fallback. */
+#details .storefront-preview.moonlight-direct-3d:not(.fallback-cape-only) .cape-preview-fallback {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+#details .storefront-preview.moonlight-direct-3d:not(.fallback-cape-only) #capeSkinViewer,
+#details .storefront-preview.moonlight-direct-3d.preview-loading:not(.fallback-cape-only) #capeSkinViewer {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+}
+#details .storefront-preview #capePreviewFallback { pointer-events: none !important; }
 </style>
 
 </body>
