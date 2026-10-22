@@ -28763,12 +28763,15 @@ nav .nav-links .nav-link[href="#home"].active {
 
   const textureFolders = [
     "", "media/", "images/", "assets/", "textures/", "Textures/", "texture/", "Texture/",
-    "texture pack/", "Texture Pack/", "texture-pack/", "texture_pack/", "capes 3D/", "Capes 3D/",
+    "texture pack/", "Texture Pack/", "TEXTURE PACK/", "texture-pack/", "Texture-Pack/", "texture_pack/", "Texture_Pack/",
+    "resource pack/", "Resource Pack/", "RESOURCE PACK/", "resource-pack/", "Resource-Pack/", "resource_pack/", "Resource_Pack/",
+    "capes 3D/", "Capes 3D/", "capes 3d/", "Capes 3d/", "capes3D/", "capes-3D/", "3D/", "3d/",
     "Media/", "Images/", "Assets/", "TEXTURE PACK/", "Texture-Pack/", "Texture_Pack/",
     "textures pack/", "Textures Pack/", "textures-pack/", "Textures-Pack/", "textures_pack/",
     "capes texture pack/", "Capes Texture Pack/", "Cape Texture Pack/", "cape texture pack/", "CAPE TEXTURE PACK/",
     "capes textures/", "Capes Textures/", "cape textures/", "Cape Textures/", "capes texture/", "Capes Texture/", "cape texture/", "Cape Texture/",
-    "media/textures/", "media/texture pack/", "assets/textures/"
+    "media/textures/", "media/texture pack/", "assets/textures/", "media/capes 3D/", "assets/capes 3D/",
+    "texture pack/capes/", "Texture Pack/capes/", "resource pack/capes/", "Resource Pack/capes/"
   ];
   const imageExtensions = ["", ".png", ".PNG", ".webp", ".WEBP", ".jpg", ".JPG", ".jpeg", ".JPEG"];
   const artFolders = ["", "media/", "capes 3D/", "Capes 3D/", "images/", "assets/", "Media/", "Images/", "Assets/", "capes/", "Capes/"];
@@ -28856,7 +28859,7 @@ nav .nav-links .nav-link[href="#home"].active {
       if (typeof findMcStoreNestedAsset === "function") {
         const indexed = await findMcStoreNestedAsset([filename]);
         if (indexed && indexed.url) return indexed.url;
-        if (indexed && indexed.indexAvailable) return null;
+        // A tree-index miss is not proof the asset is absent: continue with direct paths below.
       }
     } catch (_) {}
     const names = /\.gg$/i.test(filename)
@@ -28875,7 +28878,7 @@ nav .nav-links .nav-link[href="#home"].active {
       if (typeof findMcStoreNestedAsset === "function") {
         const indexed = await findMcStoreNestedAsset([cape.stem]);
         if (indexed && indexed.url) return indexed.url;
-        if (indexed && indexed.indexAvailable) return null;
+        // Continue probing the common folder names even when GitHub's tree API has no match.
       }
     } catch (_) {}
     for (const folder of textureFolders) {
@@ -29012,12 +29015,19 @@ nav .nav-links .nav-link[href="#home"].active {
       const textureUrl = await resolveCapeTexture(cape);
       if (token !== textureRequestToken || !homeViewer) return;
       const fallbackUrl = makeUrl(cape.art);
+      // A catalogue picture is not a Minecraft cape texture atlas. For Moonlight, only
+      // load the dedicated moonlightcapetexture asset; keep the current model if it is missing.
+      if (!textureUrl && cape.id === "moonlight") {
+        throw new Error("moonlightcapetexture was not found in the repository texture folders");
+      }
       await homeViewer.loadCape(textureUrl || fallbackUrl);
       if (token !== textureRequestToken || !homeViewer) return;
+      if (stage) stage.classList.remove("cape-texture-missing");
       applyEquipmentMode();
       showStatus(`${cape.name} equipped. Drag the player to turn around.`, "success");
     } catch (error) {
       if (token !== textureRequestToken) return;
+      if (stage && cape.id === "moonlight") stage.classList.add("cape-texture-missing");
       console.warn("MC STORE Fitting Room could not load the cape texture", error);
       showStatus(`Could not load ${cape.name}'s texture. Check that ${cape.stem} is uploaded to the repository.`, "error");
     }
@@ -29151,8 +29161,10 @@ nav .nav-links .nav-link[href="#home"].active {
       if (headImage) headImage.src = `https://minotar.net/helm/${encodeURIComponent(currentUsername || "Steve")}/40.png`;
       viewerReady = true;
       applyEquipmentMode();
-      stage.classList.remove("is-loading");
+      // Keep the first frame hidden until the selected Minecraft cape texture is really loaded;
+      // this prevents the default white cape from flashing before Moonlight's texture appears.
       await selectCape(selectedCapeId);
+      stage.classList.remove("is-loading");
       if (!resizeObserver && "ResizeObserver" in window) {
         resizeObserver = new ResizeObserver(() => {
           if (!homeViewer || !stage.clientWidth || !stage.clientHeight) return;
@@ -30141,7 +30153,7 @@ body.mc-open-cape-now #details .detail-card {
 
 
 <style id="mc-store-moonlight-direct-3d-fix-final">
-/* Moonlight opens directly in its 3D viewer; never show moonlightcape.gg as a placeholder. */
+/* Moonlight uses the real 3D atlas only. Never show the flat catalogue artwork in the viewer. */
 #details .storefront-preview.moonlight-3d-first .cape-preview-fallback,
 #details .storefront-preview.moonlight-3d-first.preview-loading .cape-preview-fallback,
 #details .storefront-preview.moonlight-3d-first.fallback-cape-only .cape-preview-fallback {
@@ -30150,9 +30162,14 @@ body.mc-open-cape-now #details .detail-card {
   opacity: 0 !important;
   pointer-events: none !important;
 }
-#details .storefront-preview.moonlight-3d-first #capeSkinViewer,
+/* Avoid the white/untextured cape frame: keep the canvas hidden until loadCape has finished. */
 #details .storefront-preview.moonlight-3d-first.preview-loading #capeSkinViewer,
-#details .storefront-preview.moonlight-3d-first.fallback-cape-only #capeSkinViewer {
+#details .storefront-preview.moonlight-3d-first.moonlight-texture-missing #capeSkinViewer {
+  display: block !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+}
+#details .storefront-preview.moonlight-3d-first:not(.preview-loading):not(.moonlight-texture-missing) #capeSkinViewer {
   display: block !important;
   visibility: visible !important;
   opacity: 1 !important;
@@ -30161,5 +30178,19 @@ body.mc-open-cape-now #details .detail-card {
   display: none !important;
 }
 </style>
+
+<style id="mc-store-moonlight-fitroom-loading-final">
+/* Do not show SkinViewer's default white cape before the selected texture is ready. */
+.home-fitting-stage.is-loading #homeFitCanvas,
+.home-fitting-stage.cape-texture-missing #homeFitCanvas {
+  visibility: hidden !important;
+  opacity: 0 !important;
+}
+.home-fitting-stage:not(.is-loading):not(.cape-texture-missing) #homeFitCanvas {
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+</style>
+
 </body>
 </html>
