@@ -3556,7 +3556,9 @@ function mcStoreAssetFilenameOptions(values) {
     const basename = mcStoreAssetBasename(value);
     if (!basename) continue;
     if (!options.includes(basename)) options.push(basename);
-    if (!/\.[a-z0-9]{2,5}$/i.test(basename)) {
+    // Names ending in .gg are project asset stems, not actual browser image extensions.
+    // Try the literal name first, then common image extensions (e.g. moonlightcape.gg.png).
+    if (!/\.[a-z0-9]{2,5}$/i.test(basename) || /\.gg$/i.test(basename)) {
       for (const extension of extensions) {
         if (!options.includes(basename + extension)) options.push(basename + extension);
       }
@@ -24315,7 +24317,7 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
     document.getElementById("detailContent").innerHTML = `
       <article class="detail-card detail-card--storefront">
         <div class="storefront-preview-column">
-          <div class="storefront-preview" id="capePreviewStage" aria-label="Interactive Minecraft dressing room">
+          <div class="storefront-preview${viewCape.id === "moonlight" ? " moonlight-3d-first" : ""}" id="capePreviewStage" aria-label="Interactive Minecraft dressing room">
             <div class="cape-preview-scene${viewCape.sceneBackground ? " has-image" : ""}" aria-hidden="true">${viewCape.sceneBackground ? `<img class="cape-preview-scene-image" src="${safeText(viewCape.sceneBackground)}" data-original-src="${safeText(viewCape.sceneBackground)}" data-image-file="${safeText(viewCape.sceneBackground.split("/").pop())}" alt="" loading="eager" decoding="async" onerror="handleCapeCardImageError(this)">` : ""}</div>
             <div class="product-preview-userbar" id="capePreviewUserbar">
               <button class="product-preview-identity-toggle" id="capePreviewIdentityToggle" type="button" aria-label="Open Minecraft username search" aria-expanded="false" title="Change Minecraft skin">
@@ -24644,12 +24646,19 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
     const canvas = document.getElementById("capeSkinViewer");
     if (!stage || !canvas) return;
     stage.classList.remove("fallback-cape-only");
-    // Immediately show the cape artwork while the 3D texture is loading. This
-    // avoids the blank pause (notably on Aurora) before SkinViewer finishes loading.
+    // Most products may show their artwork while the 3D viewer initializes.
+    // Moonlight must never show moonlightcape.gg as a temporary still picture:
+    // its preview should be the real 3D cape from the first frame.
     const previewFallback = document.getElementById("capePreviewFallback");
     if (previewFallback) {
-      previewFallback.src = detailsImage(cape);
       previewFallback.alt = cape.name;
+      if (cape.id === "moonlight") {
+        previewFallback.removeAttribute("src");
+        previewFallback.hidden = true;
+      } else {
+        previewFallback.hidden = false;
+        previewFallback.src = detailsImage(cape);
+      }
     }
     stage.classList.add("preview-loading");
 
@@ -24773,12 +24782,12 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
         mcStoreViewer.playerObject.skin.visible = false;
         mcStoreViewer.playerObject.backEquipment = "cape";
       }
-      // Use each cape's Minecraft texture file for the actual 3D cloth mesh.
-      // If no texture is found in the common asset folders, try the existing art
-      // image as a graceful backup so the preview still has something to show.
-      // Try the cape's dedicated Minecraft texture first, then its Elytra texture stem.
-      // Moonlight intentionally uses moonlightcapetexture for both the standalone cape
-      // and the Elytra wings. Product artwork (moonlightcape.gg) is never used as a 3D texture.
+      // Apply the selected mode as soon as SkinViewer exists, so CAPE/ELYTRA meshes
+      // are not waiting for the remote username/skin request to finish.
+      setPreviewMode(mcStorePreviewMode);
+      // Load the dedicated Minecraft texture for the actual 3D cape cloth.
+      // Moonlight exclusively uses moonlightcapetexture for both the 3D cape and Elytra;
+      // moonlightcape.gg is catalogue artwork only and must never be used as a model texture.
       const textureStems = cape.id === "moonlight"
         ? ["moonlightcapetexture"]
         : [...new Set([cape.textureStem, cape.elytraTextureStem].filter(Boolean))];
@@ -24789,27 +24798,53 @@ float contrastN=contrast(rgbaM,rgbaN);float contrastS=contrast(rgbaM,rgbaS);floa
       }
       if (!textureUrl) {
         console.warn(`MC STORE: Minecraft cape texture not found for ${cape.name}. Expected ${textureStems.join(" or ")}.`);
-        textureUrl = cape.image || cape.showcaseImage;
+        // Do not substitute Moonlight's flat display image for its Minecraft texture.
+        if (cape.id !== "moonlight") textureUrl = cape.image || cape.showcaseImage;
       }
-      const capeLoad = mcStoreViewer.loadCape(textureUrl);
-      const defaultSkinLoad = mcStoreViewer.loadSkin(`https://minotar.net/skin/${encodeURIComponent(mcStorePlayerUsername || "Steve")}`);
-      const results = await Promise.allSettled([capeLoad, defaultSkinLoad]);
-      mcStorePlayerSkinLoaded = results[1].status === "fulfilled";
-      // Rebind both equipment materials after loading so the exact texture selected above
-      // is what the active CAPE / PLAYER / ELYTRA mode will render.
-      syncCapeTextureToModels();
-      const capeLoadFailed = results[0].status === "rejected";
-      if (capeLoadFailed) {
-        stage.classList.remove("preview-loading");
-        stage.classList.add("fallback-cape-only");
+
+      const viewerForSkin = mcStoreViewer;
+      // Load Steve in parallel, but NEVER hold back the 3D cape or Elytra while a skin
+      // service is slow. Steve is the default model; a searched username is optional.
+      const defaultSkinPromise = viewerForSkin.loadSkin(`https://minotar.net/skin/${encodeURIComponent(mcStorePlayerUsername || "Steve")}`)
+        .then(() => {
+          if (viewerForSkin !== mcStoreViewer) return;
+          mcStorePlayerSkinLoaded = true;
+          setPreviewMode(mcStorePreviewMode);
+        })
+        .catch(error => {
+          if (viewerForSkin !== mcStoreViewer) return;
+          // Keep the player mesh eligible to render in PLAYER/ELYTRA even if the external
+          // default-skin service fails; do not require the user to enter a username first.
+          mcStorePlayerSkinLoaded = true;
+          setPreviewMode(mcStorePreviewMode);
+          console.warn("MC STORE: default Steve skin did not load; keeping the 3D preview available.", error);
+        });
+
+      let capeLoad;
+      if (textureUrl) {
+        capeLoad = mcStoreViewer.loadCape(textureUrl);
       } else {
-        // Let SkinViewer paint the first loaded frame before removing the instant fallback.
-        requestAnimationFrame(() => requestAnimationFrame(() => {
-          if (document.getElementById("capePreviewStage") === stage) {
-            stage.classList.remove("preview-loading");
-          }
-        }));
+        capeLoad = Promise.reject(new Error("3D cape texture was not found"));
       }
+      // Only the cape texture controls when the 3D preview becomes visible. Do not wait
+      // for the skin URL: that network request previously left Moonlight stuck on artwork.
+      const capeResults = await Promise.allSettled([capeLoad]);
+      if (viewerForSkin !== mcStoreViewer) return;
+      syncCapeTextureToModels();
+      const capeLoadFailed = capeResults[0].status === "rejected";
+      if (capeLoadFailed && cape.id !== "moonlight") {
+        stage.classList.add("fallback-cape-only");
+      } else if (capeLoadFailed && cape.id === "moonlight") {
+        // Leave the 3D canvas in place instead of ever showing the flat Moonlight artwork.
+        stage.classList.add("moonlight-texture-missing");
+      }
+      // Clear the loading state immediately after the 3D cape finishes (or fails),
+      // independently of Steve/player skin loading.
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        if (document.getElementById("capePreviewStage") === stage) {
+          stage.classList.remove("preview-loading");
+        }
+      }));
       if (mcStoreViewer) {
         setPreviewMode(mcStorePreviewMode);
         updateProductMotionButton();
@@ -28593,7 +28628,7 @@ nav .nav-links .nav-link[href="#home"].active {
     letter-spacing: 1.6px; text-transform: uppercase;
   }
   .home-fitting-cape-swatches {
-    display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 6px; align-items: center;
+    display: grid; grid-template-columns: repeat(9, minmax(0, 1fr)); gap: 6px; align-items: center;
   }
   .home-fitting-swatch {
     position: relative; display: flex; align-items: center; justify-content: center;
@@ -28665,7 +28700,7 @@ nav .nav-links .nav-link[href="#home"].active {
     .home-fitting-mode { min-height: 27px; font-size: 9px; }
     .home-fitting-info-column { grid-template-columns: minmax(0, 1fr); gap: 14px; }
     .home-fitting-cape-picker { padding: 18px 15px; }
-    .home-fitting-cape-swatches { grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 5px; }
+    .home-fitting-cape-swatches { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 6px; }
     .home-fitting-swatch { height: 54px; border-radius: 6px; }
     .home-fitting-selected-card { padding: 20px 18px 17px; }
     .home-fitting-selected-card h3 { font-size: 26px; }
@@ -28692,6 +28727,7 @@ nav .nav-links .nav-link[href="#home"].active {
     { id: "crafter",      name: "Crafter Cape",      stem: "craftercapetexture",    thumb: "craftercape.gg",       art: "media/crafter-cape.png",     color: "#8a5a2b" },
     { id: "experience",   name: "Experience Cape Code", stem: "experiencecapetexture", thumb: "experiencecape.gg", art: "media/experience-cape.png",  color: "#7545b4" },
     { id: "home",         name: "Home Cape",         stem: "homecapetexture",       thumb: "homecape.gg",          art: "media/home-cape.png",        color: "#2f8664" },
+    { id: "moonlight",    name: "Moonlight Cape",    stem: "moonlightcapetexture",  thumb: "moonlightcape.gg",     art: "media/moonlight-cape.png",   color: "#8d9cff" },
     { id: "menace",       name: "Menace Cape",       stem: "menacecapetexture",     thumb: "menacecape.gg",        art: "media/menace-cape.png",      color: "#d92532" },
     { id: "purple-heart", name: "Purple Heart Cape",  stem: "twitchcapetexture",     thumb: "purpulhurtcape.gg",    art: "media/twitch-cape.png",      color: "#7145a5" }
   ];
@@ -28823,7 +28859,9 @@ nav .nav-links .nav-link[href="#home"].active {
         if (indexed && indexed.indexAvailable) return null;
       }
     } catch (_) {}
-    const names = /\.[a-z0-9]{2,5}$/i.test(filename) ? [filename] : extensions.map(ext => filename + ext);
+    const names = /\.gg$/i.test(filename)
+      ? [filename, ...imageExtensions.filter(Boolean).map(ext => filename + ext)]
+      : (/\.[a-z0-9]{2,5}$/i.test(filename) ? [filename] : extensions.map(ext => filename + ext));
     for (const folder of folders) {
       const found = await Promise.all(names.map(name => probeImage(makeUrl(folder + name))));
       const match = found.find(Boolean);
@@ -29050,7 +29088,9 @@ nav .nav-links .nav-link[href="#home"].active {
       if (homeViewer && homeViewer.playerWrapper) {
         // The player/Elytra rotate in place: horizontal drag turns, vertical drag tilts the view.
         homeViewer.playerWrapper.rotation.y += dx * 0.012;
-        homeViewer.playerWrapper.rotation.x = Math.max(-0.65, Math.min(0.65, homeViewer.playerWrapper.rotation.x - dy * 0.009));
+        // Keep vertical drag intuitive: moving the pointer up tilts the player upward,
+        // moving it down tilts the player downward (rather than the reverse).
+        homeViewer.playerWrapper.rotation.x = Math.max(-0.65, Math.min(0.65, homeViewer.playerWrapper.rotation.x + dy * 0.009));
         homeViewer.playerWrapper.rotation.z = 0;
       }
       if (event.cancelable) event.preventDefault();
@@ -30098,5 +30138,28 @@ body.mc-open-cape-now #details .detail-card {
   }
 </style>
 
+
+
+<style id="mc-store-moonlight-direct-3d-fix-final">
+/* Moonlight opens directly in its 3D viewer; never show moonlightcape.gg as a placeholder. */
+#details .storefront-preview.moonlight-3d-first .cape-preview-fallback,
+#details .storefront-preview.moonlight-3d-first.preview-loading .cape-preview-fallback,
+#details .storefront-preview.moonlight-3d-first.fallback-cape-only .cape-preview-fallback {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+#details .storefront-preview.moonlight-3d-first #capeSkinViewer,
+#details .storefront-preview.moonlight-3d-first.preview-loading #capeSkinViewer,
+#details .storefront-preview.moonlight-3d-first.fallback-cape-only #capeSkinViewer {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+#details .storefront-preview.moonlight-3d-first.moonlight-texture-missing .cape-preview-fallback {
+  display: none !important;
+}
+</style>
 </body>
 </html>
