@@ -28760,6 +28760,11 @@ nav .nav-links .nav-link[href="#home"].active {
   let isWalking = true;
   let textureRequestToken = 0;
   let resizeObserver = null;
+  let latestCapeSelectionPromise = Promise.resolve();
+  const namedAssetCache = new Map();
+  const namedAssetRequests = new Map();
+  const capeTextureCache = new Map();
+  const capeTextureRequests = new Map();
 
   const textureFolders = [
     "", "media/", "images/", "assets/", "textures/", "Textures/", "texture/", "Texture/",
@@ -28774,7 +28779,11 @@ nav .nav-links .nav-link[href="#home"].active {
     "texture pack/capes/", "Texture Pack/capes/", "resource pack/capes/", "Resource Pack/capes/"
   ];
   const imageExtensions = ["", ".png", ".PNG", ".webp", ".WEBP", ".jpg", ".JPG", ".jpeg", ".JPEG"];
-  const artFolders = ["", "media/", "capes 3D/", "Capes 3D/", "images/", "assets/", "Media/", "Images/", "Assets/", "capes/", "Capes/"];
+  const artFolders = [
+    "", "media/", "Media/", "capes 3D/", "Capes 3D/", "capes3D/", "capes-3D/", "3D/", "3d/",
+    "images/", "Images/", "assets/", "Assets/", "capes/", "Capes/", "capes images/", "Capes Images/",
+    "cape images/", "Cape Images/", "media/capes/", "assets/capes/", "public/images/", "static/images/"
+  ];
 
   function safeText(value) {
     return String(value).replace(/[&<>"']/g, ch => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"})[ch]);
@@ -28854,40 +28863,155 @@ nav .nav-links .nav-link[href="#home"].active {
     return enteredName;
   }
 
-  async function resolveNamedAsset(filename, folders, extensions) {
-    try {
-      if (typeof findMcStoreNestedAsset === "function") {
-        const indexed = await findMcStoreNestedAsset([filename]);
-        if (indexed && indexed.url) return indexed.url;
-        // A tree-index miss is not proof the asset is absent: continue with direct paths below.
+  function firstAvailableImage(urls, timeoutMs = 1800) {
+    const candidates = [...new Set((urls || []).filter(Boolean))];
+    return new Promise(resolve => {
+      if (!candidates.length) return resolve(null);
+      let done = false;
+      let remaining = candidates.length;
+      const images = [];
+      const timer = window.setTimeout(() => finish(null), timeoutMs);
+      function finish(url) {
+        if (done) return;
+        done = true;
+        window.clearTimeout(timer);
+        images.forEach(image => { image.onload = null; image.onerror = null; });
+        resolve(url || null);
       }
-    } catch (_) {}
-    const names = /\.gg$/i.test(filename)
-      ? [filename, ...imageExtensions.filter(Boolean).map(ext => filename + ext)]
-      : (/\.[a-z0-9]{2,5}$/i.test(filename) ? [filename] : extensions.map(ext => filename + ext));
-    for (const folder of folders) {
-      const found = await Promise.all(names.map(name => probeImage(makeUrl(folder + name))));
-      const match = found.find(Boolean);
-      if (match) return match;
+      for (const url of candidates) {
+        if (done) break;
+        const image = new Image();
+        images.push(image);
+        image.onload = () => finish(url);
+        image.onerror = () => {
+          remaining -= 1;
+          if (remaining <= 0) finish(null);
+        };
+        image.src = url;
+        if (image.complete && image.naturalWidth > 0) finish(url);
+      }
+    });
+  }
+
+  function firstResolvedAsset(tasks, timeoutMs = 2800) {
+    return new Promise(resolve => {
+      if (!tasks.length) return resolve(null);
+      let settled = false;
+      let remaining = tasks.length;
+      const timer = window.setTimeout(() => finish(null), timeoutMs);
+      function finish(url) {
+        if (settled) return;
+        settled = true;
+        window.clearTimeout(timer);
+        resolve(url || null);
+      }
+      tasks.forEach(task => Promise.resolve(task).then(url => {
+        if (url) return finish(url);
+        remaining -= 1;
+        if (!remaining) finish(null);
+      }).catch(() => {
+        remaining -= 1;
+        if (!remaining) finish(null);
+      }));
+    });
+  }
+
+  function textureFilenameOptions(stem) {
+    const stems = stem === "moonlightcapetexture"
+      ? [stem, "MoonlightCapeTexture", "moonlightCapeTexture", "Moonlightcapetexture"]
+      : [stem];
+    return [...new Set(stems.flatMap(name => imageExtensions.map(extension => name + extension)))];
+  }
+
+  function candidateAssetUrls(filenames, folders) {
+    const urls = [];
+    for (const folder of folders || []) {
+      for (const filename of filenames || []) {
+        try {
+          const url = makeUrl(folder + filename);
+          if (!urls.includes(url)) urls.push(url);
+        } catch (_) {}
+      }
     }
-    return null;
+    return urls;
+  }
+
+  async function resolveNamedAsset(filename, folders, extensions) {
+    const cacheKey = `${filename}|${(folders || []).join(",")}|${(extensions || []).join(",")}`;
+    if (namedAssetCache.has(cacheKey)) return namedAssetCache.get(cacheKey);
+    if (namedAssetRequests.has(cacheKey)) return namedAssetRequests.get(cacheKey);
+
+    const request = (async () => {
+      const names = /\.gg$/i.test(filename)
+        ? [filename, ...imageExtensions.filter(Boolean).map(ext => filename + ext)]
+        : (/\.[a-z0-9]{2,5}$/i.test(filename) ? [filename] : (extensions || []).map(ext => filename + ext));
+      const indexedTask = (async () => {
+        try {
+          const indexed = await findMcStoreNestedAsset(names);
+          return indexed && indexed.url ? indexed.url : null;
+        } catch (_) { return null; }
+      })();
+      const primaryFolders = ["", "media/", "Media/", "capes 3D/", "Capes 3D/", "capes3D/", "images/", "assets/"];
+      const primaryTask = firstAvailableImage(candidateAssetUrls(names, primaryFolders), 1900);
+      let found = await firstResolvedAsset([indexedTask, primaryTask], 2900);
+      if (!found) {
+        const fallbackFolders = [
+          "capes images/", "Capes Images/", "cape images/", "Cape Images/", "capes/", "Capes/",
+          "media/capes/", "assets/capes/", "public/images/", "static/images/", "capes texture pack/",
+          "Capes Texture Pack/", "texture pack/", "Texture Pack/", "resource pack/", "Resource Pack/"
+        ];
+        found = await firstAvailableImage(candidateAssetUrls(names, fallbackFolders), 1700);
+      }
+      if (found) namedAssetCache.set(cacheKey, found);
+      return found;
+    })();
+    namedAssetRequests.set(cacheKey, request);
+    try { return await request; }
+    finally { namedAssetRequests.delete(cacheKey); }
   }
 
   async function resolveCapeTexture(cape) {
-    try {
-      if (typeof findMcStoreNestedAsset === "function") {
-        const indexed = await findMcStoreNestedAsset([cape.stem]);
-        if (indexed && indexed.url) return indexed.url;
-        // Continue probing the common folder names even when GitHub's tree API has no match.
+    const cacheKey = cape.id || cape.stem;
+    if (capeTextureCache.has(cacheKey)) return capeTextureCache.get(cacheKey);
+    if (capeTextureRequests.has(cacheKey)) return capeTextureRequests.get(cacheKey);
+
+    const request = (async () => {
+      const filenames = textureFilenameOptions(cape.stem);
+      const directFilenames = imageExtensions.map(extension => cape.stem + extension);
+      const indexedTask = (async () => {
+        try {
+          const indexed = await findMcStoreNestedAsset(filenames);
+          return indexed && indexed.url ? indexed.url : null;
+        } catch (_) { return null; }
+      })();
+      // Try likely paths immediately while the repository index is being fetched.
+      const quickFolders = [
+        "", "media/", "Media/", "textures/", "Textures/", "texture/", "Texture/",
+        "capes 3D/", "Capes 3D/", "capes3D/", "texture pack/", "Texture Pack/",
+        "resource pack/", "Resource Pack/", "assets/textures/"
+      ];
+      let found = await firstResolvedAsset([
+        indexedTask,
+        firstAvailableImage(candidateAssetUrls(directFilenames, quickFolders), 2100)
+      ], 3000);
+      if (!found) {
+        // Try the remaining resource-pack folders only if the quick paths and repository
+        // index miss, keeping the common case fast and avoiding hundreds of unnecessary probes.
+        const quickSet = new Set(quickFolders);
+        const fallbackFolders = textureFolders.filter(folder => !quickSet.has(folder));
+        found = await firstAvailableImage(candidateAssetUrls(directFilenames, fallbackFolders), 2200);
+        if (!found && cape.id === "moonlight") {
+          // Last capitalization fallback is useful on a case-sensitive GitHub Pages host.
+          const alternateNames = filenames.filter(name => !directFilenames.includes(name));
+          found = await firstAvailableImage(candidateAssetUrls(alternateNames, quickFolders), 1800);
+        }
       }
-    } catch (_) {}
-    for (const folder of textureFolders) {
-      const names = imageExtensions.map(ext => cape.stem + ext);
-      const found = await Promise.all(names.map(name => probeImage(makeUrl(folder + name), 1300)));
-      const match = found.find(Boolean);
-      if (match) return match;
-    }
-    return null;
+      if (found) capeTextureCache.set(cacheKey, found);
+      return found;
+    })();
+    capeTextureRequests.set(cacheKey, request);
+    try { return await request; }
+    finally { capeTextureRequests.delete(cacheKey); }
   }
 
   async function prepareSwatchImages() {
@@ -28913,10 +29037,11 @@ nav .nav-links .nav-link[href="#home"].active {
         data-home-fit-cape="${safeText(cape.id)}" aria-pressed="${cape.id === selectedCapeId ? "true" : "false"}"
         title="${safeText(cape.name)}" aria-label="Equip ${safeText(cape.name)}">
         <img src="${safeText(cape.thumb)}" data-thumb-file="${safeText(cape.thumb)}"
-          data-fallback-art="${safeText(cape.art)}" alt="${safeText(cape.name)}" loading="lazy" decoding="async">
+          data-fallback-art="${safeText(cape.art)}" alt="${safeText(cape.name)}"
+          loading="${cape.id === "moonlight" ? "eager" : "lazy"}" decoding="async">
       </button>`).join("");
     swatches.querySelectorAll(".home-fitting-swatch").forEach(button => {
-      button.addEventListener("click", () => selectCape(button.dataset.homeFitCape));
+      button.addEventListener("click", () => requestCapeSelection(button.dataset.homeFitCape));
     });
     swatches.querySelectorAll("img").forEach(image => {
       image.addEventListener("error", () => {
@@ -29020,7 +29145,7 @@ nav .nav-links .nav-link[href="#home"].active {
       if (!textureUrl && cape.id === "moonlight") {
         throw new Error("moonlightcapetexture was not found in the repository texture folders");
       }
-      await homeViewer.loadCape(textureUrl || fallbackUrl);
+      await homeViewer.loadCape(textureUrl || fallbackUrl, { makeVisible: false });
       if (token !== textureRequestToken || !homeViewer) return;
       if (stage) stage.classList.remove("cape-texture-missing");
       applyEquipmentMode();
@@ -29031,6 +29156,19 @@ nav .nav-links .nav-link[href="#home"].active {
       console.warn("MC STORE Fitting Room could not load the cape texture", error);
       showStatus(`Could not load ${cape.name}'s texture. Check that ${cape.stem} is uploaded to the repository.`, "error");
     }
+  }
+
+  function requestCapeSelection(capeId) {
+    latestCapeSelectionPromise = selectCape(capeId);
+    return latestCapeSelectionPromise;
+  }
+
+  async function waitForLatestCapeSelection() {
+    let current;
+    do {
+      current = latestCapeSelectionPromise;
+      await current;
+    } while (current !== latestCapeSelectionPromise);
   }
 
   async function loadUsernameSkin() {
@@ -29153,18 +29291,11 @@ nav .nav-links .nav-link[href="#home"].active {
       if (homeViewer.playerObject && homeViewer.playerObject.skin) homeViewer.playerObject.skin.visible = true;
       if (homeViewer.playerObject) homeViewer.playerObject.backEquipment = selectedMode === "elytra" ? "elytra" : "cape";
       installDragTurn(homeViewer, canvas);
+
       const viewerAtStart = homeViewer;
-      showStatus(`Loading ${currentUsername}'s skin…`);
-      await homeViewer.loadSkin(`https://minotar.net/skin/${encodeURIComponent(currentUsername || "Steve")}`);
-      if (viewerAtStart !== homeViewer) return;
-      if (homeViewer.playerObject && homeViewer.playerObject.skin) homeViewer.playerObject.skin.visible = true;
-      if (headImage) headImage.src = `https://minotar.net/helm/${encodeURIComponent(currentUsername || "Steve")}/40.png`;
       viewerReady = true;
       applyEquipmentMode();
-      // Keep the first frame hidden until the selected Minecraft cape texture is really loaded;
-      // this prevents the default white cape from flashing before Moonlight's texture appears.
-      await selectCape(selectedCapeId);
-      stage.classList.remove("is-loading");
+
       if (!resizeObserver && "ResizeObserver" in window) {
         resizeObserver = new ResizeObserver(() => {
           if (!homeViewer || !stage.clientWidth || !stage.clientHeight) return;
@@ -29173,7 +29304,35 @@ nav .nav-links .nav-link[href="#home"].active {
         });
         resizeObserver.observe(stage);
       }
-      showStatus(`${currentUsername || "Steve"} is ready. Drag to turn the player.`, "success");
+
+      // Start the skin and cape loads in parallel. In particular, never make the Moonlight
+      // model wait for a username/skin provider before its 3D cape or Elytra can appear.
+      const skinPromise = viewerAtStart.loadSkin(`https://minotar.net/skin/${encodeURIComponent(currentUsername || "Steve")}`)
+        .then(() => {
+          if (viewerAtStart !== homeViewer) return;
+          if (homeViewer.playerObject && homeViewer.playerObject.skin) homeViewer.playerObject.skin.visible = true;
+          if (headImage) headImage.src = `https://minotar.net/helm/${encodeURIComponent(currentUsername || "Steve")}/40.png`;
+          applyEquipmentMode();
+          if (!stage.classList.contains("is-loading") && !stage.classList.contains("cape-texture-missing")) {
+            showStatus(`${currentUsername || "Steve"} is ready. Drag to turn the player.`, "success");
+          }
+        })
+        .catch(error => {
+          if (viewerAtStart !== homeViewer) return;
+          // A slow/unavailable skin host must not tear down the working 3D cape preview.
+          console.warn("MC STORE Fitting Room could not load the default skin; keeping the 3D preview active.", error);
+          applyEquipmentMode();
+        });
+      // Avoid an unhandled rejection in case a browser rejects the underlying texture request.
+      skinPromise.catch(() => {});
+
+      await requestCapeSelection(selectedCapeId);
+      await waitForLatestCapeSelection();
+      if (viewerAtStart !== homeViewer) return;
+      stage.classList.remove("is-loading");
+      if (!stage.classList.contains("cape-texture-missing")) {
+        showStatus(`${currentUsername || "Steve"} is ready. Drag to turn the player.`, "success");
+      }
     } catch (error) {
       stage.classList.remove("is-loading");
       if (canvas.__mcHomeFitDragCleanup) canvas.__mcHomeFitDragCleanup();
@@ -29228,6 +29387,8 @@ nav .nav-links .nav-link[href="#home"].active {
   });
 
   renderSwatches();
+  // Pre-resolve Moonlight's 3D texture while the Home page is idle, so its first click is fast.
+  resolveCapeTexture(getCape("moonlight")).catch(() => {});
   updateSelectedPanel(getCape(selectedCapeId));
   if (usernameInput) usernameInput.value = currentUsername === "Steve" ? "" : currentUsername;
   const lifecycleObserver = new MutationObserver(() => {
